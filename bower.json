@@ -1,0 +1,31 @@
+{
+	"name": "lazysizes",
+	"repo": "afarkas/lazysizes",
+	"version": "0.1.0",
+	"main": "lazysizes.min.js",
+	"scripts": [
+		"lazysizes.min.js"
+	],
+	"license": "MIT",
+	"authors": [
+		"Alexander Farkas <info@corrupt-system.de>"
+	],
+	"moduleType": [
+		"amd",
+		"globals"
+	],
+	"description": "High performance (jankfree) lazy loader for images (including responsive images), iframes and scripts (widgets).",
+	"keywords": ["lazy", "lazyloader", "performance", "responsive", "image", "responsive images", "picture", "srcset"],
+	"ignore": [
+		"**/.*",
+		"node_modules",
+		"assets",
+		"bower_components",
+		"test",
+		"tests",
+		"index.html",
+		"Gruntfile.js",
+		"component.json",
+		"package.json"
+	]
+}
