@@ -34,6 +34,20 @@ As a nice bonus lazysizes supports setting the ``sizes`` attribute automatically
     responsive-image3.jpg 900w" class="lazyload" />
 ```
 
+For JS off support simply use a ``span`` or ``div`` element as a wrapper for a ``noscript`` element:
+
+```html
+<span
+	data-sizes="auto"
+	data-srcset="responsive-image1.jpg 300w, 
+    responsive-image2.jpg 600w,
+    responsive-image3.jpg 900w" class="lazyload">
+    <noscript>
+    	<img src="responsive-image2.jpg" />
+    </noscript>
+</span>
+```
+
 ###JS API
 **lazysizes** automatically detects new elements with the class ``lazyload`` so you wont need to call anything.
 
