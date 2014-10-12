@@ -76,11 +76,14 @@
 
 	var lazyEvalLazy = (function(){
 		var timer, running;
-		var run = function(){
+		var unblock = function(){
 			running = false;
+		};
+		var run = function(){
 			clearTimeout(timer);
 			clearLazyTimer();
 			evalLazyElements();
+			setTimeout(unblock);
 		};
 		return {
 			debounce: function(){
@@ -89,44 +92,37 @@
 				running = true;
 				timer = setTimeout(run, 66);
 			},
-			throttled: function(){
+			throttled: function(e){
 				if(!running){
 					running = true;
 					clearTimeout(timer);
-					timer = setTimeout(run, 99);
+					timer = setTimeout(run, e && e.type == 'mouseover' ? 250 : 99);
 				}
 			}
 		};
 	})();
 
 	var evalLazyElements = function (){
-		var now, i, checkTime, vW, vH, rect, top, left, right, bottom, negativeTreshhold;
+		var now, vW, vH, rect, top, left, right, bottom, negativeTreshhold;
 		var len = lazyloadElems.length;
 		if(len){
 			now = Date.now();
-			checkTime = 0;
 			vW = window.innerWidth + inViewTreshhold;
 			vH = window.innerHeight + inViewTreshhold;
 			negativeTreshhold = inViewTreshhold * -1;
 
-			i = globalLazyIndex || 0;
-
-			clearLazyTimer();
-
-			for(; i < len; i++){
-				rect = lazyloadElems[i].getBoundingClientRect();
+			for(; globalLazyIndex < len; globalLazyIndex++){
+				rect = lazyloadElems[globalLazyIndex].getBoundingClientRect();
 
 				if ((bottom = rect.bottom) >= negativeTreshhold &&
 					(top = rect.top) <= vH &&
 					(right = rect.right) >= negativeTreshhold &&
 					(left = rect.left) <= vW &&
 					(bottom || right || left || top)){
-					unveilLazy(lazyloadElems[i]);
+					unveilLazy(lazyloadElems[globalLazyIndex]);
 				} else  {
-					checkTime++;
-					if(2 < checkTime && i < len - 1 && Date.now() - now > 9){
-						globalLazyIndex = i + 1;
-
+					if(globalLazyIndex < len - 1 && Date.now() - now > 7){
+						globalLazyIndex = globalLazyIndex + 1;
 						globalLazyTimer = setTimeout(evalLazyElements, 20);
 						break;
 					}
@@ -152,7 +148,7 @@
 				if(noDataTouch[cleanElemAttr] || !(elemAttr in elem)){
 					cleanElemAttr = elemAttr;
 				}
-				elem.setAttribute(cleanElemAttr, elemAttrs[i].nodeValue);
+				elem.setAttribute(cleanElemAttr, elemAttrs[i].value);
 			}
 		}
 
@@ -326,17 +322,34 @@
 	// bind to all possible events ;-) This might look like a performance disaster, but it isn't.
 	// The main check functions are written to run extreme fast without consuming memory.
 	var onload = function(){
-		inViewTreshhold *= 3;
+		inViewTreshhold *= 5;
 		clearTimeout(globalInitialTimer);
 
 		document.addEventListener('load', lazyEvalLazy.throttled, true);
 	};
 	var onready = function(){
+		var element = document.body || document.documentElement;
 		if(window.MutationObserver){
 			new MutationObserver( lazyEvalLazy.throttled ).observe( document.body || document.documentElement, {childList: true, subtree: true, attributes: true} );
 		} else {
-			(document.body || document.documentElement).addEventListener( "DOMNodeInserted", lazyEvalLazy.throttled, true);
-			(document.body || document.documentElement).addEventListener( "DOMAttrModified", lazyEvalLazy.throttled, true);
+			element.addEventListener( "DOMNodeInserted", lazyEvalLazy.throttled, true);
+			element.addEventListener( "DOMAttrModified", lazyEvalLazy.throttled, true);
+		}
+
+		//:hover
+		document.addEventListener('mouseover', lazyEvalLazy.throttled, true);
+		//:focus/active
+		document.addEventListener('focus', lazyEvalLazy.throttled, true);
+		//:target
+		window.addEventListener('hashchange', lazyEvalLazy.throttled, true);
+
+		//:fullscreen
+		if(('onmozfullscreenchange' in element)){
+			window.addEventListener('mozfullscreenchange', lazyEvalLazy.throttled, true);
+		} else if(('onwebkitfullscreenchange' in element)){
+			window.addEventListener('webkitfullscreenchange', lazyEvalLazy.throttled, true);
+		} else {
+			window.addEventListener('fullscreenchange', lazyEvalLazy.throttled, true);
 		}
 	};
 

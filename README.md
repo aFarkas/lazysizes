@@ -98,7 +98,7 @@ lazySizes.updateAllSizes();
 ```
 
 ##Browser Support
-**lazysizes** is supports the following browsers: IE9+, Firefox 21+, Chrome 27+, Safari 6.1+, iOS Safari 7.0+, Android 4.1+
+**lazysizes** supports the following browsers: IE9+, Firefox 21+, Chrome 27+, Safari 6.1+, iOS Safari 7.0+, Android 4.1+
 
 ##About responsive image support
 For full cross browser responsive image support a polyfill like [respimage](https://github.com/aFarkas/respimage) or [picturefill](https://github.com/scottjehl/picturefill) has to be used.
