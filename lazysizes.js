@@ -24,9 +24,9 @@
 	var setImmediate = window.setImmediate || window.setTimeout;
 	var scriptUrls = {};
 	var unveilAfterLoad = function(e){
-		unveilLazy(e.target, true);
 		e.target.removeEventListener('load', unveilAfterLoad, false);
 		e.target.removeEventListener('error', unveilAfterLoad, false);
+		unveilLazy(e.target, true);
 	};
 
 	if(document.documentElement.classList){
@@ -84,6 +84,8 @@
 				}
 			}
 			respimage({reparse: true, elements: [el]});
+		} else if(!window.HTMLPictureElement && window.console){
+			console.log('Please use a responsive image polyfill, like respimage or picturefill. https://github.com/aFarkas/respimage');
 		}
 	}
 
@@ -130,7 +132,7 @@
 					checkTime++;
 					if(2 < checkTime && i < len - 1 && Date.now() - now > 9){
 						globalLazyIndex = i + 1;
-						globalLazyTimer = setTimeout(evalLazyElements, 33);
+						globalLazyTimer = setTimeout(evalLazyElements, 20);
 						break;
 					}
 				}
@@ -166,6 +168,7 @@
 			if(nodeName != 'script'){
 				parent.removeChild(dummyEl);
 			} else {
+				dummyEl.removeAttribute('data-src');
 				setImmediate(function(){
 					removeClass(dummyEl, 'lazyload');
 				});
@@ -226,6 +229,9 @@
 					elem.setAttribute('sizes', sizes);
 				}
 				elem.removeAttribute('data-sizes');
+				if (!srcset && window.console && elem.getAttribute('srcset')){
+					console.log('using lazysizes with a `srcset` attribute is not good. Use `data-srcset` instead');
+				}
 			}
 
 			if(srcset){
@@ -279,7 +285,7 @@
 
 				if(i > checkTime && i < len - 1 && Date.now() - now > 9){
 					globalSizesIndex = i + 1;
-					globalSizesTimer = setTimeout(evalSizesElements, 33);
+					globalSizesTimer = setTimeout(evalSizesElements, 20);
 					break;
 				}
 			}

@@ -34,6 +34,8 @@ As a nice bonus lazysizes supports setting the ``sizes`` attribute automatically
     responsive-image3.jpg 900w" class="lazyload" />
 ```
 
+**How sizes is calculated**: The automatic sizes calculation takes the with of the image and the width of its parent element and uses the largeest number of those two calculated numbers. It's therefore important, that all images are contained in a wrapper that isn't much bigger than the image should shown. Otherwise a wrong (too big) sizes attribute will be calculated.
+
 For JS off support simply use a ``span`` or ``div`` element as a wrapper for a ``noscript`` element:
 
 ```html
@@ -56,9 +58,9 @@ In case a lazyload image was hidden and then shown via JS the method ``lazySizes
 
 ```js
 lazySizes.updateAllLazy();
-````
+```
 
-####``lazySizes.unveilLazy(DOMNode)```
+####``lazySizes.unveilLazy(DOMNode)``
 
 In case a developer wants to show an image even if it is not inside the viewport the ``lazySizes.unveilLazy(DOMNode)`` can be called:
 
@@ -66,7 +68,7 @@ In case a developer wants to show an image even if it is not inside the viewport
 lazySizes.unveilLazy(imgElem);
 ```
 
-####``lazySizes.updateAllSizes()```
+####``lazySizes.updateAllSizes()``
 
 In case one or more image elements with the attribute ``data-sizes`` have changed in size ``lazySizes.updateAllSizes`` can be called (For example to implement element queries):
 
