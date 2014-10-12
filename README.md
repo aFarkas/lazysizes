@@ -1,19 +1,33 @@
 #lazysizes
 **lazysizes** is a fast (jankfree) lazyloader for images (including responsive images), iframes and scripts/widgets without any dependency.
 
+##Features
+
+* supports standard conform **responsive images** (``srcset`` and ``picture``)
+* loads ``iframes`` and ``script``
+* Optional **automatic ``sizes`` attribute calculation**  for your repsonsive images (simply add ``data-sizes="auto"``). respimg was never so easy.
+* **easy to use** / no configuration required:
+	* no configuration required for scrollable areas (overflow: auto/scroll)
+	* no configuration or callback invocation required for any kind of JS widgets (tabs, carousels, accordions, dialogs) or any JS behaviors (i.e.: infinite scroll/AJAX)
+* performance and memory optimized
+* **absolutley jankfree** (decoding an image or parsing an iframe might create a jank, but the script itself will never ever, even if you had thounds of images to lazy load on one page)
+* uses the low quality image placeholder pattern, if an image already has a valid source
+* JS off syntax possible
+* lightweight only 2kb
+
 ##Download and Embed
 
 Simply download the [lazysizes.min.js](lazysizes.min.js) and include it in your webpage:
 
 ```html
-<script src="lazysizes.min.js"></script>
+<script src="lazysizes.min.js" async=""></script>
 ```
 
 ##[Demo with code examples](http://afarkas.github.io/lazysizes/#examples)
 can be seen [here](http://afarkas.github.io/lazysizes/#examples).
 
 ##API
-lazysizes comes with a simple markup and JS API:
+**lazysizes** comes with a simple markup and JS API:
 
 ###Markup API
 Simply add the ``class`` ``lazyload`` to all ``img`` and ``iframe`` elements, which should be loaded lazy. Instead of a ``src`` or ``srcset`` attribute, use a ``data-src`` or ``data-srcset`` attribute:
@@ -24,24 +38,24 @@ Simply add the ``class`` ``lazyload`` to all ``img`` and ``iframe`` elements, wh
 <img data-srcset="responsive-image1.jpg 1x, responsive-image2.jpg 2x" class="lazyload" />
 ```
 
-As a nice bonus lazysizes supports setting the ``sizes`` attribute automatically corresponding to the current size of your image. To add support for this add the value ``auto`` to the ``data-sizes`` attribute:
+**lazysizes** supports setting the ``sizes`` attribute automatically corresponding to the current size of your image. To add support for this add the value ``auto`` to the ``data-sizes`` attribute:
 
 ```html
 <img
 	data-sizes="auto"
-	data-srcset="responsive-image1.jpg 300w, 
+	data-srcset="responsive-image1.jpg 300w,
     responsive-image2.jpg 600w,
     responsive-image3.jpg 900w" class="lazyload" />
 ```
 
-**How sizes is calculated**: The automatic sizes calculation takes the with of the image and the width of its parent element and uses the largeest number of those two calculated numbers. It's therefore important, that all images are contained in a wrapper that isn't much bigger than the image should shown. Otherwise a wrong (too big) sizes attribute will be calculated.
+**Important: How ``sizes`` is calculated**: The automatic sizes calculation takes the width of the image and the width of its parent element and uses the largest number of those two calculated numbers. It's therefore important, that all images are contained in a wrapper that isn't much bigger than the image should shown. Otherwise a wrong (too big) sizes attribute will be calculated.
 
 For JS off support simply use a ``span`` or ``div`` element as a wrapper for a ``noscript`` element:
 
 ```html
 <span
 	data-sizes="auto"
-	data-srcset="responsive-image1.jpg 300w, 
+	data-srcset="responsive-image1.jpg 300w,
     responsive-image2.jpg 600w,
     responsive-image3.jpg 900w" class="lazyload">
     <noscript>
@@ -50,15 +64,22 @@ For JS off support simply use a ``span`` or ``div`` element as a wrapper for a `
 </span>
 ```
 
-###JS API
-**lazysizes** automatically detects new elements with the class ``lazyload`` so you wont need to call anything.
+##recommended markup: LQIP
+We recommend to use the LQIP pattern: Simply add a low quality image as the ``src``:
 
-####``lazySizes.updateAllLazy``
-In case a lazyload image was hidden and then shown via JS the method ``lazySizes.updateAllLazy`` can be called:
-
-```js
-lazySizes.updateAllLazy();
+```html
+<img
+	data-sizes="auto"
+    src="lqip-src.jpg"
+	data-srcset="lqip-src.jpg 150w,
+    image2.jpg 300w,
+    image3.jpg 600w,
+    image4.jpg 900w" class="lazyload" />
 ```
+
+###JS API
+**lazysizes** automatically detects new elements with the class ``lazyload`` so you won't need to call anything in most situations.
+
 
 ####``lazySizes.unveilLazy(DOMNode)``
 
@@ -77,7 +98,7 @@ lazySizes.updateAllSizes();
 ```
 
 ##Browser Support
-**lazysizes** is supported by [all browsers which support ``getElementsByClassName``](http://caniuse.com/#feat=getelementsbyclassname). (No IE8 support.)
+**lazysizes** is supports the following browsers: IE9+, Firefox 21+, Chrome 27+, Safari 6.1+, iOS Safari 7.0+, Android 4.1+
 
 ##About responsive image support
 For full cross browser responsive image support a polyfill like [respimage](https://github.com/aFarkas/respimage) or [picturefill](https://github.com/scottjehl/picturefill) has to be used.

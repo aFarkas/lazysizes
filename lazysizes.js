@@ -18,7 +18,7 @@
 	var regScript = /^script$/i;
 	var regImg = /^img$/i;
 	var noDataTouch = {sizes: 1, src: 1, srcset: 1};
-	var inViewTreshhold = 99;
+	var inViewTreshhold = 66;
 	var lazyloadElems = document.getElementsByClassName('lazyload');
 	var autosizesElems = document.getElementsByClassName('lazyautosizes');
 	var setImmediate = window.setImmediate || window.setTimeout;
@@ -57,21 +57,6 @@
 		};
 	}
 
-
-
-	function inView(el) {
-		var rect = el.getBoundingClientRect();
-		var bottom, right, left, top;
-
-		return !!(
-			(bottom = rect.bottom) >= (inViewTreshhold * -1) &&
-			(top = rect.top) <= window.innerHeight + inViewTreshhold &&
-			(right = rect.right) >= (inViewTreshhold * -1) &&
-			(left = rect.left) <= window.innerWidth + inViewTreshhold &&
-			(bottom || right || left || top)
-		);
-	}
-
 	function updatePolyfill(el, full){
 		var imageData;
 		if(window.picturefill){
@@ -108,30 +93,40 @@
 				if(!running){
 					running = true;
 					clearTimeout(timer);
-					timer = setTimeout(run, 66);
+					timer = setTimeout(run, 99);
 				}
 			}
 		};
 	})();
 
 	var evalLazyElements = function (){
-		var now, i, checkTime;
+		var now, i, checkTime, vW, vH, rect, top, left, right, bottom, negativeTreshhold;
 		var len = lazyloadElems.length;
 		if(len){
 			now = Date.now();
 			checkTime = 0;
+			vW = window.innerWidth + inViewTreshhold;
+			vH = window.innerHeight + inViewTreshhold;
+			negativeTreshhold = inViewTreshhold * -1;
 
 			i = globalLazyIndex || 0;
 
 			clearLazyTimer();
 
 			for(; i < len; i++){
-				if (inView(lazyloadElems[i])){
+				rect = lazyloadElems[i].getBoundingClientRect();
+
+				if ((bottom = rect.bottom) >= negativeTreshhold &&
+					(top = rect.top) <= vH &&
+					(right = rect.right) >= negativeTreshhold &&
+					(left = rect.left) <= vW &&
+					(bottom || right || left || top)){
 					unveilLazy(lazyloadElems[i]);
 				} else  {
 					checkTime++;
 					if(2 < checkTime && i < len - 1 && Date.now() - now > 9){
 						globalLazyIndex = i + 1;
+
 						globalLazyTimer = setTimeout(evalLazyElements, 20);
 						break;
 					}
@@ -285,6 +280,7 @@
 
 				if(i > checkTime && i < len - 1 && Date.now() - now > 9){
 					globalSizesIndex = i + 1;
+
 					globalSizesTimer = setTimeout(evalSizesElements, 20);
 					break;
 				}
@@ -308,7 +304,8 @@
 				elemWidth :
 				parentWidth;
 
-			if(width){
+			if(width && (!elem._lazysizesWidth || width > elem._lazysizesWidth)){
+				elem._lazysizesWidth = width;
 				width += 'px';
 				elem.setAttribute('sizes', width);
 
@@ -326,33 +323,45 @@
 		}
 	}
 
+	// bind to all possible events ;-) This might look like a performance disaster, but it isn't.
+	// The main check functions are written to run extreme fast without consuming memory.
 	var onload = function(){
 		inViewTreshhold *= 3;
 		clearTimeout(globalInitialTimer);
+
+		document.addEventListener('load', lazyEvalLazy.throttled, true);
+	};
+	var onready = function(){
 		if(window.MutationObserver){
-			new MutationObserver( lazyEvalLazy.debounce ).observe( document.body || document.documentElement, {childList: true, subtree: true} );
+			new MutationObserver( lazyEvalLazy.throttled ).observe( document.body || document.documentElement, {childList: true, subtree: true, attributes: true} );
 		} else {
-			(document.body || document.documentElement).addEventListener( "DOMNodeInserted", lazyEvalLazy.debounce, true);
+			(document.body || document.documentElement).addEventListener( "DOMNodeInserted", lazyEvalLazy.throttled, true);
+			(document.body || document.documentElement).addEventListener( "DOMAttrModified", lazyEvalLazy.throttled, true);
 		}
-		document.body.addEventListener('scroll', lazyEvalLazy.throttled, true);
 	};
 
+
 	window.addEventListener('scroll', lazyEvalLazy.throttled, false);
+	(document.body || document.documentElement).addEventListener('scroll', lazyEvalLazy.throttled, true);
+
+	document.addEventListener('touchmove', lazyEvalLazy.throttled, false);
 
 	window.addEventListener('resize', lazyEvalLazy.debounce, false);
-	document.addEventListener('load', lazyEvalLazy.debounce, true);
-
-	document.addEventListener('touchmove', lazyEvalLazy.debounce, true);
-	document.addEventListener('readystatechange', lazyEvalLazy.debounce, false);
-
 	window.addEventListener('resize', lazyEvalSizes, false);
+
+	if(	/^i|^loade|c/.test(document.readyState) ){
+		onready();
+	} else {
+		document.addEventListener('DOMContentLoaded', onready, false);
+	}
 
 	if(document.readyState == 'complete'){
 		onload();
 	} else {
 		window.addEventListener('load', onload, false);
+		document.addEventListener('readystatechange', lazyEvalLazy.throttled, false);
 	}
-	lazyEvalLazy.debounce();
+	lazyEvalLazy.throttled();
 
 	return {
 		updateAllSizes: lazyEvalSizes,
