@@ -10,6 +10,7 @@
 
 	if(!Date.now || !window.document.getElementsByClassName){return;}
 
+	var lazyloadElems, autosizesElems, lazySizesConfig;
 	var globalSizesTimer, globalSizesIndex, globalLazyTimer, globalLazyIndex, globalInitialTimer, addClass, removeClass, hasClass;
 	var document = window.document;
 
@@ -19,8 +20,7 @@
 	var regImg = /^img$/i;
 	var noDataTouch = {sizes: 1, src: 1, srcset: 1};
 	var inViewTreshhold = 66;
-	var lazyloadElems = document.getElementsByClassName('lazyload');
-	var autosizesElems = document.getElementsByClassName('lazyautosizes');
+
 	var setImmediate = window.setImmediate || window.setTimeout;
 	var scriptUrls = {};
 	var unveilAfterLoad = function(e){
@@ -102,26 +102,27 @@
 		};
 	})();
 
+	var eLlen, eLnow, eLvW, elvH, eLtop, eLleft, eLright, eLbottom, eLnegativeTreshhold;
 	var evalLazyElements = function (){
-		var now, vW, vH, rect, top, left, right, bottom, negativeTreshhold;
-		var len = lazyloadElems.length;
-		if(len){
-			now = Date.now();
-			vW = window.innerWidth + inViewTreshhold;
-			vH = window.innerHeight + inViewTreshhold;
-			negativeTreshhold = inViewTreshhold * -1;
+		var rect;
+		eLlen = lazyloadElems.length;
+		if(eLlen){
+			eLnow = Date.now();
+			eLvW = window.innerWidth + inViewTreshhold;
+			elvH = window.innerHeight + inViewTreshhold;
+			eLnegativeTreshhold = inViewTreshhold * -1;
 
-			for(; globalLazyIndex < len; globalLazyIndex++){
+			for(; globalLazyIndex < eLlen; globalLazyIndex++){
 				rect = lazyloadElems[globalLazyIndex].getBoundingClientRect();
 
-				if ((bottom = rect.bottom) >= negativeTreshhold &&
-					(top = rect.top) <= vH &&
-					(right = rect.right) >= negativeTreshhold &&
-					(left = rect.left) <= vW &&
-					(bottom || right || left || top)){
+				if ((eLbottom = rect.bottom) >= eLnegativeTreshhold &&
+					(eLtop = rect.top) <= elvH &&
+					(eLright = rect.right) >= eLnegativeTreshhold &&
+					(eLleft = rect.left) <= eLvW &&
+					(eLbottom || eLright || eLleft || eLtop)){
 					unveilLazy(lazyloadElems[globalLazyIndex]);
 				} else  {
-					if(globalLazyIndex < len - 1 && Date.now() - now > 7){
+					if(globalLazyIndex < eLlen - 1 && Date.now() - eLnow > 7){
 						globalLazyIndex = globalLazyIndex + 1;
 						globalLazyTimer = setTimeout(evalLazyElements, 20);
 						break;
@@ -159,9 +160,9 @@
 			if(nodeName != 'script'){
 				parent.removeChild(dummyEl);
 			} else {
-				dummyEl.removeAttribute('data-src');
+				dummyEl.removeAttribute(lazySizesConfig.srcAttr);
 				setImmediate(function(){
-					removeClass(dummyEl, 'lazyload');
+					removeClass(dummyEl, lazySizesConfig.lazyClass);
 				});
 			}
 		}
@@ -175,9 +176,9 @@
 
 	function unveilLazy(elem, force){
 		var sources, i, len, sourceSrcset;
-		var sizes = elem.getAttribute('data-sizes');
-		var src = elem.getAttribute('data-src');
-		var srcset = elem.getAttribute('data-srcset');
+		var sizes = elem.getAttribute(lazySizesConfig.sizesAttr);
+		var src = elem.getAttribute(lazySizesConfig.srcAttr);
+		var srcset = elem.getAttribute(lazySizesConfig.srcsetAttr);
 		var parent = elem.parentNode;
 
 		if(src || srcset){
@@ -195,7 +196,7 @@
 			} else if(regImg.test(elem.nodeName || '')) {
 
 				//LQIP
-				if(!force && !elem.complete && elem.getAttribute('src') && elem.src){
+				if(!force && !elem.complete && elem.getAttribute('src') && elem.src && !elem.lazyload){
 					elem.removeEventListener('load', unveilAfterLoad, false);
 					elem.removeEventListener('error', unveilAfterLoad, false);
 					elem.addEventListener('load', unveilAfterLoad, false);
@@ -205,7 +206,7 @@
 				if(regPicture.test(parent.nodeName || '')){
 					sources = parent.getElementsByTagName('source');
 					for(i = 0, len = sources.length; i < len; i++){
-						sourceSrcset = sources[i].getAttribute('data-srcset');
+						sourceSrcset = sources[i].getAttribute(lazySizesConfig.srcsetAttr);
 						if(sourceSrcset){
 							sources[i].setAttribute('srcset', sourceSrcset);
 						}
@@ -219,7 +220,7 @@
 				} else {
 					elem.setAttribute('sizes', sizes);
 				}
-				elem.removeAttribute('data-sizes');
+				elem.removeAttribute(lazySizesConfig.sizesAttr);
 				if (!srcset && window.console && elem.getAttribute('srcset')){
 					console.log('using lazysizes with a `srcset` attribute is not good. Use `data-srcset` instead');
 				}
@@ -227,17 +228,17 @@
 
 			if(srcset){
 				elem.setAttribute('srcset', srcset);
-				elem.removeAttribute('data-srcset');
+				elem.removeAttribute(lazySizesConfig.srcsetAttr);
 			} else if(src){
 				elem.setAttribute('src', src);
-				elem.removeAttribute('data-src');
+				elem.removeAttribute(lazySizesConfig.srcAttr);
 			}
 		}
 
 		setImmediate(function(){
-			removeClass(elem, 'lazyload');
+			removeClass(elem, lazySizesConfig.lazyClass);
 			if(sizes == 'auto'){
-				addClass(elem, 'lazyautosizes');
+				addClass(elem, lazySizesConfig.autosizesClass);
 			}
 
 			if(srcset || sizes){
@@ -319,7 +320,6 @@
 		}
 	}
 
-	var lazySizesConfig;
 	// bind to all possible events ;-) This might look like a performance disaster, but it isn't.
 	// The main check functions are written to run extreme fast without consuming memory.
 	var onload = function(){
@@ -330,7 +330,6 @@
 	};
 	var onready = function(){
 		var element = document.body || document.documentElement;
-
 
 		if(lazySizesConfig.mutation){
 			if(window.MutationObserver){
@@ -350,11 +349,6 @@
 		//:target
 		window.addEventListener('hashchange', lazyEvalLazy.throttled, true);
 
-		if(lazySizesConfig.cssanimation){
-			document.addEventListener('animationstart', lazyEvalLazy.throttled, true);
-			document.addEventListener('transitionstart', lazyEvalLazy.throttled, true);
-		}
-
 		//:fullscreen
 		if(('onmozfullscreenchange' in element)){
 			window.addEventListener('mozfullscreenchange', lazyEvalLazy.throttled, true);
@@ -363,17 +357,36 @@
 		} else {
 			window.addEventListener('fullscreenchange', lazyEvalLazy.throttled, true);
 		}
+
+		if(lazySizesConfig.cssanimation){
+			document.addEventListener('animationstart', lazyEvalLazy.throttled, true);
+			document.addEventListener('transitionstart', lazyEvalLazy.throttled, true);
+		}
 	};
 
 	setTimeout(function(){
 		var prop;
-		var lazySizesDefaults = {mutation: true, hover: true, cssanimation: true};
+		var lazySizesDefaults = {
+			mutation: true,
+			hover: true,
+			cssanimation: true,
+			lazyClass: 'lazyload',
+			autosizesClass: 'lazyautosizes',
+			srcAttr: 'data-src',
+			srcsetAttr: 'data-srcset',
+			sizesAttr: 'data-sizes'
+		};
+
 		lazySizesConfig = window.lazySizesConfig || {};
+
 		for(prop in lazySizesDefaults){
 			if(!(prop in lazySizesConfig)){
 				lazySizesConfig[prop] = lazySizesDefaults[prop];
 			}
 		}
+
+		lazyloadElems = document.getElementsByClassName(lazySizesConfig.lazyClass);
+		autosizesElems = document.getElementsByClassName(lazySizesConfig.autosizesClass);
 
 		window.addEventListener('scroll', lazyEvalLazy.throttled, false);
 		(document.body || document.documentElement).addEventListener('scroll', lazyEvalLazy.throttled, true);
@@ -395,16 +408,23 @@
 			document.addEventListener('readystatechange', lazyEvalLazy.throttled, false);
 		}
 		lazyEvalLazy.throttled();
+
+		if('lazySizesConfig' in window){
+			window.lazySizesConfig = null;
+		}
+
 	}, document.body ? 9 : 99);
 
 	return {
 		updateAllSizes: lazyEvalSizes,
 		updateAllLazy: lazyEvalLazy.throttled,
 		unveilLazy: function(el){
-			if(hasClass(el, 'lazyload')){
+			if(hasClass(el, lazySizesConfig.lazyClass)){
 				unveilLazy(el);
 			}
 		},
-		updateSizes: updateSizes
+		updateSizes: updateSizes,
+		transformDummy: transformDummy,
+		updatePolyfill: updatePolyfill
 	};
 }));
