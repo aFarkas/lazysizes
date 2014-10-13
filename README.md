@@ -11,7 +11,7 @@
 	* no configuration or callback invocation required for any kind of JS widgets (tabs, carousels, accordions, dialogs) or any JS behaviors (i.e.: infinite scroll/AJAX)
 * performance and memory optimized
 * **absolutley jankfree** (decoding an image or parsing an iframe might create a jank, but the script itself will never ever, even if you had thounds of images to lazy load on one page)
-* uses the low quality image placeholder pattern, if an image already has a valid source
+* uses the [**low quality image placeholder**](http://www.guypo.com/feo/introducing-lqip-low-quality-image-placeholders/) pattern, if an image already has a valid source
 * JS off syntax possible
 * lightweight only 2kb
 
@@ -68,13 +68,17 @@ For JS off support simply use a ``span`` or ``div`` element as a wrapper for a `
 We recommend to use the LQIP pattern: Simply add a low quality image as the ``src``:
 
 ```html
+<!-- responsive example: -->
 <img
 	data-sizes="auto"
     src="lqip-src.jpg"
-	data-srcset="lqip-src.jpg 150w,
+	data-srcset="lqip-src.jpg 100w,
     image2.jpg 300w,
     image3.jpg 600w,
     image4.jpg 900w" class="lazyload" />
+    
+<!-- or non-responsive: -->
+<img src="lqip-src.jpg" data-src="image.jpg" class="lazyload" />
 ```
 
 ###JS API
@@ -91,7 +95,7 @@ lazySizes.unveilLazy(imgElem);
 
 ####``lazySizes.updateAllSizes()``
 
-In case one or more image elements with the attribute ``data-sizes`` have changed in size ``lazySizes.updateAllSizes`` can be called (For example to implement element queries):
+In case one or more image elements with the attribute ``data-sizes="auto"`` have changed in size ``lazySizes.updateAllSizes`` can be called (For example to implement element queries):
 
 ```js
 lazySizes.updateAllSizes();
@@ -102,3 +106,23 @@ lazySizes.updateAllSizes();
 
 ##About responsive image support
 For full cross browser responsive image support a polyfill like [respimage](https://github.com/aFarkas/respimage) or [picturefill](https://github.com/scottjehl/picturefill) has to be used.
+
+##Why lazySizes
+In the past I often struggeled using lazy image loaders, because the "main check function" is called repeatedly and with a high frequency. Which makes it hard to fullfill two purposes runtime perfromance and memory allocation.
+But in a world of responsive (especially retina optimized) images on the one hand and JS widgets like carousels or tabs on the other hand lazy loading images becomes more and more important. And therefore I created this project. And in fact **lazySizes** is different.
+
+Due to the fact, that it is designed to be invoked with a high frequency, it was possible to hook into all kind of events and therefore this lazyloader wroks as a simple drop in solution, you simply write/render your markup and no matter wether it was added by ajax or revealed by a JS or CSS animation it will be picked up by **layzSizes**.
+
+```html
+<!-- responsive example: -->
+<img
+	data-sizes="auto"
+    src="lqip-src.jpg"
+	data-srcset="lqip-src.jpg 100w,
+    image2.jpg 300w,
+    image3.jpg 600w,
+    image4.jpg 900w" class="lazyload" />
+    
+<!-- or non-responsive: -->
+<img src="lqip-src.jpg" data-src="image.jpg" class="lazyload" />
+```

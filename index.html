@@ -3,8 +3,7 @@
 <head lang="en">
 	<meta charset="UTF-8">
 	<title>lazysizes - the umltimate lazyloader for responsive images, iframes and widget</title>
-	<link href="assets/css/bootstrap.min.css" rel="stylesheet" />
-	<link href="assets/css/bootstrap-theme.min.css" rel="stylesheet" />
+	<link href="assets/css/tidy.css" rel="stylesheet" />
 	<style>
 		.nav {
 			margin-bottom: 30px;
@@ -228,6 +227,7 @@
 			<div class="alert alert-info">
 				<p><strong>automatic sizes feature</strong>: In case of lazy loading images the <code>sizes</code> attribute of the <code>img</code>/<code>source</code> elements can be calculated with JS.</p>
 				<p>This automatic sizes feature is directly included in <strong>lazySizes</strong>. Simply use the keyword <code>auto</code> inside of the <code>data-sizes</code> attributes (<code>data-sizes="auto"</code>).</p>
+				<p><strong>:Important: How <code>sizes</code> is calculated</strong>: The automatic sizes calculation takes the width of the image and the width of its parent element and uses the largest number of those two calculated numbers. It's therefore important, that all images are contained in a wrapper that isn't much bigger than the image should shown. Otherwise a wrong (too big) sizes attribute will be calculated.</p>
 			</div>
 
 			<div class="col-sm-12">
@@ -371,11 +371,6 @@ https://farm4.staticflickr.com/3059/2835191823_e3636abb34_b.jpg 1024w"
 <pre>&lt;div data-ride="carousel" data-tag="script" data-src="assets/js/bootstrap.min.js" class="carousel lazyload"&gt;
 	&lt;!-- widget content --&gt;
 &lt;div&gt;
-</pre>
-						<p>lazysizes automatically detects new elements, but in case a <code>.lazyload</code> element was hidden and then shown via JS, the method <code>lazySizes.updateAllLazy</code> should be called. Example for the bootstrap carousel:</p>
-<pre>$(document).on('slide.bs.carousel', function(){
-	lazySizes.updateAllLazy();
-});
 </pre>
 					</div>
 				</div>

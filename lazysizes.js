@@ -69,7 +69,7 @@
 				}
 			}
 			respimage({reparse: true, elements: [el]});
-		} else if(!window.HTMLPictureElement && window.console){
+		} else if(!window.HTMLPictureElement && window.console && document.readyState == 'complete'){
 			console.log('Please use a responsive image polyfill, like respimage or picturefill. https://github.com/aFarkas/respimage');
 		}
 	}
@@ -92,11 +92,11 @@
 				running = true;
 				timer = setTimeout(run, 66);
 			},
-			throttled: function(e){
+			throttled: function(){
 				if(!running){
 					running = true;
 					clearTimeout(timer);
-					timer = setTimeout(run, e && e.type == 'mouseover' ? 250 : 99);
+					timer = setTimeout(run, 99);
 				}
 			}
 		};
@@ -300,8 +300,8 @@
 				elemWidth :
 				parentWidth;
 
-			if(width && (!elem._lazysizesWidth || width > elem._lazysizesWidth)){
-				elem._lazysizesWidth = width;
+			if(width && (!elem._lazysizesWidth || elemWidth > 99)){
+				elem._lazysizesWidth = 1;
 				width += 'px';
 				elem.setAttribute('sizes', width);
 
@@ -319,6 +319,7 @@
 		}
 	}
 
+	var lazySizesConfig;
 	// bind to all possible events ;-) This might look like a performance disaster, but it isn't.
 	// The main check functions are written to run extreme fast without consuming memory.
 	var onload = function(){
@@ -329,19 +330,30 @@
 	};
 	var onready = function(){
 		var element = document.body || document.documentElement;
-		if(window.MutationObserver){
-			new MutationObserver( lazyEvalLazy.throttled ).observe( document.body || document.documentElement, {childList: true, subtree: true, attributes: true} );
-		} else {
-			element.addEventListener( "DOMNodeInserted", lazyEvalLazy.throttled, true);
-			element.addEventListener( "DOMAttrModified", lazyEvalLazy.throttled, true);
+
+
+		if(lazySizesConfig.mutation){
+			if(window.MutationObserver){
+				new MutationObserver( lazyEvalLazy.throttled ).observe( document.documentElement, {childList: true, subtree: true, attributes: true} );
+			} else {
+				element.addEventListener( "DOMNodeInserted", lazyEvalLazy.throttled, true);
+				document.documentElement.addEventListener( "DOMAttrModified", lazyEvalLazy.throttled, true);
+			}
 		}
 
 		//:hover
-		document.addEventListener('mouseover', lazyEvalLazy.throttled, true);
+		if(lazySizesConfig.hover){
+			document.addEventListener('mouseover', lazyEvalLazy.throttled, true);
+		}
 		//:focus/active
 		document.addEventListener('focus', lazyEvalLazy.throttled, true);
 		//:target
 		window.addEventListener('hashchange', lazyEvalLazy.throttled, true);
+
+		if(lazySizesConfig.cssanimation){
+			document.addEventListener('animationstart', lazyEvalLazy.throttled, true);
+			document.addEventListener('transitionstart', lazyEvalLazy.throttled, true);
+		}
 
 		//:fullscreen
 		if(('onmozfullscreenchange' in element)){
@@ -353,28 +365,37 @@
 		}
 	};
 
+	setTimeout(function(){
+		var prop;
+		var lazySizesDefaults = {mutation: true, hover: true, cssanimation: true};
+		lazySizesConfig = window.lazySizesConfig || {};
+		for(prop in lazySizesDefaults){
+			if(!(prop in lazySizesConfig)){
+				lazySizesConfig[prop] = lazySizesDefaults[prop];
+			}
+		}
 
-	window.addEventListener('scroll', lazyEvalLazy.throttled, false);
-	(document.body || document.documentElement).addEventListener('scroll', lazyEvalLazy.throttled, true);
+		window.addEventListener('scroll', lazyEvalLazy.throttled, false);
+		(document.body || document.documentElement).addEventListener('scroll', lazyEvalLazy.throttled, true);
+		document.addEventListener('touchmove', lazyEvalLazy.throttled, false);
 
-	document.addEventListener('touchmove', lazyEvalLazy.throttled, false);
+		window.addEventListener('resize', lazyEvalLazy.debounce, false);
+		window.addEventListener('resize', lazyEvalSizes, false);
 
-	window.addEventListener('resize', lazyEvalLazy.debounce, false);
-	window.addEventListener('resize', lazyEvalSizes, false);
+		if(	/^i|^loade|c/.test(document.readyState) ){
+			onready();
+		} else {
+			document.addEventListener('DOMContentLoaded', onready, false);
+		}
 
-	if(	/^i|^loade|c/.test(document.readyState) ){
-		onready();
-	} else {
-		document.addEventListener('DOMContentLoaded', onready, false);
-	}
-
-	if(document.readyState == 'complete'){
-		onload();
-	} else {
-		window.addEventListener('load', onload, false);
-		document.addEventListener('readystatechange', lazyEvalLazy.throttled, false);
-	}
-	lazyEvalLazy.throttled();
+		if(document.readyState == 'complete'){
+			onload();
+		} else {
+			window.addEventListener('load', onload, false);
+			document.addEventListener('readystatechange', lazyEvalLazy.throttled, false);
+		}
+		lazyEvalLazy.throttled();
+	}, document.body ? 9 : 99);
 
 	return {
 		updateAllSizes: lazyEvalSizes,

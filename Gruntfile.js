@@ -46,6 +46,13 @@
 				all: {
 					src: [ "lazysizes.min.js" ]
 				}
+			},
+			uncss: {
+				dist: {
+					files: {
+						'assets/css/tidy.css': ['index.html']
+					}
+				}
 			}
 		});
 
@@ -53,6 +60,7 @@
 		grunt.loadNpmTasks("grunt-contrib-jshint");
 		grunt.loadNpmTasks("grunt-contrib-uglify");
 		grunt.loadNpmTasks("grunt-contrib-watch");
+		grunt.loadNpmTasks('grunt-uncss');
 		grunt.loadNpmTasks('grunt-bytesize');
 
 
