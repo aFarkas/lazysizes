@@ -211,63 +211,71 @@
 	}
 
 	function unveilLazy(elem, force){
-		var sources, i, len, sourceSrcset;
-		var sizes = elem.getAttribute(lazySizesConfig.sizesAttr);
-		var src = elem.getAttribute(lazySizesConfig.srcAttr);
-		var srcset = elem.getAttribute(lazySizesConfig.srcsetAttr);
-		var parent = elem.parentNode;
+		var sources, i, len, sourceSrcset, defaultPrevented;
 
-		if(src || srcset){
+		if(lazySizesConfig.beforeUnveil){
+			defaultPrevented = lazySizesConfig.beforeUnveil(elem, force);
+		}
 
-			if(regDummyTags.test(elem.nodeName)){
-				elem = transformDummy(elem);
-			}
+		if (defaultPrevented !== false){
 
-			if(regScript.test(elem.nodeName || '')){
-				if(scriptUrls[src]){
-					return;
-				} else {
-					scriptUrls[src] = true;
+			var sizes = elem.getAttribute(lazySizesConfig.sizesAttr);
+			var src = elem.getAttribute(lazySizesConfig.srcAttr);
+			var srcset = elem.getAttribute(lazySizesConfig.srcsetAttr);
+			var parent = elem.parentNode;
+
+			if(src || srcset){
+
+				if(regDummyTags.test(elem.nodeName)){
+					elem = transformDummy(elem);
 				}
-			} else if(regImg.test(elem.nodeName || '')) {
 
-				//LQIP
-				if(!force && !elem.complete && elem.getAttribute('src') && elem.src && !elem.lazyload){
-					elem.removeEventListener('load', unveilAfterLoad, false);
-					elem.removeEventListener('error', unveilAfterLoad, false);
-					elem.addEventListener('load', unveilAfterLoad, false);
-					elem.addEventListener('error', unveilAfterLoad, false);
-					return;
-				}
-				if(regPicture.test(parent.nodeName || '')){
-					sources = parent.getElementsByTagName('source');
-					for(i = 0, len = sources.length; i < len; i++){
-						sourceSrcset = sources[i].getAttribute(lazySizesConfig.srcsetAttr);
-						if(sourceSrcset){
-							sources[i].setAttribute('srcset', sourceSrcset);
+				if(regScript.test(elem.nodeName || '')){
+					if(scriptUrls[src]){
+						return;
+					} else {
+						scriptUrls[src] = true;
+					}
+				} else if(regImg.test(elem.nodeName || '')) {
+
+					//LQIP
+					if(!force && !elem.complete && elem.getAttribute('src') && elem.src && !elem.lazyload){
+						elem.removeEventListener('load', unveilAfterLoad, false);
+						elem.removeEventListener('error', unveilAfterLoad, false);
+						elem.addEventListener('load', unveilAfterLoad, false);
+						elem.addEventListener('error', unveilAfterLoad, false);
+						return;
+					}
+					if(regPicture.test(parent.nodeName || '')){
+						sources = parent.getElementsByTagName('source');
+						for(i = 0, len = sources.length; i < len; i++){
+							sourceSrcset = sources[i].getAttribute(lazySizesConfig.srcsetAttr);
+							if(sourceSrcset){
+								sources[i].setAttribute('srcset', sourceSrcset);
+							}
 						}
 					}
 				}
-			}
 
-			if(sizes){
-				if(sizes == 'auto'){
-					updateSizes(elem, true);
-				} else {
-					elem.setAttribute('sizes', sizes);
+				if(sizes){
+					if(sizes == 'auto'){
+						updateSizes(elem, true);
+					} else {
+						elem.setAttribute('sizes', sizes);
+					}
+					elem.removeAttribute(lazySizesConfig.sizesAttr);
+					if (!srcset && window.console && elem.getAttribute('srcset')){
+						console.log('using lazysizes with a `srcset` attribute is not good. Use `data-srcset` instead');
+					}
 				}
-				elem.removeAttribute(lazySizesConfig.sizesAttr);
-				if (!srcset && window.console && elem.getAttribute('srcset')){
-					console.log('using lazysizes with a `srcset` attribute is not good. Use `data-srcset` instead');
-				}
-			}
 
-			if(srcset){
-				elem.setAttribute('srcset', srcset);
-				elem.removeAttribute(lazySizesConfig.srcsetAttr);
-			} else if(src){
-				elem.setAttribute('src', src);
-				elem.removeAttribute(lazySizesConfig.srcAttr);
+				if(srcset){
+					elem.setAttribute('srcset', srcset);
+					elem.removeAttribute(lazySizesConfig.srcsetAttr);
+				} else if(src){
+					elem.setAttribute('src', src);
+					elem.removeAttribute(lazySizesConfig.srcAttr);
+				}
 			}
 		}
 
