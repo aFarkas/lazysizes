@@ -442,7 +442,7 @@
 		window.addEventListener('resize', lazyEvalLazy.debounce, false);
 		window.addEventListener('resize', lazyEvalSizes, false);
 
-		if(	/^i|^loade|c/.test(document.readyState) ){
+		if(/^i|^loade|c/.test(document.readyState)){
 			onready();
 		} else {
 			document.addEventListener('DOMContentLoaded', onready, false);
