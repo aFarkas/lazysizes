@@ -12,8 +12,9 @@
 
 	var lazyloadElems, autosizesElems, lazySizesConfig, globalSizesTimer,
 		globalSizesIndex, globalLazyTimer, globalLazyIndex, globalInitialTimer,
-		addClass, removeClass, hasClass, isWinloaded, isPreloading;
+		addClass, removeClass, hasClass, isWinloaded;
 	var document = window.document;
+	var isPreloading = 0;
 
 	var regDummyTags = /^(?:span|div)$/i;
 	var regPicture = /^picture$/i;
@@ -126,13 +127,14 @@
 				} else  {
 
 					if(!loadedSomething && isWinloaded && !autoLoadElem &&
-						lazySizesConfig.preloadAfterLoad && !isPreloading &&
+						lazySizesConfig.preloadAfterLoad && isPreloading < 2 &&
 						((eLbottom || eLright || eLleft || eLtop) || lazyloadElems[globalLazyIndex].getAttribute(lazySizesConfig.sizesAttr) != 'auto')){
 						autoLoadElem = lazyloadElems[globalLazyIndex];
 					}
-					if(globalLazyIndex < eLlen - 1 && Date.now() - eLnow > 7){
+					if(globalLazyIndex < eLlen - 1 && Date.now() - eLnow > 9){
 						globalLazyIndex = globalLazyIndex + 1;
-						globalLazyTimer = setTimeout(evalLazyElements, 20);
+						autoLoadElem = false;
+						globalLazyTimer = setTimeout(evalLazyElements, 4);
 						break;
 					}
 				}
@@ -145,19 +147,21 @@
 	};
 	var resetPreloadingTimer;
 	var resetPreloading = function(e){
-		isPreloading = false;
+		isPreloading--;
 		clearTimeout(resetPreloadingTimer);
 		if(e && e.target){
 			e.target.removeEventListener('load', resetPreloading, false);
 			e.target.removeEventListener('error', resetPreloading, false);
+			e.target.removeEventListener('abort', resetPreloading, false);
 			e.target.removeEventListener('readystatechange', resetPreloading, false);
 		}
 	};
 
 	function preload(elem){
-		isPreloading = true;
+		isPreloading++;
 		elem = unveilLazy(elem);
 		elem.addEventListener('load', resetPreloading, false);
+		elem.addEventListener('abort', resetPreloading, false);
 		elem.addEventListener('readystatechange', resetPreloading, false);
 		elem.addEventListener('error', resetPreloading, false);
 		clearTimeout(resetPreloadingTimer);
@@ -311,7 +315,7 @@
 				if(i > checkTime && i < len - 1 && Date.now() - now > 9){
 					globalSizesIndex = i + 1;
 
-					globalSizesTimer = setTimeout(evalSizesElements, 20);
+					globalSizesTimer = setTimeout(evalSizesElements, 4);
 					break;
 				}
 			}
