@@ -125,17 +125,17 @@
 					unveilLazy(lazyloadElems[globalLazyIndex]);
 					loadedSomething = true;
 				} else  {
-
-					if(!loadedSomething && isWinloaded && !autoLoadElem &&
-						lazySizesConfig.preloadAfterLoad && isPreloading < 2 &&
-						((eLbottom || eLright || eLleft || eLtop) || lazyloadElems[globalLazyIndex].getAttribute(lazySizesConfig.sizesAttr) != 'auto')){
-						autoLoadElem = lazyloadElems[globalLazyIndex];
-					}
 					if(globalLazyIndex < eLlen - 1 && Date.now() - eLnow > 9){
 						globalLazyIndex = globalLazyIndex + 1;
 						autoLoadElem = false;
 						globalLazyTimer = setTimeout(evalLazyElements, 4);
 						break;
+					}
+
+					if(!loadedSomething && isWinloaded && !autoLoadElem &&
+						lazySizesConfig.preloadAfterLoad && isPreloading < 2 &&
+						((eLbottom || eLright || eLleft || eLtop) || lazyloadElems[globalLazyIndex].getAttribute(lazySizesConfig.sizesAttr) != 'auto')){
+						autoLoadElem = lazyloadElems[globalLazyIndex];
 					}
 				}
 			}

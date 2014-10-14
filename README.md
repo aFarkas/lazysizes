@@ -108,10 +108,10 @@ lazySizes.updateAllSizes();
 For full cross browser responsive image support a polyfill like [respimage](https://github.com/aFarkas/respimage) or [picturefill](https://github.com/scottjehl/picturefill) has to be used.
 
 ##Why lazySizes
-In the past I often struggeled using lazy image loaders, because the "main check function" is called repeatedly and with a high frequency. Which makes it hard to fullfill two purposes runtime perfromance and memory allocation.
+In the past I often struggeled using lazy image loaders, because the "main check function" is called repeatedly and with a high frequency. Which makes it hard to fullfill two purposes runtime and memory efficiency.
 But in a world of responsive (especially retina optimized) images on the one hand and JS widgets like carousels or tabs on the other hand lazy loading images becomes more and more important. And therefore I created this project. And in fact **lazySizes** is different.
 
-Due to the fact, that it is designed to be invoked with a high frequency, it was possible to hook into all kind of events and therefore this lazyloader wroks as a simple drop in solution, you simply write/render your markup and no matter wether it was added by ajax or revealed by a JS or CSS animation it will be picked up by **layzSizes**.
+Due to the fact, that it is designed to be invoked with a high frequency, it was possible to hook into all kind of events as also add a mutationobserver and therefore this lazyloader works as a simple drop in solution, you simply write/render your markup and no matter wether it was added by AJAX or revealed by a JS or CSS animation it will be picked up by **layzSizes**.
 
 ```html
 <!-- responsive example: -->
