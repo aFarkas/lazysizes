@@ -21,7 +21,7 @@
 	var regScript = /^script$/i;
 	var regImg = /^img$/i;
 	var noDataTouch = {sizes: 1, src: 1, srcset: 1};
-	var inViewTreshhold = 66;
+	var inViewTreshhold = 80;
 
 	var setImmediate = window.setImmediate || window.setTimeout;
 	var scriptUrls = {};
