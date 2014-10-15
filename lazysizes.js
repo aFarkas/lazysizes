@@ -20,14 +20,19 @@
 	var regPicture = /^picture$/i;
 	var regScript = /^script$/i;
 	var regImg = /^img$/i;
-	var noDataTouch = {sizes: 1, src: 1, srcset: 1};
-	var inViewTreshhold = 80;
+	var inViewTreshhold = 10;
 
 	var setImmediate = window.setImmediate || window.setTimeout;
 	var scriptUrls = {};
+	var addRemoveImgEvents = function(dom, fn, add){
+		var action = add ? 'addEventListener' : removeEventListener;
+		dom[action]('load', fn, false);
+		dom[action]('abort', fn, false);
+		dom[action]('readystatechange', fn, false);
+		dom[action]('error', fn, false);
+	};
 	var unveilAfterLoad = function(e){
-		e.target.removeEventListener('load', unveilAfterLoad, false);
-		e.target.removeEventListener('error', unveilAfterLoad, false);
+		addRemoveImgEvents(e.target, unveilAfterLoad);
 		unveilLazy(e.target, true);
 	};
 
@@ -76,6 +81,17 @@
 		}
 	}
 
+	var eLlen, resetPreloadingTimer, eLvW, elvH, eLtop, eLleft, eLright, eLbottom, eLnegativeTreshhold;
+	var eLnow = Date.now();
+	var resetPreloading = function(e){
+		isPreloading--;
+		clearTimeout(resetPreloadingTimer);
+		if(e && e.target){
+			addRemoveImgEvents(e.target, resetPreloading);
+		} else {
+			isPreloading--;
+		}
+	};
 	var lazyEvalLazy = (function(){
 		var timer, running;
 		var unblock = function(){
@@ -95,21 +111,27 @@
 				timer = setTimeout(run, 66);
 			},
 			throttled: function(){
+				var delay;
 				if(!running){
 					running = true;
 					clearTimeout(timer);
-					timer = setTimeout(run, 99);
+					delay = Date.now() - eLnow;
+					if(delay > 300){
+						delay = 9;
+					} else {
+						delay = 99;
+					}
+					timer = setTimeout(run, delay);
 				}
 			}
 		};
 	})();
 
-	var eLlen, eLnow, eLvW, elvH, eLtop, eLleft, eLright, eLbottom, eLnegativeTreshhold;
 	var evalLazyElements = function (){
 		var rect, autoLoadElem, loadedSomething;
 		eLlen = lazyloadElems.length;
+		eLnow = Date.now();
 		if(eLlen){
-			eLnow = Date.now();
 			eLvW = window.innerWidth + inViewTreshhold;
 			elvH = window.innerHeight + inViewTreshhold;
 			eLnegativeTreshhold = inViewTreshhold * -1;
@@ -126,7 +148,7 @@
 					loadedSomething = true;
 				} else  {
 					if(globalLazyIndex < eLlen - 1 && Date.now() - eLnow > 9){
-						globalLazyIndex = globalLazyIndex + 1;
+						globalLazyIndex++;
 						autoLoadElem = false;
 						globalLazyTimer = setTimeout(evalLazyElements, 4);
 						break;
@@ -145,63 +167,27 @@
 			}
 		}
 	};
-	var resetPreloadingTimer;
-	var resetPreloading = function(e){
-		isPreloading--;
-		clearTimeout(resetPreloadingTimer);
-		if(e && e.target){
-			e.target.removeEventListener('load', resetPreloading, false);
-			e.target.removeEventListener('error', resetPreloading, false);
-			e.target.removeEventListener('abort', resetPreloading, false);
-			e.target.removeEventListener('readystatechange', resetPreloading, false);
-		}
-	};
 
 	function preload(elem){
 		isPreloading++;
 		elem = unveilLazy(elem);
-		elem.addEventListener('load', resetPreloading, false);
-		elem.addEventListener('abort', resetPreloading, false);
-		elem.addEventListener('readystatechange', resetPreloading, false);
-		elem.addEventListener('error', resetPreloading, false);
+		addRemoveImgEvents(elem, resetPreloading);
+		addRemoveImgEvents(elem, resetPreloading, true);
 		clearTimeout(resetPreloadingTimer);
 		resetPreloadingTimer = setTimeout(resetPreloading, 5000);
 	}
 
-	function transformDummy(dummyEl){
-		var i, len, elemAttr, cleanElemAttr, elem, parent;
-		var nodeName = dummyEl.getAttribute('data-tag') || 'img';
-		var elemAttrs = dummyEl.attributes;
+	function addScript(dummyEl){
+		var elem = document.createElement('script');
 
-		elem = document.createElement(nodeName);
+		var parent = dummyEl.parentNode;
 
-		if(nodeName != 'script'){
-			for(i = 0, len = elemAttrs.length; i < len; i++){
-				elemAttr = elemAttrs[i].nodeName;
-				cleanElemAttr = elemAttr.replace(/^data\-/, '');
-				if (cleanElemAttr == 'tag') {
-					continue;
-				}
-				if(noDataTouch[cleanElemAttr] || !(elemAttr in elem)){
-					cleanElemAttr = elemAttr;
-				}
-				elem.setAttribute(cleanElemAttr, elemAttrs[i].value);
-			}
-		}
+		dummyEl.removeAttribute(lazySizesConfig.srcAttr);
+		parent.insertBefore(elem, dummyEl);
+		setImmediate(function(){
+			removeClass(dummyEl, lazySizesConfig.lazyClass);
+		});
 
-		parent = dummyEl.parentNode;
-
-		if(parent){
-			parent.insertBefore(elem, dummyEl);
-			if(nodeName != 'script'){
-				parent.removeChild(dummyEl);
-			} else {
-				dummyEl.removeAttribute(lazySizesConfig.srcAttr);
-				setImmediate(function(){
-					removeClass(dummyEl, lazySizesConfig.lazyClass);
-				});
-			}
-		}
 		return elem;
 	}
 
@@ -211,23 +197,23 @@
 	}
 
 	function unveilLazy(elem, force){
-		var sources, i, len, sourceSrcset, defaultPrevented;
+		var sources, i, len, sourceSrcset, runDefault, sizes, src, srcset, parent;
 
 		if(lazySizesConfig.beforeUnveil){
-			defaultPrevented = lazySizesConfig.beforeUnveil(elem, force);
+			runDefault = lazySizesConfig.beforeUnveil(elem, force);
 		}
 
-		if (defaultPrevented !== false){
+		if(runDefault !== false){
 
-			var sizes = elem.getAttribute(lazySizesConfig.sizesAttr);
-			var src = elem.getAttribute(lazySizesConfig.srcAttr);
-			var srcset = elem.getAttribute(lazySizesConfig.srcsetAttr);
-			var parent = elem.parentNode;
+			sizes = elem.getAttribute(lazySizesConfig.sizesAttr);
+			src = elem.getAttribute(lazySizesConfig.srcAttr);
+			srcset = elem.getAttribute(lazySizesConfig.srcsetAttr);
+			parent = elem.parentNode;
 
 			if(src || srcset){
 
 				if(regDummyTags.test(elem.nodeName)){
-					elem = transformDummy(elem);
+					elem = addScript(elem);
 				}
 
 				if(regScript.test(elem.nodeName || '')){
@@ -240,10 +226,8 @@
 
 					//LQIP
 					if(!force && !elem.complete && elem.getAttribute('src') && elem.src && !elem.lazyload){
-						elem.removeEventListener('load', unveilAfterLoad, false);
-						elem.removeEventListener('error', unveilAfterLoad, false);
-						elem.addEventListener('load', unveilAfterLoad, false);
-						elem.addEventListener('error', unveilAfterLoad, false);
+						addRemoveImgEvents(elem, resetPreloading);
+						addRemoveImgEvents(elem, resetPreloading, true);
 						return;
 					}
 					if(regPicture.test(parent.nodeName || '')){
@@ -336,7 +320,7 @@
 	}
 
 	function updateSizes(elem, noPolyfill){
-		var parentWidth, elemWidth, width, parent, sources, i, len;
+		var parentWidth, elemWidth, width, cbWidth, parent, sources, i, len;
 		parent = elem.parentNode;
 
 		if(parent){
@@ -346,8 +330,24 @@
 				elemWidth :
 				parentWidth;
 
-			if(width && (!elem._lazysizesWidth || elemWidth > 99)){
-				elem._lazysizesWidth = 1;
+			if(!width && !elem._lazysizesWidth){
+				while(parent && parent != document.body && !width){
+					width =  parent.offsetWidth;
+					parent = parent.parentNode;
+				}
+			}
+
+			if(lazySizesConfig.beforeSizes){
+				cbWidth = lazySizesConfig.beforeSizes(elem, width);
+				if(typeof cbWidth == 'number'){
+					width = cbWidth;
+				} else if(cbWidth === false){
+					return;
+				}
+			}
+
+			if(width && (!lazySizesConfig.onlyLargerSizes || (!elem._lazysizesWidth || elem._lazysizesWidth < width))){
+				elem._lazysizesWidth = width;
 				width += 'px';
 				elem.setAttribute('sizes', width);
 
@@ -368,7 +368,7 @@
 	// bind to all possible events ;-) This might look like a performance disaster, but it isn't.
 	// The main check functions are written to run extreme fast without consuming memory.
 	var onload = function(){
-		inViewTreshhold *= 5;
+		inViewTreshhold = 400;
 		clearTimeout(globalInitialTimer);
 
 		document.addEventListener('load', lazyEvalLazy.throttled, true);
@@ -421,7 +421,8 @@
 			srcAttr: 'data-src',
 			srcsetAttr: 'data-srcset',
 			sizesAttr: 'data-sizes',
-			preloadAfterLoad: false
+			preloadAfterLoad: false,
+			onlyLargerSizes: true
 		};
 
 		lazySizesConfig = window.lazySizesConfig || {};
@@ -454,6 +455,7 @@
 			window.addEventListener('load', onload, false);
 			document.addEventListener('readystatechange', lazyEvalLazy.throttled, false);
 		}
+
 		lazyEvalLazy.throttled();
 
 		if('lazySizesConfig' in window){
@@ -471,7 +473,6 @@
 			}
 		},
 		updateSizes: updateSizes,
-		transformDummy: transformDummy,
 		updatePolyfill: updatePolyfill
 	};
 }));

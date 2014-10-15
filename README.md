@@ -5,28 +5,27 @@
 
 1. Download the [lazysizes.min.js script](lazysizes.min.js) and include **lazysizes** in your webpage.
 
-```html
-<script src="lazysizes.min.js" async=""></script>
-```
+    ```html
+    <script src="lazysizes.min.js" async=""></script>
+    ```
 
-2. **lazysizes** does not need any JS configuration: Add the ``class`` ``"lazyload"`` to your images/iframes/widgets in conjunction with a ``data-src`` or ``data-srcset`` attribute:
+2. lazysizes does not need any JS configuration: Add the ``class`` ``"lazyload"`` to your images/iframes/widgets in conjunction with a ``data-src`` or ``data-srcset`` attribute:
 
+    ```html
+    <!-- non-responsive: -->
+    <img src="low-quality-src.jpg" data-src="normal-quality-src.jpg" class="lazyload" />
+    ```
+    ```html
+    <!-- responsive example with automatic sizes calculation: -->
+    <img
+        data-sizes="auto"
+        src="lqip-src.jpg"
+        data-srcset="lqip-src.jpg 100w,
+        image2.jpg 300w,
+        image3.jpg 600w,
+        image4.jpg 900w" class="lazyload" />
 
-```html
-<!-- non-responsive: -->
-<img src="low-quality-src.jpg" data-src="normal-quality-src.jpg" class="lazyload" />
-```
-```html
-<!-- responsive example with automatic sizes calculation: -->
-<img
-	data-sizes="auto"
-    src="lqip-src.jpg"
-	data-srcset="lqip-src.jpg 100w,
-    image2.jpg 300w,
-    image3.jpg 600w,
-    image4.jpg 900w" class="lazyload" />
-
-```
+    ```
 
 ##What makes lazysizes so awsome:
 **lazysizes** is different to other lazy image loaders.
@@ -86,10 +85,34 @@ We recommend to use the LQIP pattern (low quality image placeholder): Simply add
 
 The recommended LQUIP pattern has the following advantages. The lquip-src is not hidden from the preload parser and loads very fast, which leads to an extreme fast first impression and in case of legacy browsers/devices as a good enough fallback (IE8 and Android 2 devices as also JS disabled).
 
-###JS API
-**lazysizes** automatically detects new elements with the class ``lazyload`` so you won't need to call anything in most situations.
+###JS API 
+**lazysizes** automatically detects new elements with the class ``lazyload`` so you won't need to call or configure anything in most situations.
 
-####``lazySizes.unveilLazy(DOMNode)``
+####JS API - options
+Options can be set by declaring a global conifguration option object named ``lazySizesConfig``. This object should be defined before the including lazySizes script or at least in the same script file. Here a basic example:
+
+```js
+window.lazySizesConfig = {
+    lazyClass: 'postbone', // use .postbone instead of .lazyload
+    preloadAfterLoad: true // preload all lazy elements in a download queue
+};
+```
+
+Here the list of options:
+
+* ``lazySizesConfig.lazyClass`` (default: ``"lazyload"``): Marker class for all elements which should be lazy loaded (There can be only one ``class``. In case you need to add some other element, without the defined class, simply add it per JS: ``$('.lazy-others').addClass('lazyload');``)
+* ``lazySizesConfig.preloadAfterLoad`` (default: ``false``): Wether lazysizes should load all elements after the window onload event. (Note: lazysizes will then load all elements using a queue. Only two parallel elements are loaded at the same time. This makes sure that other postboned downloads are also loaded.). Recommendation: On non-mobile devices this should be ``true``.
+* ``lazySizesConfig.beforeUnveil`` (default: ``undefined``): A callback function, which will be invoked for each lazyload element right before of the "unveil" transformation. Gets the ``element`` as first argument passed. In case the callback function returns ``false``, the default transformation action will be prevented.
+* ``lazySizesConfig.beforeSizes`` (default: ``undefined``): A callback function, which will be invoked for each element width the ``data-sizes="auto"`` attribute right before the calculated ``sizes`` attribute will be set. Gets the ``element`` and the calculated width for the sizes attribute passed. In case the callback function returns a number this number will be set, in case it returns ``false`` the ``sizes`` attribute won't be changed.
+* ``lazySizesConfig.onlyLargerSizes`` (default: ``true``): In case a responsive image had the ``data-sizes="auto"`` attribute and the computed new size decreases, lazysizes won't normally change the ``sizes`` attribute to a lower value.
+* ``lazySizesConfig.srcAttr`` (default: ``"data-src"``): The attribute, which should be transformed to ``src``.
+* ``lazySizesConfig.srcset`` (default: ``"data-srcset"``): The attribute, which should be transformed to ``srcset``.
+* ``lazySizesConfig.sizesAttr`` (default: ``"data-sizes"``): The attribute, which should be transformed to ``sizes``.
+
+
+
+####JS API - methods
+#####``lazySizes.unveilLazy(DOMNode)``
 
 In case a developer wants to show an image even if it is not inside the viewport the ``lazySizes.unveilLazy(DOMNode)`` can be called:
 
@@ -97,7 +120,7 @@ In case a developer wants to show an image even if it is not inside the viewport
 lazySizes.unveilLazy(imgElem);
 ```
 
-####``lazySizes.updateAllSizes()``
+#####``lazySizes.updateAllSizes()``
 
 In case one or more image elements with the attribute ``data-sizes="auto"`` have changed in size ``lazySizes.updateAllSizes`` can be called (For example to implement element queries):
 
