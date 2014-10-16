@@ -25,7 +25,7 @@
 	var setImmediate = window.setImmediate || window.setTimeout;
 	var scriptUrls = {};
 	var addRemoveImgEvents = function(dom, fn, add){
-		var action = add ? 'addEventListener' : removeEventListener;
+		var action = add ? 'addEventListener' : 'removeEventListener';
 		dom[action]('load', fn, false);
 		dom[action]('abort', fn, false);
 		dom[action]('readystatechange', fn, false);
@@ -88,8 +88,9 @@
 		clearTimeout(resetPreloadingTimer);
 		if(e && e.target){
 			addRemoveImgEvents(e.target, resetPreloading);
-		} else {
-			isPreloading--;
+		}
+		if(!e || isPreloading < 0 || !e.target) {
+			isPreloading = 0;
 		}
 	};
 	var lazyEvalLazy = (function(){

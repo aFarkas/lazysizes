@@ -1,6 +1,6 @@
 {
 	"name": "lazysizes",
-	"version": "0.1.3",
+	"version": "0.1.4",
 	"repo": "afarkas/lazysizes",
 	"main": "lazysizes.min.js",
 	"scripts": ["lazysizes.min.js"],

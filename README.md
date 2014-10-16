@@ -89,7 +89,7 @@ The recommended LQUIP pattern has the following advantages. The lquip-src is not
 **lazysizes** automatically detects new elements with the class ``lazyload`` so you won't need to call or configure anything in most situations.
 
 ####JS API - options
-Options can be set by declaring a global conifguration option object named ``lazySizesConfig``. This object should be defined before the including lazySizes script or at least in the same script file. Here a basic example:
+Options can be set by declaring a global configuration option object named ``lazySizesConfig``. This object should be defined before the including lazySizes script or at least in the same script file. Here a basic example:
 
 ```js
 window.lazySizesConfig = {
@@ -103,7 +103,7 @@ Here the list of options:
 * ``lazySizesConfig.lazyClass`` (default: ``"lazyload"``): Marker class for all elements which should be lazy loaded (There can be only one ``class``. In case you need to add some other element, without the defined class, simply add it per JS: ``$('.lazy-others').addClass('lazyload');``)
 * ``lazySizesConfig.preloadAfterLoad`` (default: ``false``): Wether lazysizes should load all elements after the window onload event. (Note: lazysizes will then load all elements using a queue. Only two parallel elements are loaded at the same time. This makes sure that other postboned downloads are also loaded.). Recommendation: On non-mobile devices this should be ``true``.
 * ``lazySizesConfig.beforeUnveil`` (default: ``undefined``): A callback function, which will be invoked for each lazyload element right before of the "unveil" transformation. Gets the ``element`` as first argument passed. In case the callback function returns ``false``, the default transformation action will be prevented.
-* ``lazySizesConfig.beforeSizes`` (default: ``undefined``): A callback function, which will be invoked for each element width the ``data-sizes="auto"`` attribute right before the calculated ``sizes`` attribute will be set. Gets the ``element`` and the calculated width for the sizes attribute passed. In case the callback function returns a number this number will be set, in case it returns ``false`` the ``sizes`` attribute won't be changed.
+* ``lazySizesConfig.beforeSizes`` (default: ``undefined``): A callback function, which will be invoked for each element with the ``data-sizes="auto"`` attribute right before the calculated ``sizes`` attribute will be set. Gets the ``element`` and the calculated width for the sizes attribute passed. In case the callback function returns a number this number will be set, in case it returns ``false`` the ``sizes`` attribute won't be changed.
 * ``lazySizesConfig.onlyLargerSizes`` (default: ``true``): In case a responsive image had the ``data-sizes="auto"`` attribute and the computed new size decreases, lazysizes won't normally change the ``sizes`` attribute to a lower value.
 * ``lazySizesConfig.srcAttr`` (default: ``"data-src"``): The attribute, which should be transformed to ``src``.
 * ``lazySizesConfig.srcset`` (default: ``"data-srcset"``): The attribute, which should be transformed to ``srcset``.
