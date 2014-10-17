@@ -31,7 +31,7 @@
 **lazysizes** is different to other lazy image loaders.
 
 1. **Works without any configuration**: The script detects any changes to the visibility of an image/iframe automatically no matter wether it becomes visible through a user scroll, an CSS animation triggered through ``:hover`` or through any kind of JS behavior (carousel, infinite scroll, AJAX)...
-2. **Futureproof**: It directly includes standard respsonsive image support (``picture`` and ``srcset``)
+2. **Futureproof**: It directly includes standard responsive image support (``picture`` and ``srcset``)
 3. **Seperation of concerns**: For responsive image support it adds an automatic ``sizes`` calculation feature.
 4. **Performance**: It's based on high efficient code (runtime **and** memory) to work jankfree at 60fps.
 5. Works together with [**low quality image placeholders**](http://www.guypo.com/feo/introducing-lqip-low-quality-image-placeholders/) pattern 
