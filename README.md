@@ -27,23 +27,23 @@
 
     ```
 
-##What makes lazysizes so awsome:
-**lazysizes** is different to other lazy image loaders.
+##What makes lazysizes so awesome:
+**lazysizes** is different than other lazy image loaders.
 
-1. **Works without any configuration**: The script detects any changes to the visibility of an image/iframe automatically no matter wether it becomes visible through a user scroll, an CSS animation triggered through ``:hover`` or through any kind of JS behavior (carousel, infinite scroll, AJAX)...
+1. **Works without any configuration**: The script detects any changes to the visibility of an image/iframe automatically no matter whether it becomes visible through a user scroll, an CSS animation triggered through ``:hover`` or through any kind of JS behavior (carousel, infinite scroll, AJAX)...
 2. **Futureproof**: It directly includes standard responsive image support (``picture`` and ``srcset``)
 3. **Seperation of concerns**: For responsive image support it adds an automatic ``sizes`` calculation feature.
 4. **Performance**: It's based on high efficient code (runtime **and** memory) to work jankfree at 60fps.
-5. Works together with [**low quality image placeholders**](http://www.guypo.com/feo/introducing-lqip-low-quality-image-placeholders/) pattern 
+5. Works together with [**low quality image placeholders**](http://www.guypo.com/feo/introducing-lqip-low-quality-image-placeholders/) patterns.
 
 ##[Demo with code examples](http://afarkas.github.io/lazysizes/#examples)
-can be seen [here](http://afarkas.github.io/lazysizes/#examples).
+Can be seen [here](http://afarkas.github.io/lazysizes/#examples).
 
 ##About responsive image support
 For full cross browser responsive image support a polyfill like [respimage (recommended)](https://github.com/aFarkas/respimage) or [picturefill](https://github.com/scottjehl/picturefill) has to be used.
 
 ##More about the API
-**lazysizes** comes with a simple markup and JS API. Normally you will only need to use the markup API.
+**Lazysizes** comes with a simple markup and JS API. Normally you will only need to use the markup API.
 
 ###Markup API
 Add the ``class`` ``lazyload`` to all ``img`` and ``iframe`` elements, which should be loaded lazy. Instead of a ``src`` or ``srcset`` attribute, use a ``data-src`` or ``data-srcset`` attribute:
@@ -66,7 +66,7 @@ Add the ``class`` ``lazyload`` to all ``img`` and ``iframe`` elements, which sho
 
 **Important: How ``sizes`` is calculated**: The automatic sizes calculation takes the width of the image and the width of its parent element and uses the largest number of those two calculated numbers. It's therefore important, that all images with a ``data-sizes="auto"`` attribute are constrained in width by it's parent element. Otherwise a wrong (too big) ``sizes`` attribute will be calculated.
 
-##recommended markup: LQIP
+##Recommended markup: LQIP
 We recommend to use the LQIP pattern (low quality image placeholder): Simply add a low quality image as the ``src``:
 
 ```html
@@ -131,7 +131,7 @@ lazySizes.updateAllSizes();
 ##Browser Support
 **lazysizes** supports the following browsers: IE9+, Firefox 21+, Chrome 27+, Safari 6.1+, iOS Safari 7.0+, Android 4.1+
 
-##Why lazySizes
+##Why lazysizes
 In the past I often struggeled using lazy image loaders, because the "main check function" is called repeatedly and with a high frequency. Which makes it hard to fullfill two purposes runtime and memory efficiency. And looking into the source code of most so called lazy loaders often also unveils lazy developers...
 
 But in a world of responsive retina optimized images on the one hand and JS widgets like carousels or tabs (a lot of initially hidden images) on the other hand lazy loading images becomes more and more important. And therefore I created this project. And in fact **lazySizes** is different.
