@@ -27,7 +27,7 @@
 
     ```
 
-##What makes lazysizes so awsome:
+##What makes lazysizes so awesome:
 **lazysizes** is different to other lazy image loaders.
 
 1. **Works without any configuration**: The script detects any changes to the visibility of an image/iframe automatically no matter wether it becomes visible through a user scroll, an CSS animation triggered through ``:hover`` or through any kind of JS behavior (carousel, infinite scroll, AJAX)...
