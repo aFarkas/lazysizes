@@ -62,6 +62,13 @@
 		document.createElement('picture');
 	</script>
 
+	<script>
+
+		window.lazySizesConfig = {
+			// uncomment next line to preload after onload (often recommended)
+			//preloadAfterLoad: true
+		};
+	</script>
 	<script src="lazysizes.js"></script>
 
 	<script src="plugins/ls.unveilhooks.js"></script>
@@ -69,7 +76,13 @@
 
 
 	<!-- polyfill responsive images: https://github.com/aFarkas/respimage -->
-	<script src="http://rawgit.com/aFarkas/respimage/stable/respimage.min.js" async=""></script>
+
+	<script>
+		if(!window.HTMLPictureElement){
+			//load respimage polyfill
+			document.write('<script src="http://rawgit.com\/aFarkas\/respimage\/stable\/respimage.min.js" async=""><\/script>');
+		}
+	</script>
 
 
 </head>
