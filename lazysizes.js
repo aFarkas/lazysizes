@@ -35,6 +35,16 @@
 		addRemoveImgEvents(e.target, unveilAfterLoad);
 		unveilLazy(e.target, true);
 	};
+	var triggerEvent = function(elem, name, details){
+		var event = document.createEvent('Event');
+
+		event.initEvent(name, true, true);
+
+		event.details = details || {};
+
+		elem.dispatchEvent(event);
+		return event;
+	};
 
 	if(document.documentElement.classList){
 		addClass = function(el, cls){
@@ -44,7 +54,7 @@
 			el.classList.remove(cls);
 		};
 		hasClass = function(el, cls){
-			el.classList.contains(cls);
+			return el.classList.contains(cls);
 		};
 	} else {
 		addClass = function(ele, cls) {
@@ -198,14 +208,11 @@
 	}
 
 	function unveilLazy(elem, force){
-		var sources, i, len, sourceSrcset, runDefault, sizes, src, srcset, parent;
+		var sources, i, len, sourceSrcset, sizes, src, srcset, parent;
 
-		if(lazySizesConfig.beforeUnveil){
-			runDefault = lazySizesConfig.beforeUnveil(elem, force);
-		}
+		var event = triggerEvent(elem, 'lazybeforeunveil', {force: !!force});
 
-		if(runDefault !== false){
-
+		if(!event.defaultPrevented){
 			sizes = elem.getAttribute(lazySizesConfig.sizesAttr);
 			src = elem.getAttribute(lazySizesConfig.srcAttr);
 			srcset = elem.getAttribute(lazySizesConfig.srcsetAttr);
@@ -321,7 +328,7 @@
 	}
 
 	function updateSizes(elem, noPolyfill){
-		var parentWidth, elemWidth, width, cbWidth, parent, sources, i, len;
+		var parentWidth, elemWidth, width, cbWidth, parent, sources, i, len, event;
 		parent = elem.parentNode;
 
 		if(parent){
@@ -338,29 +345,26 @@
 				}
 			}
 
-			if(lazySizesConfig.beforeSizes){
-				cbWidth = lazySizesConfig.beforeSizes(elem, width);
-				if(typeof cbWidth == 'number'){
-					width = cbWidth;
-				} else if(cbWidth === false){
-					return;
-				}
-			}
+			event = triggerEvent(elem, 'lazybeforesizes', {width: width, polyfill: !noPolyfill});
 
-			if(width && (!lazySizesConfig.onlyLargerSizes || (!elem._lazysizesWidth || elem._lazysizesWidth < width))){
-				elem._lazysizesWidth = width;
-				width += 'px';
-				elem.setAttribute('sizes', width);
+			if(!event.defaultPrevented){
+				width = event.details.width;
 
-				if(regPicture.test(parent.nodeName || '')){
-					sources = parent.getElementsByTagName('source');
-					for(i = 0, len = sources.length; i < len; i++){
-						sources[i].setAttribute('sizes', width);
+				if(width && width !== elem._lazysizesWidth && (!lazySizesConfig.onlyLargerSizes || (!elem._lazysizesWidth || elem._lazysizesWidth < width))){
+					elem._lazysizesWidth = width;
+					width += 'px';
+					elem.setAttribute('sizes', width);
+
+					if(regPicture.test(parent.nodeName || '')){
+						sources = parent.getElementsByTagName('source');
+						for(i = 0, len = sources.length; i < len; i++){
+							sources[i].setAttribute('sizes', width);
+						}
 					}
-				}
 
-				if(!noPolyfill){
-					updatePolyfill(elem);
+					if(event.details.polyfill){
+						updatePolyfill(elem);
+					}
 				}
 			}
 		}
@@ -437,12 +441,12 @@
 		lazyloadElems = document.getElementsByClassName(lazySizesConfig.lazyClass);
 		autosizesElems = document.getElementsByClassName(lazySizesConfig.autosizesClass);
 
-		window.addEventListener('scroll', lazyEvalLazy.throttled, false);
+		addEventListener('scroll', lazyEvalLazy.throttled, false);
 		(document.body || document.documentElement).addEventListener('scroll', lazyEvalLazy.throttled, true);
 		document.addEventListener('touchmove', lazyEvalLazy.throttled, false);
 
-		window.addEventListener('resize', lazyEvalLazy.debounce, false);
-		window.addEventListener('resize', lazyEvalSizes, false);
+		addEventListener('resize', lazyEvalLazy.debounce, false);
+		addEventListener('resize', lazyEvalSizes, false);
 
 		if(/^i|^loade|c/.test(document.readyState)){
 			onready();
@@ -453,7 +457,7 @@
 		if(document.readyState == 'complete'){
 			onload();
 		} else {
-			window.addEventListener('load', onload, false);
+			addEventListener('load', onload, false);
 			document.addEventListener('readystatechange', lazyEvalLazy.throttled, false);
 		}
 

@@ -102,12 +102,28 @@ Here the list of options:
 
 * ``lazySizesConfig.lazyClass`` (default: ``"lazyload"``): Marker class for all elements which should be lazy loaded (There can be only one ``class``. In case you need to add some other element, without the defined class, simply add it per JS: ``$('.lazy-others').addClass('lazyload');``)
 * ``lazySizesConfig.preloadAfterLoad`` (default: ``false``): Wether lazysizes should load all elements after the window onload event. (Note: lazysizes will then load all elements using a queue. Only two parallel elements are loaded at the same time. This makes sure that other postboned downloads are also loaded.). Recommendation: On non-mobile devices this should be ``true``.
-* ``lazySizesConfig.beforeUnveil`` (default: ``undefined``): A callback function, which will be invoked for each lazyload element right before of the "unveil" transformation. Gets the ``element`` as first argument passed. In case the callback function returns ``false``, the default transformation action will be prevented.
-* ``lazySizesConfig.beforeSizes`` (default: ``undefined``): A callback function, which will be invoked for each element with the ``data-sizes="auto"`` attribute right before the calculated ``sizes`` attribute will be set. Gets the ``element`` and the calculated width for the sizes attribute passed. In case the callback function returns a number this number will be set, in case it returns ``false`` the ``sizes`` attribute won't be changed.
 * ``lazySizesConfig.onlyLargerSizes`` (default: ``true``): In case a responsive image had the ``data-sizes="auto"`` attribute and the computed new size decreases, lazysizes won't normally change the ``sizes`` attribute to a lower value.
 * ``lazySizesConfig.srcAttr`` (default: ``"data-src"``): The attribute, which should be transformed to ``src``.
 * ``lazySizesConfig.srcset`` (default: ``"data-srcset"``): The attribute, which should be transformed to ``srcset``.
 * ``lazySizesConfig.sizesAttr`` (default: ``"data-sizes"``): The attribute, which should be transformed to ``sizes``.
+
+####JS API - events
+**lazysizes** provides two events to modify or extend the behavior of **lazysizes**.
+
+* ``lazybeforeunveil``: This event will be fired on each lazyload element right before of the "unveil" transformation. Can be used to extend the unveil functionality. In case the event is ``defaultPrevented`` the default transformation action will be prevented (see also the [ls.unveilhooks.js plugin](ls.unveilhooks.js)):
+	```js
+    //add simple support for background images:
+    document.addEventListener('lazybeforeunveil', function(e){
+        var bg = e.target.getAttribute('data-bg');
+        if(bg){
+            e.target.style.backgroundImage = bg;
+            e.target.removeAttribute('data-bg');
+            e.preventDefault();
+        }
+    }, false);
+    ```
+* ``lazybeforesizes``: This event will be fired on each element with the ``data-sizes="auto"`` attribute right before the calculated ``sizes`` attribute will be set. The ``event.details.width`` property is set to the calculated width of the element and can be changed to any number. In case the event is ``defaultPrevented`` the ``sizes`` attribute won't be set.
+
 
 
 
@@ -134,7 +150,7 @@ lazySizes.updateAllSizes();
 ##Why lazysizes
 In the past I often struggeled using lazy image loaders, because the "main check function" is called repeatedly and with a high frequency. Which makes it hard to fullfill two purposes runtime and memory efficiency. And looking into the source code of most so called lazy loaders often also unveils lazy developers...
 
-But in a world of responsive retina optimized images on the one hand and JS widgets like carousels or tabs (a lot of initially hidden images) on the other hand lazy loading images becomes more and more important. And therefore I created this project. And in fact **lazySizes** is different.
+But in a world of responsive retina optimized images on the one hand and JS widgets like carousels or tabs (a lot of initially hidden images) on the other hand lazy loading images becomes more and more important. And therefore I created this project. And in fact **lazysizes** is different.
 
 Due to the fact, that it is designed to be invoked with a high frequency and therefore works highly efficient, it was possible to hook into all kind of events as also add a mutationobserver and therefore this lazyloader works as a simple drop in solution, you simply write/render your markup and no matter wether it was added by AJAX or revealed by a JS or CSS animation it will be picked up by **layzSizes**.
 
