@@ -208,7 +208,7 @@
 	}
 
 	function unveilLazy(elem, force){
-		var sources, i, len, sourceSrcset, sizes, src, srcset, parent;
+		var sources, i, len, sourceSrcset, sizes, src, srcset, parent, isPicture;
 
 		var event = triggerEvent(elem, 'lazybeforeunveil', {force: !!force});
 
@@ -231,14 +231,15 @@
 						scriptUrls[src] = true;
 					}
 				} else if(regImg.test(elem.nodeName || '')) {
+					isPicture = regPicture.test(parent.nodeName || '');
 
 					//LQIP
-					if(!force && !elem.complete && elem.getAttribute('src') && elem.src && !elem.lazyload){
+					if(!isPicture && !force && !elem.complete && elem.getAttribute('src') && elem.src && !elem.lazyload){
 						addRemoveImgEvents(elem, resetPreloading);
 						addRemoveImgEvents(elem, resetPreloading, true);
 						return;
 					}
-					if(regPicture.test(parent.nodeName || '')){
+					if(isPicture){
 						sources = parent.getElementsByTagName('source');
 						for(i = 0, len = sources.length; i < len; i++){
 							sourceSrcset = sources[i].getAttribute(lazySizesConfig.srcsetAttr);

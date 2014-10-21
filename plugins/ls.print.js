@@ -13,9 +13,7 @@
 			}
 
 			for(i = 0, len = elements.length; i < len; i++){
-				if(elements[i].getAttribute(sizesAttr) != 'auto' || elements[i].offsetHeight || elements[i].offsetWidth){
-					lazySizes.unveilLazy(elements[i]);
-				}
+				lazySizes.unveilLazy(elements[i]);
 			}
 		};
 

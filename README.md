@@ -83,7 +83,7 @@ We recommend to use the LQIP pattern (low quality image placeholder): Simply add
 <img src="lqip-src.jpg" data-src="image.jpg" class="lazyload" />
 ```
 
-The recommended LQUIP pattern has the following advantages. The lquip-src is not hidden from the preload parser and loads very fast, which leads to an extreme fast first impression and in case of legacy browsers/devices as a good enough fallback (IE8 and Android 2 devices as also JS disabled).
+The recommended LQUIP pattern has the following advantages. The lquip-src is not hidden from the preload parser and loads very fast, which leads to an extreme fast first impression and in case of legacy browsers/devices or searchengines (bots) as a good enough fallback (IE8 and Android 2 devices as also JS disabled).
 
 ###JS API 
 **lazysizes** automatically detects new elements with the class ``lazyload`` so you won't need to call or configure anything in most situations.
@@ -101,7 +101,7 @@ window.lazySizesConfig = {
 Here the list of options:
 
 * ``lazySizesConfig.lazyClass`` (default: ``"lazyload"``): Marker class for all elements which should be lazy loaded (There can be only one ``class``. In case you need to add some other element, without the defined class, simply add it per JS: ``$('.lazy-others').addClass('lazyload');``)
-* ``lazySizesConfig.preloadAfterLoad`` (default: ``false``): Wether lazysizes should load all elements after the window onload event. (Note: lazysizes will then load all elements using a queue. Only two parallel elements are loaded at the same time. This makes sure that other postboned downloads are also loaded.). Recommendation: On non-mobile devices this should be ``true``.
+* ``lazySizesConfig.preloadAfterLoad`` (default: ``false``): Wether lazysizes should load all elements after the window onload event. (Note: lazysizes will then load all elements using a queue. Only two parallel elements are loaded at the same time. This makes sure that other postboned downloads are also loaded.). It's unsure wether this should be ``true`` by default. Recommendation: Set this to ``true`` at in case you don't use the LQIP pattern.
 * ``lazySizesConfig.onlyLargerSizes`` (default: ``true``): In case a responsive image had the ``data-sizes="auto"`` attribute and the computed new size decreases, lazysizes won't normally change the ``sizes`` attribute to a lower value.
 * ``lazySizesConfig.srcAttr`` (default: ``"data-src"``): The attribute, which should be transformed to ``src``.
 * ``lazySizesConfig.srcset`` (default: ``"data-srcset"``): The attribute, which should be transformed to ``srcset``.
