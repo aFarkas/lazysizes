@@ -235,8 +235,8 @@
 
 					//LQIP
 					if(!isPicture && !force && !elem.complete && elem.getAttribute('src') && elem.src && !elem.lazyload){
-						addRemoveImgEvents(elem, resetPreloading);
-						addRemoveImgEvents(elem, resetPreloading, true);
+						addRemoveImgEvents(elem, unveilAfterLoad);
+						addRemoveImgEvents(elem, unveilAfterLoad, true);
 						return;
 					}
 					if(isPicture){
