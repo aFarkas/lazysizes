@@ -170,3 +170,47 @@ Due to the fact, that it is designed to be invoked with a high frequency and the
 <!-- or non-responsive: -->
 <img src="lqip-src.jpg" data-src="image.jpg" class="lazyload" />
 ```
+
+##Specifying image dimensions
+To minimize reflows and content jumping the width **and** the height of an image should be specified. For "static" images this can done using either CSS or using the content attributes:
+
+```html
+<img
+	src="http://placehold.it/175x75"
+    width="350"
+    height="150"
+	data-srcset="http://placehold.it/350x150 1x,
+    http://placehold.it/700x300 2x" class="lazyload" />
+```
+
+For flexible responsive images the [intrinsic ratio scaling](http://www.smashingmagazine.com/2013/09/16/responsive-images-performance-problem-case-study/) can be used:
+
+```html
+<style>
+.ratio-container {
+	position: relative;
+    padding-bottom: 42.86%; /* 56.25%: 16:9 ratio */
+    height: 0;
+    overflow: hidden;
+}
+.ratio-container img,
+.ratio-container video,
+.ratio-container iframe {
+position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+</style>
+
+<div class="ratio-container">
+    <img
+        src="http://placehold.it/175x75"
+        data-sizes="auto"
+        data-srcset="http://placehold.it/175x75 175w,
+        http://placehold.it/350x150 350w,
+        http://placehold.it/700x300 700w,
+        http://placehold.it/1400x600 1400w" class="lazyload" />
+</div>
+```
