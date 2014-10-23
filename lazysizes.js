@@ -27,8 +27,6 @@
 	var addRemoveImgEvents = function(dom, fn, add){
 		var action = add ? 'addEventListener' : 'removeEventListener';
 		dom[action]('load', fn, false);
-		dom[action]('abort', fn, false);
-		dom[action]('readystatechange', fn, false);
 		dom[action]('error', fn, false);
 	};
 	var unveilAfterLoad = function(e){
@@ -87,7 +85,7 @@
 			}
 			respimage({reparse: true, elements: [el]});
 		} else if(!window.HTMLPictureElement && window.console && document.readyState == 'complete'){
-			console.log('Please use a responsive image polyfill, like respimage or picturefill. https://github.com/aFarkas/respimage');
+			console.log('use a respimg polyfill: http://bit.ly/1FCts3P');
 		}
 	}
 
@@ -257,9 +255,6 @@
 						elem.setAttribute('sizes', sizes);
 					}
 					elem.removeAttribute(lazySizesConfig.sizesAttr);
-					if (!srcset && window.console && elem.getAttribute('srcset')){
-						console.log('using lazysizes with a `srcset` attribute is not good. Use `data-srcset` instead');
-					}
 				}
 
 				if(srcset){
@@ -329,7 +324,7 @@
 	}
 
 	function updateSizes(elem, noPolyfill){
-		var parentWidth, elemWidth, width, cbWidth, parent, sources, i, len, event;
+		var parentWidth, elemWidth, width, parent, sources, i, len, event;
 		parent = elem.parentNode;
 
 		if(parent){
