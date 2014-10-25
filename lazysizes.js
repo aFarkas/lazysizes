@@ -21,6 +21,9 @@
 	var regScript = /^script$/i;
 	var regImg = /^img$/i;
 	var inViewTreshhold = 10;
+	// currently only chrome and IE do support aborting image downloads by changing the src
+	// sadly we can't feature detect it
+	var supportImageAbort = (/rident|hrome/).test(navigator.userAgent || '');
 
 	var setImmediate = window.setImmediate || window.setTimeout;
 	var scriptUrls = {};
@@ -232,7 +235,7 @@
 					isPicture = regPicture.test(parent.nodeName || '');
 
 					//LQIP
-					if(!isPicture && !force && !elem.complete && elem.getAttribute('src') && elem.src && !elem.lazyload){
+					if(!supportImageAbort && !isPicture && !force && !elem.complete && elem.getAttribute('src') && elem.src && !elem.lazyload){
 						addRemoveImgEvents(elem, unveilAfterLoad);
 						addRemoveImgEvents(elem, unveilAfterLoad, true);
 						return;
