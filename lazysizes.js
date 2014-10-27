@@ -257,15 +257,21 @@
 					} else {
 						elem.setAttribute('sizes', sizes);
 					}
-					elem.removeAttribute(lazySizesConfig.sizesAttr);
+					if(lazySizesConfig.clearAttr){
+						elem.removeAttribute(lazySizesConfig.sizesAttr);
+					}
 				}
 
 				if(srcset){
 					elem.setAttribute('srcset', srcset);
-					elem.removeAttribute(lazySizesConfig.srcsetAttr);
+					if(lazySizesConfig.clearAttr){
+						elem.removeAttribute(lazySizesConfig.srcsetAttr);
+					}
 				} else if(src){
 					elem.setAttribute('src', src);
-					elem.removeAttribute(lazySizesConfig.srcAttr);
+					if(lazySizesConfig.clearAttr) {
+						elem.removeAttribute(lazySizesConfig.srcAttr);
+					}
 				}
 			}
 		}
