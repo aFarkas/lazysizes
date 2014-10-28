@@ -1,5 +1,5 @@
 #lazysizes
-**lazysizes** is a fast (jankfree) lazyloader for images (including responsive images), iframes and scripts/widgets. It may become also your number one tool to integrate responsive images. Due to the fact that it can also automatically calculate the ``sizes`` attribute for your responsive images, it helps to seperate layout (CSS) from content/structure (HTML) and makes integrating responsive images into any enviroment simply simple.
+**lazysizes** is a fast (jank-free) lazyloader for images (including responsive images), iframes and scripts/widgets. It may become also your number one tool to integrate responsive images. Due to the fact that it can also automatically calculate the ``sizes`` attribute for your responsive images, it helps to seperate layout (CSS) from content/structure (HTML) and makes integrating responsive images into any environment simply simple.
 
 ##How to
 
@@ -30,20 +30,20 @@
 ##What makes lazysizes so awesome:
 **lazysizes** is different than other lazy image loaders.
 
-1. **Works without any configuration**: The script detects any changes to the visibility of an image/iframe automatically no matter whether it becomes visible through a user scroll, an CSS animation triggered through ``:hover`` or through any kind of JS behavior (carousel, infinite scroll, AJAX)...
-2. **Futureproof**: It directly includes standard responsive image support (``picture`` and ``srcset``)
+1. **Works without any configuration**: The script detects any changes to the visibility of an image/iframe automatically no matter whether it becomes visible through a user scroll, a CSS animation triggered through ``:hover`` or through any kind of JS behavior (carousel, infinite scroll, AJAX)...
+2. **Future-proof**: It directly includes standard responsive image support (``picture`` and ``srcset``)
 3. **Seperation of concerns**: For responsive image support it adds an automatic ``sizes`` calculation feature.
-4. **Performance**: It's based on high efficient code (runtime **and** memory) to work jankfree at 60fps.
+4. **Performance**: It's based on high efficient code (runtime **and** memory) to work jank-free at 60fps.
 5. Works together with [**low quality image placeholders**](http://www.guypo.com/feo/introducing-lqip-low-quality-image-placeholders/) patterns.
 
 ##[Demo with code examples](http://afarkas.github.io/lazysizes/#examples)
 Can be seen [here](http://afarkas.github.io/lazysizes/#examples).
 
 ##About responsive image support
-For full cross browser responsive image support a polyfill like [respimage (recommended)](https://github.com/aFarkas/respimage) or [picturefill](https://github.com/scottjehl/picturefill) has to be used.
+For full cross browser responsive image support you must use a polyfill like [respimage (recommended)](https://github.com/aFarkas/respimage) or [picturefill](https://github.com/scottjehl/picturefill).
 
 ##More about the API
-**Lazysizes** comes with a simple markup and JS API. Normally you will only need to use the markup API.
+**lazysizes** comes with a simple markup and JS API. Normally you will only need to use the markup API.
 
 ###Markup API
 Add the ``class`` ``lazyload`` to all ``img`` and ``iframe`` elements, which should be loaded lazy. Instead of a ``src`` or ``srcset`` attribute, use a ``data-src`` or ``data-srcset`` attribute:
@@ -64,7 +64,7 @@ Add the ``class`` ``lazyload`` to all ``img`` and ``iframe`` elements, which sho
     responsive-image3.jpg 900w" class="lazyload" />
 ```
 
-**Important: How ``sizes`` is calculated**: The automatic sizes calculation takes the width of the image and the width of its parent element and uses the largest number of those two calculated numbers. It's therefore important, that all images with a ``data-sizes="auto"`` attribute are constrained in width by it's parent element. Otherwise a wrong (too big) ``sizes`` attribute will be calculated.
+**Important: How ``sizes`` is calculated**: The automatic sizes calculation takes the width of the image and the width of its parent element and uses the largest number of those two calculated numbers. It's therefore important that all images with a ``data-sizes="auto"`` attribute are constrained in width by its parent element. Otherwise a wrong (too big) ``sizes`` attribute will be calculated.
 
 ##Recommended markup: LQIP
 We recommend to use the LQIP pattern (low quality image placeholder): Simply add a low quality image as the ``src``:
@@ -83,13 +83,13 @@ We recommend to use the LQIP pattern (low quality image placeholder): Simply add
 <img src="lqip-src.jpg" data-src="image.jpg" class="lazyload" />
 ```
 
-The recommended LQUIP pattern has the following advantages. The lquip-src is not hidden from the preload parser and loads very fast, which leads to an extreme fast first impression and in case of legacy browsers/devices or searchengines (bots) as a good enough fallback (IE8 and Android 2 devices as also JS disabled).
+The recommended LQIP pattern has the following advantages: The lqip-src is not hidden from the preload parser and loads very fast, which leads to an extreme fast first impression and in case of legacy browsers/devices or searchengines (bots) as a good enough fallback (IE8 and Android 2 devices as also JS disabled).
 
 ###JS API 
 **lazysizes** automatically detects new elements with the class ``lazyload`` so you won't need to call or configure anything in most situations.
 
 ####JS API - options
-Options can be set by declaring a global configuration option object named ``lazySizesConfig``. This object should be defined before the including lazySizes script or at least in the same script file. Here a basic example:
+Options can be set by declaring a global configuration option object named ``lazySizesConfig``. This object should be defined before the including lazysizes script or at least in the same script file. A basic example:
 
 ```js
 window.lazySizesConfig = {
@@ -155,7 +155,7 @@ In the past I often struggeled using lazy image loaders, because the "main check
 
 But in a world of responsive retina optimized images on the one hand and JS widgets like carousels or tabs (a lot of initially hidden images) on the other hand lazy loading images becomes more and more important. And therefore I created this project. And in fact **lazysizes** is different.
 
-Due to the fact, that it is designed to be invoked with a high frequency and therefore works highly efficient, it was possible to hook into all kind of events as also add a mutationobserver and therefore this lazyloader works as a simple drop in solution, you simply write/render your markup and no matter wether it was added by AJAX or revealed by a JS or CSS animation it will be picked up by **layzSizes**.
+Due to the fact, that it is designed to be invoked with a high frequency and therefore works highly efficient, it was possible to hook into all kind of events as also add a mutationobserver and therefore this lazyloader works as a simple drop in solution, you simply write/render your markup and no matter wether it was added by AJAX or revealed by a JS or CSS animation it will be picked up by **layzsizes**.
 
 ```html
 <!-- responsive example: -->
