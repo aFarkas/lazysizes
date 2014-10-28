@@ -420,6 +420,7 @@
 		}
 	};
 
+	lazySizesConfig = window.lazySizesConfig || {};
 	setTimeout(function(){
 		var prop;
 		var lazySizesDefaults = {
@@ -435,7 +436,7 @@
 			onlyLargerSizes: true
 		};
 
-		lazySizesConfig = window.lazySizesConfig || {};
+		lazySizesConfig = window.lazySizesConfig || lazySizesConfig;
 
 		for(prop in lazySizesDefaults){
 			if(!(prop in lazySizesConfig)){
@@ -478,7 +479,7 @@
 		updateAllSizes: lazyEvalSizes,
 		updateAllLazy: lazyEvalLazy.throttled,
 		unveilLazy: function(el){
-			if(hasClass(el, lazySizesConfig.lazyClass)){
+			if(hasClass(el, lazySizesConfig.lazyClass || 'lazyload')){
 				unveilLazy(el);
 			}
 		},
