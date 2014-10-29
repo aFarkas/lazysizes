@@ -1,19 +1,24 @@
+/*
+This lazySizes extension adds better support for print.
+In case the user starts to print lazysizes will load all images.
+*/
 (function(window){
 	'use strict';
 	var config, elements, sizesAttr, onprint, printMedia;
 	// see also: http://tjvantoll.com/2012/06/15/detecting-print-requests-with-javascript/
 	if(window.addEventListener){
-		config = window.lazySizesConfig || {};
+		config = window.lazySizesConfig || (window.lazySizes && lazySizes.cfg) || {};
 		elements = config.lazyClass || 'lazyload';
-		sizesAttr = config.sizesAttr || 'data-sizes';
 		onprint = function(){
 			var i, len;
 			if(typeof elements == 'string'){
 				elements = document.getElementsByClassName(elements);
 			}
 
-			for(i = 0, len = elements.length; i < len; i++){
-				lazySizes.unveilLazy(elements[i]);
+			if(window.lazySizes){
+				for(i = 0, len = elements.length; i < len; i++){
+					lazySizes.unveilLazy(elements[i]);
+				}
 			}
 		};
 

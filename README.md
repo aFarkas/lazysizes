@@ -89,7 +89,7 @@ The recommended LQIP pattern has the following advantages: The lqip-src is not h
 **lazysizes** automatically detects new elements with the class ``lazyload`` so you won't need to call or configure anything in most situations.
 
 ####JS API - options
-Options can be set by declaring a global configuration option object named ``lazySizesConfig``. This object should be defined before the including lazysizes script or at least in the same script file. A basic example:
+Options can be set by declaring a global configuration option object named ``lazySizesConfig``. This object should be defined before the lazysizes script. A basic example:
 
 ```js
 window.lazySizesConfig = {

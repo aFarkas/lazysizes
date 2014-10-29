@@ -8,7 +8,7 @@
 }(function () {
 	'use strict';
 
-	if(!Date.now || !window.document.getElementsByClassName){return;}
+	if(!Date.now || !window.document.getElementsByClassName || !Object.freeze){return;}
 
 	var lazyloadElems, autosizesElems, lazySizesConfig, globalSizesTimer,
 		globalSizesIndex, globalLazyTimer, globalLazyIndex, globalInitialTimer,
@@ -421,13 +421,15 @@
 	};
 
 	lazySizesConfig = window.lazySizesConfig || {};
-	setTimeout(function(){
+
+	(function(){
 		var prop;
 		var lazySizesDefaults = {
 			mutation: true,
 			hover: true,
 			cssanimation: true,
 			lazyClass: 'lazyload',
+			scroll: true,
 			autosizesClass: 'lazyautosizes',
 			srcAttr: 'data-src',
 			srcsetAttr: 'data-srcset',
@@ -436,20 +438,22 @@
 			onlyLargerSizes: true
 		};
 
-		lazySizesConfig = window.lazySizesConfig || lazySizesConfig;
-
 		for(prop in lazySizesDefaults){
 			if(!(prop in lazySizesConfig)){
 				lazySizesConfig[prop] = lazySizesDefaults[prop];
 			}
 		}
+	})();
+
+	setTimeout(function(){
+
 
 		lazyloadElems = document.getElementsByClassName(lazySizesConfig.lazyClass);
 		autosizesElems = document.getElementsByClassName(lazySizesConfig.autosizesClass);
 
-		addEventListener('scroll', lazyEvalLazy.throttled, false);
-		(document.body || document.documentElement).addEventListener('scroll', lazyEvalLazy.throttled, true);
-		document.addEventListener('touchmove', lazyEvalLazy.throttled, false);
+		if(lazySizesConfig.scroll) {
+			addEventListener('scroll', lazyEvalLazy.throttled, true);
+		}
 
 		addEventListener('resize', lazyEvalLazy.debounce, false);
 		addEventListener('resize', lazyEvalSizes, false);
@@ -469,17 +473,15 @@
 
 		lazyEvalLazy.throttled();
 
-		if('lazySizesConfig' in window){
-			window.lazySizesConfig = null;
-		}
-
-	}, document.body ? 9 : 99);
+		Object.freeze(lazySizesConfig);
+	});
 
 	return {
+		cfg: lazySizesConfig,
 		updateAllSizes: lazyEvalSizes,
 		updateAllLazy: lazyEvalLazy.throttled,
 		unveilLazy: function(el){
-			if(hasClass(el, lazySizesConfig.lazyClass || 'lazyload')){
+			if(hasClass(el, lazySizesConfig.lazyClass)){
 				unveilLazy(el);
 			}
 		},
