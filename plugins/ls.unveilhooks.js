@@ -41,7 +41,7 @@ For background images, use data-bg attribute:
 				// handle data-bg
 				tmp = e.target.getAttribute('data-bg');
 				if (tmp) {
-					e.target.style.backgroundImage = tmp;
+					e.target.style.backgroundImage = 'url(' + tmp + ')';
 					if(config.clearAttr){
 						e.target.removeAttribute('data-bg');
 					}
