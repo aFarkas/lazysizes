@@ -16,9 +16,7 @@
 	var document = window.document;
 	var isPreloading = 0;
 
-	var regDummyTags = /^(?:span|div)$/i;
 	var regPicture = /^picture$/i;
-	var regScript = /^script$/i;
 	var regImg = /^img$/i;
 	var inViewTreshhold = 10;
 	// currently only chrome and IE do support aborting image downloads by changing the src
@@ -26,7 +24,6 @@
 	var supportImageAbort = (/rident|hrome/).test(navigator.userAgent || '');
 
 	var setImmediate = window.setImmediate || window.setTimeout;
-	var scriptUrls = {};
 	var addRemoveImgEvents = function(dom, fn, add){
 		var action = add ? 'addEventListener' : 'removeEventListener';
 		dom[action]('load', fn, false);
@@ -189,20 +186,6 @@
 		resetPreloadingTimer = setTimeout(resetPreloading, 5000);
 	}
 
-	function addScript(dummyEl){
-		var elem = document.createElement('script');
-
-		var parent = dummyEl.parentNode;
-
-		dummyEl.removeAttribute(lazySizesConfig.srcAttr);
-		parent.insertBefore(elem, dummyEl);
-		setImmediate(function(){
-			removeClass(dummyEl, lazySizesConfig.lazyClass);
-		});
-
-		return elem;
-	}
-
 	function clearLazyTimer(){
 		globalLazyIndex = 0;
 		clearTimeout(globalLazyTimer);
@@ -221,17 +204,7 @@
 
 			if(src || srcset){
 
-				if(regDummyTags.test(elem.nodeName)){
-					elem = addScript(elem);
-				}
-
-				if(regScript.test(elem.nodeName || '')){
-					if(scriptUrls[src]){
-						return;
-					} else {
-						scriptUrls[src] = true;
-					}
-				} else if(regImg.test(elem.nodeName || '')) {
+				if(regImg.test(elem.nodeName || '')) {
 					isPicture = regPicture.test(parent.nodeName || '');
 
 					//LQIP
