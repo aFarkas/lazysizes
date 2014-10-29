@@ -9,7 +9,7 @@
     <script src="lazysizes.min.js" async=""></script>
     ```
 
-2. lazysizes does not need any JS configuration: Add the ``class`` ``"lazyload"`` to your images/iframes/widgets in conjunction with a ``data-src`` or ``data-srcset`` attribute:
+2. lazysizes does not need any JS configuration: Add the ``class`` ``"lazyload"`` to your images/iframes in conjunction with a ``data-src`` or ``data-srcset`` attribute:
 
     ```html
     <!-- non-responsive: -->
@@ -24,7 +24,14 @@
         image2.jpg 300w,
         image3.jpg 600w,
         image4.jpg 900w" class="lazyload" />
-
+    ```
+    ```html
+    <!-- iframe example -->
+    <iframe frameborder="0" 
+    	class="lazyload" 
+        allowfullscreen="" 
+        data-src="//www.youtube.com/embed/ZfV-aYdU4uE">
+    </iframe>
     ```
 
 ##What makes lazysizes so awesome:
@@ -123,9 +130,6 @@ document.addEventListener('lazybeforeunveil', function(e){
 }, false);
 ```
 * ``lazybeforesizes``: This event will be fired on each element with the ``data-sizes="auto"`` attribute right before the calculated ``sizes`` attribute will be set. The ``event.details.width`` property is set to the calculated width of the element and can be changed to any number. In case the event is ``defaultPrevented`` the ``sizes`` attribute won't be set.
-
-
-
 
 ####JS API - methods
 #####``lazySizes.unveilLazy(DOMNode)``
