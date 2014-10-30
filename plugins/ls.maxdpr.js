@@ -29,12 +29,13 @@
 	function parseSets(elem){
 		var lazyData = {srcset: elem.getAttribute(lazySizes.cfg.srcsetAttr)} || '';
 		var cands = respimage._.parseSet(lazyData);
-		elem.lazySrcset = lazyData;
+		elem._lazySrcset = lazyData;
 
 		cands.sort( ascendingSort );
 		lazyData.index = 0;
+		lazyData.dirty = false;
 		if(cands[0]){
-			lazyData.cSrcset = [cands[0].url +' '+ cands[0].desc.val + cands[0].desc.type]
+			lazyData.cSrcset = [cands[0].url +' '+ cands[0].desc.val + cands[0].desc.type];
 		} else {
 			lazyData.cSrcset = [];
 		}
@@ -74,13 +75,14 @@
 
 	function constrainSrces(elem, width, attr){
 		var imageData;
-		var lazyData = elem.lazySrcset;
+		var lazyData = elem._lazySrcset;
 		var curIndex = lazyData.index;
 
 		getConstrainedSrcSet(lazyData, width);
 
-		if(curIndex != lazyData.index){
+		if(!lazyData.dirty || curIndex != lazyData.index){
 			elem.setAttribute(attr, lazyData.cSrcset.join(', '));
+			lazyData.dirty = true;
 
 			if(lazyData.isImg && attr == 'srcset' && !window.HTMLPictureElement && !respimage._.observer){
 				imageData = elem[respimage._.ns];
@@ -100,7 +102,7 @@
 			maxdpr > (window.devicePixelRatio || 1) ||
 			(e.target._lazysizesWidth && e.target._lazysizesWidth > e.details.width)){return;}
 
-		lazyData = e.target.lazySrcset || parseImg(e.target);
+		lazyData = e.target._lazySrcset || parseImg(e.target);
 		width = e.details.width * maxdpr;
 
 		if(width){
