@@ -4,7 +4,7 @@ In case the user starts to print lazysizes will load all images.
 */
 (function(window){
 	'use strict';
-	var config, elements, sizesAttr, onprint, printMedia;
+	var config, elements, onprint, printMedia;
 	// see also: http://tjvantoll.com/2012/06/15/detecting-print-requests-with-javascript/
 	if(window.addEventListener){
 		config = window.lazySizesConfig || (window.lazySizes && lazySizes.cfg) || {};
