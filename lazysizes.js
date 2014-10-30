@@ -213,15 +213,6 @@
 						addRemoveImgEvents(elem, unveilAfterLoad, true);
 						return;
 					}
-					if(isPicture){
-						sources = parent.getElementsByTagName('source');
-						for(i = 0, len = sources.length; i < len; i++){
-							sourceSrcset = sources[i].getAttribute(lazySizesConfig.srcsetAttr);
-							if(sourceSrcset){
-								sources[i].setAttribute('srcset', sourceSrcset);
-							}
-						}
-					}
 				}
 
 				if(sizes){
@@ -232,6 +223,18 @@
 					}
 					if(lazySizesConfig.clearAttr){
 						elem.removeAttribute(lazySizesConfig.sizesAttr);
+					}
+				}
+
+				srcset = elem.getAttribute(lazySizesConfig.srcsetAttr);
+
+				if(isPicture){
+					sources = parent.getElementsByTagName('source');
+					for(i = 0, len = sources.length; i < len; i++){
+						sourceSrcset = sources[i].getAttribute(lazySizesConfig.srcsetAttr);
+						if(sourceSrcset){
+							sources[i].setAttribute('srcset', sourceSrcset);
+						}
 					}
 				}
 
