@@ -59,12 +59,23 @@
 		return lazyData;
 	}
 
+	function takeHighRes(beforeCan, curCanWidth, width){
+		var low, high;
+		if(!beforeCan || !beforeCan.desc){
+			return true;
+		}
+		low = (1 - (beforeCan.desc.val / width)) * 0.6;
+		high = (curCanWidth / width) - 1;
+		return high - low < 0;
+
+	}
+
 	function getConstrainedSrcSet(data, width){
 		var i, can;
 
 		for(i = data.index + 1; i < data.cands.length; i++){
 			can = data.cands[i];
-			if(can.desc.type != 'w' || can.desc.val <= width){
+			if(can.desc.type != 'w' || can.desc.val <= width || takeHighRes(data.cands[i - 1], can.desc.val, width)){
 				data.cSrcset.push(can.url +' '+ can.desc.val + can.desc.type);
 				data.index = i;
 			} else {
@@ -74,9 +85,11 @@
 	}
 
 	function constrainSrces(elem, width, attr){
-		var imageData;
+		var imageData, curIndex;
 		var lazyData = elem._lazySrcset;
-		var curIndex = lazyData.index;
+
+		if(!lazyData){return;}
+		curIndex = lazyData.index;
 
 		getConstrainedSrcSet(lazyData, width);
 
