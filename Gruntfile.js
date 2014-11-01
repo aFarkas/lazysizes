@@ -50,7 +50,7 @@
 			uncss: {
 				dist: {
 					files: {
-						'assets/css/tidy.css': ['index.html']
+						'assets/css/tidy.css': ['index.html', 'maxdpr/*.html']
 					}
 				}
 			}
