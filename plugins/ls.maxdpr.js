@@ -64,7 +64,7 @@
 		if(!beforeCan || !beforeCan.desc){
 			return true;
 		}
-		low = (1 - (beforeCan.desc.val / width)) * 0.6;
+		low = (1 - (beforeCan.desc.val / width)) * 0.9;
 		high = (curCanWidth / width) - 1;
 		return high - low < 0;
 

@@ -5,8 +5,8 @@
  */
 
 /*!
- * Generated using the Bootstrap Customizer (http://getbootstrap.com/customize/?id=a3a702b85263951fd15a)
- * Config saved to config.json and https://gist.github.com/a3a702b85263951fd15a
+ * Generated using the Bootstrap Customizer (http://getbootstrap.com/customize/?id=5e2acd9519dbb9aaf550)
+ * Config saved to config.json and https://gist.github.com/5e2acd9519dbb9aaf550
  */
 
 /*! normalize.css v3.0.2 | MIT License | git.io/normalize */
@@ -96,6 +96,16 @@ fieldset {
 
 legend {
   border: 0;
+  padding: 0;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+td,
+th {
   padding: 0;
 }
 
@@ -263,6 +273,48 @@ pre {
   .col-sm-6 {
     width: 50%;
   }
+}
+
+table {
+  background-color: transparent;
+}
+
+th {
+  text-align: left;
+}
+
+.table {
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 20px;
+}
+
+.table>thead>tr>th,
+.table>tbody>tr>th,
+.table>tbody>tr>td {
+  padding: 8px;
+  line-height: 1.42857143;
+  vertical-align: top;
+  border-top: 1px solid #ddd;
+}
+
+.table>thead>tr>th {
+  vertical-align: bottom;
+  border-bottom: 2px solid #ddd;
+}
+
+.table>thead:first-child>tr:first-child>th {
+  border-top: 0;
+}
+
+.table-condensed>thead>tr>th,
+.table-condensed>tbody>tr>th,
+.table-condensed>tbody>tr>td {
+  padding: 5px;
+}
+
+.table-striped>tbody>tr:nth-child(odd) {
+  background-color: #f9f9f9;
 }
 
 fieldset {
@@ -597,8 +649,8 @@ _:-ms-fullscreen.input-lg {
  */
 
 /*!
- * Generated using the Bootstrap Customizer (http://getbootstrap.com/customize/?id=a3a702b85263951fd15a)
- * Config saved to config.json and https://gist.github.com/a3a702b85263951fd15a
+ * Generated using the Bootstrap Customizer (http://getbootstrap.com/customize/?id=5e2acd9519dbb9aaf550)
+ * Config saved to config.json and https://gist.github.com/5e2acd9519dbb9aaf550
  */
 
 .btn-primary {
