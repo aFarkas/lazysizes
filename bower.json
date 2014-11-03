@@ -20,6 +20,7 @@
 		"**/.*",
 		"node_modules",
 		"assets",
+		"maxdpr",
 		"bower_components",
 		"test",
 		"tests",
