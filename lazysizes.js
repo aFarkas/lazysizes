@@ -197,7 +197,7 @@
 		var event = triggerEvent(elem, 'lazybeforeunveil', {force: !!force});
 
 		if(!event.defaultPrevented){
-			sizes = elem.getAttribute(lazySizesConfig.sizesAttr);
+			sizes = elem.getAttribute(lazySizesConfig.sizesAttr) || elem.getAttribute('sizes');
 			src = elem.getAttribute(lazySizesConfig.srcAttr);
 			srcset = elem.getAttribute(lazySizesConfig.srcsetAttr);
 			parent = elem.parentNode;
