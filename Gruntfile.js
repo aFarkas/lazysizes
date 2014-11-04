@@ -33,7 +33,7 @@
 					options: {
 						jshintrc: true
 					},
-					src: [ "lazysizes.js" ] //, "Gruntfile.js", "tests/*.js"
+					src: [ "lazysizes.js", "plugins/**/*.js", "!*.min.js", "!plugins/**/*.min.js" ] //, "Gruntfile.js", "tests/*.js"
 				}
 			},
 			watch: {

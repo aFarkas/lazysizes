@@ -1,7 +1,7 @@
 {
 	"name": "lazysizes",
 	"repo": "afarkas/lazysizes",
-	"version": "0.3.2-pre",
+	"version": "0.4.0-pre",
 	"main": "lazysizes.min.js",
 	"scripts": [
 		"lazysizes.min.js"
@@ -21,6 +21,7 @@
 		"node_modules",
 		"assets",
 		"maxdpr",
+		"rias",
 		"bower_components",
 		"test",
 		"tests",

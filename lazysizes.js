@@ -197,57 +197,54 @@
 		var event = triggerEvent(elem, 'lazybeforeunveil', {force: !!force});
 
 		if(!event.defaultPrevented){
+			//allow using sizes="auto", but don't use. it's invalid. Use data-sizes="auto" or a valid value for sizes instead (i.e.: sizes="80vw")
 			sizes = elem.getAttribute(lazySizesConfig.sizesAttr) || elem.getAttribute('sizes');
-			src = elem.getAttribute(lazySizesConfig.srcAttr);
+
+			if(regImg.test(elem.nodeName || '')) {
+				parent = elem.parentNode;
+				isPicture = regPicture.test(parent.nodeName || '');
+
+				//LQIP
+				if(!supportImageAbort && !isPicture && !force && !elem.complete && elem.getAttribute('src') && elem.src && !elem.lazyload){
+					addRemoveImgEvents(elem, unveilAfterLoad);
+					addRemoveImgEvents(elem, unveilAfterLoad, true);
+					return;
+				}
+			}
+
+			if(sizes){
+				if(sizes == 'auto'){
+					updateSizes(elem, true);
+				} else {
+					elem.setAttribute('sizes', sizes);
+				}
+				if(lazySizesConfig.clearAttr){
+					elem.removeAttribute(lazySizesConfig.sizesAttr);
+				}
+			}
+
 			srcset = elem.getAttribute(lazySizesConfig.srcsetAttr);
-			parent = elem.parentNode;
+			src = elem.getAttribute(lazySizesConfig.srcAttr);
 
-			if(src || srcset){
-
-				if(regImg.test(elem.nodeName || '')) {
-					isPicture = regPicture.test(parent.nodeName || '');
-
-					//LQIP
-					if(!supportImageAbort && !isPicture && !force && !elem.complete && elem.getAttribute('src') && elem.src && !elem.lazyload){
-						addRemoveImgEvents(elem, unveilAfterLoad);
-						addRemoveImgEvents(elem, unveilAfterLoad, true);
-						return;
+			if(isPicture){
+				sources = parent.getElementsByTagName('source');
+				for(i = 0, len = sources.length; i < len; i++){
+					sourceSrcset = sources[i].getAttribute(lazySizesConfig.srcsetAttr);
+					if(sourceSrcset){
+						sources[i].setAttribute('srcset', sourceSrcset);
 					}
 				}
+			}
 
-				if(sizes){
-					if(sizes == 'auto'){
-						updateSizes(elem, true);
-					} else {
-						elem.setAttribute('sizes', sizes);
-					}
-					if(lazySizesConfig.clearAttr){
-						elem.removeAttribute(lazySizesConfig.sizesAttr);
-					}
+			if(srcset){
+				elem.setAttribute('srcset', srcset);
+				if(lazySizesConfig.clearAttr){
+					elem.removeAttribute(lazySizesConfig.srcsetAttr);
 				}
-
-				srcset = elem.getAttribute(lazySizesConfig.srcsetAttr);
-
-				if(isPicture){
-					sources = parent.getElementsByTagName('source');
-					for(i = 0, len = sources.length; i < len; i++){
-						sourceSrcset = sources[i].getAttribute(lazySizesConfig.srcsetAttr);
-						if(sourceSrcset){
-							sources[i].setAttribute('srcset', sourceSrcset);
-						}
-					}
-				}
-
-				if(srcset){
-					elem.setAttribute('srcset', srcset);
-					if(lazySizesConfig.clearAttr){
-						elem.removeAttribute(lazySizesConfig.srcsetAttr);
-					}
-				} else if(src){
-					elem.setAttribute('src', src);
-					if(lazySizesConfig.clearAttr) {
-						elem.removeAttribute(lazySizesConfig.srcAttr);
-					}
+			} else if(src){
+				elem.setAttribute('src', src);
+				if(lazySizesConfig.clearAttr) {
+					elem.removeAttribute(lazySizesConfig.srcAttr);
 				}
 			}
 		}
@@ -308,7 +305,7 @@
 		clearTimeout(globalSizesTimer);
 	}
 
-	function updateSizes(elem, noPolyfill){
+	function updateSizes(elem, dataAttr){
 		var parentWidth, elemWidth, width, parent, sources, i, len, event;
 		parent = elem.parentNode;
 
@@ -326,7 +323,7 @@
 				}
 			}
 
-			event = triggerEvent(elem, 'lazybeforesizes', {width: width, polyfill: !noPolyfill});
+			event = triggerEvent(elem, 'lazybeforesizes', {width: width, dataAttr: !!dataAttr});
 
 			if(!event.defaultPrevented){
 				width = event.details.width;
@@ -343,7 +340,7 @@
 						}
 					}
 
-					if(event.details.polyfill){
+					if(!event.details.dataAttr){
 						updatePolyfill(elem);
 					}
 				}
@@ -361,14 +358,14 @@
 		isWinloaded = true;
 	};
 	var onready = function(){
-		var element = document.body || document.documentElement;
+		var docElem = document.documentElement;
 
 		if(lazySizesConfig.mutation){
 			if(window.MutationObserver){
-				new MutationObserver( lazyEvalLazy.throttled ).observe( document.documentElement, {childList: true, subtree: true, attributes: true} );
+				new MutationObserver( lazyEvalLazy.throttled ).observe( docElem, {childList: true, subtree: true, attributes: true} );
 			} else {
-				element.addEventListener( "DOMNodeInserted", lazyEvalLazy.throttled, true);
-				document.documentElement.addEventListener( "DOMAttrModified", lazyEvalLazy.throttled, true);
+				docElem.addEventListener( "DOMNodeInserted", lazyEvalLazy.throttled, true);
+				docElem.addEventListener( "DOMAttrModified", lazyEvalLazy.throttled, true);
 			}
 		}
 
@@ -382,9 +379,9 @@
 		window.addEventListener('hashchange', lazyEvalLazy.throttled, true);
 
 		//:fullscreen
-		if(('onmozfullscreenchange' in element)){
+		if(('onmozfullscreenchange' in docElem)){
 			window.addEventListener('mozfullscreenchange', lazyEvalLazy.throttled, true);
-		} else if(('onwebkitfullscreenchange' in element)){
+		} else if(('onwebkitfullscreenchange' in docElem)){
 			window.addEventListener('webkitfullscreenchange', lazyEvalLazy.throttled, true);
 		} else {
 			window.addEventListener('fullscreenchange', lazyEvalLazy.throttled, true);
@@ -449,7 +446,6 @@
 
 		lazyEvalLazy.throttled();
 
-		Object.freeze(lazySizesConfig);
 	});
 
 	return {

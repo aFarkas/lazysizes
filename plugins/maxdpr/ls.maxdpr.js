@@ -12,6 +12,8 @@
  	900.jpg 900w,
  	1200.jpg 1200w"
  	/>
+
+ 	see a live demo here: http://afarkas.github.io/lazysizes/maxdpr/
  */
 
 
@@ -29,7 +31,7 @@
 	function parseSets(elem){
 		var lazyData = {srcset: elem.getAttribute(lazySizes.cfg.srcsetAttr)} || '';
 		var cands = respimage._.parseSet(lazyData);
-		elem._lazySrcset = lazyData;
+		elem._lazyMaxDprSrcset = lazyData;
 
 		cands.sort( ascendingSort );
 		lazyData.index = 0;
@@ -48,7 +50,7 @@
 		var parent = elem.parentNode || {};
 		var lazyData = parseSets(elem);
 		lazyData.isImg = true;
-		if(regPicture.test(parent.nodeName) || ''){
+		if(regPicture.test(parent.nodeName || '')){
 			lazyData.picture = true;
 			sources = parent.getElementsByTagName('source');
 			for(i = 0, len = sources.length; i < len; i++){
@@ -86,7 +88,7 @@
 
 	function constrainSrces(elem, width, attr){
 		var imageData, curIndex;
-		var lazyData = elem._lazySrcset;
+		var lazyData = elem._lazyMaxDprSrcset;
 
 		if(!lazyData){return;}
 		curIndex = lazyData.index;
@@ -115,11 +117,11 @@
 			maxdpr > (window.devicePixelRatio || 1) ||
 			(e.target._lazysizesWidth && e.target._lazysizesWidth > e.details.width)){return;}
 
-		lazyData = e.target._lazySrcset || parseImg(e.target);
+		lazyData = e.target._lazyMaxDprSrcset || parseImg(e.target);
 		width = e.details.width * maxdpr;
 
 		if(width){
-			attr = e.details.polyfill ? 'srcset' : lazySizes.cfg.srcsetAttr;
+			attr = e.details.dataAttr ? lazySizes.cfg.srcsetAttr : 'srcset';
 
 			if(lazyData.picture && (parent = e.target.parentNode)){
 				sources = parent.getElementsByTagName('source');

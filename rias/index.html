@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+	<meta charset="UTF-8">
+	<title>lazysizes - the restfull responsive image service extension/plugin </title>
+
+	<!-- polyfill responsive images: https://github.com/aFarkas/respimage -->
+	<script>
+		if(!window.HTMLPictureElement){
+			//load respimage polyfill
+			document.write('<script src="http://rawgit.com\/aFarkas\/respimage\/stable\/respimage.min.js" async=""><\/script>');
+		}
+	</script>
+
+	<link href="../assets/css/tidy.css" rel="stylesheet" />
+	<style>
+		.nav {
+			margin-bottom: 30px;
+		}
+		.intrinsic {
+			position: relative;
+			padding-bottom: 75%;
+			height: 0;
+		}
+		.intrinsic-2 {
+			padding-bottom: 56.25%;
+		}
+		.intrinsic-square {
+			padding-bottom: 100%;
+		}
+		.intrinsic img,
+		.intrinsic iframe,
+		.intrinsic .lazyload {
+			position:absolute;
+			width: 100%;
+			height: 100%;
+			left: 0;
+			top: 0;
+			border: none;
+			overflow: hidden;
+		}
+		pre {
+			-moz-tab-size: 2;
+			tab-size: 2;
+		}
+
+		.scroll-view {
+			overflow: auto;
+			overflow-x: auto;
+			overflow-y: hidden;
+			position: relative;
+			width: 100%;
+			padding: 2px 2px 10px;
+		}
+		.scroll-doc {
+			display: table;
+			position: relative;
+			text-align: left;
+		}
+		.scroll-item {
+			display: table-cell;
+			vertical-align: middle;
+		}
+		.scroll-item .thumbnail {
+			margin: 5px 10px;
+			width: 230px;
+		}
+		.scroll-item .thumbnail img {
+			width: 100%;
+			height: auto;
+		}
+	</style>
+	<script>
+		document.createElement('picture');
+	</script>
+
+	<script>
+
+		window.lazySizesConfig = {
+			// uncomment next line to preload after onload (often recommended)
+			//preloadAfterLoad: true
+			//clearAttr: true
+
+			rias: {
+
+			}
+		};
+	</script>
+	<script src="../lazysizes.js"></script>
+	<script src="../plugins/rias/ls.rias.js"></script>
+
+</head>
+<body>
+
+<div class="container">
+
+
+	<div class="jumbotron">
+		<h1>lazySizes - <abbr title="Responsive Image as Service">RIaS</abbr> plugin</h1>
+		<p>The <strong>lazySizes Responsive Image as Service</strong> plugin allows you to extend <strong>lazysizes</strong> with any third party or self hosted REST like image API service.</p>
+		<p>For a short <a href="https://github.com/aFarkas/lazysizes/blob/gh-pages/plugins/rias/README.md">full API description go to the readme.md</a>.</p>
+	</div>
+
+	<div id="examples">
+		<div class="row">
+			<div class="col-sm-6">
+				<div class="thumbnail">
+					<div class="intrinsic intrinsic-square">
+						<img
+							 src="http://placehold.it/100"
+							 data-src="http://placehold.it/{width}"
+							 data-sizes="auto"
+							 class="lazyload"
+							 alt="" />
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<h3>Basic RIaS implementation</h3>
+				<p>Include the ls.rias plugin right after your lazysizes script, add the <code>lazyload</code> class as usual and the <code>data-sizes="auto"</code> attribute.</p>
+				<p>Inside of your <code>data-src</code> value include the <code>{width}</code> placeholder </p>
+<pre>
+&lt;script src="../lazysizes.js"&gt;&lt;/script&gt;
+&lt;script src="../plugins/rias/ls.rias.js"&gt;&lt;/script&gt;
+
+&lt;img
+	src="http://placehold.it/100"
+	data-src="http://placehold.it/{width}"
+	data-sizes="auto"
+	class="lazyload"
+	alt="" /&gt;
+</pre>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-sm-6">
+				<h3><code>maxdpr</code> and the <code>quality</code></h3>
+				<p>All options can be controlled globally through the <code>lazySizesConfig.rias</code> object or by using <code>data-*</code> attributes.</p>
+				<p>The <code>quality (default: 80)</code> and <code>hdQuality (default: 70)</code> feature helps you to control the quality of the generated image (in case your API supports this). Due to the fact, that retina images can be often heavier compressed without hurting perceived quality, this can be specified separately.</p>
+				<p>The <code>maxdpr</code> feature helps you to constrain the devicePixelRatio, which is used to calculate the resulting width.</p>
+<pre>&lt;img
+	src="low-quality.jpg"
+	data-src="image?width={width}&amp;amp;quality={quality}"
+	data-hdquality="60"
+	data-quality="75"
+	data-maxdpr="1.5"
+	class="lazyload"
+	alt="" /&gt;
+</pre>
+			</div>
+			<div class="col-sm-6">
+				<div class="thumbnail">
+					<div class="intrinsic">
+						<img
+							 src="http://app.resrc.it/S=W300M/O=20,B/http://www.your-site.co/image.jpg"
+							 data-src="http://app.resrc.it/S=W{width}M/O={quality},B/http://www.your-site.co/image.jpg"
+							 data-maxdpr="1.5"
+							 data-hdquality="60"
+							 data-quality="75"
+							 data-sizes="auto"
+							 class="lazyload"
+							 alt="" />
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-sm-6">
+				<div class="thumbnail">
+					<div class="intrinsic intrinsic-square">
+						<picture>
+							<!--[if IE 9]><audio><![endif]-->
+							<source
+									data-src="http://placehold.it/{width}/1111ee/fff"
+									media="(max-width: 500px)" />
+							<source
+									data-src="http://placehold.it/{width}/e8117f/fff"
+									media="(max-width: 1024px)" />
+							<!--[if IE 9]></audio><![endif]-->
+							<img
+								src="http://placehold.it/100"
+								data-src="http://placehold.it/{width}"
+								data-sizes="auto"
+								class="lazyload"
+								alt="" />
+						</picture>
+
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<h3><abbr title="Responsive Image as Service">RIaS</abbr> and Art direction using the <code>picture</code> element</h3>
+				<p></p>
+<pre>&lt; /&gt;
+</pre>
+			</div>
+
+		</div>
+
+	</div>
+</div>
+</body>
+</html>
