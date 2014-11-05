@@ -1,25 +1,29 @@
 #lazysizes RIaS extension (Responsive image as a service) 
 
-The RiaS plugin enables lazySizes to hook into any third party (ReSrc, pixulate, mobify ...) or self hosted restful responsive image service. This is currently the best way to serve adaptive and or retina optimized images.
+The RiaS plugin enables lazySizes to hook into any third party (ReSrc, Pixtulate, mobify ...) or self hosted restful responsive image service. This is currently the best way to serve responsive adaptive and / or retina optimized images.
 
 The rias plugin also allows art direction by combining rias with a ``picture`` element.
 
 ##Basic/quick usage
 
 * Simply add the rias plugin right after the lazysizes or concat those scripts into your script bundle:
-    ```html
-    <script src="../lazysizes.js"></script>
-    <script src="../plugins/rias/ls.rias.js"></script>
-    ```
+
+```html
+<script src="../lazysizes.js"></script>
+<script src="../plugins/rias/ls.rias.js"></script>
+```
+
 * Add the ``lazyload`` class and the ``data-sizes="auto"`` attribute to your image and include the placeholder ``{width}`` at the point, where your image service expects the requested width of the image.
-    ```html
-    <img
-        src="http://placehold.it/100"
-        data-src="http://placehold.it/{width}"
-        data-sizes="auto"
-        class="lazyload"
-        alt="" />
-    ```
+
+```html
+<img
+	src="http://placehold.it/100"
+	data-src="http://placehold.it/{width}"
+	data-sizes="auto"
+	class="lazyload"
+	alt="" />
+```
+    
     
 ##[Demo](http://afarkas.github.io/lazysizes/rias/)
 A [demo with markup and code examples can be seen here](http://afarkas.github.io/lazysizes/rias/).
