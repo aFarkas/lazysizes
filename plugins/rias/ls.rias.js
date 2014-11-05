@@ -10,9 +10,11 @@
 
 	var config, riasCfg;
 	var regExps = {};
+	var copyAttrs = {string: 1, boolean: 1, number: 1};
+	var regNumber = /^\-*\+*\d+\.*\d*$/;
 	var regPicture = /^picture$/i;
+	var r20 = /%20/g;
 	var anchor = document.createElement('a');
-
 
 	function createDefaultFormats(formats){
 		var width;
@@ -25,29 +27,24 @@
 	}
 
 	function extendConfig(){
-		var prop, attrOpts;
+		var prop;
+		var noop = function(){};
 		var riasDefaults = {
 			prefix: '',
 			postfix: '',
-			urlAttr: 'data-src',
-			quality: 80,
+			srcAttr: 'data-src',
+			quality: 85,
 			hdQuality: 70,
 			maxdpr: 2,
-			customAttrs: {},
-			makeFullSrc: false,
+			absUrl: false,
 			encodeSrc: false,
-			adjustSrc: function(src){
-				return src;
-			},
-			adjustAttrs: function(){
-
-			}
+			modifySrc: noop,
+			modifyOptions: noop
 		};
 
 		config = (window.lazySizes && lazySizes.cfg) || window.lazySizesConfig;
 
 		if(config){
-			attrOpts = {string: 1, number: 1};
 			if(!config.rias){
 				config.rias = {};
 			}
@@ -61,12 +58,6 @@
 			for(prop in riasDefaults){
 				if(!(prop in riasCfg)){
 					riasCfg[prop] = riasDefaults[prop];
-				}
-			}
-
-			for(prop in riasCfg){
-				if(!(prop in riasCfg.customAttrs) && attrOpts[typeof riasCfg[prop]]){
-					riasCfg.customAttrs[prop] = true;
 				}
 			}
 
@@ -84,14 +75,37 @@
 		return false;
 	}
 
-	function extendAttrs(elem, attrs){
-		var attr, attrVal;
-		for(attr in riasCfg.customAttrs){
-			attrVal = elem.getAttribute('data-'+ attr);
-			if(attrVal){
-				attrs[attr] = attrVal;
+	function getElementOptions(elem){
+		var attr, attrVal, parent;
+
+		var options = elem._lazyRiasOpts;
+
+		if(!options){
+			parent = elem.parentNode;
+			options = {
+				isPicture: !!(parent && regPicture.test(parent.nodeName || ''))
+			};
+
+			elem._lazyRiasOpts = options;
+			for(attr in riasCfg){
+				attrVal = elem.getAttribute('data-'+ attr);
+
+				if(attrVal != null){
+					if(attrVal == 'true'){
+						attrVal = true;
+					} else if(attrVal == 'false'){
+						attrVal = false;
+					} else if(regNumber.test(attrVal)){
+						attrVal = parseFloat(attrVal);
+					}
+					options[attr] = attrVal;
+				} else if(copyAttrs[typeof riasCfg[attr]]){
+					options[attr] = riasCfg[attr];
+				}
 			}
 		}
+
+		return options;
 	}
 
 	function reduceNearest(prev, curr, initial, ar) {
@@ -110,21 +124,25 @@
 		return src;
 	}
 
-	function setSrc(src, attrs, elem, attrName, prefix, postfix ){
+	function setSrc(src, opts, elem, attrName, prefix, postfix ){
 		var retSrc;
 
 		if(!src){return;}
 
-		src = replaceUrlProps(src, attrs);
+		src = replaceUrlProps(src, opts);
 
-		if(riasCfg.makeFullSrc){
+		if(opts.absUrl){
 			anchor.setAttribute('href', src);
 			src = anchor.href;
 		}
 
+		if(opts.encodeSrc){
+			src = encodeURIComponent(src).replace(r20, '+');
+		}
+
 		src = prefix + src + postfix;
 
-		retSrc = riasCfg.adjustSrc(src, attrs, elem, riasCfg);
+		retSrc = riasCfg.modifySrc(src, opts, elem, riasCfg);
 
 		if(retSrc == null){
 			retSrc = src;
@@ -137,85 +155,100 @@
 	}
 
 	function createAttrObject(elem, width){
-		var attrs = {
-			width: width,
-			maxdpr: riasCfg.maxdpr,
-			quality: riasCfg.quality,
-			hdQuality: riasCfg.hdQuality,
-			dpr: window.devicePixelRatio || 1
-		};
 
-		extendAttrs(elem, attrs);
+		var opts = getElementOptions(elem);
+		var formats = ('formats' in opts) ? opts.formats : riasCfg.formats;
+		var event = document.createEvent('Event');
 
-		if(attrs.maxdpr < attrs.dpr){
-			attrs.dpr = attrs.maxdpr;
+		event.initEvent('lazyriasmodifyoptions', true, false);
+
+		opts.width = width;
+		opts.height = elem.offsetHeight;
+
+		opts.dpr = window.devicePixelRatio || 1;
+
+		if(opts.maxdpr < opts.dpr){
+			opts.dpr = opts.maxdpr;
 		}
 
-		if(attrs.dpr > 1.4 && attrs.quality > attrs.hdQuality){
-			attrs.quality = attrs.hdQuality;
+		if(opts.dpr > 1.4 && opts.quality > opts.hdQuality){
+			opts.quality = opts.hdQuality;
 		}
 
-		if(attrs.dpr){
-			attrs.width *= attrs.dpr;
+		if(opts.dpr > 1){
+			opts.width *= opts.dpr;
+			opts.height *= opts.dpr;
 		}
 
-		if(riasCfg.formats){
-			riasCfg.formats.width = attrs.width;
-			attrs.width = riasCfg.formats.reduce(reduceNearest);
+		if(formats){
+			if(Array.isArray(formats)){
+				formats.width = opts.width;
+				opts.width = formats.reduce(reduceNearest);
+			} else {
+				opts.width = Math.round(opts.width / formats) * formats;
+			}
 		}
 
-		riasCfg.adjustAttrs(attrs, elem);
+		riasCfg.modifyOptions(opts, elem);
+		event.details = opts;
+		elem.dispatchEvent(event);
 
-		return attrs;
+		return opts;
 	}
 
 	function init(){
 
 		document.addEventListener('lazybeforesizes', function(e){
-			var src, attrs, isPicture, parent, sources, i, len, setAttr, changed, isRespimage, imageData, sourceSrc, prefix, postfix;
+			var src, elemOpts, parent, sources, i, len, setAttr, changed, isRespimage, imageData, sourceSrc, prefix, postfix;
 
 
 			if(e.defaultPrevented ||
-				!(src = e.target._lazyRiasSrc || e.target.getAttribute(riasCfg.urlAttr)) ||
+				!(src = e.target._lazyRiasSrc || e.target.getAttribute( e.target.getAttribute('data-srcattr') || riasCfg.srcAttr )) ||
 				(e.target._lazysizesWidth && e.target._lazysizesWidth > e.details.width)){return;}
 
-			attrs = createAttrObject(e.target, e.details.width);
-			prefix = replaceUrlProps(riasCfg.prefix, attrs);
-			postfix = replaceUrlProps(riasCfg.postfix, attrs);
+			elemOpts = createAttrObject(e.target, e.details.width);
+			prefix = replaceUrlProps(elemOpts.prefix, elemOpts);
+			postfix = replaceUrlProps(elemOpts.postfix, elemOpts);
 
-			parent = e.target.parentNode;
-			isPicture = parent && regPicture.test(parent.nodeName || '');
+
 			setAttr = e.details.dataAttr ? config.srcAttr : 'src';
 
 			if(!e.target._lazyRiasSrc){
 				e.target._lazyRiasSrc = src;
 			}
 
-			if(isPicture || e.target.getAttribute( (e.details.dataAttr ? config.srcsetAttr : 'srcset') )){
+			if(elemOpts.isPicture || e.target.getAttribute( (e.details.dataAttr ? config.srcsetAttr : 'srcset') )){
 				setAttr = e.details.dataAttr ? config.srcsetAttr : 'srcset';
 				isRespimage = true;
 			}
 
-			if(isPicture){
+			if(elemOpts.isPicture && (parent = e.target.parentNode)){
+
 				sources = parent.getElementsByTagName('source');
 				for(i = 0, len = sources.length; i < len; i++){
-					sourceSrc = sources[i]._lazyRiasSrc || sources[i].getAttribute(riasCfg.urlAttr) || sources[i].getAttribute(config.srcsetAttr);
+					sourceSrc = sources[i]._lazyRiasSrc || sources[i].getAttribute(riasCfg.srcAttr) || sources[i].getAttribute(config.srcsetAttr);
 
 					if(!sources[i]._lazyRiasSrc){
 						sources[i]._lazyRiasSrc = sourceSrc;
 					}
-					if( setSrc(sourceSrc, attrs, sources[i], setAttr, prefix, postfix) ){
+					if( setSrc(sourceSrc, elemOpts, sources[i], setAttr, prefix, postfix) ){
 						changed = 'changed';
 					}
 				}
 			}
 
-			if(setSrc(src, attrs, e.target, setAttr, prefix, postfix)){
+			if(setSrc(src, elemOpts, e.target, setAttr, prefix, postfix)){
 				changed = true;
 			}
 
+			if(isRespimage){
+				e.target.setAttribute('sizes', e.details.width+'px');
+			}
+			e.target._lazysizesWidth = e.details.width;
+			e.preventDefault();
+
 			if(isRespimage && changed && !e.details.dataAttr && !window.HTMLPictureElement){
-				e.target._lazysizesWidth = e.details.width;
+
 				if(window.picturefill){
 					picturefill({reevaluate: true, reparse: true, elements: [e.target]});
 				} else if(window.respimage && !respimage._.observer){
@@ -229,10 +262,8 @@
 				}
 
 			}
-			if(isRespimage){
-				e.target.setAttribute('sizes', e.details.width+'px');
-			}
-			e.preventDefault();
+
+
 
 
 		}, false);

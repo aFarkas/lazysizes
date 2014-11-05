@@ -4,27 +4,18 @@
 	<meta charset="UTF-8">
 	<title>lazysizes - the restfull responsive image service extension/plugin </title>
 
-	<!-- polyfill responsive images: https://github.com/aFarkas/respimage -->
-	<script>
-		if(!window.HTMLPictureElement){
-			//load respimage polyfill
-			document.write('<script src="http://rawgit.com\/aFarkas\/respimage\/stable\/respimage.min.js" async=""><\/script>');
-		}
-	</script>
-
 	<link href="../assets/css/tidy.css" rel="stylesheet" />
 	<style>
-		.nav {
-			margin-bottom: 30px;
+		.thumbnail img {
+			width: 100%;
+			height: auto;
 		}
 		.intrinsic {
 			position: relative;
-			padding-bottom: 75%;
+			padding-bottom: 66.6%;
 			height: 0;
 		}
-		.intrinsic-2 {
-			padding-bottom: 56.25%;
-		}
+
 		.intrinsic-square {
 			padding-bottom: 100%;
 		}
@@ -44,31 +35,6 @@
 			tab-size: 2;
 		}
 
-		.scroll-view {
-			overflow: auto;
-			overflow-x: auto;
-			overflow-y: hidden;
-			position: relative;
-			width: 100%;
-			padding: 2px 2px 10px;
-		}
-		.scroll-doc {
-			display: table;
-			position: relative;
-			text-align: left;
-		}
-		.scroll-item {
-			display: table-cell;
-			vertical-align: middle;
-		}
-		.scroll-item .thumbnail {
-			margin: 5px 10px;
-			width: 230px;
-		}
-		.scroll-item .thumbnail img {
-			width: 100%;
-			height: auto;
-		}
 	</style>
 	<script>
 		document.createElement('picture');
@@ -76,19 +42,20 @@
 
 	<script>
 
-		window.lazySizesConfig = {
-			// uncomment next line to preload after onload (often recommended)
-			//preloadAfterLoad: true
-			//clearAttr: true
+		window.lazySizesConfig = window.lazySizesConfig || {};
+		window.lazySizesConfig.rias = window.lazySizesConfig.rias || {};
 
-			rias: {
-
-			}
-		};
+		window.lazySizesConfig.rias.maxdpr = 1.8;
 	</script>
 	<script src="../lazysizes.js"></script>
 	<script src="../plugins/rias/ls.rias.js"></script>
-
+	<!-- polyfill responsive images: https://github.com/aFarkas/respimage -->
+	<script>
+		if(!window.HTMLPictureElement){
+			//load respimage polyfill
+			document.write('<script src="http://rawgit.com\/aFarkas\/respimage\/stable\/respimage.min.js" async=""><\/script>');
+		}
+	</script>
 </head>
 <body>
 
@@ -98,7 +65,7 @@
 	<div class="jumbotron">
 		<h1>lazySizes - <abbr title="Responsive Image as Service">RIaS</abbr> plugin</h1>
 		<p>The <strong>lazySizes Responsive Image as Service</strong> plugin allows you to extend <strong>lazysizes</strong> with any third party or self hosted REST like image API service.</p>
-		<p>For a short <a href="https://github.com/aFarkas/lazysizes/blob/gh-pages/plugins/rias/README.md">full API description go to the readme.md</a>.</p>
+		<p>For a short but <a href="https://github.com/aFarkas/lazysizes/blob/gh-pages/plugins/rias/README.md">full API description go to the readme.md</a>.</p>
 	</div>
 
 	<div id="examples">
@@ -177,7 +144,11 @@
 									media="(max-width: 500px)" />
 							<source
 									data-src="http://placehold.it/{width}/e8117f/fff"
-									media="(max-width: 1024px)" />
+									media="(max-width: 1090px)" />
+							<source
+									data-src="http://placehold.it/{width}/7D26CD/fff"
+									media="(min-width: 1224px)" />
+
 							<!--[if IE 9]></audio><![endif]-->
 							<img
 								src="http://placehold.it/100"
@@ -192,11 +163,62 @@
 			</div>
 			<div class="col-sm-6">
 				<h3><abbr title="Responsive Image as Service">RIaS</abbr> and Art direction using the <code>picture</code> element</h3>
-				<p></p>
-<pre>&lt; /&gt;
+				<p>A responsive image service can be also combined with the art direction approach using the HTML5 <code>picture</code> element:</p>
+<pre>&lt;picture>
+&lt;!--[if IE 9]>&lt;audio&gt;&lt;![endif]--&gt;
+&lt;source
+		data-src="http://placehold.it/{width}/1111ee/fff"
+		media="(max-width: 500px)" /&gt;
+	&lt;source
+			data-src="http://placehold.it/{width}/e8117f/fff"
+			media="(max-width: 1090px)" /&gt;
+	&lt;source
+			data-src="http://placehold.it/{width}/7D26CD/fff"
+			media="(min-width: 1224px)" /&gt;
+
+&lt;!--[if IE 9]&gt;&lt;/audio&gt;&lt;![endif]--&gt;
+&lt;img
+		src="http://placehold.it/100"
+		data-src="http://placehold.it/{width}"
+		data-sizes="auto"
+		class="lazyload"
+		alt="" /&gt;
+&lt;/picture&gt;
 </pre>
 			</div>
 
+		</div>
+
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="thumbnail">
+					<div>
+						<picture>
+							<!--[if IE 9]><audio><![endif]-->
+							<source
+									data-src="http://app.resrc.it/C=W1050,H900/S=W700/http://www.your-site.co/image.jpg"
+									media="(max-width: 800px)" />
+							<source
+									data-src="http://app.resrc.it/C=W1350,H1100,X100,Y100/S=W700/http://www.your-site.co/image.jpg"
+									media="(max-width: 1200px)" />
+							<!--[if IE 9]></audio><![endif]-->
+							<img
+									src="http://app.resrc.it/S=W100/http://www.your-site.co/image.jpg"
+									data-src="http://app.resrc.it/S=W{width}/http://www.your-site.co/image.jpg"
+									data-sizes="auto"
+									class="lazyload"
+									alt="" />
+						</picture>
+
+					</div>
+					<div class="caption">
+						<h3><abbr title="Responsive Image as Service">RIaS</abbr> and Art direction using the <code>picture</code> element</h3>
+						<p>A responsive image service can be also combined with the art direction approach using the HTML5 <code>picture</code> element.</p>
+						<p>In this case, we simply use the cropping service</p>
+					</div>
+				</div>
+
+			</div>
 		</div>
 
 	</div>

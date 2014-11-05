@@ -1,6 +1,6 @@
 #lazysizes maxdpr plugin
 
-**lazysizes** maxdpr plugin helps you to limit/constrain the maximum resolution in case the **w descriptor** is used by adding the attribute ``data-maxdpr="1.6"``.
+**lazysizes** maxdpr plugin helps you to limit/constrain the maximum resolution in case the **w descriptor** is used. Simply add the attribute ``data-maxdpr="1.6"`` to constrain the max resolution to 1.6.
 
 It gives you therefore more control to trade perceived quality against perceived performance on HD retina devices, than the HTML responsive image standard gives you.
 
