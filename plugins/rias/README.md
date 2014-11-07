@@ -107,18 +107,18 @@ All rias options, which represent primitive data types (i.e.: string, numbers or
 
 * ``lazySizesConfig.rias.modifySrc`` (default: ``function`` noop ): A function that gets passed the generated src, the ``img``/``source`` element and the option object. The function can modify/change the generated src and return it.
 * ``lazySizesConfig.rias.prefix`` (default: ``""``): A string, which is prepended to the generated src.
-    ```html
-    <script>
-    window.lazySizesConfig = window.lazySizesConfig || {};
-    window.lazySizesConfig.rias = {
-        prefix: 'http://placehold.it/'
-    };
-    </script>
-    <img
-        src="http://placehold.it/100"
-        data-src="{width}"
-        data-sizes="auto"
-        class="lazyload"
-        alt="" />
-    ```
+```html
+<script>
+window.lazySizesConfig = window.lazySizesConfig || {};
+window.lazySizesConfig.rias = {
+    prefix: 'http://placehold.it/'
+};
+</script>
+<img
+    src="http://placehold.it/100"
+    data-src="{width}"
+    data-sizes="auto"
+    class="lazyload"
+    alt="" />
+```
 * ``lazySizesConfig.rias.postfix`` (default: ``""`` ): A string, which is appended to the generated src.

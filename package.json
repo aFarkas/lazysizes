@@ -1,17 +1,12 @@
 {
 	"name": "lazysizes",
-	"version": "0.4.0",
+	"version": "0.4.1",
 	"author": "Alexander Farkas <info@corrupt-system.de>",
 	"repository": {
 		"type": "git",
 		"url": "git://github.com/aFarkas/lazysizes.git"
 	},
-	"engines": {
-		"node": ">= 0.8.0"
-	},
-	"scripts": {
-		"test": "grunt test --verbose"
-	},
+	"browser": "lazysizes.js",
 	"devDependencies": {
 		"grunt": "~0.4.2",
 		"grunt-cli": "~0.1",
@@ -30,5 +25,5 @@
 		]
 	},
 	"description": "High performance (jankfree) lazy loader for images (including responsive images), iframes and scripts (widgets).",
-	"keywords": ["lazy", "lazyloader", "performance", "responsive", "image", "responsive images", "picture", "srcset"]
+	"keywords": ["lazy", "loader", "lazyloader", "performance", "responsive", "image", "responsive images", "picture", "srcset", "respimg", "respimage"]
 }

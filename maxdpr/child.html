@@ -38,6 +38,9 @@
 	<p><span class="label label-success">number in green</span> is the image selected. While <span class="label label-default">number in gray</span> is the next lower and <span class="label label-danger">number in red</span> is the next higher candidate.</p>
 	<p>The image on the left side has the <code>data-maxdpr</code> attribute attached, while the same image on the right side is always loaded with the full density.</p>
 </div>
+<div class="alert alert-info">
+	<p>As you will see with this demo. Some images do gain significant quality with retina, but some others don't. The standard HTML responsive image markup has no way to tell the browser about does differences, therefore the browser often can't make educated decisions. The maxdpr plugin solves this by limiting the source canidates to reasonable ones.</p>
+</div>
 <table class="table table-condensed table-striped">
 	<thead>
 		<tr>
