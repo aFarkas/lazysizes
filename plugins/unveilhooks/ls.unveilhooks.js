@@ -24,13 +24,29 @@ For background images, use data-bg attribute:
 
 (function(window, document){
 	'use strict';
-	var config;
+	var config, bgLoad;
 	var scriptUrls = {};
-	if(document.addEventListener){
+
+	if(document.addEventListener && window.getComputedStyle){
 		config = window.lazySizesConfig || (window.lazySizes && lazySizes.cfg) || {};
 
+		bgLoad = function (url, cb){
+			var img = document.createElement('img');
+			img.onload = function(){
+				img.onload = null;
+				img = null;
+				cb();
+			};
+
+			img.src = url;
+
+			if(img && img.complete && img.onload){
+				img.onload();
+			}
+		};
+
 		document.addEventListener('lazybeforeunveil', function(e){
-			var tmp;
+			var tmp, bg, load;
 			if(!e.defaultPrevented) {
 
 				if(e.target.preload == 'none'){
@@ -41,7 +57,17 @@ For background images, use data-bg attribute:
 				// handle data-bg
 				tmp = e.target.getAttribute('data-bg');
 				if (tmp) {
-					e.target.style.backgroundImage = 'url(' + tmp + ')';
+					bg = getComputedStyle(e.target).getPropertyValue("backgroundImage");
+					load = function(){
+						e.target.style.backgroundImage = 'url(' + tmp + ')';
+					};
+
+					if(bg && bg != 'none'){
+						bgLoad(tmp, load);
+					} else {
+						load();
+					}
+
 					if(config.clearAttr){
 						e.target.removeAttribute('data-bg');
 					}
@@ -52,7 +78,17 @@ For background images, use data-bg attribute:
 				// handle data-poster
 				tmp = e.target.getAttribute('data-poster');
 				if(tmp){
-					e.target.poster = tmp;
+
+					load = function(){
+						e.target.poster = tmp;
+					};
+
+					if(e.target.getAttribute('poster')){
+						bgLoad(tmp, load);
+					} else {
+						load();
+					}
+
 					if(config.clearAttr){
 						e.target.removeAttribute('data-poster');
 					}
