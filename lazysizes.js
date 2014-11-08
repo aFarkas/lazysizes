@@ -19,9 +19,6 @@
 	var regPicture = /^picture$/i;
 	var regImg = /^img$/i;
 	var inViewTreshhold = 10;
-	// currently only chrome and IE do support aborting image downloads by changing the src
-	// sadly we can't feature detect it
-	var supportImageAbort = (/rident|hrome/).test(navigator.userAgent || '');
 
 	var setImmediate = window.setImmediate || window.setTimeout;
 	var addRemoveImgEvents = function(dom, fn, add){
@@ -29,10 +26,7 @@
 		dom[action]('load', fn, false);
 		dom[action]('error', fn, false);
 	};
-	var unveilAfterLoad = function(e){
-		addRemoveImgEvents(e.target, unveilAfterLoad);
-		unveilLazy(e.target, true);
-	};
+
 	var triggerEvent = function(elem, name, details){
 		var event = document.createEvent('Event');
 
@@ -200,18 +194,6 @@
 			//allow using sizes="auto", but don't use. it's invalid. Use data-sizes="auto" or a valid value for sizes instead (i.e.: sizes="80vw")
 			sizes = elem.getAttribute(lazySizesConfig.sizesAttr) || elem.getAttribute('sizes');
 
-			if(regImg.test(elem.nodeName || '')) {
-				parent = elem.parentNode;
-				isPicture = regPicture.test(parent.nodeName || '');
-
-				//LQIP
-				if(!supportImageAbort && !isPicture && !force && !elem.complete && elem.getAttribute('src') && elem.src && !elem.lazyload){
-					addRemoveImgEvents(elem, unveilAfterLoad);
-					addRemoveImgEvents(elem, unveilAfterLoad, true);
-					return;
-				}
-			}
-
 			if(sizes){
 				if(sizes == 'auto'){
 					updateSizes(elem, true);
@@ -226,26 +208,36 @@
 			srcset = elem.getAttribute(lazySizesConfig.srcsetAttr);
 			src = elem.getAttribute(lazySizesConfig.srcAttr);
 
-			if(isPicture){
-				sources = parent.getElementsByTagName('source');
-				for(i = 0, len = sources.length; i < len; i++){
-					sourceSrcset = sources[i].getAttribute(lazySizesConfig.srcsetAttr);
-					if(sourceSrcset){
-						sources[i].setAttribute('srcset', sourceSrcset);
-					}
-				}
+			if(regImg.test(elem.nodeName || '')) {
+				parent = elem.parentNode;
+				isPicture = regPicture.test(parent.nodeName || '');
 			}
 
-			if(srcset){
-				elem.setAttribute('srcset', srcset);
-				if(lazySizesConfig.clearAttr){
-					elem.removeAttribute(lazySizesConfig.srcsetAttr);
+			if(srcset || src){
+
+				if(isPicture){
+					sources = parent.getElementsByTagName('source');
+					for(i = 0, len = sources.length; i < len; i++){
+						sourceSrcset = sources[i].getAttribute(lazySizesConfig.srcsetAttr);
+						if(sourceSrcset){
+							sources[i].setAttribute('srcset', sourceSrcset);
+						}
+					}
 				}
-			} else if(src){
-				elem.setAttribute('src', src);
-				if(lazySizesConfig.clearAttr) {
-					elem.removeAttribute(lazySizesConfig.srcAttr);
+
+				if(srcset){
+					elem.setAttribute('srcset', srcset);
+					if(lazySizesConfig.clearAttr){
+						elem.removeAttribute(lazySizesConfig.srcsetAttr);
+					}
+				} else if(src){
+					elem.setAttribute('src', src);
+					if(lazySizesConfig.clearAttr) {
+						elem.removeAttribute(lazySizesConfig.srcAttr);
+					}
 				}
+
+
 			}
 		}
 

@@ -41,7 +41,6 @@
 2. **Future-proof**: It directly includes standard responsive image support (``picture`` and ``srcset``)
 3. **Seperation of concerns**: For responsive image support it adds an automatic ``sizes`` calculation feature.
 4. **Performance**: It's based on high efficient code (runtime **and** memory) to work jank-free at 60fps.
-5. Works together with [**low quality image placeholders**](http://www.guypo.com/feo/introducing-lqip-low-quality-image-placeholders/) patterns.
 
 ##[Demo with code examples](http://afarkas.github.io/lazysizes/#examples)
 Can be seen [here](http://afarkas.github.io/lazysizes/#examples).
@@ -73,8 +72,11 @@ Add the ``class`` ``lazyload`` to all ``img`` and ``iframe`` elements, which sho
 
 **Important: How ``sizes`` is calculated**: The automatic sizes calculation takes the width of the image and the width of its parent element and uses the largest number of those two calculated numbers. It's therefore important that all images with a ``data-sizes="auto"`` attribute are constrained in width by its parent element. Otherwise a wrong (too big) ``sizes`` attribute will be calculated.
 
-##Recommended markup: LQIP
-We recommend to use the LQIP pattern (low quality image placeholder): Simply add a low quality image as the ``src``:
+##Recommended markup patterns
+For image bots (search engines and social networks), legacy browsers (IE8) or JS disabled browsers, it is important to serve a usable ``src`` attribute:
+
+###LQIP
+The LQIP pattern (low quality image placeholder): Simply add a low quality image as the ``src``:
 
 ```html
 <!-- responsive example: -->
@@ -90,7 +92,33 @@ We recommend to use the LQIP pattern (low quality image placeholder): Simply add
 <img src="lqip-src.jpg" data-src="image.jpg" class="lazyload" />
 ```
 
-The recommended LQIP pattern has the following advantages: The lqip-src is not hidden from the preload parser and loads very fast, which leads to an extreme fast first impression and in case of legacy browsers/devices or searchengines (bots) as a good enough fallback (IE8 and Android 2 devices as also JS disabled).
+The LQIP pattern has the following advantages: The lqip-src is not hidden from the preload parser and loads very fast, which leads to an extreme fast first impression and in case of legacy browsers/devices or searchengines (bots) as a good enough fallback (IE8 and Android 2 devices as also JS disabled). In case your lqip source is extreme fuzzy, you should consider serving either a higher quality, setting ``preloadAfterLoad`` to ``true`` or use the "noscript" pattern. The human eye/brain dislikes too heavy image quality jumps...
+
+###The noscript pattern
+In case you want to save more initial image data the LQIP can't be used (an extreme fuzzy image does neither work as a good enough first impression nor as a fallback) or in case you can't even generate a lqip src, but the image is important you can use the noscript pattern, which uses a 1x1 pixel grey image combined with a noscript tag:
+
+```html
+<style>
+	.lt-ie9 img.lazyload, /* just if you use extened IE8 noscript pattern */
+	.no-js img.lazyload {
+    	display: none;
+    }
+</style>
+
+<!-- noscript pattern without IE8 fallback -->
+<noscript>
+	<img src="image.jpg" />
+</noscript>
+<img src="grey.jpg" data-src="image.jpg" class="lazyload" />
+
+<!-- extended noscript pattern with IE8 fallback -->
+<!--[if ! lt IE 9]><!--><noscript><!--<![endif]-->
+	<img src="image.jpg" />
+<!--[if ! lt IE 9]><!--></noscript><!--<![endif]-->
+<!--[if gt IE 8]><!-->
+<img src="grey.jpg" data-src="image.jpg" class="lazyload" />
+<!--<![endif]-->
+```
 
 ###JS API 
 **lazysizes** automatically detects new elements with the class ``lazyload`` so you won't need to call or configure anything in most situations.
@@ -108,7 +136,7 @@ window.lazySizesConfig = {
 Here the list of options:
 
 * ``lazySizesConfig.lazyClass`` (default: ``"lazyload"``): Marker class for all elements which should be lazy loaded (There can be only one ``class``. In case you need to add some other element, without the defined class, simply add it per JS: ``$('.lazy-others').addClass('lazyload');``)
-* ``lazySizesConfig.preloadAfterLoad`` (default: ``false``): Wether lazysizes should load all elements after the window onload event. (Note: lazysizes will then load all elements using a queue. Only two parallel elements are loaded at the same time. This makes sure that other postboned downloads are not blocked.). It's unsure wether this should be ``true`` by default (depends...). Recommendation: Set this to ``true`` in case you don't use the LQIP pattern or you do not optimize for mobile.
+* ``lazySizesConfig.preloadAfterLoad`` (default: ``false``): Wether lazysizes should load all elements after the window onload event. (Note: lazysizes will then load the elements using a queue. Only two parallel elements are loaded at the same time. This makes sure that other postboned downloads are not blocked.).
 * ``lazySizesConfig.onlyLargerSizes`` (default: ``true``): In case a responsive image had the ``data-sizes="auto"`` attribute and the computed new size decreases, lazysizes won't normally change the ``sizes`` attribute to a lower value.
 * ``lazySizesConfig.clearAttr`` (default: ``false``): Set this to ``true`` if you want lazysizes to remove the ``data-`` attributes after doing it's work.
 * ``lazySizesConfig.srcAttr`` (default: ``"data-src"``): The attribute, which should be transformed to ``src``.

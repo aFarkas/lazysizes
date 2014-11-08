@@ -35,7 +35,7 @@
 			srcAttr: 'data-src',
 			quality: 85,
 			hdQuality: 70,
-			maxdpr: 2,
+			maxdpr: 1.7,
 			absUrl: false,
 			encodeSrc: false,
 			modifySrc: noop,

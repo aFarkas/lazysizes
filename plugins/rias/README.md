@@ -1,6 +1,6 @@
-#lazysizes RIaS extension (Responsive image as a service) 
+#lazysizes RIaS extension (Responsive image as a service / Responsive image on demand) 
 
-The RiaS plugin enables lazySizes to hook into any third party (ReSrc, Pixtulate, mobify ...) or self hosted restful responsive image service. This is currently the best way to serve responsive adaptive and / or retina optimized images.
+The RiaS plugin enables lazySizes to hook into any third party (ReSrc, Pixtulate, mobify ...) or self hosted restful responsive image service (responsive image on demand). This is currently the best way to serve responsive adaptive and / or retina optimized images.
 
 The rias plugin also allows art direction by combining rias with a ``picture`` element.
 
@@ -23,8 +23,7 @@ The rias plugin also allows art direction by combining rias with a ``picture`` e
 	class="lazyload"
 	alt="" />
 ```
-    
-    
+
 ##[Demo](http://afarkas.github.io/lazysizes/rias/)
 A [demo with markup and code examples can be seen here](http://afarkas.github.io/lazysizes/rias/).
 
@@ -76,16 +75,15 @@ Most usefull placeholders are:
     alt="" />
 ```
 
-All rias options, which represent primitive data types (i.e.: string, numbers or boolean) can also be used as {placeholder} inside the url.
+All rias options, which represent primitive data types (i.e.: string, numbers or boolean) can also be used as a {placeholder} inside the url.
 
 ###List of Options
 
-
 * ``lazySizesConfig.rias.srcsetAttr`` (default: ``"data-src"``): The attribute, which should be transformed to ``src``.
+* ``lazySizesConfig.rias.formats`` (``number``|``array of numbers`` or ``false``): The formats option reduces the calculated ``width`` to the allowed formats. In case of a ``number`` (i.e.: ``100``) the rias plugin will round the calculated ``width`` number. In case of an ``array`` the rias plugin will take the nearest number inside of this array. The numeric formats can also be simply mapped to a string (i.e.: small, medium, large) using the ``modifyOptions`` callback.
 * ``lazySizesConfig.rias.quality`` (default: 85): The default quality value for replacing the {quality} placeholder.
-* ``lazySizesConfig.rias.formats`` (``number``|``array of numbers`` or ``false``): The formats option reduces the calculated ``width`` to the allowed formats. In case of a ``number`` (i.e.: ``100``) the rias plugin will round the calculated ``width`` number. In case of an ``array`` the rias plugin will take the nearest number inside of this array.
 * ``lazySizesConfig.rias.hdQuality`` (default: 70): On higher resolutions it is often possible to use heavier compressed images without reducing the perceived image quality. If a retina device is used the {quality} placeholder  is replaced by the ``hdQuality`` option instead of the normal ``quality`` option.
-* ``lazySizesConfig.rias.maxdpr`` (default: ``2``): Some images do not gain perceived image quality on higher resolution. With the ``maxdpr`` option the calculated ``width`` can be constrained.
+* ``lazySizesConfig.rias.maxdpr`` (default: ``1.7``): A lot of images do not gain perceived image quality on higher resolution. With the ``maxdpr`` option the calculated ``width`` can be constrained.
 * ``lazySizesConfig.rias.absUrl`` (default: ``false``): Wether the value of the ``data-src``/``srcsetAttr`` attribute should be resolved to an absolute url.
 * ``lazySizesConfig.rias.encodeSrc`` (default: ``false``): Wether the value of the ``data-src``/``srcsetAttr`` should be encoded using ``encodeURIComponent``
 * ``lazySizesConfig.rias.modifyOptions`` (default: ``function`` noop ): A ``function`` that gets the option as first and the corresponding ``img`` elment as the second argument. Can be used to modify existing options/placholder values or to add new placeholder values.
