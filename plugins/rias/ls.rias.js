@@ -1,7 +1,3 @@
-/*
-
-*/
-
 (function(window, document, undefined){
 	/*jshint eqnull:true */
 	'use strict';
@@ -9,11 +5,11 @@
 	if(!document.addEventListener){return;}
 
 	var config, riasCfg;
-	var regExps = {};
 	var copyAttrs = {string: 1, boolean: 1, number: 1};
 	var regNumber = /^\-*\+*\d+\.*\d*$/;
 	var regPicture = /^picture$/i;
 	var r20 = /%20/g;
+	var regPlaceholder = /\s*\{\s*([a-z0-9]+)\s*\}\s*/ig;
 	var anchor = document.createElement('a');
 
 	function createDefaultFormats(formats){
@@ -61,12 +57,6 @@
 				}
 			}
 
-			if(riasCfg.formats){
-				riasCfg.formats.sort(function(a, b) {
-					return a - b;
-				});
-			}
-
 			if(!riasCfg.disable){
 				init();
 			}
@@ -75,8 +65,8 @@
 		return false;
 	}
 
-	function getElementOptions(elem){
-		var attr, attrVal, parent;
+	function getElementOptions(elem, src){
+		var attr, parent, setOption;
 
 		var options = elem._lazyRiasOpts;
 
@@ -87,8 +77,9 @@
 			};
 
 			elem._lazyRiasOpts = options;
-			for(attr in riasCfg){
-				attrVal = elem.getAttribute('data-'+ attr);
+
+			setOption = function(attr, run){
+				var attrVal = elem.getAttribute('data-'+ attr);
 
 				if(attrVal != null){
 					if(attrVal == 'true'){
@@ -97,12 +88,26 @@
 						attrVal = false;
 					} else if(regNumber.test(attrVal)){
 						attrVal = parseFloat(attrVal);
+					} else if(typeof riasCfg[attr] == 'function'){
+						attrVal = riasCfg[attr](elem, attrVal);
 					}
 					options[attr] = attrVal;
 				} else if(copyAttrs[typeof riasCfg[attr]]){
 					options[attr] = riasCfg[attr];
+				} else if(run && typeof riasCfg[attr] == 'function'){
+					options[attr] = riasCfg[attr](elem, attrVal);
 				}
+			};
+
+			for(attr in riasCfg){
+				setOption(attr);
 			}
+
+			src.replace(regPlaceholder, function(full, match){
+				if(!(match in options)){
+					setOption(match, true);
+				}
+			});
 		}
 
 		return options;
@@ -112,16 +117,10 @@
 		return (Math.abs(curr - ar.width) < Math.abs(prev - ar.width) ? curr : prev);
 	}
 
-	function replaceUrlProps(src, attrs){
-		var attr, regAttr;
-		for(attr in attrs){
-			if(!regExps[attr]){
-				regExps[attr] = new RegExp('\\s*\\{\\s*' + attr + '\\s*\\}\\s*' , 'gi');
-			}
-			regAttr = regExps[attr];
-			src = src.replace(regAttr, attrs[attr]);
-		}
-		return src;
+	function replaceUrlProps(url, options){
+		return url.replace(regPlaceholder, function(full, match){
+			return (!(match in options)) ? full : options[match];
+		});
 	}
 
 	function setSrc(src, opts, elem, attrName, prefix, postfix ){
@@ -154,14 +153,13 @@
 		}
 	}
 
-	function createAttrObject(elem, width){
+	function createAttrObject(elem, width, src){
 
-		var opts = getElementOptions(elem);
+		var opts = getElementOptions(elem, src);
 		var formats = ('formats' in opts) ? opts.formats : riasCfg.formats;
 		var event = document.createEvent('Event');
 
-		event.initEvent('lazyriasmodifyoptions', true, false);
-
+		opts._elemWidth = width;
 		opts.width = width;
 		opts.height = elem.offsetHeight;
 
@@ -190,6 +188,8 @@
 		}
 
 		riasCfg.modifyOptions(opts, elem);
+
+		event.initEvent('lazyriasmodifyoptions', true, false);
 		event.details = opts;
 		elem.dispatchEvent(event);
 
@@ -206,7 +206,16 @@
 				!(src = e.target._lazyRiasSrc || e.target.getAttribute( e.target.getAttribute('data-srcattr') || riasCfg.srcAttr )) ||
 				(e.target._lazysizesWidth && e.target._lazysizesWidth > e.details.width)){return;}
 
-			elemOpts = createAttrObject(e.target, e.details.width);
+			elemOpts = e.target._lazyRiasOpts;
+
+			e.target._lazysizesWidth = e.details.width;
+			e.preventDefault();
+
+			if(elemOpts && elemOpts._elemWidth && (e.details.width - elemOpts._elemWidth) / elemOpts._elemWidth < 0.2){
+				return;
+			}
+
+			elemOpts = createAttrObject(e.target, e.details.width, src);
 			prefix = replaceUrlProps(elemOpts.prefix, elemOpts);
 			postfix = replaceUrlProps(elemOpts.postfix, elemOpts);
 
@@ -244,8 +253,6 @@
 			if(isRespimage){
 				e.target.setAttribute('sizes', e.details.width+'px');
 			}
-			e.target._lazysizesWidth = e.details.width;
-			e.preventDefault();
 
 			if(isRespimage && changed && !e.details.dataAttr && !window.HTMLPictureElement){
 

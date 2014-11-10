@@ -99,7 +99,7 @@ All rias options, which represent primitive data types (i.e.: string, numbers or
             640: 'medium',
             940: 'large'
         };
-        return widthMap[opts.width];
+        opts.width = widthMap[opts.width] || opts.width;
     };
 	```
 
