@@ -1,5 +1,5 @@
 #lazysizes
-**lazysizes** is a fast (jank-free) lazyloader for images (including responsive images), iframes and scripts/widgets. It may become also your number one tool to integrate responsive images. Due to the fact that it can also automatically calculate the ``sizes`` attribute for your responsive images, it helps to seperate layout (CSS) from content/structure (HTML) and makes integrating responsive images into any environment simply simple.
+**lazysizes** is a fast (jank-free) lazyloader for images (including responsive images), iframes and scripts/widgets. It may become also your number one tool to integrate responsive images. Due to the fact that it can also automatically calculate the ``sizes`` attribute for your responsive images, it helps to separate layout (CSS) from content/structure (HTML) and makes integrating responsive images into any environment simply simple.
 
 ##How to
 
@@ -39,7 +39,7 @@
 
 1. **Works without any configuration**: The script detects any changes to the visibility of an image/iframe automatically no matter whether it becomes visible through a user scroll, a CSS animation triggered through ``:hover`` or through any kind of JS behavior (carousel, infinite scroll, AJAX)...
 2. **Future-proof**: It directly includes standard responsive image support (``picture`` and ``srcset``)
-3. **Seperation of concerns**: For responsive image support it adds an automatic ``sizes`` calculation feature.
+3. **Separation of concerns**: For responsive image support it adds an automatic ``sizes`` calculation feature.
 4. **Performance**: It's based on high efficient code (runtime **and** memory) to work jank-free at 60fps.
 
 ##[Demo with code examples](http://afarkas.github.io/lazysizes/#examples)
