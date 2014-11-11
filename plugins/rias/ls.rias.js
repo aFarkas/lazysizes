@@ -15,8 +15,12 @@
 	function createDefaultFormats(formats){
 		var width;
 		var i = 0;
+		formats.push(96);
 		while(!width || width < 2800){
 			i += 10;
+			if(i > 60){
+				i += 10;
+			}
 			width = (16 * i);
 			formats.push(width);
 		}
@@ -29,8 +33,8 @@
 			prefix: '',
 			postfix: '',
 			srcAttr: 'data-src',
-			quality: 85,
-			hdQuality: 70,
+			quality: 80,
+			hdQuality: 65,
 			maxdpr: 1.7,
 			absUrl: false,
 			encodeSrc: false,
