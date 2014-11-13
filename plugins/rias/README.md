@@ -1,6 +1,6 @@
 #lazysizes RIaS extension (Responsive image as a service / Responsive image on demand) 
 
-The RiaS plugin enables lazySizes to hook into any third party (ReSrc, Pixtulate, mobify ...) or self hosted restful responsive image service (responsive image on demand). This is currently the best way to serve responsive adaptive and / or retina optimized images.
+The RiaS plugin enables lazySizes to hook into any third party (ReSrc, Pixtulate, mobify ...) or self hosted restful responsive image service (responsive image on demand). With lazysizes + rias extension you have a script to rule them all. You won't need to include a script provided by a third party image on demand service.
 
 The rias plugin also allows art direction by combining rias with a ``picture`` element.
 
@@ -81,8 +81,8 @@ All rias options, which represent primitive data types (i.e.: string, numbers or
 
 * ``lazySizesConfig.rias.srcsetAttr`` (default: ``"data-src"``): The attribute, which should be transformed to ``src``.
 * ``lazySizesConfig.rias.formats`` (``number``|``array of numbers`` or ``false``): The formats option reduces the calculated ``width`` to the allowed formats. In case of a ``number`` (i.e.: ``100``) the rias plugin will round the calculated ``width`` number. In case of an ``array`` the rias plugin will take the nearest number inside of this array. The numeric formats can also be simply mapped to a string (i.e.: small, medium, large) using the ``modifyOptions`` callback. The default value is the following array: ``[96, 160, 320, 480, 640, 800, 960, 1280, 1600, 1920, 2240, 2560, 2880]``.
-* ``lazySizesConfig.rias.quality`` (default: 80): The default quality value for replacing the {quality} placeholder.
-* ``lazySizesConfig.rias.hdQuality`` (default: 65): On higher resolutions it is often possible to use heavier compressed images without reducing the perceived image quality. If a retina device is used the {quality} placeholder  is replaced by the ``hdQuality`` option instead of the normal ``quality`` option.
+* ``lazySizesConfig.rias.quality`` (default: 78): The default quality value for replacing the {quality} placeholder.
+* ``lazySizesConfig.rias.hdQuality`` (default: 60): On higher resolutions it is often possible to use heavier compressed images without reducing the perceived image quality. If a retina device is used the {quality} placeholder  is replaced by the ``hdQuality`` option instead of the normal ``quality`` option.
 * ``lazySizesConfig.rias.maxdpr`` (default: ``1.7``): A lot of images do not gain perceived image quality on higher resolution. With the ``maxdpr`` option the calculated ``width`` can be constrained.
 * ``lazySizesConfig.rias.absUrl`` (default: ``false``): Wether the value of the ``data-src``/``srcsetAttr`` attribute should be resolved to an absolute url.
 * ``lazySizesConfig.rias.encodeSrc`` (default: ``false``): Wether the value of the ``data-src``/``srcsetAttr`` should be encoded using ``encodeURIComponent``

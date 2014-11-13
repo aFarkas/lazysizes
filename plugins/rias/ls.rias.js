@@ -33,8 +33,8 @@
 			prefix: '',
 			postfix: '',
 			srcAttr: 'data-src',
-			quality: 80,
-			hdQuality: 65,
+			quality: 78,
+			hdQuality: 60,
 			maxdpr: 1.7,
 			absUrl: false,
 			encodeSrc: false,
@@ -163,7 +163,6 @@
 		var formats = ('formats' in opts) ? opts.formats : riasCfg.formats;
 		var event = document.createEvent('Event');
 
-		opts._elemWidth = width;
 		opts.width = width;
 		opts.height = elem.offsetHeight;
 
@@ -223,7 +222,6 @@
 			prefix = replaceUrlProps(elemOpts.prefix, elemOpts);
 			postfix = replaceUrlProps(elemOpts.postfix, elemOpts);
 
-
 			setAttr = e.details.dataAttr ? config.srcAttr : 'src';
 
 			if(!e.target._lazyRiasSrc){
@@ -258,24 +256,23 @@
 				e.target.setAttribute('sizes', e.details.width+'px');
 			}
 
-			if(isRespimage && changed && !e.details.dataAttr && !window.HTMLPictureElement){
+			if(changed){
+				elemOpts._elemWidth = e.details.width;
 
-				if(window.picturefill){
-					picturefill({reevaluate: true, reparse: true, elements: [e.target]});
-				} else if(window.respimage && !respimage._.observer){
-					imageData = e.target[respimage._.ns];
-					if(changed === true && imageData){
-						imageData.srcset = undefined;
+				if(isRespimage && !e.details.dataAttr && !window.HTMLPictureElement){
+					if(window.picturefill){
+						picturefill({reevaluate: true, reparse: true, elements: [e.target]});
+					} else if(window.respimage && !respimage._.observer){
+						imageData = e.target[respimage._.ns];
+						if(changed === true && imageData){
+							imageData.srcset = undefined;
+						}
+						respimage({reparse: true, elements: [e.target]});
+					} else if(window.console){
+						console.log('a picture/[srcset] polyfill is needed here.');
 					}
-					respimage({reparse: true, elements: [e.target]});
-				} else if(window.console){
-					console.log('a picture/[srcset] polyfill is needed here.');
 				}
-
 			}
-
-
-
 
 		}, false);
 	}
