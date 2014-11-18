@@ -450,6 +450,8 @@
 			}
 		},
 		updateSizes: updateSizes,
-		updatePolyfill: updatePolyfill
+		updatePolyfill: updatePolyfill,
+		aC: addClass,
+		rC: removeClass
 	};
 }));
