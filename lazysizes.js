@@ -259,6 +259,9 @@
 				updatePolyfill(elem, {srcset: srcset, src: src});
 			}
 		});
+
+		var event = triggerEvent(elem, 'lazyafterunveil');
+
 		return elem;
 	}
 
