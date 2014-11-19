@@ -158,6 +158,37 @@ document.addEventListener('lazybeforeunveil', function(e){
     }
 }, false);
 ```
+The ``lazybeforeunveil`` event can also be used to add fading effects:
+
+```html 
+<style>
+img.lazyload {
+    opacity: 0;
+}
+</style>
+
+<script>
+$(document).on('lazybeforeunveil', (function(){
+	var onLoad = function(e){
+		$(e.target)
+			.animate({opacity: 1})
+			.off('load error', onLoad)
+		;
+
+	};
+	return function(e){
+		if(!e.isDefaultPrevented()){
+			$(e.target)
+				.filter('img')
+					.css({opacity: 0})
+					.on('load error', onLoad)
+			;
+		}
+	};
+})());
+</script>
+```
+
 * ``lazybeforesizes``: This event will be fired on each element with the ``data-sizes="auto"`` attribute right before the calculated ``sizes`` attribute will be set. The ``event.details.width`` property is set to the calculated width of the element and can be changed to any number. In case the event is ``defaultPrevented`` the ``sizes`` attribute won't be set.
 
 ####JS API - methods
