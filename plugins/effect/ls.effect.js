@@ -16,7 +16,7 @@
  	}
 
  *
- * 2. fadein while loading:
+ * 2. fadein while loading (good for lqip):
  *
 
  	img.lazyload {
@@ -24,7 +24,7 @@
 	}
  	img.lazyloading {
  		opacity: 1;
- 		transition: opacity 300ms;
+ 		transition: opacity 500ms;
  	}
  */
 

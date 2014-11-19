@@ -95,7 +95,7 @@ The LQIP pattern (low quality image placeholder): Simply add a low quality image
 The LQIP pattern has the following advantages: The lqip-src is not hidden from the preload parser and loads very fast, which leads to an extreme fast first impression and in case of legacy browsers/devices or searchengines (bots) as a good enough fallback (IE8 and Android 2 devices as also JS disabled). In case your lqip source is extreme fuzzy, you should consider serving either a higher quality, setting ``preloadAfterLoad`` to ``true`` or use the "noscript" pattern. The human eye/brain dislikes too heavy image quality jumps...
 
 ###The noscript pattern
-In case you want to save more initial image data the LQIP can't be used (an extreme fuzzy image does neither work as a good enough first impression nor as a fallback) or in case you can't even generate a lqip src, but the image is important you can use the noscript pattern, which uses a 1x1 pixel grey image combined with a noscript tag:
+In case you want to save more initial image data the LQIP pattern can't be used (an extreme fuzzy image does neither work as a good enough first impression nor as a fallback) or in case you can't even generate a LQIP src, but the image is important you can use the noscript pattern, which uses a 1x1 pixel grey image combined with a noscript tag:
 
 ```html
 <style>
@@ -146,7 +146,7 @@ Here the list of options:
 ####JS API - events
 **lazysizes** provides two events to modify or extend the behavior of **lazysizes**.
 
-* ``lazybeforeunveil``: This event will be fired on each lazyload element right before of the "unveil" transformation. Can be used to extend the unveil functionality. In case the event is ``defaultPrevented`` the default transformation action will be prevented (see also the [ls.unveilhooks.js plugin](plugins/unveilhooks/ls.unveilhooks.js)):
+* ``lazybeforeunveil``: This event will be fired on each lazyload element right before of the "unveil" transformation. This event can be used to extend the unveil functionality. In case the event is ``defaultPrevented`` the default transformation action will be prevented (see also the [ls.unveilhooks.js plugin](plugins/unveilhooks/ls.unveilhooks.js)):
 ```js
 //add simple support for background images:
 document.addEventListener('lazybeforeunveil', function(e){
@@ -158,7 +158,8 @@ document.addEventListener('lazybeforeunveil', function(e){
     }
 }, false);
 ```
-The ``lazybeforeunveil`` event can also be used to add fading effects:
+
+The ``lazybeforeunveil`` event can also be used to add unveil effects:
 
 ```html 
 <style>
@@ -188,6 +189,8 @@ $(document).on('lazybeforeunveil', (function(){
 })());
 </script>
 ```
+
+Also see the [effect extensiton](plugins/effect).
 
 * ``lazybeforesizes``: This event will be fired on each element with the ``data-sizes="auto"`` attribute right before the calculated ``sizes`` attribute will be set. The ``event.details.width`` property is set to the calculated width of the element and can be changed to any number. In case the event is ``defaultPrevented`` the ``sizes`` attribute won't be set.
 
