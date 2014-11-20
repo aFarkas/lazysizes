@@ -56,7 +56,7 @@ Add the ``class`` ``lazyload`` to all ``img`` and ``iframe`` elements, which sho
 
 ```html
 <img data-src="image.jpg" class="lazyload" />
-<!-- responsive image: -->
+<!-- retina optimized image: -->
 <img data-srcset="responsive-image1.jpg 1x, responsive-image2.jpg 2x" class="lazyload" />
 ```
 
