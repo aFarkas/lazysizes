@@ -133,8 +133,4 @@
 		}
 	}, false);
 
-	if(window.console){
-		console[console.warn ? 'warn' : 'log']('maxdpr is deprecated. Please use the optimumx plugin.');
-	}
-
 })(window, document);

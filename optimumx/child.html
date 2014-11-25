@@ -4,9 +4,7 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="robots" content="noindex" />
-	<meta http-equiv="refresh" content="5; URL=../optimumx/index.html" />
-	<title>respimage performance test - responsive images with smallest candidate as fallback src</title>
+	<title>respimage performance test</title>
 	<link href="../assets/css/tidy.css" rel="stylesheet" />
 	<style>
 		* {
@@ -56,16 +54,16 @@
 <div class="alert alert-info alert-legend">
 	<p>The numbers on the top are the calculated resolutions for the image:</p>
 	<p><span class="label label-success">number in green</span> is the image selected. While <span class="label label-default">number in gray</span> is the next lower and <span class="label label-danger">number in red</span> is the next higher candidate.</p>
-	<p>The image on the left side has the <code>data-maxdpr</code> attribute attached, while the same image on the right side is always loaded with the full density.</p>
+	<p>The image on the left side has the <code>data-optimumx</code> attribute attached, while the same image on the right side is always loaded with the full density.</p>
 </div>
 <div class="alert alert-info">
-	<p>As you will see with this demo. Some images do gain significant quality with retina, but some others don't. The standard HTML responsive image markup has no way to tell the browser about does differences, therefore the browser often can't make educated decisions. The maxdpr plugin solves this by limiting the source canidates to reasonable ones.</p>
+	<p>As you will see with this demo. Some images do gain significant quality with retina, but some others don't. The standard HTML responsive image markup has no way to tell the browser about does differences, therefore the browser often can't make educated decisions. The optimumx plugin solves this by limiting the source canidates to reasonable ones.</p>
 </div>
 <table class="table table-condensed table-striped">
 	<thead>
 		<tr>
-			<th style="width: 50%;">with <code>data-maxdpr</code></th>
-			<th style="width: 50%;">without <code>data-maxdpr</code></th>
+			<th style="width: 50%;">with <code>data-optimumx</code></th>
+			<th style="width: 50%;">without <code>data-optimumx</code></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -74,8 +72,8 @@
 				<div class="thumbnail">
 					<img
 							data-sizes="auto"
-							class="lazyload maxdpr"
-							data-maxdpr="2.5"
+							class="lazyload optimumx"
+							data-optimumx="2.5"
 							src="http://placehold.it/175x75"
 							data-srcset="http://placehold.it/175x75 175w,
 					http://placehold.it/350x150 350w,
@@ -105,15 +103,15 @@
 			</td>
 		</tr>
 		<tr>
-			<th style="width: 50%;">with <code>data-maxdpr</code></th>
-			<th style="width: 50%;">without <code>data-maxdpr</code></th>
+			<th style="width: 50%;">with <code>data-optimumx</code></th>
+			<th style="width: 50%;">without <code>data-optimumx</code></th>
 		</tr>
 		<tr>
 			<td>
 				<div class="thumbnail">
 					<img
 							data-sizes="auto"
-							class="lazyload maxdpr"
+							class="lazyload optimumx"
 							src="https://farm5.staticflickr.com/4094/4859138371_9713d4396e_m.jpg"
 							data-srcset="https://farm5.staticflickr.com/4094/4859138371_9713d4396e_m.jpg 240w,
 https://farm5.staticflickr.com/4094/4859138371_9713d4396e_n.jpg 320w,
@@ -121,7 +119,7 @@ https://farm5.staticflickr.com/4094/4859138371_9713d4396e.jpg 500w,
 https://farm5.staticflickr.com/4094/4859138371_9713d4396e_z.jpg 640w,
 https://farm5.staticflickr.com/4094/4859138371_9713d4396e_b.jpg 1024w,
 https://farm5.staticflickr.com/4094/4859138371_a1b9081485_o.jpg 3648w"
-							data-maxdpr="1.4"
+							data-optimumx="1.4"
 							alt="Abandoned Boat" />
 
 				</div>
@@ -144,8 +142,8 @@ https://farm5.staticflickr.com/4094/4859138371_a1b9081485_o.jpg 3648w"
 			</td>
 		</tr>
 		<tr>
-			<th style="width: 50%;">with <code>data-maxdpr</code></th>
-			<th style="width: 50%;">without <code>data-maxdpr</code></th>
+			<th style="width: 50%;">with <code>data-optimumx</code></th>
+			<th style="width: 50%;">without <code>data-optimumx</code></th>
 		</tr>
 		<tr>
 			<td>
@@ -153,7 +151,7 @@ https://farm5.staticflickr.com/4094/4859138371_a1b9081485_o.jpg 3648w"
 				<div class="thumbnail">
 					<img
 							data-sizes="auto"
-							class="lazyload maxdpr"
+							class="lazyload optimumx"
 							src="https://farm6.staticflickr.com/5531/9638435181_7e3e44c2b8_m.jpg"
 							data-srcset="https://farm6.staticflickr.com/5531/9638435181_7e3e44c2b8_m.jpg 240w,
 https://farm6.staticflickr.com/5531/9638435181_7e3e44c2b8_n.jpg 320w,
@@ -164,7 +162,7 @@ https://farm6.staticflickr.com/5531/9638435181_7e3e44c2b8_b.jpg 1024w,
 https://farm6.staticflickr.com/5531/9638435181_ecbab20fc0_h.jpg 1600w,
 https://farm6.staticflickr.com/5531/9638435181_9da37d35d4_k.jpg 2048w,
 https://farm6.staticflickr.com/5531/9638435181_6b5ed94330_o.jpg 3648w"
-							data-maxdpr="1.6"
+							data-optimumx="1.6"
 							alt="Desert Road" />
 				</div>
 			</td>
@@ -190,8 +188,8 @@ https://farm6.staticflickr.com/5531/9638435181_6b5ed94330_o.jpg 3648w"
 			</td>
 		</tr>
 		<tr>
-			<th style="width: 50%;">with <code>data-maxdpr</code></th>
-			<th style="width: 50%;">without <code>data-maxdpr</code></th>
+			<th style="width: 50%;">with <code>data-optimumx</code></th>
+			<th style="width: 50%;">without <code>data-optimumx</code></th>
 		</tr>
 		<tr>
 			<td>
@@ -199,7 +197,7 @@ https://farm6.staticflickr.com/5531/9638435181_6b5ed94330_o.jpg 3648w"
 				<div class="thumbnail">
 					<img
 							data-sizes="auto"
-							class="lazyload maxdpr"
+							class="lazyload optimumx"
 							src="https://farm5.staticflickr.com/4078/5441060528_31db7838ba_m.jpg"
 							data-srcset="https://farm5.staticflickr.com/4078/5441060528_31db7838ba_m.jpg 240w,
 https://farm5.staticflickr.com/4078/5441060528_31db7838ba_n.jpg 320w,
@@ -207,7 +205,7 @@ https://farm5.staticflickr.com/4078/5441060528_31db7838ba.jpg 500w,
 https://farm5.staticflickr.com/4078/5441060528_31db7838ba_z.jpg 640w,
 https://farm5.staticflickr.com/4078/5441060528_31db7838ba_b.jpg 1024w,
 https://farm5.staticflickr.com/4078/5441060528_b066ce464a_o.jpg 1932w"
-							data-maxdpr="1.4"
+							data-optimumx="1.4"
 							alt="" />
 				</div>
 			</td>
@@ -230,15 +228,15 @@ https://farm5.staticflickr.com/4078/5441060528_b066ce464a_o.jpg 1932w"
 			</td>
 		</tr>
 		<tr>
-			<th>with <code>data-maxdpr</code></th>
-			<th>without <code>data-maxdpr</code></th>
+			<th>with <code>data-optimumx</code></th>
+			<th>without <code>data-optimumx</code></th>
 		</tr>
 		<tr>
 			<td>
 				<div class="thumbnail">
 					<img
 							data-sizes="auto"
-							class="lazyload maxdpr"
+							class="lazyload optimumx"
 							src="https://farm9.staticflickr.com/8200/8248153196_7a7664e147_m.jpg"
 							data-srcset="https://farm9.staticflickr.com/8200/8248153196_7a7664e147_m.jpg 240w,
 https://farm9.staticflickr.com/8200/8248153196_7a7664e147_n.jpg 320w,
@@ -248,7 +246,7 @@ https://farm9.staticflickr.com/8200/8248153196_7a7664e147_b.jpg 1024w,
 https://farm9.staticflickr.com/8200/8248153196_439515a267_h.jpg 1600w,
 https://farm9.staticflickr.com/8200/8248153196_891960c5f5_k.jpg 2048w,
 https://farm9.staticflickr.com/8200/8248153196_c259fd3d58_o.jpg 9910w"
-							data-maxdpr="1.6"
+							data-optimumx="1.6"
 							alt="@ The Desert Tortoise Natural Area" />
 
 				</div>
@@ -273,8 +271,8 @@ https://farm9.staticflickr.com/8200/8248153196_c259fd3d58_o.jpg 9910w"
 			</td>
 		</tr>
 		<tr>
-			<th style="width: 50%;">with <code>data-maxdpr</code></th>
-			<th style="width: 50%;">without <code>data-maxdpr</code></th>
+			<th style="width: 50%;">with <code>data-optimumx</code></th>
+			<th style="width: 50%;">without <code>data-optimumx</code></th>
 		</tr>
 		<tr>
 			<td>
@@ -283,12 +281,12 @@ https://farm9.staticflickr.com/8200/8248153196_c259fd3d58_o.jpg 9910w"
 				<div class="thumbnail">
 					<img
 							data-sizes="auto"
-							class="lazyload maxdpr"
+							class="lazyload optimumx"
 							src="https://farm3.staticflickr.com/2401/2171553538_37d0a133da_m.jpg"
 							data-srcset="https://farm3.staticflickr.com/2401/2171553538_37d0a133da_m.jpg 240w,
 https://farm3.staticflickr.com/2401/2171553538_37d0a133da.jpg 500w,
 https://farm3.staticflickr.com/2401/2171553538_37d0a133da_z.jpg?zz=1 640w"
-							data-maxdpr="1.7"
+							data-optimumx="1.7"
 							alt="Borobudur" />
 
 				</div>
@@ -310,8 +308,8 @@ https://farm3.staticflickr.com/2401/2171553538_37d0a133da_z.jpg?zz=1 640w"
 			</td>
 		</tr>
 		<tr>
-			<th>with <code>data-maxdpr</code></th>
-			<th>without <code>data-maxdpr</code></th>
+			<th>with <code>data-optimumx</code></th>
+			<th>without <code>data-optimumx</code></th>
 		</tr>
 		<tr>
 			<td>
@@ -319,14 +317,14 @@ https://farm3.staticflickr.com/2401/2171553538_37d0a133da_z.jpg?zz=1 640w"
 				<div class="thumbnail">
 					<img
 							data-sizes="auto"
-							class="lazyload maxdpr"
+							class="lazyload optimumx"
 							src="https://farm1.staticflickr.com/17/92230866_713ae1eeef_n.jpg"
 							data-srcset="https://farm1.staticflickr.com/17/92230866_713ae1eeef_n.jpg 240w,
 https://farm1.staticflickr.com/17/92230866_713ae1eeef.jpg 375w,
 https://farm1.staticflickr.com/17/92230866_713ae1eeef_z.jpg 480w,
 https://farm1.staticflickr.com/17/92230866_713ae1eeef_b.jpg 768w,
 https://farm1.staticflickr.com/17/92230866_713ae1eeef_o.jpg 1536w"
-							data-maxdpr="2"
+							data-optimumx="2"
 							alt="A tree in the blue" />
 
 				</div>
@@ -349,22 +347,22 @@ https://farm1.staticflickr.com/17/92230866_713ae1eeef_o.jpg 1536w"
 			</td>
 		</tr>
 		<tr>
-			<th style="width: 50%;">with <code>data-maxdpr</code></th>
-			<th style="width: 50%;">without <code>data-maxdpr</code></th>
+			<th style="width: 50%;">with <code>data-optimumx</code></th>
+			<th style="width: 50%;">without <code>data-optimumx</code></th>
 		</tr>
 		<tr>
 			<td>
 				<div class="thumbnail">
 					<img
 							data-sizes="auto"
-							class="lazyload maxdpr"
+							class="lazyload optimumx"
 							src="https://farm1.staticflickr.com/192/504251019_ffc94c77b5_n.jpg"
 							data-srcset="https://farm1.staticflickr.com/192/504251019_ffc94c77b5_n.jpg 240w,
 https://farm1.staticflickr.com/192/504251019_ffc94c77b5.jpg 375w,
 https://farm1.staticflickr.com/192/504251019_ffc94c77b5_z.jpg 480w,
 https://farm1.staticflickr.com/192/504251019_ffc94c77b5_b.jpg 768w,
 https://farm1.staticflickr.com/192/504251019_af1d042c1a_o.jpg 1944w"
-							data-maxdpr="1.3"
+							data-optimumx="1.3"
 							alt="Windows on Istanbul" />
 
 				</div>
@@ -386,8 +384,8 @@ https://farm1.staticflickr.com/192/504251019_af1d042c1a_o.jpg 1944w"
 			</td>
 		</tr>
 		<tr>
-			<th style="width: 50%;">with <code>data-maxdpr</code></th>
-			<th style="width: 50%;">without <code>data-maxdpr</code></th>
+			<th style="width: 50%;">with <code>data-optimumx</code></th>
+			<th style="width: 50%;">without <code>data-optimumx</code></th>
 		</tr>
 		<tr>
 			<td>
@@ -395,7 +393,7 @@ https://farm1.staticflickr.com/192/504251019_af1d042c1a_o.jpg 1944w"
 				<div class="thumbnail">
 					<img
 							data-sizes="auto"
-							class="lazyload maxdpr"
+							class="lazyload optimumx"
 							src="https://farm6.staticflickr.com/5139/5546134597_0b19627066_m.jpg"
 							data-srcset="https://farm6.staticflickr.com/5139/5546134597_0b19627066_m.jpg 240w,
 https://farm6.staticflickr.com/5139/5546134597_0b19627066_n.jpg 320w,
@@ -403,7 +401,7 @@ https://farm6.staticflickr.com/5139/5546134597_0b19627066.jpg 500w,
 https://farm6.staticflickr.com/5139/5546134597_0b19627066_z.jpg 640w,
 https://farm6.staticflickr.com/5139/5546134597_0b19627066_b.jpg 1024w,
 https://farm6.staticflickr.com/5139/5546134597_82084e246c_o.jpg 2844w"
-							data-maxdpr="1.2"
+							data-optimumx="1.2"
 							alt="Goldie Dawn" />
 
 				</div>
@@ -427,8 +425,8 @@ https://farm6.staticflickr.com/5139/5546134597_82084e246c_o.jpg 2844w"
 			</td>
 		</tr>
 		<tr>
-			<th>with <code>data-maxdpr</code></th>
-			<th>without <code>data-maxdpr</code></th>
+			<th>with <code>data-optimumx</code></th>
+			<th>without <code>data-optimumx</code></th>
 		</tr>
 		<tr>
 			<td>
@@ -436,13 +434,13 @@ https://farm6.staticflickr.com/5139/5546134597_82084e246c_o.jpg 2844w"
 				<div class="thumbnail">
 					<img
 							data-sizes="auto"
-							class="lazyload maxdpr"
+							class="lazyload optimumx"
 							src="https://farm3.staticflickr.com/2377/1657712955_131576bcd8_m.jpg"
 							data-srcset="https://farm3.staticflickr.com/2377/1657712955_131576bcd8_m.jpg 240w,
 https://farm3.staticflickr.com/2377/1657712955_131576bcd8.jpg 500w,
 https://farm3.staticflickr.com/2377/1657712955_131576bcd8_z.jpg?zz=1 640w,
 https://farm3.staticflickr.com/2377/1657712955_1b941645fd_o.jpg 800w"
-							data-maxdpr="1.7"
+							data-optimumx="1.7"
 							alt="Sant Miquel del Fai" />
 
 				</div>
@@ -464,8 +462,8 @@ https://farm3.staticflickr.com/2377/1657712955_1b941645fd_o.jpg 800w"
 			</td>
 		</tr>
 		<tr>
-			<th style="width: 50%;">with <code>data-maxdpr</code></th>
-			<th style="width: 50%;">without <code>data-maxdpr</code></th>
+			<th style="width: 50%;">with <code>data-optimumx</code></th>
+			<th style="width: 50%;">without <code>data-optimumx</code></th>
 		</tr>
 		<tr>
 			<td>
@@ -473,14 +471,14 @@ https://farm3.staticflickr.com/2377/1657712955_1b941645fd_o.jpg 800w"
 				<div class="thumbnail">
 					<img
 							data-sizes="auto"
-							class="lazyload maxdpr"
+							class="lazyload optimumx"
 							src="https://farm3.staticflickr.com/2727/4393975099_c212622aa0_m.jpg"
 							data-srcset="https://farm3.staticflickr.com/2727/4393975099_c212622aa0_m.jpg 240w,
 https://farm3.staticflickr.com/2727/4393975099_c212622aa0_n.jpg 320w,
 https://farm3.staticflickr.com/2727/4393975099_c212622aa0_z.jpg 640w,
 https://farm3.staticflickr.com/2727/4393975099_c212622aa0_b.jpg 1024w,
 https://farm3.staticflickr.com/2727/4393975099_4413ef4037_o.jpg 1600w"
-							data-maxdpr="1.5"
+							data-optimumx="1.5"
 							alt="Avebury Stone Circle" />
 
 				</div>
@@ -503,8 +501,8 @@ https://farm3.staticflickr.com/2727/4393975099_4413ef4037_o.jpg 1600w"
 			</td>
 		</tr>
 		<tr>
-			<th style="width: 50%;">with <code>data-maxdpr</code></th>
-			<th style="width: 50%;">without <code>data-maxdpr</code></th>
+			<th style="width: 50%;">with <code>data-optimumx</code></th>
+			<th style="width: 50%;">without <code>data-optimumx</code></th>
 		</tr>
 		<tr>
 			<td>
@@ -512,7 +510,7 @@ https://farm3.staticflickr.com/2727/4393975099_4413ef4037_o.jpg 1600w"
 				<div class="thumbnail">
 					<img
 							data-sizes="auto"
-							class="lazyload maxdpr"
+							class="lazyload optimumx"
 							src="https://farm4.staticflickr.com/3059/2835191823_e3636abb34_m.jpg"
 							data-srcset="https://farm4.staticflickr.com/3059/2835191823_e3636abb34_m.jpg 240w,
 https://farm4.staticflickr.com/3059/2835191823_e3636abb34_n.jpg 320w,
@@ -520,7 +518,7 @@ https://farm4.staticflickr.com/3059/2835191823_e3636abb34.jpg 500w,
 https://farm4.staticflickr.com/3059/2835191823_e3636abb34_z.jpg 640w,
 https://farm4.staticflickr.com/3059/2835191823_e3636abb34_b.jpg 1024w,
 https://farm4.staticflickr.com/3059/2835191823_c3bdbcbbee_o.jpg 3028w"
-							data-maxdpr="1.3"
+							data-optimumx="1.3"
 							alt="el castil de tierra" />
 
 				</div>
@@ -544,8 +542,8 @@ https://farm4.staticflickr.com/3059/2835191823_c3bdbcbbee_o.jpg 3028w"
 			</td>
 		</tr>
 		<tr>
-			<th style="width: 50%;">with <code>data-maxdpr</code></th>
-			<th style="width: 50%;">without <code>data-maxdpr</code></th>
+			<th style="width: 50%;">with <code>data-optimumx</code></th>
+			<th style="width: 50%;">without <code>data-optimumx</code></th>
 		</tr>
 		<tr>
 			<td>
@@ -554,7 +552,7 @@ https://farm4.staticflickr.com/3059/2835191823_c3bdbcbbee_o.jpg 3028w"
 				<div class="thumbnail">
 					<img
 							data-sizes="auto"
-							class="lazyload maxdpr"
+							class="lazyload optimumx"
 							src="https://farm8.staticflickr.com/7356/11122919374_55294abec3_m.jpg"
 							data-srcset="https://farm8.staticflickr.com/7356/11122919374_55294abec3_m.jpg 240w,
 https://farm8.staticflickr.com/7356/11122919374_55294abec3_n.jpg 320w,
@@ -565,7 +563,7 @@ https://farm8.staticflickr.com/7356/11122919374_55294abec3_b.jpg 1024w,
 https://farm8.staticflickr.com/7356/11122919374_dba478083f_h.jpg 1600w,
 https://farm8.staticflickr.com/7356/11122919374_237fb819f1_k.jpg 2048w,
 https://farm8.staticflickr.com/7356/11122919374_58ccd9e84c_o.jpg 3294w"
-							data-maxdpr="1.3"
+							data-optimumx="1.3"
 							alt="sunset" />
 
 				</div>
@@ -593,15 +591,15 @@ https://farm8.staticflickr.com/7356/11122919374_58ccd9e84c_o.jpg 3294w"
 			</td>
 		</tr>
 		<tr>
-			<th style="width: 50%;">with <code>data-maxdpr</code></th>
-			<th style="width: 50%;">without <code>data-maxdpr</code></th>
+			<th style="width: 50%;">with <code>data-optimumx</code></th>
+			<th style="width: 50%;">without <code>data-optimumx</code></th>
 		</tr>
 		<tr>
 			<td>
 				<div class="thumbnail">
 					<img
 							data-sizes="auto"
-							class="lazyload maxdpr"
+							class="lazyload optimumx"
 							src="https://farm6.staticflickr.com/5506/11122805655_e63cb3a9fc_m.jpg"
 							data-srcset="https://farm6.staticflickr.com/5506/11122805655_e63cb3a9fc_m.jpg 240w,
 https://farm6.staticflickr.com/5506/11122805655_e63cb3a9fc_n.jpg 320w,
@@ -612,7 +610,7 @@ https://farm6.staticflickr.com/5506/11122805655_e63cb3a9fc_b.jpg 1024w,
 https://farm6.staticflickr.com/5506/11122805655_2992b75835_h.jpg 1600w,
 https://farm6.staticflickr.com/5506/11122805655_a6418efdc5_k.jpg 2048w,
 https://farm6.staticflickr.com/5506/11122805655_c2bf7d14ea_o.jpg 3008w"
-							data-maxdpr="2"
+							data-optimumx="2"
 							alt="Sky and earth" />
 
 				</div>
@@ -638,22 +636,22 @@ https://farm6.staticflickr.com/5506/11122805655_c2bf7d14ea_o.jpg 3008w"
 			</td>
 		</tr>
 		<tr>
-			<th style="width: 50%;">with <code>data-maxdpr</code></th>
-			<th style="width: 50%;">without <code>data-maxdpr</code></th>
+			<th style="width: 50%;">with <code>data-optimumx</code></th>
+			<th style="width: 50%;">without <code>data-optimumx</code></th>
 		</tr>
 		<tr>
 			<td>
 				<div class="thumbnail">
 					<img
 							data-sizes="auto"
-							class="lazyload maxdpr"
+							class="lazyload optimumx"
 							src="https://farm4.staticflickr.com/3023/2994603808_a3036a3cdf_n.jpg"
 							data-srcset="https://farm4.staticflickr.com/3023/2994603808_a3036a3cdf_n.jpg 240w,
 https://farm4.staticflickr.com/3023/2994603808_a3036a3cdf.jpg 375w,
 https://farm4.staticflickr.com/3023/2994603808_a3036a3cdf_z.jpg 480w,
 https://farm4.staticflickr.com/3023/2994603808_a3036a3cdf_b.jpg 768w,
 https://farm4.staticflickr.com/3023/2994603808_8ac98ed34d_o.jpg 3648w"
-							data-maxdpr="1.5"
+							data-optimumx="1.5"
 							alt="Missing Ulsoor lake (Explore)" />
 
 				</div>
@@ -675,22 +673,22 @@ https://farm4.staticflickr.com/3023/2994603808_8ac98ed34d_o.jpg 3648w"
 			</td>
 		</tr>
 		<tr>
-			<th style="width: 50%;">with <code>data-maxdpr</code></th>
-			<th style="width: 50%;">without <code>data-maxdpr</code></th>
+			<th style="width: 50%;">with <code>data-optimumx</code></th>
+			<th style="width: 50%;">without <code>data-optimumx</code></th>
 		</tr>
 		<tr>
 			<td>
 				<div class="thumbnail">
 					<img
 							data-sizes="auto"
-							class="lazyload maxdpr"
+							class="lazyload optimumx"
 							src="https://farm7.staticflickr.com/6211/6254520191_c7868f3a5d_n.jpg"
 							data-srcset="https://farm7.staticflickr.com/6211/6254520191_c7868f3a5d_n.jpg 227w,
 https://farm7.staticflickr.com/6211/6254520191_c7868f3a5d.jpg 354w,
 https://farm7.staticflickr.com/6211/6254520191_c7868f3a5d_z.jpg 453w,
 https://farm7.staticflickr.com/6211/6254520191_c7868f3a5d_b.jpg 725w,
 https://farm7.staticflickr.com/6211/6254520191_6878432c01_o.jpg 3407w"
-							data-maxdpr="1.5"
+							data-optimumx="1.5"
 							alt="Oxford Path 2" />
 
 				</div>
@@ -712,21 +710,21 @@ https://farm7.staticflickr.com/6211/6254520191_6878432c01_o.jpg 3407w"
 			</td>
 		</tr>
 		<tr>
-			<th style="width: 50%;">with <code>data-maxdpr</code></th>
-			<th style="width: 50%;">without <code>data-maxdpr</code></th>
+			<th style="width: 50%;">with <code>data-optimumx</code></th>
+			<th style="width: 50%;">without <code>data-optimumx</code></th>
 		</tr>
 		<tr>
 			<td>
 				<div class="thumbnail">
 					<img
 							data-sizes="auto"
-							class="lazyload maxdpr"
+							class="lazyload optimumx"
 							src="https://farm1.staticflickr.com/113/284651694_69e63b374d_m.jpg"
 							data-srcset="https://farm1.staticflickr.com/113/284651694_69e63b374d_m.jpg 240w,
 https://farm1.staticflickr.com/113/284651694_69e63b374d.jpg 500w,
 https://farm1.staticflickr.com/113/284651694_69e63b374d_z.jpg?zz=1 640w,
 https://farm1.staticflickr.com/113/284651694_69e63b374d_o.jpg 800w"
-							data-maxdpr="2"
+							data-optimumx="2"
 							alt="Woman in water" />
 				</div>
 			</td>
@@ -766,15 +764,15 @@ https://farm1.staticflickr.com/113/284651694_69e63b374d_o.jpg 800w"
 			param = param.split('=');
 			params[param[0]] = param[1] || '';
 		});
-		Array.prototype.slice.call(document.querySelectorAll('img[data-sizes="auto"].maxdpr')).forEach(function(elem){
-			var optimum = elem.getAttribute('data-maxdpr') || 3;
+		Array.prototype.slice.call(document.querySelectorAll('img[data-sizes="auto"].optimumx')).forEach(function(elem){
+			var optimum = elem.getAttribute('data-optimumx') || 3;
 			$(elem).after('<strong class="label label-success label-optimum">image specific optimum: '+ optimum +'</strong>');
 
 		});
 
-		if(params.maxdpr){
-			Array.prototype.slice.call(document.querySelectorAll('img[data-sizes="auto"].maxdpr')).forEach(function(elem){
-				elem.setAttribute('data-maxdpr', params.maxdpr);
+		if(params.optimumx){
+			Array.prototype.slice.call(document.querySelectorAll('img[data-sizes="auto"].optimumx')).forEach(function(elem){
+				elem.setAttribute('data-optimumx', params.optimumx);
 			});
 		}
 
@@ -786,21 +784,21 @@ https://farm1.staticflickr.com/113/284651694_69e63b374d_o.jpg 800w"
 	})();
 </script>
 
-<script src="../plugins/maxdpr/ls.maxdpr.js"></script>
+<script src="../plugins/optimumx/ls.optimumx.js"></script>
 <script src="../lazysizes.js"></script>
 <script>
 
 	(function(){
 
 		var dpr = (window.devicePixelRatio || 1);
-		var max = params.maxdpr || 'image specific optimum';
+		var max = params.optimumx || 'image specific optimum';
 		var calcDpr = Math.min(dpr, max) || 'image specific';
 		$('<div class="alert alert-info"><p>Your device has a pixel ratio of '+ dpr +', ' +
-		'while <code>data-maxdpr="'+ max +'"</code> is set.</p>' +
+		'while <code>data-optimumx="'+ max +'"</code> is set.</p>' +
 		'<p>This means images should be around a pixel density of "'+ calcDpr +'".</p></div>')
 				.insertAfter('.alert-legend');
 
-		$('body').before('<strong class="label label-default label-config">Used maxdpr option: '+max+'</strong>');
+		$('body').before('<strong class="label label-default label-config">Used optimumx option: '+max+'</strong>');
 
 	})();
 	(function(){

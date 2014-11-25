@@ -4,9 +4,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-	<meta name="robots" content="noindex" />
-	<meta http-equiv="refresh" content="0; URL=../optimumx/index.html" />
-	<title>controlling retina/density of responsive images with lazysizes and the maxdpr plugin</title>
+	<title>controlling retina/density of responsive images with lazysizes and the optimumx plugin</title>
 	<link href="../assets/css/tidy.css" rel="stylesheet" />
 	<style>
 		.container {
@@ -44,24 +42,24 @@
 <div class="container">
 	<div class="alert alert-info">
 		<p>The <code>srcset</code> with the <code>sizes</code> attribute is definitely the way to go to create responsive, flexibel, adaptive images.</p>
-		<p>Unfortunately there is no way to tell the browser, that a specific image doesn't gain much perceived quality in a higher density or that image quality of a specific image isn't important for the user experience.</p>
+		<p>Unfortunately there is no way to tell the browser, that a specific image doesn't gain much perceived quality with a higher density or that image quality of a specific image isn't important for the user experience.</p>
 		<p>Due to the fact, that a 2x retina means 4x data and 3x retina means 9x data, performance can suffer even on good connections badly.</p>
-		<p><a href="https://github.com/aFarkas/lazysizes/tree/gh-pages/plugins/optimumx">lazySizes <code>data-maxdpr</code> feature</a> (build on top of <code>data-sizes="auto"</code>) gives the developer more control to use adaptive images markup, but opt-out from to high retina at some point.</p>
+		<p><a href="https://github.com/aFarkas/lazysizes/tree/gh-pages/plugins/optimumx">lazySizes <code>data-optimumx</code> feature</a> (build on top of <code>data-sizes="auto"</code>) gives the developer more control to use adaptive images markup, but opt-out from to high retina at some point by defining the optimum density.</p>
 	</div>
 	<div class="alert alert-danger alert-noretina">
 		<p>Unfortunately this demo makes only sense, if you are using a retina device. Maybe come back with one (tablet / smartphone)? Sorry!</p>
 	</div>
 	<div class="panel panel-default">
-		<div class="panel-heading">Configure the <code>data-maxdpr</code> attribute</div>
+		<div class="panel-heading">Configure the <code>data-optimumx</code> attribute</div>
 		<div class="panel-body">
 			<form role="form" class="arena-config show-activelabeltooltip">
 				<fieldset>
-					<legend><code>data-maxdpr</code></legend>
+					<legend><code>data-optimumx</code></legend>
 					<div class="row">
 						<div class="form-group">
 							<div class="col-sm-6">
-								<label for="maxdpr">maxdpr</label>
-								<input id="maxdpr" name="maxdpr" value="1.5" min="1" max="1.9" step="0.1" type="range" />
+								<label for="optimumx">optimumx</label>
+								<input id="optimumx" name="optimumx" value="1.5" min="1" max="1.9" step="0.1" type="range" />
 							</div>
 						</div>
 					</div>

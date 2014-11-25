@@ -23,6 +23,9 @@
 	var setImmediate = window.setImmediate || window.setTimeout;
 	var addRemoveImgEvents = function(dom, fn, add){
 		var action = add ? 'addEventListener' : 'removeEventListener';
+		if(add){
+			addRemoveImgEvents(dom, fn);
+		}
 		dom[action]('load', fn, false);
 		dom[action]('error', fn, false);
 	};
@@ -151,7 +154,6 @@
 					loadedSomething = true;
 				} else  {
 					if(globalLazyIndex < eLlen - 1 && Date.now() - eLnow > 9){
-						globalLazyIndex++;
 						autoLoadElem = false;
 						globalLazyTimer = setTimeout(evalLazyElements, 4);
 						break;
@@ -170,11 +172,14 @@
 			}
 		}
 	};
+	var switchLoadingClass = function(e){
+		addClass(e.target, e.target.getAttribute('data-loadedclass') || lazySizesConfig.loadedClass);
+		removeClass(e.target, lazySizesConfig.loadingClass);
+	};
 
 	function preload(elem){
 		isPreloading++;
 		elem = unveilLazy(elem);
-		addRemoveImgEvents(elem, resetPreloading);
 		addRemoveImgEvents(elem, resetPreloading, true);
 		clearTimeout(resetPreloadingTimer);
 		resetPreloadingTimer = setTimeout(resetPreloading, 5000);
@@ -186,7 +191,7 @@
 	}
 
 	function unveilLazy(elem, force){
-		var sources, i, len, sourceSrcset, sizes, src, srcset, parent, isPicture;
+		var sources, i, len, sourceSrcset, sizes, src, srcset, parent, isImg, isPicture;
 
 		var event = triggerEvent(elem, 'lazybeforeunveil', {force: !!force});
 
@@ -208,9 +213,17 @@
 			srcset = elem.getAttribute(lazySizesConfig.srcsetAttr);
 			src = elem.getAttribute(lazySizesConfig.srcAttr);
 
-			if(regImg.test(elem.nodeName || '')) {
+			if((isImg = regImg.test(elem.nodeName || ''))) {
 				parent = elem.parentNode;
 				isPicture = regPicture.test(parent.nodeName || '');
+			}
+
+			if(lazySizesConfig.addClasses){
+				addClass(elem, lazySizesConfig.loadingClass);
+
+				if(isImg){
+					addRemoveImgEvents(elem, switchLoadingClass, true);
+				}
 			}
 
 			if(srcset || src){
@@ -249,6 +262,9 @@
 
 			if(srcset || sizes){
 				updatePolyfill(elem, {srcset: srcset, src: src});
+			}
+			if(!isImg && lazySizesConfig.addClasses){
+				switchLoadingClass({target: elem});
 			}
 		});
 		return elem;
@@ -393,7 +409,10 @@
 			mutation: true,
 			hover: true,
 			cssanimation: true,
+			addClasses: false,
 			lazyClass: 'lazyload',
+			loadedClass: 'lazyloaded',
+			loadingClass: 'lazyloading',
 			scroll: true,
 			autosizesClass: 'lazyautosizes',
 			srcAttr: 'data-src',

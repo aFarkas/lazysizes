@@ -44,8 +44,13 @@
 				$('#arena').prop('src', 'child.html?' + data);
 				return false;
 			})
-			.triggerHandler('submit')
 		;
+
+		$('.btn-optimum').on('click', function(){
+			$('#arena').prop('src', 'child.html?'+ (new Date().getTime()));
+			return false;
+		});
+		$('#arena').prop('src', 'child.html');
 	})
 
 })(window, document);
