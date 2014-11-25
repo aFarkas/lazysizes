@@ -162,7 +162,7 @@ document.addEventListener('lazybeforeunveil', function(e){
 }, false);
 ```
 
-The ``lazybeforeunveil`` event can also be used to add unveil effects:
+The ``lazybeforeunveil`` event can also be used to add unveil effects using JS:
 
 ```html 
 <style>
@@ -184,7 +184,6 @@ $(document).on('lazybeforeunveil', (function(){
 		if(!e.isDefaultPrevented()){
 			$(e.target)
 				.filter('img')
-					.css({opacity: 0})
 					.on('load error', onLoad)
 			;
 		}
@@ -193,7 +192,26 @@ $(document).on('lazybeforeunveil', (function(){
 </script>
 ```
 
-Also see the [effect extensiton](plugins/effect).
+For CSS transition/animations use the ``addClasses`` option:
+
+```html 
+<style>
+.lazyload,
+.lazyloading {
+	opacity: 0;
+}
+.lazyloaded {
+	opacity: 1;
+	transition: opacity 300ms;
+}
+</style>
+
+<script>
+window.lazySizesConfig = {
+	addClasses: true
+};
+</script>
+```
 
 * ``lazybeforesizes``: This event will be fired on each element with the ``data-sizes="auto"`` attribute right before the calculated ``sizes`` attribute will be set. The ``event.details.width`` property is set to the calculated width of the element and can be changed to any number. In case the event is ``defaultPrevented`` the ``sizes`` attribute won't be set.
 

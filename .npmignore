@@ -1,15 +1,14 @@
 *.bak
-node_modules
 *.zip
 .*
 play
 node_modules
 bower_components
-cfg
 test
 tests
 maxdpr
 rias
+optimumx
 assets
 index.html
 Gruntfile.js

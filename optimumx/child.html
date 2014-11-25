@@ -114,10 +114,10 @@
 							class="lazyload optimumx"
 							src="https://farm5.staticflickr.com/4094/4859138371_9713d4396e_m.jpg"
 							data-srcset="https://farm5.staticflickr.com/4094/4859138371_9713d4396e_m.jpg 240w,
-https://farm5.staticflickr.com/4094/4859138371_9713d4396e_n.jpg 320w,
 https://farm5.staticflickr.com/4094/4859138371_9713d4396e.jpg 500w,
-https://farm5.staticflickr.com/4094/4859138371_9713d4396e_z.jpg 640w,
 https://farm5.staticflickr.com/4094/4859138371_9713d4396e_b.jpg 1024w,
+https://farm5.staticflickr.com/4094/4859138371_9713d4396e_z.jpg 640w,
+https://farm5.staticflickr.com/4094/4859138371_9713d4396e_n.jpg 320w,
 https://farm5.staticflickr.com/4094/4859138371_a1b9081485_o.jpg 3648w"
 							data-optimumx="1.4"
 							alt="Abandoned Boat" />
@@ -776,10 +776,30 @@ https://farm1.staticflickr.com/113/284651694_69e63b374d_o.jpg 800w"
 			});
 		}
 
+		function ascendingSort( a, b ) {
+			return a.w - b.w;
+		}
+
+		function mapSetCan(can){
+			var nCan = {
+				url: can.url
+			};
+			nCan[can.desc.type] = can.desc.val;
+			return nCan;
+		}
+
 		Array.prototype.slice.call(document.querySelectorAll('img[data-srcset]')).forEach(function(elem){
 			var lazyData = {srcset: elem.getAttribute('data-srcset')} || '';
+			var cands = respimage._.parseSet(lazyData);
+
 			elem._demoSrcset = lazyData;
-			respimage._.parseSet(lazyData);
+
+			if(cands[0] && cands[0].desc){
+				cands = cands.map(mapSetCan);
+				lazyData.cands = cands;
+			}
+
+			cands.sort(ascendingSort);
 		});
 	})();
 </script>
@@ -819,14 +839,14 @@ https://farm1.staticflickr.com/113/284651694_69e63b374d_o.jpg 800w"
 			for(var i = 0; i < imgData.cands.length; i++){
 				can = imgData.cands[i];
 				if(can.url == curSrc){
-					curCandidate = '<strong class="label label-success">'+ (Math.floor((can.desc.val / this.offsetWidth) * 1000) / 1000) +'x</strong>';
+					curCandidate = '<strong class="label label-success">'+ (Math.floor((can.w / this.offsetWidth) * 1000) / 1000) +'x</strong>';
 					can = imgData.cands[i - 1];
 					if(can){
-						beforeCandidate = '<strong class="label label-default">'+ (Math.floor((can.desc.val / this.offsetWidth) * 1000) / 1000) +'x</strong>';
+						beforeCandidate = '<strong class="label label-default">'+ (Math.floor((can.w / this.offsetWidth) * 1000) / 1000) +'x</strong>';
 					}
 					can = imgData.cands[i + 1];
 					if(can){
-						afterCandidate = '<strong class="label label-danger">'+ (Math.floor((can.desc.val / this.offsetWidth) * 1000) / 1000) +'x</strong>';
+						afterCandidate = '<strong class="label label-danger">'+ (Math.floor((can.w / this.offsetWidth) * 1000) / 1000) +'x</strong>';
 					}
 					break;
 				}

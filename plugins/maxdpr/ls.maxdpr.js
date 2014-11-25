@@ -4,16 +4,16 @@
  - respimage.js needs to be loaded even if the browser supports responsive images
 
  <img src="100.jpg"
- 	data-maxdpr="1.8"
- 	data-sizes="auto"
- 	data-srcset="100.jpg 100w,
- 	300.jpg 300w,
- 	600.jpg 600w,
- 	900.jpg 900w,
- 	1200.jpg 1200w"
- 	/>
+ data-optimumx="1.8"
+ data-sizes="auto"
+ data-srcset="100.jpg 100w,
+ 300.jpg 300w,
+ 600.jpg 600w,
+ 900.jpg 900w,
+ 1200.jpg 1200w"
+ />
 
- 	see a live demo here: http://afarkas.github.io/lazysizes/maxdpr/
+ see a live demo here: http://afarkas.github.io/lazysizes/maxdpr/
  */
 
 
@@ -25,7 +25,15 @@
 	}
 
 	function ascendingSort( a, b ) {
-		return a.res - b.res;
+		return a.w - b.w;
+	}
+
+	function mapSetCan(can){
+		var nCan = {
+			url: can.url
+		};
+		nCan[can.desc.type] = can.desc.val;
+		return nCan;
 	}
 
 	function parseSets(elem){
@@ -33,13 +41,19 @@
 		var cands = respimage._.parseSet(lazyData);
 		elem._lazyMaxDprSrcset = lazyData;
 
-		cands.sort( ascendingSort );
+		if(cands[0] && cands[0].desc){
+			cands = cands.map(mapSetCan);
+			lazyData.cands = cands;
+		}
+
 		lazyData.index = 0;
 		lazyData.dirty = false;
-		if(cands[0]){
-			lazyData.cSrcset = [cands[0].url +' '+ cands[0].desc.val + cands[0].desc.type];
+		if(cands[0] && cands[0].w){
+			cands.sort( ascendingSort );
+			lazyData.cSrcset = [cands[0].url +' '+ cands[0].w + 'w'];
 		} else {
 			lazyData.cSrcset = [];
+			lazyData.cands = [];
 		}
 
 		return lazyData;
@@ -63,10 +77,10 @@
 
 	function takeHighRes(beforeCan, curCanWidth, width){
 		var low, high;
-		if(!beforeCan || !beforeCan.desc){
+		if(!beforeCan || !beforeCan.w){
 			return true;
 		}
-		low = (1 - (beforeCan.desc.val / width)) * 0.9;
+		low = (1 - (beforeCan.w / width)) * 0.9;
 		high = (curCanWidth / width) - 1;
 		return high - low < 0;
 
@@ -77,8 +91,8 @@
 
 		for(i = data.index + 1; i < data.cands.length; i++){
 			can = data.cands[i];
-			if(can.desc.type != 'w' || can.desc.val <= width || takeHighRes(data.cands[i - 1], can.desc.val, width)){
-				data.cSrcset.push(can.url +' '+ can.desc.val + can.desc.type);
+			if(!can.w || can.w <= width || takeHighRes(data.cands[i - 1], can.w, width)){
+				data.cSrcset.push(can.url +' '+ can.w + 'w');
 				data.index = i;
 			} else {
 				break;
@@ -136,5 +150,4 @@
 	if(window.console){
 		console[console.warn ? 'warn' : 'log']('maxdpr is deprecated. Please use the optimumx plugin.');
 	}
-
 })(window, document);

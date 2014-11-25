@@ -11,8 +11,9 @@
 	if(!Date.now || !window.document.getElementsByClassName || !Object.freeze){return;}
 
 	var lazyloadElems, autosizesElems, lazySizesConfig, globalSizesTimer,
-		globalSizesIndex, globalLazyTimer, globalLazyIndex, globalInitialTimer,
+		globalSizesIndex, globalLazyTimer, globalLazyIndex,
 		addClass, removeClass, hasClass, isWinloaded;
+
 	var document = window.document;
 	var isPreloading = 0;
 
@@ -112,7 +113,6 @@
 		return {
 			debounce: function(){
 				clearTimeout(timer);
-				clearTimeout(globalInitialTimer);
 				running = true;
 				timer = setTimeout(run, 66);
 			},
@@ -149,7 +149,8 @@
 					(eLtop = rect.top) <= elvH &&
 					(eLright = rect.right) >= eLnegativeTreshhold &&
 					(eLleft = rect.left) <= eLvW &&
-					(eLbottom || eLright || eLleft || eLtop)){
+					(eLbottom || eLright || eLleft || eLtop) &&
+					(!isWinloaded || getComputedStyle(lazyloadElems[globalLazyIndex], null).visibility != 'hidden')){
 					unveilLazy(lazyloadElems[globalLazyIndex]);
 					loadedSomething = true;
 				} else  {
@@ -358,15 +359,14 @@
 
 	// bind to all possible events ;-) This might look like a performance disaster, but it isn't.
 	// The main check functions are written to run extreme fast without consuming memory.
+	var docElem = document.documentElement;
 	var onload = function(){
-		inViewTreshhold = 400;
-		clearTimeout(globalInitialTimer);
+		inViewTreshhold = 600;
 
 		document.addEventListener('load', lazyEvalLazy.throttled, true);
 		isWinloaded = true;
 	};
 	var onready = function(){
-		var docElem = document.documentElement;
 
 		if(lazySizesConfig.mutation){
 			if(window.MutationObserver){
@@ -456,7 +456,7 @@
 		}
 
 		lazyEvalLazy.throttled();
-
+		removeClass(docElem, 'no-js');
 	});
 
 	return {
@@ -469,8 +469,6 @@
 			}
 		},
 		updateSizes: updateSizes,
-		updatePolyfill: updatePolyfill,
-		aC: addClass,
-		rC: removeClass
+		updatePolyfill: updatePolyfill
 	};
 }));
