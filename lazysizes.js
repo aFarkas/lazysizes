@@ -264,7 +264,7 @@
 			if(srcset || sizes){
 				updatePolyfill(elem, {srcset: srcset, src: src});
 			}
-			if(!isImg && lazySizesConfig.addClasses){
+			if((!isImg || (!srcset && !src)) && lazySizesConfig.addClasses){
 				switchLoadingClass({target: elem});
 			}
 		});
