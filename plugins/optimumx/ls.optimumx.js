@@ -38,8 +38,10 @@
 
 	function parseSets(elem){
 		var lazyData = {srcset: elem.getAttribute(lazySizes.cfg.srcsetAttr)} || '';
-		var cands = respimage._.parseSet(lazyData);
+		var cands = window.respimage ? respimage._.parseSet(lazyData) : window.parseSrcset(lazyData.srcset);
 		elem._lazyMaxDprSrcset = lazyData;
+
+		lazyData.cands = cands;
 
 		if(cands[0] && cands[0].desc){
 			cands = cands.map(mapSetCan);
@@ -113,7 +115,7 @@
 			elem.setAttribute(attr, lazyData.cSrcset.join(', '));
 			lazyData.dirty = true;
 
-			if(lazyData.isImg && attr == 'srcset' && !window.HTMLPictureElement && !respimage._.observer){
+			if(lazyData.isImg && attr == 'srcset' && !window.HTMLPictureElement && window.respimage && !respimage._.observer){
 				imageData = elem[respimage._.ns];
 				if(imageData){
 					imageData.srcset = undefined;
@@ -125,7 +127,7 @@
 
 	document.addEventListener('lazybeforesizes', function(e){
 		var maxdpr, lazyData, width, data, attr, parent, sources, i, len;
-		if(!window.respimage ||
+		if((!window.respimage && !window.parseSrcset) ||
 			e.defaultPrevented ||
 			!(maxdpr = e.target.getAttribute('data-optimumx') || e.target.getAttribute('data-maxdpr')) ||
 			maxdpr > (window.devicePixelRatio || 1) ||
