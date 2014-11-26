@@ -250,8 +250,6 @@
 						elem.removeAttribute(lazySizesConfig.srcAttr);
 					}
 				}
-
-
 			}
 		}
 

@@ -53,6 +53,17 @@
 						'assets/css/tidy.css': ['index.html', 'maxdpr/*.html']
 					}
 				}
+			},
+			maxFilesize: {
+				options: {
+					// Task-specific options go here.
+				},
+				minified: {
+					options: {
+						maxBytes: 5999
+					},
+					src: ["lazysizes.min.js"]
+				}
 			}
 		});
 
@@ -62,10 +73,11 @@
 		grunt.loadNpmTasks("grunt-contrib-watch");
 		grunt.loadNpmTasks('grunt-uncss');
 		grunt.loadNpmTasks('grunt-bytesize');
+		grunt.loadNpmTasks('grunt-max-filesize');
 
 
 		// Default task.
-		grunt.registerTask("default", [ "test", "uglify", "bytesize" ]);
+		grunt.registerTask("default", [ "test", "uglify", "bytesize", "maxFilesize" ]);
 		grunt.registerTask("test", [ "jshint" ]);
 	};
 })();

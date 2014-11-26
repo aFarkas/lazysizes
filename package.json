@@ -1,29 +1,42 @@
 {
-	"name": "lazysizes",
-	"version": "0.5.0",
-	"author": "Alexander Farkas <info@corrupt-system.de>",
-	"repository": {
-		"type": "git",
-		"url": "git://github.com/aFarkas/lazysizes.git"
-	},
-	"browser": "lazysizes.js",
-	"devDependencies": {
-		"grunt": "~0.4.2",
-		"grunt-cli": "~0.1",
-		"grunt-contrib-jshint": "~0.10.0",
-		"grunt-contrib-uglify": "~0.2.0",
-		"grunt-contrib-watch": "~0.4.0",
-		"grunt-bytesize": "~0.1.1",
-		"grunt-uncss": "~0.3.7"
-	},
-	"autoupdate": {
-		"source": "git",
-		"target": "git://github.com/afarkas/lazysizes.git",
-		"basePath": "",
-		"files": [
-			"lazysizes.min.js"
-		]
-	},
-	"description": "High performance (jankfree) lazy loader for images (including responsive images), iframes and scripts (widgets).",
-	"keywords": ["lazy", "loader", "lazyloader", "performance", "responsive", "image", "responsive images", "picture", "srcset", "respimg", "respimage"]
+  "name": "lazysizes",
+  "version": "0.5.0",
+  "author": "Alexander Farkas <info@corrupt-system.de>",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/aFarkas/lazysizes.git"
+  },
+  "browser": "lazysizes.js",
+  "devDependencies": {
+    "grunt": "~0.4.2",
+    "grunt-bytesize": "~0.1.1",
+    "grunt-cli": "~0.1",
+    "grunt-contrib-jshint": "~0.10.0",
+    "grunt-contrib-uglify": "~0.2.0",
+    "grunt-contrib-watch": "~0.4.0",
+    "grunt-max-filesize": "^0.1.0",
+    "grunt-uncss": "~0.3.7"
+  },
+  "autoupdate": {
+    "source": "git",
+    "target": "git://github.com/afarkas/lazysizes.git",
+    "basePath": "",
+    "files": [
+      "lazysizes.min.js"
+    ]
+  },
+  "description": "High performance (jankfree) lazy loader for images (including responsive images), iframes and scripts (widgets).",
+  "keywords": [
+    "lazy",
+    "loader",
+    "lazyloader",
+    "performance",
+    "responsive",
+    "image",
+    "responsive images",
+    "picture",
+    "srcset",
+    "respimg",
+    "respimage"
+  ]
 }
