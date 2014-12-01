@@ -85,7 +85,6 @@
 		low = (1 - (beforeCan.w / width)) * 0.9;
 		high = (curCanWidth / width) - 1;
 		return high - low < 0;
-
 	}
 
 	function getConstrainedSrcSet(data, width){

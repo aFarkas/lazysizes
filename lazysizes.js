@@ -19,7 +19,7 @@
 
 	var regPicture = /^picture$/i;
 	var regImg = /^img$/i;
-	var inViewTreshhold = 10;
+	var inViewTreshhold = 40;
 
 	var setImmediate = window.setImmediate || window.setTimeout;
 	var addRemoveImgEvents = function(dom, fn, add){

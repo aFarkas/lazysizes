@@ -19,4 +19,25 @@ This plugin depends on the ``data-sizes="auto"`` feature of **lazysizes** and th
      alt="flexible image" />
 ```
 
-A simple [demo can be seen here](http://afarkas.github.io/lazysizes/optimumx/). 
+A **simple [demo can be seen here](http://afarkas.github.io/lazysizes/optimumx/)**. 
+
+##Usage
+
+```html
+<!-- concat the following scripts into one and add them to your HTML -->
+<script src="lazysizes.min.js"></script>
+<script src="ls.optimumx.js"></script>
+<script src="respimage.min.js"></script>
+
+<!-- then use it -->
+<img
+    data-srcset="http://placehold.it/300x150 300w,
+    	http://placehold.it/700x300 700w,
+    	http://placehold.it/1400x600 1400w,
+    	http://placehold.it/2800x1200 2800w"
+     data-sizes="auto"
+     data-optimumx="1.5"
+     class="lazyload"
+     src="http://placehold.it/300x150"
+     alt="flexible image" />
+```

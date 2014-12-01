@@ -20,7 +20,7 @@
     <img
         data-sizes="auto"
         src="lqip-src.jpg"
-        data-srcset="lqip-src.jpg 100w,
+        data-srcset="lqip-src.jpg 220w,
         image2.jpg 300w,
         image3.jpg 600w,
         image4.jpg 900w" class="lazyload" />
@@ -83,7 +83,7 @@ The LQIP pattern (low quality image placeholder): Simply add a low quality image
 <img
 	data-sizes="auto"
     src="lqip-src.jpg"
-	data-srcset="lqip-src.jpg 100w,
+	data-srcset="lqip-src.jpg 220w,
     image2.jpg 300w,
     image3.jpg 600w,
     image4.jpg 900w" class="lazyload" />
@@ -136,7 +136,7 @@ window.lazySizesConfig = {
 Here the list of options:
 
 * ``lazySizesConfig.lazyClass`` (default: ``"lazyload"``): Marker class for all elements which should be lazy loaded (There can be only one ``class``. In case you need to add some other element, without the defined class, simply add it per JS: ``$('.lazy-others').addClass('lazyload');``)
-* ``lazySizesConfig.preloadAfterLoad`` (default: ``false``): Wether lazysizes should load all elements after the window onload event. (Note: lazysizes will then load the elements using a queue. Only two parallel elements are loaded at the same time. This makes sure that other postboned downloads are not blocked.).
+* ``lazySizesConfig.preloadAfterLoad`` (default: ``false``): Wether lazysizes should load all elements after the window onload event. (Note: lazysizes will then load the elements using a queue. Only two parallel elements are loaded at the same time. This makes sure that other postboned downloads are not blocked.). Note: You often want to set this option to ``true``.
 * ``lazySizesConfig.addClasses`` (default: ``false``): Wether lazysizes should add loading and loaded classes. This can be used to add unveil effects or to apply new styles (background-image).
 * ``lazySizesConfig.loadingClass`` (default: ``"lazyloading"``): If ``addClasses`` is set to ``true`` this ``class`` will be added to ``img`` element as soon as image loading starts. Can be used to add unveil effects.
 * ``lazySizesConfig.loadedClass`` (default: ``"lazyloaded"``): If ``addClasses`` is set to ``true`` this ``class`` will be added to any element as soon as the image is loaded or the image comes into view. Can be used to add unveil effects or to apply styles.
