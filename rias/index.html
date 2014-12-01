@@ -3,7 +3,13 @@
 <head lang="en">
 	<meta charset="UTF-8">
 	<title>lazysizes - the restfull responsive image service extension/plugin </title>
-
+	<!-- polyfill responsive images: https://github.com/aFarkas/respimage -->
+	<script>
+		if(!window.HTMLPictureElement){
+			//load respimage polyfill
+			document.write('<script src="https:\/\/afarkas.github.io\/respimage\/respimage.js" async=""><\/script>');
+		}
+	</script>
 	<link href="../assets/css/tidy.css" rel="stylesheet" />
 	<style>
 		.thumbnail img {
@@ -50,13 +56,7 @@
 	</script>
 	<script src="../lazysizes.js"></script>
 	<script src="../plugins/rias/ls.rias.js"></script>
-	<!-- polyfill responsive images: https://github.com/aFarkas/respimage -->
-	<script>
-		if(!window.HTMLPictureElement){
-			//load respimage polyfill
-			document.write('<script src="http://rawgit.com\/aFarkas\/respimage\/stable\/respimage.min.js" async=""><\/script>');
-		}
-	</script>
+
 </head>
 <body>
 

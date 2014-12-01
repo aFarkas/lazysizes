@@ -74,7 +74,7 @@
 		var imageData;
 		if(window.picturefill){
 			picturefill({reevaluate: true, reparse: true, elements: [el]});
-		} else if(window.respimage && !respimage._.observer){
+		} else if(window.respimage){
 			if(full){
 				imageData = el[respimage._.ns];
 				if(imageData){
@@ -83,7 +83,7 @@
 			}
 			respimage({reparse: true, elements: [el]});
 		} else if(!window.HTMLPictureElement && window.console && document.readyState == 'complete'){
-			console.log('use a respimg polyfill: http://bit.ly/1FCts3P');
+			console.log('use respimg polyfill: http://bit.ly/1FCts3P');
 		}
 	}
 
@@ -262,6 +262,10 @@
 
 			if(srcset || sizes){
 				updatePolyfill(elem, {srcset: srcset, src: src});
+			}
+
+			if(elem.lazyload){
+				elem.lazyload = 0;
 			}
 
 			if( lazySizesConfig.addClasses && (!isImg || (!srcset && !src) || (elem.complete && curSrc == (elem.currentSrc || elem.src))) ){

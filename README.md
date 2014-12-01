@@ -120,7 +120,22 @@ In case you want to save more initial image data the LQIP pattern can't be used 
 <!--<![endif]-->
 ```
 
-###JS API 
+###SEO pattern
+
+In case you don't need to account for JS off or legacy browers, but still for search engines you can use a one pixel ``src`` or better a data URI and add [ImageObject schema via Microdata](http://schema.org/ImageObject) for search engines:
+
+```html
+<span itemscope itemtype="http://schema.org/ImageObject" hidden="">
+	<meta itemprop="contentUrl" content="image.jpg" />
+	<meta itemprop="name" content="my image" />
+</span>
+<img src="data:image/gif;base64,R0lGODlhAQABAAAAADs="
+	class="lazyload"
+	data-srcset="image.jpg 1x, image2.jpg 2x"
+    alt="my image" />
+```
+
+###JS API
 **lazysizes** automatically detects new elements with the class ``lazyload`` so you won't need to call or configure anything in most situations.
 
 ####JS API - options
