@@ -195,6 +195,7 @@
 		var sources, i, len, sourceSrcset, sizes, src, srcset, parent, isImg, isPicture;
 
 		var event = triggerEvent(elem, 'lazybeforeunveil', {force: !!force});
+		var curSrc = elem.currentSrc || elem.src;
 
 		if(!event.defaultPrevented){
 			//allow using sizes="auto", but don't use. it's invalid. Use data-sizes="auto" or a valid value for sizes instead (i.e.: sizes="80vw")
@@ -262,7 +263,8 @@
 			if(srcset || sizes){
 				updatePolyfill(elem, {srcset: srcset, src: src});
 			}
-			if((!isImg || (!srcset && !src)) && lazySizesConfig.addClasses){
+
+			if( lazySizesConfig.addClasses && (!isImg || (!srcset && !src) || (elem.complete && curSrc == (elem.currentSrc || elem.src))) ){
 				switchLoadingClass({target: elem});
 			}
 		});
