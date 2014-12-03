@@ -78,25 +78,35 @@
 	}
 
 	function takeHighRes(beforeCan, curCanWidth, width){
-		var low, high;
+		var low, high, curRes;
 		if(!beforeCan || !beforeCan.w){
 			return true;
 		}
+		curRes = beforeCan.w / width;
 		low = (1 - (beforeCan.w / width)) * 0.9;
 		high = (curCanWidth / width) - 1;
+
+		high *= Math.pow(curRes, 1.3);
+
 		return high - low < 0;
 	}
 
 	function getConstrainedSrcSet(data, width){
-		var i, can;
+		var i, can, take;
 
 		for(i = data.index + 1; i < data.cands.length; i++){
 			can = data.cands[i];
-			if(!can.w || can.w <= width || takeHighRes(data.cands[i - 1], can.w, width)){
-				data.cSrcset.push(can.url +' '+ can.w + 'w');
-				data.index = i;
+			take = false;
+			if(!can.w && can.x){
+				take = 'x';
+			} else if(can.w <= width || takeHighRes(data.cands[i - 1], can.w, width)){
+				take = 'w';
 			} else {
 				break;
+			}
+			if(take){
+				data.cSrcset.push(can.url +' '+ can[take] + take);
+				data.index = i;
 			}
 		}
 	}

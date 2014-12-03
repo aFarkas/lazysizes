@@ -92,7 +92,7 @@ The LQIP pattern (low quality image placeholder): Simply add a low quality image
 <img src="lqip-src.jpg" data-src="image.jpg" class="lazyload" />
 ```
 
-The LQIP pattern has the following advantages: The lqip-src is not hidden from the preload parser and loads very fast, which leads to an extreme fast first impression and in case of legacy browsers/devices or searchengines (bots) as a good enough fallback (IE8 and Android 2 devices as also JS disabled). In case your lqip source is extreme fuzzy, you should consider serving either a higher quality, setting ``preloadAfterLoad`` to ``true`` or use the "noscript" pattern. The human eye/brain dislikes too heavy image quality jumps...
+The LQIP pattern has the following advantages: The lqip-src is not hidden from the preload parser and loads very fast, which leads to an extreme fast first impression and in case of legacy browsers/devices or searchengines (bots) as a good enough fallback (IE8 and Android 2 devices as also JS disabled). In case your lqip source is extreme fuzzy, you should consider serving either a higher quality, setting ``preloadAfterLoad`` to ``true`` or use the "noscript" or the "SEO" pattern. The human eye/brain dislikes too heavy image quality jumps...
 
 ###The noscript pattern
 In case you want to save more initial image data the LQIP pattern can't be used (an extreme fuzzy image does neither work as a good enough first impression nor as a fallback) or in case you can't even generate a LQIP src, but the image is important you can use the noscript pattern, which uses a 1x1 pixel grey image combined with a noscript tag:
@@ -129,7 +129,7 @@ In case you don't need to account for JS off or legacy browers, but still for se
 	<meta itemprop="contentUrl" content="image.jpg" />
 	<meta itemprop="name" content="my image" />
 </span>
-<img src="data:image/gif;base64,R0lGODlhAQABAAAAADs="
+<img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
 	class="lazyload"
 	data-srcset="image.jpg 1x, image2.jpg 2x"
     alt="my image" />
