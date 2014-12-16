@@ -1,6 +1,6 @@
 #lazysizes RIaS extension (Responsive image as a service / Responsive image on demand) 
 
-The RiaS plugin enables lazySizes to hook into any third party (ReSrc, Pixtulate, mobify ...) or self hosted restful responsive image service (responsive image on demand).
+The RiaS plugin enables lazySizes to hook into any third party (ReSrc, Pixtulate, mobify, WURFL's Image Tailor ...) or self hosted restful responsive image service (responsive image on demand).
 
 The rias plugin also allows art direction by combining rias with a ``picture`` element.
 

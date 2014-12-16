@@ -92,7 +92,7 @@ The LQIP pattern (low quality image placeholder): Simply add a low quality image
 <img src="lqip-src.jpg" data-src="image.jpg" class="lazyload" />
 ```
 
-The LQIP pattern has the following advantages: The lqip-src is not hidden from the preload parser and loads very fast, which leads to an extreme fast first impression and in case of legacy browsers/devices or searchengines (bots) as a good enough fallback (IE8 and Android 2 devices as also JS disabled). In case your lqip source is extreme fuzzy, you should consider serving either a higher quality, setting ``preloadAfterLoad`` to ``true`` or use the "noscript" or the "SEO" pattern. The human eye/brain dislikes too heavy image quality jumps...
+The LQIP pattern has the following advantages: The lqip-src is not hidden from the preload parser and loads very fast, which leads to an extreme fast first impression and in case of legacy browsers/devices or searchengines (bots) as a good enough fallback (IE8 and Android 2 devices as also JS disabled). In case your lqip source is extreme fuzzy, you should consider setting ``preloadAfterLoad`` to ``true``.
 
 ###The noscript pattern
 In case you want to save more initial image data the LQIP pattern can't be used (an extreme fuzzy image does neither work as a good enough first impression nor as a fallback) or in case you can't even generate a LQIP src, but the image is important you can use the noscript pattern, which uses a 1x1 pixel grey image combined with a noscript tag:
@@ -252,6 +252,24 @@ lazySizes.updateAllSizes();
 
 ##Contributing
 Fixes, PRs and issues are always welcome, make sure to create a new branch from the **master** (not the gh-pages branch), validate against JShint and test in all browsers. In case of an API/documentation change make sure to also document it here in the readme.md.
+
+##Available plugins
+
+###[RIAS plugin](plugins/rias)
+The [RIAS plugin](plugins/rias) plugin enables lazySizes to hook into any third party (ReSrc, Pixtulate, mobify, WURFL's Image Tailor ...) or self hosted restful responsive image service (responsive image on demand). It makes responsive images even more easier without any need for another third party script.
+
+###[OPTIMUMX plugin](plugins/optimumx)
+Each image has a different optimal pixel density, which might be smaller than the pixel density of your device. This information is unknown to the browser and therefore can't be optimized for. The [lazySizes optimumx extension](plugins/optimumx) gives you more control to trade between perceived quality vs. perceived performance.
+
+###[unveilhooks plugin](plugins/unveilhooks)
+The [unveilhooks plugin](plugins/unveilhooks) plugin enables lazySizes to lazyload background images, widgets/components/scripts and video/audio elements.
+
+###[include plugin](plugins/include)
+The [include plugin](plugins/include) plugin enables lazySizes to lazyload content either simply postboned or based on conditions (for example media queries).
+
+
+###[print plugin](plugins/unveilhooks)
+The [print plugin](plugins/unveilhooks) plugin enables lazySizes to unveil all elements as soon as the user starts to print. (Or set ``lazySizesConfig.preloadAfterLoad`` to ``true``).
 
 ##Why lazysizes
 In the past I often struggled using lazy image loaders, because the "main check function" is called repeatedly and with a high frequency. Which makes it hard to fullfill two purposes runtime and memory efficiency. And looking into the source code of most so called lazy loaders often also unveils lazy developers...

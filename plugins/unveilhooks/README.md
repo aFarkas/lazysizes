@@ -21,6 +21,25 @@ The unveilhooks plugin extends lazysizes to also unveil / lazyload scripts/widge
 <!-- require.js example -->
 <div class="lazyload" data-require="module-name"></div>
 ```
- 
+
+Note: In case you want to lazyload a background image via a ``class`` you can do so by using the ``addClasses`` option:
+
+```html
+<script>
+window.lazySizesConfig = {
+	addClasses: true
+};
+</script>
+
+<style>
+	.bg-stage.lazyloaded {
+		background-image: url(lazyloaded-bg.jpg);
+	}
+</style>
+
+<div class="bg-stage lazyload">
+	<!-- content -->
+</div>
+```
  
 

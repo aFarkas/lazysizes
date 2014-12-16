@@ -8,13 +8,14 @@
 }(function () {
 	'use strict';
 
-	if(!Date.now || !window.document.getElementsByClassName || !Object.freeze){return;}
+	if(!Date.now || !window.document.getElementsByClassName){return;}
 
 	var lazyloadElems, autosizesElems, lazySizesConfig, globalSizesTimer,
 		globalSizesIndex, globalLazyTimer, globalLazyIndex,
 		addClass, removeClass, hasClass, isWinloaded;
 
 	var document = window.document;
+	var docElem = document.documentElement;
 	var isPreloading = 0;
 
 	var regPicture = /^picture$/i;
@@ -29,6 +30,7 @@
 		}
 		dom[action]('load', fn, false);
 		dom[action]('error', fn, false);
+		dom[action]('lazyincluded', fn, false);
 	};
 
 	var triggerEvent = function(elem, name, details){
@@ -223,9 +225,7 @@
 			if(lazySizesConfig.addClasses){
 				addClass(elem, lazySizesConfig.loadingClass);
 
-				if(isImg){
-					addRemoveImgEvents(elem, switchLoadingClass, true);
-				}
+				addRemoveImgEvents(elem, switchLoadingClass, true);
 			}
 
 			if(srcset || src){
@@ -268,7 +268,8 @@
 				elem.lazyload = 0;
 			}
 
-			if( lazySizesConfig.addClasses && (!isImg || (!srcset && !src) || (elem.complete && curSrc == (elem.currentSrc || elem.src))) ){
+			//remove curSrc == (elem.currentSrc || elem.src) it's a workaround for FF. see: https://bugzilla.mozilla.org/show_bug.cgi?id=608261
+			if( !event.details.stopSwtichClass && lazySizesConfig.addClasses && (!isImg || (!srcset && !src) || (elem.complete && curSrc == (elem.currentSrc || elem.src))) ){
 				switchLoadingClass({target: elem});
 			}
 		});
@@ -363,7 +364,7 @@
 
 	// bind to all possible events ;-) This might look like a performance disaster, but it isn't.
 	// The main check functions are written to run extreme fast without consuming memory.
-	var docElem = document.documentElement;
+
 	var onload = function(){
 		inViewTreshhold = 600;
 
@@ -413,7 +414,6 @@
 			mutation: true,
 			hover: true,
 			cssanimation: true,
-			addClasses: false,
 			lazyClass: 'lazyload',
 			loadedClass: 'lazyloaded',
 			loadingClass: 'lazyloading',
@@ -422,7 +422,8 @@
 			srcAttr: 'data-src',
 			srcsetAttr: 'data-srcset',
 			sizesAttr: 'data-sizes',
-			preloadAfterLoad: false,
+			//addClasses: false,
+			//preloadAfterLoad: false,
 			onlyLargerSizes: true
 		};
 
@@ -473,6 +474,10 @@
 			}
 		},
 		updateSizes: updateSizes,
-		updatePolyfill: updatePolyfill
+		updatePolyfill: updatePolyfill,
+		aC: addClass,
+		rC: removeClass,
+		hC: hasClass,
+		fire: triggerEvent
 	};
 }));

@@ -71,8 +71,6 @@ For background images, use data-bg attribute:
 					if(config.clearAttr){
 						e.target.removeAttribute('data-bg');
 					}
-					e.preventDefault();
-					return;
 				}
 
 				// handle data-poster
@@ -92,8 +90,6 @@ For background images, use data-bg attribute:
 					if(config.clearAttr){
 						e.target.removeAttribute('data-poster');
 					}
-					e.preventDefault();
-					return;
 				}
 
 				// handle data-script
@@ -103,8 +99,6 @@ For background images, use data-bg attribute:
 					if(config.clearAttr){
 						e.target.removeAttribute('data-script');
 					}
-					e.preventDefault();
-					return;
 				}
 
 				// handle data-require
@@ -116,8 +110,6 @@ For background images, use data-bg attribute:
 					if(config.clearAttr){
 						e.target.removeAttribute('data-require');
 					}
-					e.preventDefault();
-					return;
 				}
 			}
 		}, false);

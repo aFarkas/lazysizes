@@ -26,6 +26,16 @@
 				main: {
 					src: [ "lazysizes.js" ],
 					dest: "lazysizes.min.js"
+				},
+				plugins: {
+					files: [{
+						expand: true,
+						cwd: 'plugins/',
+						src: ['**/*.js', '!*.min.js', '!**/*.min.js'],
+						dest: 'plugins/',
+						ext: '.min.js',
+						extDot: 'last'
+					}]
 				}
 			},
 			jshint: {
