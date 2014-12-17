@@ -178,6 +178,7 @@
 	var switchLoadingClass = function(e){
 		addClass(e.target, e.target.getAttribute('data-loadedclass') || lazySizesConfig.loadedClass);
 		removeClass(e.target, lazySizesConfig.loadingClass);
+		addRemoveImgEvents(e.target, switchLoadingClass);
 	};
 
 	function preload(elem){
@@ -185,7 +186,7 @@
 		elem = unveilLazy(elem);
 		addRemoveImgEvents(elem, resetPreloading, true);
 		clearTimeout(resetPreloadingTimer);
-		resetPreloadingTimer = setTimeout(resetPreloading, 5000);
+		resetPreloadingTimer = setTimeout(resetPreloading, 999);
 	}
 
 	function clearLazyTimer(){
