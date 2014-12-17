@@ -98,7 +98,10 @@
 		for(i = data.index + 1; i < data.cands.length; i++){
 			can = data.cands[i];
 			take = false;
-			if(!can.w && can.x){
+			if(!can.w && (can.x || can.d)){
+				if(!can.x && can.d){
+					can.x = can.d;
+				}
 				take = 'x';
 			} else if(can.w <= width || takeHighRes(data.cands[i - 1], can.w, width)){
 				take = 'w';
