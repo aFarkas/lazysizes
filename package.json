@@ -1,12 +1,13 @@
 {
 	"name": "lazysizes",
 	"version": "0.5.2",
+  	"filename": "lazysizes.min.js",
 	"author": "Alexander Farkas <info@corrupt-system.de>",
 	"repository": {
 		"type": "git",
 		"url": "git://github.com/aFarkas/lazysizes.git"
 	},
-	"browser": "lazysizes.js",
+	"browser": "lazysizes.min.js",
 	"devDependencies": {
 		"grunt": "~0.4.2",
 		"grunt-bytesize": "~0.1.1",
