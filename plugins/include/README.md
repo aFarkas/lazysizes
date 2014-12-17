@@ -132,7 +132,7 @@ The include feature works together with all normal lazySizes options (i.e.: ``ad
 Of course it is also possible to react to a user interaction.
 
 ```html
-
+<!-- markup has data-include, but no lazyload class -->
 <div class="dynamic-content" data-include="include.html">
 	<button type="button" class="load-include">load content</button>
 </div>
@@ -145,7 +145,7 @@ $(document).on('click', '.load-include', function(){
 		.prop('disabled', true)
 			//get parent include area
 			.closest('[data-include]')
-			// and activate lazySize by adding lazyload class
+			// and activate lazySizes by adding lazyload class
 			.addClass('lazyload')
 	;
 });
@@ -155,9 +155,8 @@ $(document).on('click', '.load-include', function(){
 It's also possible to change the ``data-include`` value and reevaluate it:
 
 ```html
-
-<div class="dynamic-content" data-include="include.html (min-width: 800px)">
-	<button type="button" class="load-include">load content</button>
+<div class="dynamic-content lazyload" data-include="include.html (min-width: 800px)">
+	<button type="button" class="load-include" data-setinclude="include.html">load content</button>
 </div>
 
 
@@ -169,8 +168,8 @@ $(document).on('click', '.load-include', function(){
 			//get parent include area
 			.closest('[data-include]')
 			//change data-include value
-			.attr('data-include', 'include.html')
-			// and activate/refresh lazySize by adding lazyload class
+			.attr('data-include', $.attr(this, 'data-setinclude'))
+			// and activate/refresh lazySizes by adding lazyload class
 			.addClass('lazyload')
 	;
 });

@@ -1,5 +1,5 @@
 #lazysizes
-**lazysizes** is a fast (jank-free) lazyloader for images (including responsive images), iframes and scripts/widgets. It may become also your number one tool to integrate responsive images. Due to the fact that it can also automatically calculate the ``sizes`` attribute for your responsive images, it helps to separate layout (CSS) from content/structure (HTML) and makes integrating responsive images into any environment simply simple.
+**lazysizes** is a fast (jank-free) lazyloader for images (including responsive images), iframes, scripts/widgets and much more. It may become also your number one tool to integrate responsive images. Due to the fact that it can also automatically calculate the ``sizes`` attribute for your responsive images, it helps to separate layout (CSS) from content/structure (HTML) and makes integrating responsive images into any environment simply simple.
 
 ##How to
 
@@ -41,12 +41,13 @@
 2. **Future-proof**: It directly includes standard responsive image support (``picture`` and ``srcset``)
 3. **Separation of concerns**: For responsive image support it adds an automatic ``sizes`` calculation feature.
 4. **Performance**: It's based on high efficient code (runtime **and** memory) to work jank-free at 60fps.
+5. **Extendable**: It provides JS and CSS hooks to extend lazySizes with any kind of lazy loading or effects.
 
 ##[Demo with code examples](http://afarkas.github.io/lazysizes/#examples)
 Can be seen [here](http://afarkas.github.io/lazysizes/#examples).
 
 ##About responsive image support
-For full cross browser responsive image support you must use a polyfill like [respimage (recommended)](https://github.com/aFarkas/respimage) or [picturefill](https://github.com/scottjehl/picturefill).
+For full cross browser responsive image support you must use a polyfill like [respimage (recommended) (srcset and picture polyfill)](https://github.com/aFarkas/respimage) or [picturefill](https://github.com/scottjehl/picturefill).
 
 ##More about the API
 **lazysizes** comes with a simple markup and JS API. Normally you will only need to use the markup API.
@@ -127,7 +128,7 @@ In case you don't need to account for JS off or legacy browers, but still for se
     alt="my image" />
 ```
 
-Note: While the noscript and the SEO pattern do save more bandwidth, they often still generate a slower perceived performance than the LQIP pattern.
+Note: While the noscript and the SEO pattern do save more bandwidth, they often still generate a slower perceived performance than the LQIP pattern due to the lack of the preload parser advantage.
 
 ###JS API
 **lazysizes** automatically detects new elements with the class ``lazyload`` so you won't need to call or configure anything in most situations.
@@ -247,13 +248,13 @@ lazySizes.updateAllSizes();
 ##Contributing
 Fixes, PRs and issues are always welcome, make sure to create a new branch from the **master** (not the gh-pages branch), validate against JShint and test in all browsers. In case of an API/documentation change make sure to also document it here in the readme.md.
 
-##Available plugins
+##Available plugins in this repo
 
 ###[RIAS plugin](plugins/rias)
 The [RIAS plugin](plugins/rias) plugin enables lazySizes to hook into any third party (ReSrc, Pixtulate, mobify, WURFL's Image Tailor ...) or self hosted restful responsive image service (responsive image on demand). It makes responsive images even more easier without any need for another third party script.
 
 ###[OPTIMUMX plugin](plugins/optimumx)
-The ``srcset`` attribute with the *w* descriptor and ``sizes`` attribute automatically also includes high DPI images. But each image has a different optimal pixel density, which might be smaller than the pixel density of your device (2x or 3x). This information is unknown to the browser and therefore can't be optimized for. The [lazySizes optimumx extension](plugins/optimumx) gives you more control to trade between perceived quality vs. perceived performance.
+The ``srcset`` attribute with the *w* descriptor and ``sizes`` attribute automatically also includes high DPI images. But each image has a different optimal pixel density, which might be lower (1.5x) than the pixel density of your device (2x or 3x). This information is unknown to the browser and therefore can't be optimized for. The [lazySizes optimumx extension](plugins/optimumx) gives you more control to trade between perceived quality vs. perceived performance.
 
 ###[unveilhooks plugin](plugins/unveilhooks)
 The [unveilhooks plugin](plugins/unveilhooks) plugin enables lazySizes to lazyload background images, widgets/components/scripts, styles and video/audio elements.

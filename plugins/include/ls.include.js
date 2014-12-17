@@ -158,6 +158,8 @@
 			elem._lazyInclude = includeData;
 			if(includeData.srces.length > 1){
 				lazySizes.aC(elem, 'lazyconditionalinclude');
+			} else {
+				lazySizes.rC(elem, 'lazyconditionalinclude');
 			}
 		}
 		return includeData;
