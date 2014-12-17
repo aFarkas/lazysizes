@@ -95,11 +95,10 @@ The LQIP pattern (low quality image placeholder): Simply add a low quality image
 The LQIP pattern has the following advantages: The lqip-src is not hidden from the preload parser and loads very fast, which leads to an extreme fast first impression and in case of legacy browsers/devices or searchengines (bots) as a good enough fallback (IE8 and Android 2 devices as also JS disabled). In case your lqip source is extreme fuzzy, you should consider setting ``preloadAfterLoad`` to ``true``.
 
 ###The noscript pattern
-In case you want to save more initial image data the LQIP pattern can't be used (an extreme fuzzy image does neither work as a good enough first impression nor as a fallback) or in case you can't even generate a LQIP src, but the image is important you can use the noscript pattern, which uses a 1x1 pixel grey image combined with a noscript tag:
+In case you want to save more initial image data the LQIP pattern can't be used (an extreme fuzzy image does neither work as a good enough first impression nor as a fallback) or in case you can't even generate a LQIP src:
 
 ```html
 <style>
-	.lt-ie9 img.lazyload, /* just if you use extened IE8 noscript pattern */
 	.no-js img.lazyload {
     	display: none;
     }
@@ -109,13 +108,6 @@ In case you want to save more initial image data the LQIP pattern can't be used 
 <noscript>
 	<img src="image.jpg" />
 </noscript>
-<img src="grey.jpg" data-src="image.jpg" class="lazyload" />
-
-<!-- extended noscript pattern with IE8 fallback -->
-<!--[if ! lt IE 9]><!--><noscript><!--<![endif]-->
-	<img src="image.jpg" />
-<!--[if ! lt IE 9]><!--></noscript><!--<![endif]-->
-<!--[if gt IE 8]><!-->
 <img src="grey.jpg" data-src="image.jpg" class="lazyload" />
 <!--<![endif]-->
 ```
@@ -134,6 +126,8 @@ In case you don't need to account for JS off or legacy browers, but still for se
 	data-srcset="image.jpg 1x, image2.jpg 2x"
     alt="my image" />
 ```
+
+Note: While the noscript and the SEO pattern do save more bandwidth, they often still generate a slower perceived performance than the LQIP pattern.
 
 ###JS API
 **lazysizes** automatically detects new elements with the class ``lazyload`` so you won't need to call or configure anything in most situations.
@@ -259,13 +253,13 @@ Fixes, PRs and issues are always welcome, make sure to create a new branch from 
 The [RIAS plugin](plugins/rias) plugin enables lazySizes to hook into any third party (ReSrc, Pixtulate, mobify, WURFL's Image Tailor ...) or self hosted restful responsive image service (responsive image on demand). It makes responsive images even more easier without any need for another third party script.
 
 ###[OPTIMUMX plugin](plugins/optimumx)
-Each image has a different optimal pixel density, which might be smaller than the pixel density of your device. This information is unknown to the browser and therefore can't be optimized for. The [lazySizes optimumx extension](plugins/optimumx) gives you more control to trade between perceived quality vs. perceived performance.
+The ``srcset`` attribute with the *w* descriptor and ``sizes`` attribute automatically also includes high DPI images. But each image has a different optimal pixel density, which might be smaller than the pixel density of your device (2x or 3x). This information is unknown to the browser and therefore can't be optimized for. The [lazySizes optimumx extension](plugins/optimumx) gives you more control to trade between perceived quality vs. perceived performance.
 
 ###[unveilhooks plugin](plugins/unveilhooks)
-The [unveilhooks plugin](plugins/unveilhooks) plugin enables lazySizes to lazyload background images, widgets/components/scripts and video/audio elements.
+The [unveilhooks plugin](plugins/unveilhooks) plugin enables lazySizes to lazyload background images, widgets/components/scripts, styles and video/audio elements.
 
 ###[include plugin](plugins/include)
-The [include plugin](plugins/include) plugin enables lazySizes to lazyload content either simply postboned or based on conditions (for example media queries).
+The [include plugin](plugins/include) plugin enables lazySizes to lazyload content either simply postboned or conditionaly based on certain conditions (for example media queries). This extension has an extreme great scalability.
 
 
 ###[print plugin](plugins/unveilhooks)

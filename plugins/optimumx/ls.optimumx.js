@@ -18,6 +18,7 @@
 
 
 (function(window, document, undefined){
+	/*jshint eqnull:true */
 	'use strict';
 	var regPicture = /^picture$/i;
 	if(!window.addEventListener){

@@ -7,7 +7,7 @@
 	}
 }(function () {
 	'use strict';
-
+	/*jshint eqnull:true */
 	if(!Date.now || !window.document.getElementsByClassName){return;}
 
 	var lazyloadElems, autosizesElems, lazySizesConfig, globalSizesTimer,
@@ -269,7 +269,7 @@
 			}
 
 			//remove curSrc == (elem.currentSrc || elem.src) it's a workaround for FF. see: https://bugzilla.mozilla.org/show_bug.cgi?id=608261
-			if( !event.details.stopSwtichClass && lazySizesConfig.addClasses && (!isImg || (!srcset && !src) || (elem.complete && curSrc == (elem.currentSrc || elem.src))) ){
+			if( !event.details.stopSwitchClass && lazySizesConfig.addClasses && (!isImg || (!srcset && !src) || (elem.complete && curSrc == (elem.currentSrc || elem.src))) ){
 				switchLoadingClass({target: elem});
 			}
 		});

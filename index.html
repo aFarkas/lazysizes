@@ -7,9 +7,11 @@
 
 	<!-- polyfill responsive images: https://github.com/aFarkas/respimage -->
 	<script>
+		function loadJS(u){var r = document.getElementsByTagName( "script" )[ 0 ], s = document.createElement( "script" );s.src = u;r.parentNode.insertBefore( s, r );}
+
 		if(!window.HTMLPictureElement){
-			//load respimage polyfill
-			document.write('<script src="https:\/\/afarkas.github.io\/respimage\/respimage.js" async=""><\/script>');
+			document.createElement('picture');
+			loadJS("https://afarkas.github.io/respimage/respimage.min.js");
 		}
 	</script>
 
@@ -69,9 +71,6 @@
 		}
 
 	</style>
-	<script>
-		document.createElement('picture');
-	</script>
 
 	<script>
 
@@ -284,7 +283,7 @@ https://farm9.staticflickr.com/8200/8248153196_7a7664e147_b.jpg 1024w"
 			<div class="col-sm-12">
 				<div class="thumbnail">
 					<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
-					<div data-ride="carousel" data-script="assets/js/bootstrap.min.js" class="carousel lazyload slide" data-interval="false" id="carousel-example-captions">
+					<div data-ride="carousel" data-script="assets/js/bootstrap.min.js" data-link="assets/css/carousel.css" class="carousel lazyload slide" data-interval="false" id="carousel-example-captions">
 						<ol class="carousel-indicators">
 							<li data-slide-to="0" data-target="#carousel-example-captions"></li>
 							<li data-slide-to="1" data-target="#carousel-example-captions"></li>

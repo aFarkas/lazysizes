@@ -2,6 +2,7 @@
 This lazySizes extension removes scroll events implements a more lazier scrollintent event instead.
 */
 (function(window, document){
+	/*jshint eqnull:true */
 	'use strict';
 	var config, afterScrollTimer, update, checkElem, checkFn, checkTimer, top, left;
 	if(window.addEventListener){

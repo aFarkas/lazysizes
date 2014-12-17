@@ -3,6 +3,7 @@ This lazySizes extension adds better support for print.
 In case the user starts to print lazysizes will load all images.
 */
 (function(window){
+	/*jshint eqnull:true */
 	'use strict';
 	var config, elements, onprint, printMedia;
 	// see also: http://tjvantoll.com/2012/06/15/detecting-print-requests-with-javascript/

@@ -1,6 +1,6 @@
 #lazysizes unveilhooks extension
 
-The unveilhooks plugin extends lazysizes to also unveil / lazyload scripts/widgets, background images and video/audio elements:
+The unveilhooks plugin extends lazySizes to also unveil / lazyload scripts/widgets, background images, styles and video/audio elements:
 
 ```html
 <!-- Background image example: -->
@@ -13,6 +13,11 @@ The unveilhooks plugin extends lazysizes to also unveil / lazyload scripts/widge
 
 </div>
 
+<!-- Styles -->
+<div class="lazyload" data-link="my-style.css">
+
+</div>
+
 <!-- Video example: -->
 <video class="lazyload" data-poster="poster.jpg" preload="none">
  	<!-- sources -->
@@ -20,6 +25,12 @@ The unveilhooks plugin extends lazysizes to also unveil / lazyload scripts/widge
 
 <!-- require.js example -->
 <div class="lazyload" data-require="module-name"></div>
+
+
+<!-- Styles & script combined -->
+<div class="lazyload" data-script="my-script.js" data-link="my-style.css">
+
+</div>
 ```
 
 Note: In case you want to lazyload a background image via a ``class`` you can do so by using the ``addClasses`` option:

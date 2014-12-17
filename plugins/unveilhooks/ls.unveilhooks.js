@@ -23,9 +23,10 @@ For background images, use data-bg attribute:
 */
 
 (function(window, document){
+	/*jshint eqnull:true */
 	'use strict';
 	var config, bgLoad;
-	var scriptUrls = {};
+	var uniqueUrls = {};
 
 	if(document.addEventListener && window.getComputedStyle){
 		config = window.lazySizesConfig || (window.lazySizes && lazySizes.cfg) || {};
@@ -52,6 +53,14 @@ For background images, use data-bg attribute:
 				if(e.target.preload == 'none'){
 					e.target.preload = 'auto';
 					e.preventDefault();
+				}
+
+				tmp = e.target.getAttribute('data-link');
+				if(tmp){
+					addStyleScript(tmp, true);
+					if(config.clearAttr){
+						e.target.removeAttribute('data-link');
+					}
 				}
 
 				// handle data-bg
@@ -95,7 +104,7 @@ For background images, use data-bg attribute:
 				// handle data-script
 				tmp = e.target.getAttribute('data-script');
 				if(tmp){
-					addScript(e.target, tmp);
+					addStyleScript(tmp);
 					if(config.clearAttr){
 						e.target.removeAttribute('data-script');
 					}
@@ -116,16 +125,21 @@ For background images, use data-bg attribute:
 
 	}
 
-	function addScript(element, src){
-		if(scriptUrls[src]){
+	function addStyleScript(src, style){
+		if(uniqueUrls[src]){
 			return;
 		}
-		var elem = document.createElement('script');
-		var parent = element.parentNode;
+		var elem = document.createElement(style ? 'link' : 'script');
+		var insertElem = document.getElementsByTagName('script')[0];
 
-		elem.src = src;
-		scriptUrls[src] = true;
-		scriptUrls[elem.src] = true;
-		parent.insertBefore(elem, element);
+		if(style){
+			elem.rel = 'stylesheet';
+			elem.href = src;
+		} else {
+			elem.src = src;
+		}
+		uniqueUrls[src] = true;
+		uniqueUrls[elem.src || elem.href] = true;
+		insertElem.parentNode.insertBefore(elem, insertElem);
 	}
 })(window, document);

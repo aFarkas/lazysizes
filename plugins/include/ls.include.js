@@ -4,7 +4,9 @@
  */
 
 (function(window, document){
+	/*jshint eqnull:true */
 	'use strict';
+
 	if(!document.getElementsByClassName) {
 		return;
 	}
@@ -14,24 +16,64 @@
 	var conditionalIncludes = document.getElementsByClassName('lazyconditionalinclude');
 
 	var q = (function(){
-		var queueThreshold = 3;
+		var lowTreshold = 2;
+		var highTreshold = lowTreshold + 1;
+		var queueThreshold = lowTreshold;
 		var inProgress = 0;
+		var priosInProgress = 0;
 		var queue = [];
+		var resetQueue = (function(){
+			var timer;
+			var reset = function(){
+				if(queue.length){
+					inProgress = 0;
+					q.dequeue();
+				}
+			};
+			return function(){
+				clearTimeout(timer);
+				timer = setTimeout(reset, 999);
+			};
+		})();
+
 		return {
 			queue: function(element){
+				var isPrio = element.getAttribute('data-lazyqueue') == null;
+				if(isPrio){
+					priosInProgress++;
+					queueThreshold = highTreshold;
+				}
+
 				if(inProgress > queueThreshold){
-					queue[element.getAttribute('data-lazyqueue') != null ? 'push' : 'unshift'](element);
+					queue[isPrio ? 'unshift' : 'push'](element);
 				} else if(findLoadCandidate(element)) {
 					inProgress++;
+					resetQueue();
 				}
 			},
 			dequeue: function(){
-				inProgress--;
+				if(inProgress){
+					inProgress--;
+				}
+				if(priosInProgress > 0){
+					priosInProgress--;
+
+					if(!priosInProgress){
+						queueThreshold = lowTreshold;
+					}
+				}
+
+				if(inProgress > queueThreshold){
+					return;
+				}
+
 				while(queue.length){
 					if(findLoadCandidate(queue.shift())){
+						inProgress++;
 						break;
 					}
 				}
+				resetQueue();
 			}
 		};
 	})();
@@ -96,9 +138,11 @@
 
 	function getIncludeData(elem){
 		var len;
+		var includeStr = (elem.getAttribute('data-include') || '');
 		var includeData = elem._lazyInclude;
-		if(!includeData){
+		if(!includeData || includeData.str != includeStr){
 			includeData = {
+				str: includeStr,
 				srces: (elem.getAttribute('data-include') || '').split(regSplitCan).map(parseCandidate)
 			};
 
@@ -224,7 +268,7 @@
 	function beforeUnveil(e){
 		if(e.defaultPrevented || !e.target.getAttribute('data-include')){return;}
 		q.queue(e.target);
-		e.details.stopSwtichClass = true;
+		e.details.stopSwitchClass = true;
 	}
 
 	document.addEventListener('lazybeforeunveil', beforeUnveil, false);

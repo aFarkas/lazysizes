@@ -1,12 +1,12 @@
 #lazysizes include plugin
 
-**lazysizes** include extension/plugin asynchronously include non crucial content. Due to lazyloading, prioritized queuing and preload after load techniques lazySizes include extension scales much better that similar other solutions.
+**lazysizes** include extension/plugin asynchronously include non crucial content. Due to lazyloading, prioritized queuing and preload after load techniques lazySizes include extension scales much better than similar other solutions.
 
 Typical use cases are:
 
-* loading different content depending on certain conditions (mediaqueries, browser features, user preferences...)
-* defering heavy to render or uncacheable content (client or server side)
-* progressively enhancing the document with new content
+* conditional lazy loading different content depending on certain conditions (media queries, browser features, user preferences, element queries...)
+* deferring heavy to render or uncacheable content (client or server side)
+* progressively enhancing the document with new JS enabled content
 
 ##Basic usage
 
@@ -17,7 +17,7 @@ Put a ``data-include`` attribute on your ``.lazyload`` element and reference the
 </aside>
 ```
 
-The ``data-include`` can also consume a list of include candidates represented by a URL in combination with an optional parenthesised condition. The lazySizes include extension will then take the first URL, that matches the condition:
+The ``data-include`` can also consume a list of candidates represented by a URL in combination with an optional parenthesised condition. The lazySizes include extension will then take the first URL, that matches the condition:
 
 ```html
 <div class="dynamic-content lazyload"
@@ -34,7 +34,7 @@ If the last include candidate has no condition, the innerHTML of the initial con
 </div>
 ```
 
-The condition is either a mediaquery or the name of a configured condition rule, which is either a string representing a mediaquery or a function:
+The condition is either a media query or the name of a configured condition rule, which is either a string representing a media query or a function:
 
 ```html
 <script>
@@ -42,7 +42,7 @@ window.lazySizesConfig = {
 	include: {
 		conditions: {
 			small: '(max-width: 480px)',
-			custom: function(elem, data){
+			custom: function(element, data){
 				return true || false;
 			}
 		}
@@ -68,7 +68,7 @@ document.addEventListener('lazyincluded', function(e){
 </div>
 ```
 
-The include feature will always use a download queue to make sure, that multiple includes do not jam the browsers own request queue. In case of many non crucial includes mixed with some crucial includes on one page the ``data-lazyqueue`` attribute can be used to add a queue priority:
+The include feature will always use a download queue to make sure, that multiple includes do not jam the browsers own request queue. In case of many non crucial includes mixed with some more crucial includes on one page the ``data-lazyqueue`` attribute can be used to add a queue priority for the include extension:
 
 ```html
 <li>
@@ -94,6 +94,7 @@ The include feature will always use a download queue to make sure, that multiple
 		)
 	</a>
 </li>
+<!-- more lazyqueued elements -->
 
 <div class="lazyload" data-include="large.html (min-width: 800px), default.html">
 	<!-- crucial conditional content -->
@@ -124,4 +125,54 @@ window.lazySizesConfig = {
 };
 ```
 
-The include feature works together with all normal lazySizes options (i.e.: ``addClasses``), events and methods. In case ``preloadAfterLoad`` is not set explicitly to ``false`` the include extension will change it to ``true``.
+The include feature works together with all normal lazySizes options (i.e.: ``addClasses`` for load indicators), events and methods. In case ``preloadAfterLoad`` is not set explicitly to ``false`` the include extension will automatically change it to ``true``.
+
+##Reacting to user interaction
+
+Of course it is also possible to react to a user interaction.
+
+```html
+
+<div class="dynamic-content" data-include="include.html">
+	<button type="button" class="load-include">load content</button>
+</div>
+
+
+<script>
+$(document).on('click', '.load-include', function(){
+	$(this)
+		//set button to disabled
+		.prop('disabled', true)
+			//get parent include area
+			.closest('[data-include]')
+			// and activate lazySize by adding lazyload class
+			.addClass('lazyload')
+	;
+});
+</script>
+```
+
+It's also possible to change the ``data-include`` value and reevaluate it:
+
+```html
+
+<div class="dynamic-content" data-include="include.html (min-width: 800px)">
+	<button type="button" class="load-include">load content</button>
+</div>
+
+
+<script>
+$(document).on('click', '.load-include', function(){
+	$(this)
+		//set button to disabled
+		.prop('disabled', true)
+			//get parent include area
+			.closest('[data-include]')
+			//change data-include value
+			.attr('data-include', 'include.html')
+			// and activate/refresh lazySize by adding lazyload class
+			.addClass('lazyload')
+	;
+});
+</script>
+```
