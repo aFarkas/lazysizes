@@ -1,7 +1,7 @@
 {
 	"name": "lazysizes",
 	"repo": "afarkas/lazysizes",
-	"version": "0.5.2",
+	"version": "0.5.3",
 	"main": "lazysizes.min.js",
 	"scripts": [
 		"lazysizes.min.js"
@@ -19,14 +19,14 @@
 	"ignore": [
 		"**/.*",
 		"node_modules",
-		"assets",
-		"maxdpr",
-		"rias",
-		"include",
-		"optimumx",
+		"/assets",
+		"/maxdpr",
+		"/rias",
+		"/include",
+		"/optimumx",
 		"bower_components",
-		"test",
-		"tests",
+		"/test",
+		"/tests",
 		"index.html",
 		"Gruntfile.js",
 		"component.json",
