@@ -29,7 +29,7 @@ For background images, use data-bg attribute:
 	var uniqueUrls = {};
 
 	if(document.addEventListener && window.getComputedStyle){
-		config = window.lazySizesConfig || (window.lazySizes && lazySizes.cfg) || {};
+		config = (window.lazySizes && lazySizes.cfg) || window.lazySizesConfig || {};
 
 		bgLoad = function (url, cb){
 			var img = document.createElement('img');

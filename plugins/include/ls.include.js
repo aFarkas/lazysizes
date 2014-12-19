@@ -1,6 +1,5 @@
 /*
- This plugin extends lazySizes to lazyLoad:
-
+ This plugin extends lazySizes to lazyLoad and/or conditionally load content
  */
 
 (function(window, document){
@@ -10,12 +9,13 @@
 	if(!document.getElementsByClassName) {
 		return;
 	}
-	var config;
+	var config, includeConfig, baseContentElement, basePseudos;
 	var regSplitCan = /\s*,+\s+/;
 	var regUrlCan = /(.+)\s+(\(\s*(.+)\s*\))/;
+	var regCleanPseudos = /['"]/g;
 	var conditionalIncludes = document.getElementsByClassName('lazyconditionalinclude');
 
-	var q = (function(){
+	var queue = (function(){
 		var lowTreshold = 2;
 		var highTreshold = lowTreshold + 1;
 		var queueThreshold = lowTreshold;
@@ -27,9 +27,10 @@
 			var reset = function(){
 				if(queue.length){
 					inProgress = 0;
-					q.dequeue();
+					queue.d();
 				}
 			};
+
 			return function(){
 				clearTimeout(timer);
 				timer = setTimeout(reset, 999);
@@ -37,7 +38,7 @@
 		})();
 
 		return {
-			queue: function(element){
+			q: function(element){
 				var isPrio = element.getAttribute('data-lazyqueue') == null;
 				if(isPrio){
 					priosInProgress++;
@@ -51,7 +52,7 @@
 					resetQueue();
 				}
 			},
-			dequeue: function(){
+			d: function(){
 				if(inProgress){
 					inProgress--;
 				}
@@ -90,6 +91,7 @@
 		};
 		return function(e){
 			clearTimeout(timer);
+			basePseudos = null;
 			timer = setTimeout(run, e.type == 'resize' ? 31 : 0);
 		};
 	})();
@@ -97,7 +99,7 @@
 
 	config = (window.lazySizes && lazySizes.cfg) || window.lazySizesConfig;
 
-	if(window.lazySizesConfig){
+	if(!config){
 		config = {};
 		window.lazySizesConfig = config;
 	}
@@ -106,8 +108,14 @@
 		config.include = {};
 	}
 
-	if(!config.include.conditions){
-		config.include.conditions = {};
+	includeConfig = config.include;
+
+	if(!includeConfig.contentElement){
+		includeConfig.contentElement = 'html';
+	}
+
+	if(!includeConfig.conditions){
+		includeConfig.conditions = {};
 	}
 
 	if(!('preloadAfterLoad' in config)){
@@ -123,7 +131,7 @@
 		if(map){
 			output = {
 				url: RegExp.$1,
-				condition: config.include.conditions[RegExp.$3] || RegExp.$2,
+				condition: config.include.conditions[RegExp.$3] || RegExp.$2 || null,
 				name: RegExp.$3
 			};
 		} else {
@@ -166,15 +174,48 @@
 	}
 
 	function matchesCondition(elem, candidate){
-		var matches = true;
+		var matches = !candidate.condition;
+
 		if(candidate.condition){
-			if(typeof candidate.condition == 'string'){
-				matches = matchMedia(candidate.condition).matches;
+			createPseudoCondition();
+			if(basePseudos[candidate.name]){
+				matches = true;
+			} else if(window.matchMedia && typeof candidate.condition == 'string'){
+				matches = (matchMedia(candidate.condition) || {}).matches;
 			} else if(typeof candidate.condition == 'function'){
-				matches = candidate.condition.call(elem, candidate);
+				matches = candidate.condition(elem, candidate);
 			}
 		}
 		return matches;
+	}
+
+
+	function createPseudoCondition(){
+		var cStyle;
+
+		if(!basePseudos){
+
+			if(!baseContentElement){
+				baseContentElement = document.querySelector(includeConfig.contentElement);
+			}
+
+			if(baseContentElement){
+				cStyle = (getComputedStyle(baseContentElement, ':after').getPropertyValue('content') || 'none').replace(regCleanPseudos, '');
+
+				basePseudos = {};
+
+				if(cStyle){
+					basePseudos[cStyle] = 1;
+				}
+				cStyle = (getComputedStyle(baseContentElement, ':before').getPropertyValue('content') || 'none').replace(regCleanPseudos, '');
+				if(cStyle){
+					basePseudos[cStyle] = 1;
+				}
+			} else {
+				basePseudos = {};
+			}
+		}
+
 	}
 
 	function findCandidate(elem){
@@ -196,17 +237,19 @@
 
 	function loadCandidate(elem, candidate){
 		var request, include;
+		var old = elem._lazyInclude.current || null;
 		var details = {
 			candidate: candidate,
 			openArgs: ['GET', candidate.url, true],
 			sendData: null,
 			xhrModifier: null,
-			content: candidate.content
+			content: candidate.content,
+			old: old
 		};
 		var event = lazySizes.fire(elem, 'lazyincludeload', details);
 
 		if(event.defaultPrevented){
-			q.dequeue();
+			queue.d();
 			return;
 		}
 
@@ -218,14 +261,19 @@
 				text: obj.responseText || obj.content,
 				response: obj.response,
 				xml: obj.responseXML,
-				isSuccess: ('status' in obj) ? status >= 200 && status < 300 || status === 304 : true
+				isSuccess: ('status' in obj) ? status >= 200 && status < 300 || status === 304 : true,
+				old: old
 			};
 			var event = lazySizes.fire(elem, 'lazyincludeloaded', details);
 
 			if(details.isSuccess && !event.defaultPrevented && details.content != elem.innerHTML){
-				elem.innerHTML = details.content;
+				if(window.jQuery){
+					jQuery(elem).html(details.content);
+				} else {
+					elem.innerHTML = details.content;
+				}
 			}
-			q.dequeue();
+			queue.d();
 			lazySizes.fire(elem, 'lazyincluded', details);
 		};
 
@@ -269,7 +317,7 @@
 
 	function beforeUnveil(e){
 		if(e.defaultPrevented || !e.target.getAttribute('data-include')){return;}
-		q.queue(e.target);
+		queue.q(e.target);
 		e.details.stopSwitchClass = true;
 	}
 
