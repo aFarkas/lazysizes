@@ -11,13 +11,17 @@
 	}
 	var config, includeConfig, baseContentElement, basePseudos;
 	var regSplitCan = /\s*,+\s+/;
+	var uniqueUrls = {};
+	var regWhite = /\s+/;
+	var regTypes = /^(amd|css)\:(.+)/i;
 	var regUrlCan = /(.+)\s+(\(\s*(.+)\s*\))/;
 	var regCleanPseudos = /['"]/g;
+	var docElem = document.documentElement;
 	var conditionalIncludes = document.getElementsByClassName('lazyconditionalinclude');
 
 	var queue = (function(){
 		var lowTreshold = 2;
-		var highTreshold = lowTreshold + 1;
+		var highTreshold = 3;
 		var queueThreshold = lowTreshold;
 		var inProgress = 0;
 		var priosInProgress = 0;
@@ -96,7 +100,6 @@
 		};
 	})();
 
-
 	config = (window.lazySizes && lazySizes.cfg) || window.lazySizesConfig;
 
 	if(!config){
@@ -123,24 +126,42 @@
 	}
 
 	function parseCandidate(input){
-		var output, map;
+		var output, map, url;
 		input = input.trim();
 
 		map = input.match(regUrlCan);
 
 		if(map){
+			url = RegExp.$1;
 			output = {
 				url: RegExp.$1,
 				condition: config.include.conditions[RegExp.$3] || RegExp.$2 || null,
 				name: RegExp.$3
 			};
 		} else {
+			url = input;
 			output = {
 				url: input,
 				condition: null,
 				name: ''
 			};
 		}
+
+		output.urls = {};
+		url = url.split(regWhite).forEach(function(url){
+			if(url.match(regTypes)){
+				output.urls[RegExp.$1] = RegExp.$2;
+			} else {
+				output.urls.include = url;
+			}
+		});
+
+		if(!output.urls.include){
+			/*jshint validthis:true */
+			initialContent.need = true;
+			output.content = initialContent;
+		}
+
 		return output;
 	}
 
@@ -148,19 +169,25 @@
 		var len;
 		var includeStr = (elem.getAttribute('data-include') || '');
 		var includeData = elem._lazyInclude;
+		var initialContent = {};
 		if(!includeData || includeData.str != includeStr){
 			includeData = {
 				str: includeStr,
-				srces: (elem.getAttribute('data-include') || '').split(regSplitCan).map(parseCandidate)
+				srces: (elem.getAttribute('data-include') || '').split(regSplitCan).map(parseCandidate, initialContent)
 			};
 
 			if(!(len = includeData.srces.length) || includeData.srces[len - 1].condition){
+				initialContent.need = true;
 				includeData.srces.push({
 					url: '',
 					condition: null,
 					name: 'initial',
-					content: elem.innerHTML
+					content: initialContent
 				});
+			}
+
+			if(initialContent.need){
+				initialContent.content = elem.innerHTML;
 			}
 
 			elem._lazyInclude = includeData;
@@ -235,63 +262,14 @@
 		return candidate;
 	}
 
-	function loadCandidate(elem, candidate){
-		var request, include;
-		var old = elem._lazyInclude.current || null;
-		var details = {
-			candidate: candidate,
-			openArgs: ['GET', candidate.url, true],
-			sendData: null,
-			xhrModifier: null,
-			content: candidate.content,
-			old: old
-		};
-		var event = lazySizes.fire(elem, 'lazyincludeload', details);
-
-		if(event.defaultPrevented){
-			queue.d();
-			return;
-		}
-
-		include = function(obj){
-			var status = obj.status;
-			var details = {
-				candidate: candidate,
-				content: obj.content || obj.responseText,
-				text: obj.responseText || obj.content,
-				response: obj.response,
-				xml: obj.responseXML,
-				isSuccess: ('status' in obj) ? status >= 200 && status < 300 || status === 304 : true,
-				old: old
-			};
-			var event = lazySizes.fire(elem, 'lazyincludeloaded', details);
-
-			if(details.isSuccess && !event.defaultPrevented && details.content != elem.innerHTML){
-				if(window.jQuery){
-					jQuery(elem).html(details.content);
-				} else {
-					elem.innerHTML = details.content;
-				}
-			}
-			queue.d();
-			lazySizes.fire(elem, 'lazyincluded', details);
-		};
-
-		elem._lazyInclude.current = candidate;
-		elem.setAttribute('data-currentinclude', candidate.name);
-
-		if(details.content){
-			include(details);
-			return;
-		}
-
-		request = new XMLHttpRequest();
+	function loadInclude(details, includeCallback){
+		var request = new XMLHttpRequest();
 
 		request.addEventListener('readystatechange', function () {
 			var DONE = this.DONE || 4;
 			if (this.readyState === DONE){
 
-				include(request);
+				includeCallback(request);
 				request = null;
 			}
 		}, false);
@@ -304,10 +282,148 @@
 		request.send(details.sendData);
 	}
 
+	function loadRequire(urls, callback){
+		urls = urls.split('|,|');
+		require(urls, function(){
+			callback(Array.prototype.slice.call(arguments));
+		});
+	}
+
+	function loadStyle(url){
+		if(!uniqueUrls[url]){
+			var elem = document.createElement('link');
+			var insertElem = document.getElementsByTagName('script')[0];
+
+			elem.rel = 'stylesheet';
+			elem.href = url;
+			insertElem.parentNode.insertBefore(elem, insertElem);
+			uniqueUrls[url] = true;
+			uniqueUrls[elem.href] = true;
+		}
+	}
+
+	function loadStyles(urls){
+		urls = urls.split('|,|');
+		urls.forEach(loadStyle);
+	}
+
+	function transformInclude(module){
+		if(module && typeof module.lazytransform == 'function'){
+			/*jshint validthis:true */
+			module.lazytransform(this);
+		}
+	}
+
+	function unloadModule(module){
+		if(module && typeof module.lazyunload == 'function'){
+			/*jshint validthis:true */
+			module.lazyunload(this);
+		}
+	}
+
+	function loadModule(module){
+		if(module && typeof module.lazyload == 'function'){
+			/*jshint validthis:true */
+			module.lazyload(this);
+		}
+	}
+
+	function loadCandidate(elem, candidate){
+		var include, xhrObj, modules;
+		var old = elem._lazyInclude.current || null;
+		var details = {
+			candidate: candidate,
+			openArgs: ['GET', candidate.urls.include, true],
+			sendData: null,
+			xhrModifier: null,
+			content: candidate.content && candidate.content.content || candidate.content,
+			old: old
+		};
+		var event = lazySizes.fire(elem, 'lazyincludeload', details);
+
+		if(event.defaultPrevented){
+			queue.d();
+			return;
+		}
+
+		include = function(){
+			var event;
+			var status = xhrObj.status;
+			var details = {
+				candidate: candidate,
+				content: xhrObj.content || xhrObj.responseText,
+				text: xhrObj.responseText || xhrObj.content,
+				response: xhrObj.response,
+				xml: xhrObj.responseXML,
+				isSuccess: ('status' in xhrObj) ? status >= 200 && status < 300 || status === 304 : true,
+				old: old,
+				insert: true
+			};
+			var moduleObj = {element: elem, details: details};
+			candidate.modules = modules;
+
+			if(old && old.modules){
+				old.modules.forEach(unloadModule, moduleObj);
+				old.modules = null;
+			}
+
+			modules.forEach(transformInclude, moduleObj);
+
+			event = lazySizes.fire(elem, 'lazyincludeloaded', details);
+
+			if(details.insert && details.isSuccess && !event.defaultPrevented && details.content != null && details.content != elem.innerHTML){
+				if(window.jQuery){
+					jQuery(elem).html(details.content);
+				} else {
+					elem.innerHTML = details.content;
+				}
+			}
+			queue.d();
+
+			modules.forEach(loadModule, moduleObj);
+
+			lazySizes.fire(elem, 'lazyincluded', details);
+			xhrObj = null;
+			modules = null;
+		};
+
+		elem._lazyInclude.current = candidate;
+		elem.setAttribute('data-currentinclude', candidate.name);
+
+		if(candidate.urls.css){
+			loadStyles(candidate.urls.css);
+		}
+		if(details.content == null && candidate.urls.include){
+			loadInclude(details, function(data){
+				xhrObj = data;
+				if(modules){
+					include();
+				}
+			});
+		} else {
+			xhrObj = details;
+		}
+
+		if(candidate.urls.amd){
+			loadRequire(candidate.urls.amd, function(mods){
+				modules = mods;
+				if(xhrObj){
+					include();
+				}
+			});
+		} else {
+			modules = [];
+		}
+
+		if(xhrObj && modules){
+			include();
+		}
+	}
+
 	function findLoadCandidate(elem){
 		var candidate;
 		var includeData = getIncludeData(elem);
-		if(!includeData.srces.length || !document.contains(elem) ){return;}
+		if(!includeData.srces.length || !docElem.contains(elem) ){return;}
 		candidate = findCandidate(elem);
 		if(candidate){
 			loadCandidate(elem, candidate);

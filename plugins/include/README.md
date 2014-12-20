@@ -1,12 +1,14 @@
 #lazysizes include plugin
 
-**lazysizes** include extension/plugin asynchronously include non crucial content. Due to lazyloading, prioritized queuing and preload after load techniques lazySizes include extension scales much better than similar other solutions.
+**lazysizes** include extension/plugin asynchronously include non crucial content, styles or JS modules. Due to lazyloading, prioritized queuing and preload after load techniques lazySizes include extension scales much better than similar other solutions.
 
 Typical use cases are:
 
-* conditional lazy loading different content depending on certain conditions (media queries, browser features, user preferences, element queries...)
+* lazy loading different content, styles or JS modules depending on certain conditions (media queries, existence of a DOM element, browser features, user preferences, element queries...)
 * deferring heavy to render or uncacheable content (client or server side)
 * progressively enhancing the document with new JS enabled content
+* splitting large JS modules in larger projects
+* clean and simple architecture for initialization/loading and destroying/unloading of (conditional) JS behaviors
 
 ##Basic usage
 
@@ -75,7 +77,7 @@ window.lazySizesConfig = {
 </div>
 ```
 
-If the last include candidate has a condition, the innerHTML of the initial content is used as default/fallback content.
+If the last include candidate has a condition, the innerHTML of the initial content is used as unconditioned fallback content.
 
 ```html
 <div class="dynamic-content lazyload"
@@ -96,6 +98,97 @@ document.addEventListener('lazyincluded', function(e){
 <div class="dynamic-content lazyload" data-include="small.html">
 </div>
 ```
+
+###Loading Styles or Modules
+
+The include feature can also load CSS or AMD modules. To mark an URL as CSS put a ``css:`` in front of the URL, to load an AMD module put a ``amd:`` identifier in front of it:
+
+```html
+<div class="dynamic-content lazyload" data-include="css:my-style.css (large)">
+</div>
+
+<div class="slider lazyload" data-include="amd:path/slider-module">
+</div>
+```
+
+Content, style and AMD includes can also be mixed and used with or without conditions:
+
+```html
+<div class="slider lazyload"
+	data-include="slider.html amd:path/slider-module, css:slider.css (large),
+		amd:path/mobile-slider, css:mobile-slider.css">
+</div>
+```
+
+####AMD features
+
+While you can write your AMD module how you want lazysizes include extension will check wether your module provides the following methods:
+
+* ``yourmodule.lazytransform``: Will be invoked before the content is inserted.
+* ``yourmodule.lazyload``: Will be invoked after the content was inserted.
+* ``yourmodule.lazyunload``: Will be invoked before content is removed
+
+Each of those methods are optional methods of a module. Here is a simple example:
+
+```js
+define(function(){
+
+	// constructor
+	var Slider = function(element,options) {
+
+	};
+
+	Slider.prototype = {
+		destroy: function(){}
+	};
+
+	// lazysizes include features:
+
+	// called with the DOM element and some other useful data (data.details)
+	// useful to initialize with the DOM element
+	Slider.lazyload = function(data){
+		var	Slider = new Slider(data.element);
+		// save instance for destroy
+		// data.element._slider = Slider;
+	};
+
+	// in case of a conditioned include and
+	// the need to destroy the instance (i.e.: unbind global events)
+	Slider.lazyunload = function(data){
+		// data.element._slider.destroy()
+	};
+
+	// gets invoked with the a simplified XHR object (data.details)
+	// and the dom element (data.element)
+	Slider.lazytransform = function(data){
+
+		// var json = JSON.parse(data.details.responseText);
+		// data.response = template(json);
+	};
+
+	return Slider;
+});
+```
+
+In case of conditioned AMD modules without an HTML include, the initial ``innerHTML`` will be inserted right before calling ``yourmodule.lazyload``. This makes it extremely easy to operate on a clean HTML without writing to complex destroy methods.
+
+```html
+<div class="slider lazyload"
+	data-include="amd:path/slider-module (large),
+		amd:path/mobile-slider">
+	<!-- slider markup -->
+</div>
+```
+
+In case you don't want this and still want to operate on the previous markup, set the ``data.details.insert`` inside of your ``yourmodule.lazytransform`` to ``false``.
+
+```js
+Slider.lazytransform = function(data){
+	data.details.insert = false;
+};
+```
+
+###Scalability and queue priority
 
 The include feature will always use a download queue to make sure, that multiple includes do not jam the browsers own request queue. In case of many non crucial includes mixed with some crucial includes on one page the ``data-lazyqueue`` attribute can be used to add a queue priority for the include extension:
 
@@ -171,9 +264,7 @@ window.lazySizesConfig = {
 
 The include feature works together with all normal lazySizes options (i.e.: ``addClasses`` for load indicators), events and methods. In case ``preloadAfterLoad`` is not set explicitly to ``false`` the include extension will automatically change it to ``true``.
 
-##Advanced examples
-
-###Reacting to user interaction
+##Reacting to user interaction
 
 Of course it is also possible to react to a user interaction.
 
@@ -201,8 +292,8 @@ $(document).on('click', '.load-include', function(){
 It's also possible to change the ``data-include`` value and reevaluate it:
 
 ```html
-<div class="dynamic-content lazyload" data-include="include.html (min-width: 800px)">
-	<button type="button" class="load-include" data-setinclude="include.html">load content</button>
+<div class="dynamic-content lazyload" data-include="include.html amd:module (min-width: 800px)">
+	<button type="button" class="load-include" data-setinclude="include.html amd:module">load content</button>
 </div>
 
 
@@ -221,68 +312,3 @@ $(document).on('click', '.load-include', function(){
 });
 </script>
 ```
-
-###Loading in conjunction with CSS/JS
-
-For bigger modules with a lot of CSS rules and/or JS, it makes absolutely sense to combine the include extension with the [unveilhooks extension](../unveilhooks) to load also JS or CSS dynamically.
-
-```html
-<div class="widget lazyload" data-include="widget.html" data-script="widget.js" data-link="widget">
-
-</div>
-```
-
-All resources are loaded async and lazysizes does not ensure any special order. In case your lazyloaded JavaScript needs an explicit initialization on certain lazyloaded DOM elements the following pattern can be used:
-
-```js
-// JS is loaded dynamically and needs to initialized on all lazyincluded elements:
-(function($){/* datepicker code */ $.fn.datepickers = function(){};})(jQuery);
-//initialization code:
-(function($){
-	function init(context){
-		$('input.datepicker', context).datepickers();
-	}
-
-	$(function(){
-		//first init inside the hole document
-		init(document);
-		//init always inside new lazyincluded element
-		$(document).on('lazyincluded', function(e){
-			init(e.target);
-		});
-	});
-})(jQuery);
-```
-
-In case you are using conditioned includes and your JS widget also needs an explicit destroy call you can use the following pattern:
-
-```js
-// JS is loaded dynamically and needs to initialized/destroyed on all lazyincluded elements:
-(function($){/* datepicker code */ $.fn.datepickers = function(){};})(jQuery);
-//initialization code:
-(function($){
-	function init(context){
-		$('input.datepicker', context).datepickers();
-	}
-
-	function destroy(context){
-		$('input.datepicker', context).datepickers('destroy');
-	}
-
-	$(function(){
-		//first init inside the hole document
-		init(document);
-		//init always inside new lazyincluded element
-		$(document).on('lazyincluded', function(e){
-			init(e.target);
-		});
-
-		$(document).on('lazyincludeloaded', function(e){
-			destroy(e.target);
-		});
-	});
-})(jQuery);
-```
-
-Note in case of jQuery UI/jQuery mobile widgets the lazysizes include script already ensures destroying those widgets.
-

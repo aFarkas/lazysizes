@@ -260,7 +260,7 @@ The ``srcset`` attribute with the *w* descriptor and ``sizes`` attribute automat
 The [unveilhooks plugin](plugins/unveilhooks) plugin enables lazySizes to lazyload background images, widgets/components/scripts, styles and video/audio elements.
 
 ###[include plugin](plugins/include)
-The [include plugin](plugins/include) plugin enables lazySizes to lazyload content either simply postboned or conditionaly based on certain conditions (for example media queries). This extension has an extreme great scalability.
+The [include plugin](plugins/include) plugin enables lazySizes to lazyload content, styles or AMD modules either simply postboned or conditionally (for example matching certain media queries). This extension has an extreme great scalability.
 
 
 ###[print plugin](plugins/unveilhooks)
