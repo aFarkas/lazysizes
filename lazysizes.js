@@ -461,7 +461,14 @@
 	return {
 		cfg: lazySizesConfig,
 		updateAllSizes: lazyEvalSizes,
-		updateAllLazy: lazyEvalLazy.throttled,
+		updateAllLazy: function(force){
+			if(force){
+				clearLazyTimer();
+				evalLazyElements();
+			} else {
+				lazyEvalLazy.throttled();
+			}
+		},
 		unveilLazy: function(el){
 			if(hasClass(el, lazySizesConfig.lazyClass)){
 				unveilLazy(el);

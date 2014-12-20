@@ -121,13 +121,28 @@
 		includeConfig.conditions = {};
 	}
 
+	if(!includeConfig.includes){
+		includeConfig.includes = {};
+	}
+
 	if(!('preloadAfterLoad' in config)){
 		config.preloadAfterLoad = true;
+	}
+
+	function addUrl(url){
+		/*jshint validthis:true */
+		if(url.match(regTypes)){
+			this.urls[RegExp.$1] = RegExp.$2;
+		} else {
+			this.urls.include = url;
+		}
 	}
 
 	function parseCandidate(input){
 		var output, map, url;
 		input = input.trim();
+
+		input = includeConfig.includes[input] || input;
 
 		map = input.match(regUrlCan);
 
@@ -147,18 +162,12 @@
 
 		output.urls = {};
 
-		url = url.split(regWhite).forEach(function(url){
-			if(url.match(regTypes)){
-				output.urls[RegExp.$1] = RegExp.$2;
-			} else {
-				output.urls.include = url;
-			}
-		});
+		(includeConfig.includes[url] || url).split(regWhite).forEach(addUrl, output);
 
 		if(!output.urls.include){
 			/*jshint validthis:true */
-			initialContent.need = true;
-			output.content = initialContent;
+			this.need = true;
+			output.content = this;
 		}
 
 		return output;
@@ -172,7 +181,7 @@
 		if(!includeData || includeData.str != includeStr){
 			includeData = {
 				str: includeStr,
-				srces: (elem.getAttribute('data-include') || '').split(regSplitCan).map(parseCandidate, initialContent)
+				srces: (includeConfig.includes[includeStr] || includeStr).split(regSplitCan).map(parseCandidate, initialContent)
 			};
 
 			if(!(len = includeData.srces.length) || includeData.srces[len - 1].condition){

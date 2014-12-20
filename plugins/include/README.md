@@ -42,11 +42,15 @@ html:after {
 }
 
 @media (min-width: 760px){
-	content: "medium";
+	html:after {
+		content: "medium";
+	}
 }
 
 @media (min-width: 980px){
-	content: "large";
+	html:after {
+		content: "large";
+	}
 }
 </style>
 
@@ -116,7 +120,7 @@ Content, Style and AMD includes can also be mixed and used with or without condi
 
 ```html
 <div class="slider lazyload"
-	data-include="slider.html amd:path/slider-module, css:slider.css (large),
+	data-include="slider.html amd:path/slider-module css:slider.css (large),
 		amd:path/mobile-slider, css:mobile-slider.css">
 </div>
 ```
@@ -163,7 +167,7 @@ define(function(){
 	// and the dom element (data.element)
 	Slider.lazytransform = function(data){
 		// var json = JSON.parse(data.details.responseText);
-		// data.response = template(json);
+		// data.details.response = template(json);
 	};
 
 	return Slider;
