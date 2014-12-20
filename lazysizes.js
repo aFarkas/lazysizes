@@ -119,17 +119,10 @@
 				timer = setTimeout(run, 66);
 			},
 			throttled: function(){
-				var delay;
 				if(!running){
 					running = true;
 					clearTimeout(timer);
-					delay = Date.now() - eLnow;
-					if(delay > 300){
-						delay = 9;
-					} else {
-						delay = 99;
-					}
-					timer = setTimeout(run, delay);
+					timer = setTimeout(run, 66);
 				}
 			}
 		};

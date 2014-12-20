@@ -4,11 +4,12 @@
 
 Typical use cases are:
 
-* lazy loading different content, styles or JS modules depending on certain conditions (media queries, existence of a DOM element, browser features, user preferences, element queries...)
+* lazy loading different content, styles or JS modules depending on certain conditions (responsive content, responsive behavior, media queries, existence of a DOM element, browser features, user preferences, element queries...)
 * deferring heavy to render or uncacheable content (client or server side)
 * progressively enhancing the document with new JS enabled content
-* splitting large JS modules in larger projects
-* clean and simple architecture for initialization/loading and destroying/unloading of (conditional) JS behaviors
+* splitting or deferred loading of large JS modules in larger projects
+* clean and simple architecture for initialization/loading and/or destroying/unloading of (conditional) JS behaviors
+* self-initializing of DOM behaviors
 
 ##Basic usage
 
@@ -77,7 +78,7 @@ window.lazySizesConfig = {
 </div>
 ```
 
-If the last include candidate has a condition, the innerHTML of the initial content is used as unconditioned fallback content.
+If the last include candidate has a condition, the ``innerHTML`` of the initial content is used as unconditioned fallback content.
 
 ```html
 <div class="dynamic-content lazyload"
@@ -101,7 +102,7 @@ document.addEventListener('lazyincluded', function(e){
 
 ###Loading Styles or Modules
 
-The include feature can also load CSS or AMD modules. To mark an URL as CSS put a ``css:`` in front of the URL, to load an AMD module put a ``amd:`` identifier in front of it:
+The include feature can also load CSS or AMD modules. To mark an URL as CSS put a ``css:`` in front of the URL or to load an AMD module put a ``amd:`` identifier in front of it:
 
 ```html
 <div class="dynamic-content lazyload" data-include="css:my-style.css (large)">
@@ -111,7 +112,7 @@ The include feature can also load CSS or AMD modules. To mark an URL as CSS put 
 </div>
 ```
 
-Content, style and AMD includes can also be mixed and used with or without conditions:
+Content, Style and AMD includes can also be mixed and used with or without conditions:
 
 ```html
 <div class="slider lazyload"
@@ -126,7 +127,7 @@ While you can write your AMD module how you want lazysizes include extension wil
 
 * ``yourmodule.lazytransform``: Will be invoked before the content is inserted.
 * ``yourmodule.lazyload``: Will be invoked after the content was inserted.
-* ``yourmodule.lazyunload``: Will be invoked before content is removed
+* ``yourmodule.lazyunload``: Will be invoked before old content is removed
 
 Each of those methods are optional methods of a module. Here is a simple example:
 
@@ -148,7 +149,7 @@ define(function(){
 	// useful to initialize with the DOM element
 	Slider.lazyload = function(data){
 		var	Slider = new Slider(data.element);
-		// save instance for destroy
+		// save instance for destroy / lazyunload
 		// data.element._slider = Slider;
 	};
 
@@ -161,7 +162,6 @@ define(function(){
 	// gets invoked with the a simplified XHR object (data.details)
 	// and the dom element (data.element)
 	Slider.lazytransform = function(data){
-
 		// var json = JSON.parse(data.details.responseText);
 		// data.response = template(json);
 	};
@@ -170,17 +170,17 @@ define(function(){
 });
 ```
 
-In case of conditioned AMD modules without an HTML include, the initial ``innerHTML`` will be inserted right before calling ``yourmodule.lazyload``. This makes it extremely easy to operate on a clean HTML without writing to complex destroy methods.
+In case of conditioned AMD modules without an HTML include, the initial ``innerHTML`` is saved and will be inserted right before calling ``yourmodule.lazyload``. This makes it extremely easy to operate on a clean HTML without writing to complex destroy methods.
 
 ```html
 <div class="slider lazyload"
 	data-include="amd:path/slider-module (large),
 		amd:path/mobile-slider">
-	<!-- slider markup -->
+	<!-- complex slider markup -->
 </div>
 ```
 
-In case you don't want this and still want to operate on the previous markup, set the ``data.details.insert`` inside of your ``yourmodule.lazytransform`` to ``false``.
+In case you don't want this and still want to operate on the previous DOM, set the ``data.details.insert`` inside of your ``yourmodule.lazytransform`` callback method to ``false``.
 
 ```js
 Slider.lazytransform = function(data){

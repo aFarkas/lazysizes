@@ -134,20 +134,19 @@
 		if(map){
 			url = RegExp.$1;
 			output = {
-				url: RegExp.$1,
 				condition: config.include.conditions[RegExp.$3] || RegExp.$2 || null,
 				name: RegExp.$3
 			};
 		} else {
 			url = input;
 			output = {
-				url: input,
 				condition: null,
 				name: ''
 			};
 		}
 
 		output.urls = {};
+
 		url = url.split(regWhite).forEach(function(url){
 			if(url.match(regTypes)){
 				output.urls[RegExp.$1] = RegExp.$2;
@@ -179,7 +178,7 @@
 			if(!(len = includeData.srces.length) || includeData.srces[len - 1].condition){
 				initialContent.need = true;
 				includeData.srces.push({
-					url: '',
+					urls: {},
 					condition: null,
 					name: 'initial',
 					content: initialContent
