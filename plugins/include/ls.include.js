@@ -121,8 +121,8 @@
 		includeConfig.conditions = {};
 	}
 
-	if(!includeConfig.includes){
-		includeConfig.includes = {};
+	if(!includeConfig.map){
+		includeConfig.map = {};
 	}
 
 	if(!('preloadAfterLoad' in config)){
@@ -132,9 +132,9 @@
 	function addUrl(url){
 		/*jshint validthis:true */
 		if(url.match(regTypes)){
-			this.urls[RegExp.$1] = RegExp.$2;
+			this.urls[RegExp.$1] = includeConfig.map[RegExp.$2] || RegExp.$2;
 		} else {
-			this.urls.include = url;
+			this.urls.include = includeConfig.map[url] || url;
 		}
 	}
 
@@ -142,7 +142,7 @@
 		var output, map, url;
 		input = input.trim();
 
-		input = includeConfig.includes[input] || input;
+		input = includeConfig.map[input] || input;
 
 		map = input.match(regUrlCan);
 
@@ -162,12 +162,12 @@
 
 		output.urls = {};
 
-		(includeConfig.includes[url] || url).split(regWhite).forEach(addUrl, output);
+		(includeConfig.map[url] || url).split(regWhite).forEach(addUrl, output);
 
-		if(!output.urls.include){
+		if(!output.urls.include && output.urls.amd){
 			/*jshint validthis:true */
-			this.need = true;
-			output.content = this;
+			this.saved = true;
+			output.initial = this;
 		}
 
 		return output;
@@ -176,30 +176,35 @@
 	function getIncludeData(elem){
 		var len;
 		var includeStr = (elem.getAttribute('data-include') || '');
-		var includeData = elem._lazyInclude;
-		var initialContent = {};
+		var includeData = elem.lazyInclude;
+		var initialContent;
 		if(!includeData || includeData.str != includeStr){
+			initialContent = {saved: false, content: null};
 			includeData = {
 				str: includeStr,
-				srces: (includeConfig.includes[includeStr] || includeStr).split(regSplitCan).map(parseCandidate, initialContent)
+				candidates: (includeConfig.map[includeStr] || includeStr).split(regSplitCan).map(parseCandidate, initialContent)
 			};
 
-			if(!(len = includeData.srces.length) || includeData.srces[len - 1].condition){
-				initialContent.need = true;
-				includeData.srces.push({
+			if(!(len = includeData.candidates.length) || includeData.candidates[len - 1].condition){
+				initialContent.saved = true;
+
+				includeData.candidates.push({
 					urls: {},
 					condition: null,
 					name: 'initial',
 					content: initialContent
 				});
+			} else if(initialContent.saved && includeData.candidates.length == 1){
+				initialContent.saved = false;
 			}
 
-			if(initialContent.need){
+			includeData.initialContent = initialContent;
+			if(initialContent.saved){
 				initialContent.content = elem.innerHTML;
 			}
 
-			elem._lazyInclude = includeData;
-			if(includeData.srces.length > 1){
+			elem.lazyInclude = includeData;
+			if(includeData.candidates.length > 1){
 				lazySizes.aC(elem, 'lazyconditionalinclude');
 			} else {
 				lazySizes.rC(elem, 'lazyconditionalinclude');
@@ -255,10 +260,10 @@
 
 	function findCandidate(elem){
 		var i, candidate;
-		var includeData = elem._lazyInclude;
-		if(includeData && includeData.srces){
-			for(i = 0; i < includeData.srces.length; i++){
-				candidate = includeData.srces[i];
+		var includeData = elem.lazyInclude;
+		if(includeData && includeData.candidates){
+			for(i = 0; i < includeData.candidates.length; i++){
+				candidate = includeData.candidates[i];
 				if(matchesCondition(elem, candidate)){
 					break;
 				}
@@ -338,14 +343,14 @@
 
 	function loadCandidate(elem, candidate){
 		var include, xhrObj, modules;
-		var old = elem._lazyInclude.current || null;
+		var old = elem.lazyInclude.current || null;
 		var details = {
 			candidate: candidate,
 			openArgs: ['GET', candidate.urls.include, true],
 			sendData: null,
 			xhrModifier: null,
 			content: candidate.content && candidate.content.content || candidate.content,
-			old: old
+			oldCandidate: old
 		};
 		var event = lazySizes.fire(elem, 'lazyincludeload', details);
 
@@ -357,23 +362,32 @@
 		include = function(){
 			var event;
 			var status = xhrObj.status;
+			var content = xhrObj.content || xhrObj.responseText;
+			var reset = !!(content == null && old && old.urls.include);
 			var details = {
 				candidate: candidate,
-				content: xhrObj.content || xhrObj.responseText,
+				content: content,
 				text: xhrObj.responseText || xhrObj.content,
 				response: xhrObj.response,
 				xml: xhrObj.responseXML,
 				isSuccess: ('status' in xhrObj) ? status >= 200 && status < 300 || status === 304 : true,
-				old: old,
-				insert: true
+				oldCandidate: old,
+				insert: true,
+				resetHTML: reset
 			};
-			var moduleObj = {element: elem, details: details};
+			var moduleObj = {target: elem, details: details};
+
 			candidate.modules = modules;
 
 			if(old && old.modules){
 				old.modules.forEach(unloadModule, moduleObj);
 				old.modules = null;
+
+				if(details.resetHTML && details.content == null && candidate.initial && candidate.initial.saved){
+					details.content = candidate.initial.content;
+				}
 			}
+
 
 			modules.forEach(transformInclude, moduleObj);
 
@@ -386,16 +400,18 @@
 					elem.innerHTML = details.content;
 				}
 			}
+
 			queue.d();
 
 			modules.forEach(loadModule, moduleObj);
 
 			lazySizes.fire(elem, 'lazyincluded', details);
+
 			xhrObj = null;
 			modules = null;
 		};
 
-		elem._lazyInclude.current = candidate;
+		elem.lazyInclude.current = candidate;
 		elem.setAttribute('data-currentinclude', candidate.name);
 
 		if(candidate.urls.css){
@@ -431,7 +447,7 @@
 	function findLoadCandidate(elem){
 		var candidate;
 		var includeData = getIncludeData(elem);
-		if(!includeData.srces.length || !docElem.contains(elem) ){return;}
+		if(!includeData.candidates.length || !docElem.contains(elem) ){return;}
 		candidate = findCandidate(elem);
 		if(candidate){
 			loadCandidate(elem, candidate);

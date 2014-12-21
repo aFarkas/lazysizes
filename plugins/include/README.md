@@ -7,9 +7,9 @@ Typical use cases are:
 * lazy loading different content, styles or JS modules depending on certain conditions (responsive content, responsive behavior, media queries, existence of a DOM element, browser features, user preferences, element queries...)
 * deferring heavy to render or uncacheable content (client or server side)
 * progressively enhancing the document with new JS enabled content
-* splitting or deferred loading of large JS modules in larger projects
+* splitting or deferred loading of large JS/CSS modules in larger projects
 * clean and simple architecture for initialization/loading and/or destroying/unloading of (conditional) JS behaviors
-* self-initializing of DOM behaviors
+* deferred self-initializing of DOM behaviors
 
 ##Basic usage
 
@@ -104,7 +104,7 @@ document.addEventListener('lazyincluded', function(e){
 </div>
 ```
 
-###Loading Styles or Modules
+###Loading Styles or AMD Modules
 
 The include feature can also load CSS or AMD modules. To mark an URL as CSS put a ``css:`` in front of the URL or to load an AMD module put a ``amd:`` identifier in front of it:
 
@@ -129,9 +129,9 @@ Content, Style and AMD includes can also be mixed and used with or without condi
 
 While you can write your AMD module how you want lazysizes include extension will check wether your module provides the following methods:
 
-* ``yourmodule.lazytransform``: Will be invoked before the content is inserted.
-* ``yourmodule.lazyload``: Will be invoked after the content was inserted.
-* ``yourmodule.lazyunload``: Will be invoked before old content is removed
+* ``yourmodule.lazytransform``: Will be invoked before the content is inserted. Especially to transform the AJAX response.
+* ``yourmodule.lazyload``: Callback function to initialize the module. Will be invoked after the content was inserted.
+* ``yourmodule.lazyunload``: Callback function to destroy your widget. Will be invoked before old content is removed
 
 Each of those methods are optional methods of a module. Here is a simple example:
 
@@ -149,10 +149,10 @@ define(function(){
 
 	// lazysizes include features:
 
-	// called with the DOM element and some other useful data (data.details)
+	// called with the DOM element (data.target) and some other useful data (data.details)
 	// useful to initialize with the DOM element
 	Slider.lazyload = function(data){
-		var	Slider = new Slider(data.element);
+		var	Slider = new Slider(data.target);
 		// save instance for destroy / lazyunload
 		// data.element._slider = Slider;
 	};
@@ -160,11 +160,11 @@ define(function(){
 	// in case of a conditioned include and
 	// the need to destroy the instance (i.e.: unbind global events)
 	Slider.lazyunload = function(data){
-		// data.element._slider.destroy()
+		// data.target._slider.destroy();
 	};
 
 	// gets invoked with the a simplified XHR object (data.details)
-	// and the dom element (data.element)
+	// and the dom element (data.target)
 	Slider.lazytransform = function(data){
 		// var json = JSON.parse(data.details.responseText);
 		// data.details.response = template(json);
@@ -174,22 +174,36 @@ define(function(){
 });
 ```
 
-In case of conditioned AMD modules without an HTML include, the initial ``innerHTML`` is saved and will be inserted right before calling ``yourmodule.lazyload``. This makes it extremely easy to operate on a clean HTML without writing to complex destroy methods.
+In case a candidate includes new markup while another candidate only includes an AMD behavior. The initial content will be automatically resetted in case of a condition switch:
 
 ```html
-<div class="slider lazyload"
-	data-include="amd:path/slider-module (large),
-		amd:path/mobile-slider">
-	<!-- complex slider markup -->
+<div class="lazyload" data-include="slider.html amd:js/slider (big),
+	amd:js/mobileSlider">
+    <!-- amd:mobileSlider always works with the initial content and never on the slider.html include -->
 </div>
 ```
 
-In case you don't want this and still want to operate on the previous DOM, set the ``data.details.insert`` inside of your ``yourmodule.lazytransform`` callback method to ``false``.
+In case a candidate has an amd module but not a content include the markup won't be resetted automatically. But the module can request this behavior inside of it's unload method:
 
 ```js
-Slider.lazytransform = function(data){
-	data.details.insert = false;
+Slider.lazyunload = function(data){
+    // data.element._slider.destroy();
+    data.resetHTML = true;
 };
+```
+
+In case the content doesn't contain any mutable states, that need to be tranfered to the new behavior (i.e. input fields etc.), this option makes it extremley simple to cleanup the HTML for the next module.
+
+####Loading multiple styles and modules
+
+Multiple styles or AMD modules for one candidate can be configured by seperating them with ``|,|`` signs:
+
+
+```html
+<div class="slider lazyload"
+	data-include="amd:path/uiModule|,|path/slider-module css:slider-core.css|,|slider.css (large),
+		amd:path/mobile-slider, css:slider-core.css|,|mobile-slider.css">
+</div>
 ```
 
 ###Scalability and queue priority
@@ -249,8 +263,8 @@ window.lazySizesConfig = {
 };
 ```
 
-####``conditions`` map (default: ``{}``):
-The include extension adds the conditions map option:
+####``conditions`` option (default: ``{}``):
+The conditions option can be used to create new custom conditions.
 
 ```js
 window.lazySizesConfig = {
@@ -265,6 +279,30 @@ window.lazySizesConfig = {
 	}
 };
 ```
+
+####``map`` option (default: ``{}``):
+
+The ``map`` option allows to map the value of the ``data-include`` attribute to another string. This does not only work for the hole value, but also for parsed parts.
+
+```html
+<script>
+window.lazySizesConfig = {
+	addClasses: true, // good to add loading styles
+	include: {
+		map: {
+			slider: 'slider.html amd:path/slider (large)',
+			amdSlider: 'jquery|,|path/ui-slick'
+		}
+	}
+};
+</script>
+
+<div class="lazyload" data-include="slider"></div>
+
+<div class="lazyload" data-include="amd:amdSlider"></div>
+```
+
+This option becomes useful to separate content from behavior.
 
 The include feature works together with all normal lazySizes options (i.e.: ``addClasses`` for load indicators), events and methods. In case ``preloadAfterLoad`` is not set explicitly to ``false`` the include extension will automatically change it to ``true``.
 
@@ -310,7 +348,7 @@ $(document).on('click', '.load-include', function(){
 			.closest('[data-include]')
 			//change data-include value
 			.attr('data-include', $.attr(this, 'data-setinclude'))
-			// and activate/refresh lazySizes by adding lazyload class
+			// and activate/refresh lazySizes by re-adding lazyload class
 			.addClass('lazyload')
 	;
 });
