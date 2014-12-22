@@ -1,5 +1,5 @@
 #lazysizes
-**lazysizes** is a fast (jank-free) lazyloader for images (including responsive images), iframes, scripts/widgets and much more. It may become also your number one tool to integrate responsive images. Due to the fact that it can also automatically calculate the ``sizes`` attribute for your responsive images, it helps to separate layout (CSS) from content/structure (HTML) and makes integrating responsive images into any environment simply simple.
+**lazysizes** is a SEO-friendly and fast (jank-free) lazyloader for images (including responsive images), iframes, scripts/widgets and much more. It may become also your number one tool to integrate responsive images. Due to the fact that it can also automatically calculate the ``sizes`` attribute for your responsive images, it helps to separate layout (CSS) from content/structure (HTML) and makes integrating responsive images into any environment simply simple.
 
 ##How to
 
@@ -74,7 +74,7 @@ Add the ``class`` ``lazyload`` to all ``img`` and ``iframe`` elements, which sho
 **Important: How ``sizes`` is calculated**: The automatic sizes calculation takes the width of the image and the width of its parent element and uses the largest number of those two calculated numbers. It's therefore important that all images with a ``data-sizes="auto"`` attribute are constrained in width by its parent element. Otherwise a wrong (too big) ``sizes`` attribute will be calculated.
 
 ##Recommended markup patterns
-For image bots (search engines and social networks), legacy browsers (IE8) or JS disabled browsers, it is important to serve a usable ``src`` attribute:
+For some image bots (search engines and social networks), legacy browsers (IE8) or JS disabled browsers, it is important to serve a usable ``src`` attribute:
 
 ###LQIP
 The LQIP pattern (low quality image placeholder): Simply add a low quality image as the ``src``:
@@ -93,7 +93,7 @@ The LQIP pattern (low quality image placeholder): Simply add a low quality image
 <img src="lqip-src.jpg" data-src="image.jpg" class="lazyload" />
 ```
 
-The LQIP pattern has the following advantages: The lqip-src is not hidden from the preload parser and loads very fast, which leads to an extreme fast first impression and in case of legacy browsers/devices or searchengines (bots) as a good enough fallback (IE8 and Android 2 devices as also JS disabled). In case your lqip source is extreme fuzzy, you should consider setting ``preloadAfterLoad`` to ``true``.
+The LQIP pattern has the following advantages: The lqip-src is not hidden from the preload parser and loads very fast, which leads to an extreme fast first impression and in case of legacy browsers/devices or some searchengines (bots) as a good enough fallback (IE8 and Android 2 devices as also JS disabled).
 
 ###The noscript pattern
 In case you want to save more initial image data the LQIP pattern can't be used (an extreme fuzzy image does neither work as a good enough first impression nor as a fallback) or in case you can't even generate a LQIP src:
@@ -113,15 +113,11 @@ In case you want to save more initial image data the LQIP pattern can't be used 
 <!--<![endif]-->
 ```
 
-###SEO pattern
+###Simple pattern
 
-In case you don't need to account for JS off or legacy browers, but still for search engines you can use a one pixel ``src`` or better a data URI and add [ImageObject schema via Microdata](http://schema.org/ImageObject) for search engines:
+In case JS off or legacy users are no concern you can simply omit a ``src`` attribute. Due to the fact, that lazysizes starts a queued image download after onload the images are not hidden from google bot.
 
 ```html
-<span itemscope itemtype="http://schema.org/ImageObject" hidden="">
-	<meta itemprop="contentUrl" content="image.jpg" />
-	<meta itemprop="name" content="my image" />
-</span>
 <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
 	class="lazyload"
 	data-srcset="image.jpg 1x, image2.jpg 2x"
@@ -146,7 +142,7 @@ window.lazySizesConfig = {
 Here the list of options:
 
 * ``lazySizesConfig.lazyClass`` (default: ``"lazyload"``): Marker class for all elements which should be lazy loaded (There can be only one ``class``. In case you need to add some other element, without the defined class, simply add it per JS: ``$('.lazy-others').addClass('lazyload');``)
-* ``lazySizesConfig.preloadAfterLoad`` (default: ``false``): Wether lazysizes should load all elements after the window onload event. (Note: lazysizes will then load the elements using a queue. Only two parallel elements are loaded at the same time. This makes sure that other postboned downloads are not blocked.). Note: You often want to set this option to ``true``.
+* ``lazySizesConfig.preloadAfterLoad`` (default: ``true``): Wether lazysizes should load all elements after the window onload event. (Note: The default of this option was changed to ``true`` with version 0.6.0). Setting this to ``false`` and not providing a suitable low quality image placeholder will hide below the fold images from google.
 * ``lazySizesConfig.addClasses`` (default: ``false``): Wether lazysizes should add loading and loaded classes. This can be used to add unveil effects or to apply new styles (background-image).
 * ``lazySizesConfig.loadingClass`` (default: ``"lazyloading"``): If ``addClasses`` is set to ``true`` this ``class`` will be added to ``img`` element as soon as image loading starts. Can be used to add unveil effects.
 * ``lazySizesConfig.loadedClass`` (default: ``"lazyloaded"``): If ``addClasses`` is set to ``true`` this ``class`` will be added to any element as soon as the image is loaded or the image comes into view. Can be used to add unveil effects or to apply styles.

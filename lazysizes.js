@@ -417,7 +417,7 @@
 			srcsetAttr: 'data-srcset',
 			sizesAttr: 'data-sizes',
 			//addClasses: false,
-			//preloadAfterLoad: false,
+			preloadAfterLoad: true,
 			onlyLargerSizes: true
 		};
 
