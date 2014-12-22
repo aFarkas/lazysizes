@@ -105,7 +105,7 @@ In case you want to save more initial image data the LQIP pattern can't be used 
     }
 </style>
 
-<!-- noscript pattern without IE8 fallback -->
+<!-- noscript pattern -->
 <noscript>
 	<img src="image.jpg" />
 </noscript>
