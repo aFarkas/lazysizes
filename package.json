@@ -1,48 +1,48 @@
 {
-	"name": "lazysizes",
-	"version": "0.5.3",
-  	"filename": "lazysizes.min.js",
-	"author": "Alexander Farkas <info@corrupt-system.de>",
-	"repository": {
-		"type": "git",
-		"url": "git://github.com/aFarkas/lazysizes.git"
-	},
-	"browser": "lazysizes.min.js",
-	"devDependencies": {
-		"grunt": "~0.4.2",
-		"grunt-bytesize": "~0.1.1",
-		"grunt-cli": "~0.1",
-		"grunt-contrib-jshint": "~0.10.0",
-		"grunt-contrib-uglify": "~0.2.0",
-		"grunt-contrib-watch": "~0.4.0",
-		"grunt-max-filesize": "^0.1.0",
-		"grunt-uncss": "~0.3.7"
-	},
-	"npmName": "lazysizes",
-	"npmFileMap": [
-		{
-			"basePath": "",
-			"files": [
-				"*.min.js",
-				"plugins/**/*.min.js"
-			]
-		}
-	],
-	"description": "High performance (jankfree) lazy loader for images (including responsive images), iframes and scripts (widgets).",
-	"keywords": [
-		"lazy",
-		"loader",
-		"lazyloader",
-		"lazyload",
-		"performance",
-		"responsive",
-		"image",
-		"responsive images",
-		"picture",
-		"srcset",
-		"respimg",
-	  	"respimage",
-	  	"include",
-	  	"include"
-	]
+  "name": "lazysizes",
+  "version": "0.5.3",
+  "filename": "lazysizes.min.js",
+  "author": "Alexander Farkas <info@corrupt-system.de>",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/aFarkas/lazysizes.git"
+  },
+  "browser": "lazysizes.min.js",
+  "devDependencies": {
+    "grunt": "~0.4.2",
+    "grunt-bytesize": "~0.1.1",
+    "grunt-cli": "~0.1",
+    "grunt-contrib-jshint": "~0.10.0",
+    "grunt-contrib-uglify": "~0.2.0",
+    "grunt-contrib-watch": "~0.4.0",
+    "grunt-max-filesize": "^0.1.0",
+    "grunt-uncss": "~0.3.7"
+  },
+  "npmName": "lazysizes",
+  "npmFileMap": [
+    {
+      "basePath": "",
+      "files": [
+        "*.min.js",
+        "plugins/**/*.min.js"
+      ]
+    }
+  ],
+  "description": "High performance (jankfree) lazy loader for images (including responsive images), iframes and scripts (widgets).",
+  "keywords": [
+    "lazy",
+    "loader",
+    "lazyloader",
+    "lazyload",
+    "performance",
+    "responsive",
+    "image",
+    "responsive images",
+    "picture",
+    "srcset",
+    "respimg",
+    "respimage",
+    "include",
+    "include"
+  ]
 }
