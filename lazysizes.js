@@ -20,7 +20,7 @@
 
 	var regPicture = /^picture$/i;
 	var regImg = /^img$/i;
-	var inViewTreshhold = 40;
+	var inViewTreshhold = 10;
 
 	var setImmediate = window.setImmediate || window.setTimeout;
 	var addRemoveImgEvents = function(dom, fn, add){
@@ -44,6 +44,7 @@
 		return event;
 	};
 
+	/*
 	if(document.documentElement.classList){
 		addClass = function(el, cls){
 			el.classList.add(cls);
@@ -55,22 +56,25 @@
 			return el.classList.contains(cls);
 		};
 	} else {
-		addClass = function(ele, cls) {
-			if (!hasClass(ele, cls)){
-				ele.className += " "+cls;
-			}
-		};
-		removeClass = function(ele, cls) {
-			var reg;
-			if (hasClass(ele,cls)) {
-				reg = new RegExp('(\\s|^)'+cls+'(\\s|$)');
-				ele.className = ele.className.replace(reg,' ');
-			}
-		};
-		hasClass = function hasClass(ele,cls) {
-			return ele.className.match(new RegExp('(\\s|^)'+cls+'(\\s|$)'));
-		};
+
 	}
+	*/
+
+	addClass = function(ele, cls) {
+		if (!hasClass(ele, cls)){
+			ele.className += " "+cls;
+		}
+	};
+	removeClass = function(ele, cls) {
+		var reg;
+		if (hasClass(ele,cls)) {
+			reg = new RegExp('(\\s|^)'+cls+'(\\s|$)');
+			ele.className = ele.className.replace(reg,' ');
+		}
+	};
+	hasClass = function hasClass(ele,cls) {
+		return ele.className.match(new RegExp('(\\s|^)'+cls+'(\\s|$)'));
+	};
 
 	function updatePolyfill(el, full){
 		var imageData;
@@ -84,8 +88,6 @@
 				}
 			}
 			respimage({reparse: true, elements: [el]});
-		} else if(!window.HTMLPictureElement && window.console && document.readyState == 'complete'){
-			console.log('use respimg polyfill: http://bit.ly/1FCts3P');
 		}
 	}
 
@@ -360,7 +362,7 @@
 	// The main check functions are written to run extreme fast without consuming memory.
 
 	var onload = function(){
-		inViewTreshhold = 600;
+		inViewTreshhold = lazySizesConfig.preloadAfterLoad ? 60 : 280;
 
 		document.addEventListener('load', lazyEvalLazy.throttled, true);
 		isWinloaded = true;

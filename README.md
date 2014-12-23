@@ -9,7 +9,7 @@
     <script src="lazysizes.min.js" async=""></script>
     ```
 
-2. lazysizes does not need any JS configuration: Add the ``class`` ``"lazyload"`` to your images/iframes in conjunction with a ``data-src`` or ``data-srcset`` attribute:
+2. lazysizes does not need any JS configuration: Add the ``class`` ``"lazyload"`` to your images/iframes in conjunction with a ``data-src`` or ``data-srcset`` attribute. Optionally you can also add a ``src`` attribute with a low quality image:
 
     ```html
     <!-- non-responsive: -->
@@ -93,10 +93,22 @@ The LQIP pattern (low quality image placeholder): Simply add a low quality image
 <img src="lqip-src.jpg" data-src="image.jpg" class="lazyload" />
 ```
 
-The LQIP pattern has the following advantages: The lqip-src is not hidden from the preload parser and loads very fast, which leads to an extreme fast first impression and in case of legacy browsers/devices or some searchengines (bots) as a good enough fallback (IE8 and Android 2 devices as also JS disabled).
+The LQIP pattern has the following advantages: The lqip-src is not hidden from the preload parser and loads very fast, which leads to an extreme fast first impression and in case of legacy / JS disabled browsers/devices or some searchengines (bots) as a good enough fallback (IE8 and Android 2 devices as also JS disabled).
+
+###Simple pattern
+
+In case you want to save more initial image data the LQIP pattern can't be used (an extreme fuzzy image does neither work as a good enough first impression nor as a fallback), you do use client side rendering (no preload parser advantage) or you can't even generate a LQIP src, simply add a data uri as fallback ``src``. Due to the fact, that lazysizes starts a priorized queued download after onload the images are not hidden from google bot (Yes, the google bot does execute JS).
+
+```html
+<img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+	class="lazyload"
+	data-srcset="image.jpg 1x, image2.jpg 2x"
+    alt="my image" />
+```
 
 ###The noscript pattern
-In case you want to save more initial image data the LQIP pattern can't be used (an extreme fuzzy image does neither work as a good enough first impression nor as a fallback) or in case you can't even generate a LQIP src:
+
+In case disabled javascript is a concern you can combine the simple pattern with an image inside a ``noscript`` element.
 
 ```html
 <style>
@@ -113,18 +125,7 @@ In case you want to save more initial image data the LQIP pattern can't be used 
 <!--<![endif]-->
 ```
 
-###Simple pattern
-
-In case JS off or legacy users are no concern you can simply omit a ``src`` attribute. Due to the fact, that lazysizes starts a queued image download after onload the images are not hidden from google bot.
-
-```html
-<img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
-	class="lazyload"
-	data-srcset="image.jpg 1x, image2.jpg 2x"
-    alt="my image" />
-```
-
-Note: While the noscript and the SEO pattern do save more bandwidth, they often still generate a slower perceived performance than the LQIP pattern due to the lack of the preload parser advantage.
+Note: While the noscript and the simple pattern do save more bandwidth, they often still generate a slower perceived performance than the LQIP pattern due to the lack of the preload parser advantage.
 
 ###JS API
 **lazysizes** automatically detects new elements with the class ``lazyload`` so you won't need to call or configure anything in most situations.
@@ -258,6 +259,8 @@ The [unveilhooks plugin](plugins/unveilhooks) plugin enables lazySizes to lazylo
 ###[include plugin](plugins/include)
 The [include plugin](plugins/include) plugin enables lazySizes to lazyload content, styles or AMD modules either simply postboned or conditionally (for example matching certain media queries). This extension also heavily simplifies architecture of conditional, dynamically changing responsive behavior and has an extreme great scalability.
 
+###[bgset plugin](plugins/bgset)
+The bgset plugin allows lazyload multiple background images with different resolutions/sizes (responsive background images). In case you only need one image use the unveilhooks extension.
 
 ###[print plugin](plugins/unveilhooks)
 The [print plugin](plugins/unveilhooks) plugin enables lazySizes to unveil all elements as soon as the user starts to print. (Or set ``lazySizesConfig.preloadAfterLoad`` to ``true``).

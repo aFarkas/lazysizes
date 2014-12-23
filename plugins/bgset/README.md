@@ -12,5 +12,4 @@ The extension will then load the best image size for the current viewport and de
 <div class="lazyload" data-bgset="image-200.jpg 200w, image-300.jpg 300w, image-400.jpg 400w">
 
 </div>
-
 ```

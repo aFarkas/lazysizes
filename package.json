@@ -1,6 +1,6 @@
 {
   "name": "lazysizes",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "filename": "lazysizes.min.js",
   "author": "Alexander Farkas <info@corrupt-system.de>",
   "repository": {
@@ -28,7 +28,7 @@
       ]
     }
   ],
-  "description": "High performance (jankfree) lazy loader for images (including responsive images), iframes and scripts (widgets).",
+  "description": "High performance (jankfree) and SEO friendly lazy loader for images (including responsive images), iframes and scripts (widgets).",
   "keywords": [
     "lazy",
     "loader",

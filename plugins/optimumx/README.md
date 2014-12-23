@@ -41,3 +41,27 @@ A **simple [demo can be seen here](http://afarkas.github.io/lazysizes/optimumx/)
      src="http://placehold.it/300x150"
      alt="flexible image" />
 ```
+
+In case you want to use a CDN you can use the combohandler service provided by jsDelivr:
+
+```html
+<script src="http://cdn.jsdelivr.net/g/respimage(respimage.min.js),lazysizes(lazysizes.min.js+plugins/optimumx/ls.optimumx.min.js)" async=""></script>
+```
+
+The optimumx extension needs to parse the srcset attribute. This is normally handled by the respimage polyfill. In case you don't want to include a full polyfill for all browsers you can use include this [excellent srcset parser](https://github.com/baloneysandwiches/parse-srcset).
+
+```html
+<!-- polyfill responsive images: https://github.com/aFarkas/respimage -->
+<script>
+    function loadJS(u){var r=document.getElementsByTagName("script")[ 0 ],s=document.createElement("script");s.src=u;r.parentNode.insertBefore(s,r);}
+
+    if(!window.HTMLPictureElement){
+        document.createElement('picture');
+        loadJS("https://afarkas.github.io/respimage/respimage.min.js");
+    }
+</script>
+
+<script src="lazysizes.min.js"></script>
+<script src="ls.optimumx.js"></script>
+<script src="parse-srcset.js"></script>
+```
