@@ -148,7 +148,11 @@
 					(eLleft = rect.left) <= eLvW &&
 					(eLbottom || eLright || eLleft || eLtop) &&
 					(!isWinloaded || getComputedStyle(lazyloadElems[globalLazyIndex], null).visibility != 'hidden')){
-					unveilLazy(lazyloadElems[globalLazyIndex]);
+					if(('onload' in lazyloadElems[globalLazyIndex])){
+						preload(lazyloadElems[globalLazyIndex]);
+					} else {
+						unveilLazy(lazyloadElems[globalLazyIndex]);
+					}
 					loadedSomething = true;
 				} else  {
 					if(globalLazyIndex < eLlen - 1 && Date.now() - eLnow > 9){
@@ -181,7 +185,7 @@
 		elem = unveilLazy(elem);
 		addRemoveImgEvents(elem, resetPreloading, true);
 		clearTimeout(resetPreloadingTimer);
-		resetPreloadingTimer = setTimeout(resetPreloading, 999);
+		resetPreloadingTimer = setTimeout(resetPreloading, 3000);
 	}
 
 	function clearLazyTimer(){
