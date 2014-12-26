@@ -125,15 +125,17 @@ Content, Style and AMD includes can also be mixed and used with or without condi
 </div>
 ```
 
+In case content and a behavior include is used together lazySizes will load them in parallel but makes sure to first include the content and then initialize the behavior. 
+
 ####AMD features
 
 While you can write your AMD module how you want lazysizes include extension will check wether your module provides the following methods:
 
-* ``yourmodule.lazytransform``: Will be invoked before the content is inserted. Especially to transform the AJAX response.
+* ``yourmodule.lazytransform``: Will be invoked before the content is inserted. Especially to transform the AJAX response. (For example JSON to HTML)
 * ``yourmodule.lazyload``: Callback function to initialize the module. Will be invoked after the content was inserted.
 * ``yourmodule.lazyunload``: Callback function to destroy your widget. Will be invoked before old content is removed
 
-Each of those methods are optional methods of a module. Here is a simple example:
+Each of those methods are optional static methods of a module. Here is a simple example:
 
 ```js
 define(function(){
@@ -183,7 +185,7 @@ In case a candidate includes new markup while another candidate only includes an
 </div>
 ```
 
-In case a candidate has an amd module but not a content include the markup won't be resetted automatically. But the module can request this behavior inside of it's unload method:
+In case both candidates has an amd module but not a content include the markup won't be resetted automatically. But the unloading module can request this behavior inside of it's unload method:
 
 ```js
 Slider.lazyunload = function(data){
@@ -192,11 +194,13 @@ Slider.lazyunload = function(data){
 };
 ```
 
-In case the content doesn't contain any mutable states, that need to be tranfered to the new behavior (i.e. input fields etc.), this option makes it extremley simple to cleanup the HTML for the next module.
+In case the content doesn't contain any mutable states, that need to be transferred to the new behavior (i.e. input fields etc.), this option makes it extremley simple to cleanup the HTML for the next module.
+
+The data object is shared between the ``lazyunload``, ``lazytransform`` and ``lazyload`` so that a possible state can be transferred.
 
 ####Loading multiple styles and modules
 
-Multiple styles or AMD modules for one candidate can be configured by seperating them with ``|,|`` signs:
+Multiple styles or AMD modules for one candidate can be configured by separating them with ``|,|`` signs:
 
 
 ```html
@@ -353,4 +357,46 @@ $(document).on('click', '.load-include', function(){
 	;
 });
 </script>
+```
+
+##Sharing States between two modules
+
+
+```html
+<nav class="lazyload" data-include="amd:js/nav (big),
+	amd:js/mobileNav">
+    <!-- content  -->
+</nav>
+```
+
+```js
+define(function(){
+
+	// constructor
+	var Nav = function(element,options) {
+
+	};
+
+	Nav.prototype = {
+		
+	};
+
+	Nav.lazyunload = function(data){
+    	//Reset HTML for mobileNav
+	    data.resetHTML = true;
+        //share the value of the input field with mobileNav
+		data.shareState = {
+        	searchValue: $('input.search', data.target).val();
+        };
+	};
+    
+	Nav.lazyload = function(data){
+    	//check wether mobileNav has shared some data
+		if(data.shareState){
+	        $('input.search', data.target).val(data.shareState.searchValue || '');
+        }
+	};
+
+	return Nav;
+});
 ```

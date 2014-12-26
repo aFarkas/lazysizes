@@ -20,7 +20,7 @@
 
 	var regPicture = /^picture$/i;
 	var regImg = /^img$/i;
-	var inViewTreshhold = 10;
+	var inViewTreshhold = 20;
 
 	var setImmediate = window.setImmediate || window.setTimeout;
 	var addRemoveImgEvents = function(dom, fn, add){
@@ -155,7 +155,7 @@
 					}
 
 					if(!loadedSomething && isWinloaded && !autoLoadElem &&
-						lazySizesConfig.preloadAfterLoad && isPreloading < 2 &&
+						lazySizesConfig.preloadAfterLoad && isPreloading < 3 &&
 						((eLbottom || eLright || eLleft || eLtop) || lazyloadElems[globalLazyIndex].getAttribute(lazySizesConfig.sizesAttr) != 'auto')){
 						autoLoadElem = lazyloadElems[globalLazyIndex];
 					}
@@ -359,7 +359,7 @@
 	// The main check functions are written to run extreme fast without consuming memory.
 
 	var onload = function(){
-		inViewTreshhold = lazySizesConfig.preloadAfterLoad ? 60 : 280;
+		inViewTreshhold = lazySizesConfig.preloadAfterLoad ? 160 : 320;
 
 		document.addEventListener('load', lazyEvalLazy, true);
 		isWinloaded = true;
@@ -370,8 +370,8 @@
 			if(window.MutationObserver){
 				new MutationObserver( lazyEvalLazy ).observe( docElem, {childList: true, subtree: true, attributes: true} );
 			} else {
-				docElem.addEventListener( "DOMNodeInserted", lazyEvalLazy, true);
-				docElem.addEventListener( "DOMAttrModified", lazyEvalLazy, true);
+				docElem.addEventListener('DOMNodeInserted', lazyEvalLazy, true);
+				docElem.addEventListener('DOMAttrModified', lazyEvalLazy, true);
 			}
 		}
 
@@ -434,46 +434,10 @@
 		autosizesElems = document.getElementsByClassName(lazySizesConfig.autosizesClass);
 
 		if(lazySizesConfig.scroll) {
-			addEventListener('scroll', (function(){
-				var afterScrollTimer, checkElem, checkTimer, top, left;
-				var checkFn = function(){
-					var nTop = checkElem.scrollTop || checkElem.pageYOffset || 0;
-					var nLeft = checkElem.scrollLeft || checkElem.pageXOffset || 0;
-					checkElem = null;
-
-					if(Math.abs(top - nTop) < 99 && Math.abs(left - nLeft) < 99){
-						update();
-					}
-				};
-				var update = function(){
-					lazyEvalLazy();
-					clearTimeout(afterScrollTimer);
-					clearTimeout(checkTimer);
-					checkElem = null;
-				};
-
-				return function(e){
-
-					var elem = e.target == document ? window : e.target;
-
-					clearTimeout(afterScrollTimer);
-					afterScrollTimer = setTimeout(update, 44);
-
-					if(!checkElem){
-						checkElem = elem;
-						top = checkElem.scrollTop || checkElem.pageYOffset || 0;
-						left = checkElem.scrollLeft || checkElem.pageXOffset || 0;
-						clearTimeout(checkTimer);
-						checkTimer = setTimeout(checkFn, 99);
-					} else if(elem != checkElem){
-						update();
-					}
-					elem = null;
-				};
-			})(), true);
+			addEventListener('scroll', lazyEvalLazy, true);
 		}
 
-		addEventListener('resize', lazyEvalLazy.debounce, false);
+		addEventListener('resize', lazyEvalLazy, false);
 		addEventListener('resize', lazyEvalSizes, false);
 
 		if(/^i|^loade|c/.test(document.readyState)){

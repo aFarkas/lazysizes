@@ -28,7 +28,7 @@
       ]
     }
   ],
-  "description": "High performance (jankfree) and SEO friendly lazy loader for images (including responsive images), iframes and scripts (widgets).",
+  "description": "High performance (jankfree) lazy loader for images (including responsive images), iframes and scripts (widgets).",
   "keywords": [
     "lazy",
     "loader",
