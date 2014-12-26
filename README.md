@@ -267,8 +267,8 @@ The [include plugin](plugins/include) plugin enables lazySizes to lazyload conte
 ###[bgset plugin](plugins/bgset)
 The bgset plugin allows lazyload multiple background images with different resolutions/sizes (responsive background images). In case you only need one image use the unveilhooks extension.
 
-###[print plugin](plugins/unveilhooks)
-The [print plugin](plugins/unveilhooks) plugin enables lazySizes to unveil all elements as soon as the user starts to print. (Or set ``lazySizesConfig.preloadAfterLoad`` to ``true``).
+###[print plugin](plugins/print)
+The [print plugin](plugins/print) plugin enables lazySizes to unveil all elements as soon as the user starts to print. (Or set ``lazySizesConfig.preloadAfterLoad`` to ``true``).
 
 ##Why lazysizes
 In the past I often struggled using lazy image loaders, because the "main check function" is called repeatedly and with a high frequency. Which makes it hard to fullfill two purposes runtime and memory efficiency. And looking into the source code of most so called lazy loaders often also unveils lazy developers...
