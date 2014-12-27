@@ -17,6 +17,7 @@
 	var document = window.document;
 	var docElem = document.documentElement;
 	var isPreloading = 0;
+	var fixChrome = navigator.userAgent.match(/hrome\/(\d+)/) && (RegExp.$1 == 40 || RegExp.$1 == 41);
 
 	var regPicture = /^picture$/i;
 	var regImg = /^img$/i;
@@ -77,8 +78,13 @@
 	};
 
 	function updatePolyfill(el, full){
-		var imageData;
-		if(window.picturefill){
+		var imageData, src;
+		if(fixChrome && full.srcset && (src = el.getAttribute('src'))){
+			el.src = 'data:image/gif;base64,R0lGODlhAQABAAAAADs=';
+			setTimeout(function(){
+				el.src = src;
+			});
+		} else if(window.picturefill){
 			picturefill({reevaluate: true, reparse: true, elements: [el]});
 		} else if(window.respimage){
 			if(full){
