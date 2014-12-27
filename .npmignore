@@ -12,6 +12,8 @@ bower_components
 /assets
 /include
 index.html
+no-src.html
+animate.html
 Gruntfile.js
 component.json
 package.json

@@ -70,13 +70,22 @@
 			height: auto;
 		}
 
+		.lazyloading {
+			opacity: 0;
+		}
+
+		.lazyloaded {
+			opacity: 1;
+			transition: 400ms opacity;
+		}
+
 	</style>
 
 	<script>
 
 		window.lazySizesConfig = {
 			//clearAttr: true
-			//addClasses: true
+			addClasses: true
 		};
 	</script>
 	<script src="lazysizes.js" async=""></script>

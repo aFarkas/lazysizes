@@ -20,7 +20,7 @@
 
 	var regPicture = /^picture$/i;
 	var regImg = /^img$/i;
-	var inViewTreshhold = 20;
+	var inViewThreshold = 0;
 
 	var setImmediate = window.setImmediate || window.setTimeout;
 	var addRemoveImgEvents = function(dom, fn, add){
@@ -128,9 +128,9 @@
 		eLlen = lazyloadElems.length;
 		eLnow = Date.now();
 		if(eLlen){
-			eLvW = window.innerWidth + inViewTreshhold;
-			elvH = window.innerHeight + inViewTreshhold;
-			eLnegativeTreshhold = inViewTreshhold * -1;
+			eLvW = window.innerWidth + inViewThreshold;
+			elvH = window.innerHeight + inViewThreshold;
+			eLnegativeTreshhold = inViewThreshold * -1;
 
 			for(; globalLazyIndex < eLlen; globalLazyIndex++){
 				rect = lazyloadElems[globalLazyIndex].getBoundingClientRect();
@@ -359,7 +359,7 @@
 	// The main check functions are written to run extreme fast without consuming memory.
 
 	var onload = function(){
-		inViewTreshhold = lazySizesConfig.preloadAfterLoad ? 160 : 320;
+		inViewThreshold = lazySizesConfig.threshold || (lazySizesConfig.preloadAfterLoad ? 160 : 320);
 
 		document.addEventListener('load', lazyEvalLazy, true);
 		isWinloaded = true;
@@ -454,8 +454,9 @@
 		}
 
 		lazyEvalLazy();
-		removeClass(docElem, 'no-js');
 	});
+
+	removeClass(docElem, 'no-js');
 
 	return {
 		cfg: lazySizesConfig,

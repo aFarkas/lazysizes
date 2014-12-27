@@ -9,24 +9,12 @@
 	var regNumber = /^\-*\+*\d+\.*\d*$/;
 	var regPicture = /^picture$/i;
 	var r20 = /%20/g;
+	var regWidth = /\s*\{\s*width\s*\}\s*/i;
 	var regPlaceholder = /\s*\{\s*([a-z0-9]+)\s*\}\s*/ig;
+	var regObj = /^\[.*\]|\{.*\}$/;
 	var anchor = document.createElement('a');
 
-	function createDefaultFormats(formats){
-		var width;
-		var i = 0;
-		formats.push(96);
-		while(!width || width < 2800){
-			i += 10;
-			if(i > 60){
-				i += 10;
-			}
-			width = (16 * i);
-			formats.push(width);
-		}
-	}
-
-	function extendConfig(){
+	(function(){
 		var prop;
 		var noop = function(){};
 		var riasDefaults = {
@@ -35,115 +23,127 @@
 			srcAttr: 'data-src',
 			quality: 78,
 			hdQuality: 60,
-			maxdpr: 1.7,
 			absUrl: false,
 			encodeSrc: false,
 			modifySrc: noop,
-			modifyOptions: noop
+			modifyOptions: noop,
+			widthmap: {}
 		};
 
 		config = (window.lazySizes && lazySizes.cfg) || window.lazySizesConfig;
 
-		if(config){
-			if(!config.rias){
-				config.rias = {};
-			}
-			riasCfg = config.rias;
-
-			if(!('formats' in riasCfg)){
-				riasCfg.formats = [];
-				createDefaultFormats(riasCfg.formats, 96);
-			}
-
-			for(prop in riasDefaults){
-				if(!(prop in riasCfg)){
-					riasCfg[prop] = riasDefaults[prop];
-				}
-			}
-
-			if(!riasCfg.disable){
-				init();
-			}
-			return true;
+		if(!config){
+			config = {};
+			window.lazySizesConfig = config;
 		}
-		return false;
-	}
+
+		if(!config.rias){
+			config.rias = {};
+		}
+		riasCfg = config.rias;
+
+		if(!('widths' in riasCfg)){
+			riasCfg.widths = [];
+			(function (widths){
+				var width;
+				var i = 0;
+				widths.push(96);
+				while(!width || width < 2800){
+					i += 10;
+					if(i > 60){
+						i += 10;
+					}
+					width = (16 * i);
+					widths.push(width);
+				}
+			})(riasCfg.widths);
+		}
+
+		for(prop in riasDefaults){
+			if(!(prop in riasCfg)){
+				riasCfg[prop] = riasDefaults[prop];
+			}
+		}
+	})();
+
 
 	function getElementOptions(elem, src){
-		var attr, parent, setOption;
+		var attr, parent, setOption, options;
 
-		var options = elem._lazyRiasOpts;
 
-		if(!options){
-			parent = elem.parentNode;
-			options = {
-				isPicture: !!(parent && regPicture.test(parent.nodeName || ''))
-			};
+		parent = elem.parentNode;
+		options = {
+			isPicture: !!(parent && regPicture.test(parent.nodeName || ''))
+		};
 
-			elem._lazyRiasOpts = options;
+		setOption = function(attr, run){
+			var attrVal = elem.getAttribute('data-'+ attr);
 
-			setOption = function(attr, run){
-				var attrVal = elem.getAttribute('data-'+ attr);
-
-				if(attrVal != null){
-					if(attrVal == 'true'){
-						attrVal = true;
-					} else if(attrVal == 'false'){
-						attrVal = false;
-					} else if(regNumber.test(attrVal)){
-						attrVal = parseFloat(attrVal);
-					} else if(typeof riasCfg[attr] == 'function'){
-						attrVal = riasCfg[attr](elem, attrVal);
-					}
-					options[attr] = attrVal;
-				} else if(copyAttrs[typeof riasCfg[attr]]){
-					options[attr] = riasCfg[attr];
-				} else if(run && typeof riasCfg[attr] == 'function'){
-					options[attr] = riasCfg[attr](elem, attrVal);
+			if(attrVal != null){
+				if(attrVal == 'true'){
+					attrVal = true;
+				} else if(attrVal == 'false'){
+					attrVal = false;
+				} else if(regNumber.test(attrVal)){
+					attrVal = parseFloat(attrVal);
+				} else if(typeof riasCfg[attr] == 'function'){
+					attrVal = riasCfg[attr](elem, attrVal);
+				} else if(regObj.test(attrVal)){
+					try {
+						attrVal = JSON.parse(attrVal);
+					} catch(e){}
 				}
-			};
-
-			for(attr in riasCfg){
-				setOption(attr);
+				options[attr] = attrVal;
+			} else if(copyAttrs[typeof riasCfg[attr]]){
+				options[attr] = riasCfg[attr];
+			} else if(run && typeof riasCfg[attr] == 'function'){
+				options[attr] = riasCfg[attr](elem, attrVal);
 			}
+		};
 
-			src.replace(regPlaceholder, function(full, match){
-				if(!(match in options)){
-					setOption(match, true);
-				}
-			});
+		for(attr in riasCfg){
+			setOption(attr);
 		}
+
+		src.replace(regPlaceholder, function(full, match){
+			if(!(match in options)){
+				setOption(match, true);
+			}
+		});
 
 		return options;
 	}
 
-	function reduceNearest(prev, curr, initial, ar) {
-		return (Math.abs(curr - ar.width) < Math.abs(prev - ar.width) ? curr : prev);
-	}
-
 	function replaceUrlProps(url, options){
-		return url.replace(regPlaceholder, function(full, match){
+		var urls;
+		var replaceFn = function(full, match){
 			return (!(match in options)) ? full : options[match];
+		};
+
+		url = (options.prefix || '') + url + (options.postfix || '');
+
+		if(options.absUrl){
+			anchor.setAttribute('href', url);
+			url = anchor.href;
+		}
+
+		urls = options.widths.map(function(width){
+			var candidate = url.replace(regWidth, options.widthmap[width] || width).replace(regPlaceholder, replaceFn);
+			if(options.encodeSrc){
+				candidate = encodeURIComponent(candidate).replace(r20, '+');
+			}
+
+			return candidate +' '+width+'w';
 		});
+		return urls;
 	}
 
-	function setSrc(src, opts, elem, attrName, prefix, postfix ){
+	function setSrc(src, opts, elem){
 		var retSrc;
 
 		if(!src){return;}
 
 		src = replaceUrlProps(src, opts);
-
-		if(opts.absUrl){
-			anchor.setAttribute('href', src);
-			src = anchor.href;
-		}
-
-		if(opts.encodeSrc){
-			src = encodeURIComponent(src).replace(r20, '+');
-		}
-
-		src = prefix + src + postfix;
 
 		retSrc = riasCfg.modifySrc(src, opts, elem, riasCfg);
 
@@ -151,134 +151,56 @@
 			retSrc = src;
 		}
 
-		if(retSrc && retSrc != elem.getAttribute(attrName)){
-			elem.setAttribute(attrName, retSrc);
-			return true;
-		}
+		elem.setAttribute(config.srcsetAttr, retSrc.join(', '));
 	}
 
-	function createAttrObject(elem, width, src){
+	function createAttrObject(elem, src){
 
 		var opts = getElementOptions(elem, src);
-		var formats = ('formats' in opts) ? opts.formats : riasCfg.formats;
 		var event = document.createEvent('Event');
 
-		opts.width = width;
-		opts.height = elem.offsetHeight;
-
-		opts.dpr = window.devicePixelRatio || 1;
-
-		if(opts.maxdpr < opts.dpr){
-			opts.dpr = opts.maxdpr;
+		if(!opts.widths){
+			opts.widths = riasCfg.widthgroup[opts.widthgroup] || riasCfg.widths;
 		}
 
-		if(opts.dpr > 1.4 && opts.quality > opts.hdQuality){
-			opts.quality = opts.hdQuality;
+		if(!opts.widthmap){
+			opts.widthmap = riasCfg.widthmap;
 		}
 
-		if(opts.dpr > 1){
-			opts.width *= opts.dpr;
-			opts.height *= opts.dpr;
-		}
-
-		if(formats){
-			if(Array.isArray(formats)){
-				formats.width = opts.width;
-				opts.width = formats.reduce(reduceNearest);
-			} else {
-				opts.width = Math.round(opts.width / formats) * formats;
-			}
-		}
-
-		riasCfg.modifyOptions(opts, elem);
+		riasCfg.modifyOptions.call(elem, {target: elem, details: opts});
 
 		event.initEvent('lazyriasmodifyoptions', true, false);
 		event.details = opts;
+
 		elem.dispatchEvent(event);
 
 		return opts;
 	}
 
-	function init(){
-
-		document.addEventListener('lazybeforesizes', function(e){
-			var src, elemOpts, parent, sources, i, len, setAttr, changed, isRespimage, imageData, sourceSrc, prefix, postfix;
-
-
-			if(e.defaultPrevented ||
-				!(src = e.target._lazyRiasSrc || e.target.getAttribute( e.target.getAttribute('data-srcattr') || riasCfg.srcAttr )) ||
-				(e.target._lazysizesWidth && e.target._lazysizesWidth > e.details.width)){return;}
-
-			elemOpts = e.target._lazyRiasOpts;
-
-			e.target._lazysizesWidth = e.details.width;
-			e.preventDefault();
-
-			if(elemOpts && elemOpts._elemWidth && (e.details.width - elemOpts._elemWidth) / elemOpts._elemWidth < 0.2){
-				return;
-			}
-
-			elemOpts = createAttrObject(e.target, e.details.width, src);
-			prefix = replaceUrlProps(elemOpts.prefix, elemOpts);
-			postfix = replaceUrlProps(elemOpts.postfix, elemOpts);
-
-			setAttr = e.details.dataAttr ? config.srcAttr : 'src';
-
-			if(!e.target._lazyRiasSrc){
-				e.target._lazyRiasSrc = src;
-			}
-
-			if(elemOpts.isPicture || e.target.getAttribute( (e.details.dataAttr ? config.srcsetAttr : 'srcset') )){
-				setAttr = e.details.dataAttr ? config.srcsetAttr : 'srcset';
-				isRespimage = true;
-			}
-
-			if(elemOpts.isPicture && (parent = e.target.parentNode)){
-
-				sources = parent.getElementsByTagName('source');
-				for(i = 0, len = sources.length; i < len; i++){
-					sourceSrc = sources[i]._lazyRiasSrc || sources[i].getAttribute(riasCfg.srcAttr) || sources[i].getAttribute(config.srcsetAttr);
-
-					if(!sources[i]._lazyRiasSrc){
-						sources[i]._lazyRiasSrc = sourceSrc;
-					}
-					if( setSrc(sourceSrc, elemOpts, sources[i], setAttr, prefix, postfix) ){
-						changed = 'changed';
-					}
-				}
-			}
-
-			if(setSrc(src, elemOpts, e.target, setAttr, prefix, postfix)){
-				changed = true;
-			}
-
-			if(isRespimage){
-				e.target.setAttribute('sizes', e.details.width+'px');
-			}
-
-			if(changed){
-				elemOpts._elemWidth = e.details.width;
-
-				if(isRespimage && !e.details.dataAttr && !window.HTMLPictureElement){
-					if(window.picturefill){
-						picturefill({reevaluate: true, reparse: true, elements: [e.target]});
-					} else if(window.respimage && !respimage._.observer){
-						imageData = e.target[respimage._.ns];
-						if(changed === true && imageData){
-							imageData.srcset = undefined;
-						}
-						respimage({reparse: true, elements: [e.target]});
-					} else if(window.console){
-						console.log('a picture/[srcset] polyfill is needed here.');
-					}
-				}
-			}
-
-		}, false);
+	function getSrc(elem){
+		return elem.getAttribute( elem.getAttribute('data-srcattr') || riasCfg.srcAttr ) || elem.getAttribute(config.srcsetAttr) || elem.getAttribute(config.srcAttr) || '';
 	}
 
+	document.addEventListener('lazybeforeunveil', function(e){
+		var elem, src, elemOpts, parent, sources, i, len, sourceSrc;
 
-	if(!extendConfig()){
-		setTimeout(extendConfig);
-	}
+
+		if(e.defaultPrevented || !(src = getSrc(e.target)) || !regWidth.test(src) || riasCfg.disabled){return;}
+
+		elem = e.target;
+
+		elemOpts = createAttrObject(elem, src);
+
+		if(elemOpts.isPicture && (parent = elem.parentNode)){
+			sources = parent.getElementsByTagName('source');
+			for(i = 0, len = sources.length; i < len; i++){
+				sourceSrc = getSrc(sources[i]);
+				setSrc(sourceSrc, elemOpts, sources[i]);
+			}
+		}
+
+		setSrc(src, elemOpts, elem);
+
+	}, false);
+
 })(window, document);

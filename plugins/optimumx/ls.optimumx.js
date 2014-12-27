@@ -16,7 +16,6 @@
  	see a live demo here: http://afarkas.github.io/lazysizes/maxdpr/
  */
 
-
 (function(window, document, undefined){
 	/*jshint eqnull:true */
 	'use strict';
@@ -140,9 +139,10 @@
 
 	document.addEventListener('lazybeforesizes', function(e){
 		var maxdpr, lazyData, width, data, attr, parent, sources, i, len;
+
 		if((!window.respimage && !window.parseSrcset) ||
 			e.defaultPrevented ||
-			!(maxdpr = e.target.getAttribute('data-optimumx') || e.target.getAttribute('data-maxdpr')) ||
+			!(maxdpr = e.target.getAttribute('data-optimumx') || e.target.getAttribute('data-maxdpr') || lazySizes.cfg.optimumx) ||
 			maxdpr > (window.devicePixelRatio || 1) ||
 			(e.target._lazysizesWidth && e.target._lazysizesWidth > e.details.width)){return;}
 

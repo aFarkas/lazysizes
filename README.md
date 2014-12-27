@@ -255,6 +255,8 @@ Fixes, PRs and issues are always welcome, make sure to create a new branch from 
 ###[RIAS plugin](plugins/rias)
 The [RIAS plugin](plugins/rias) plugin enables lazySizes to hook into any third party (ReSrc, Pixtulate, mobify, WURFL's Image Tailor ...) or self hosted restful responsive image service (responsive image on demand). It makes responsive images even more easier without any need for another third party script.
 
+In general the RIaS  plugin combines the simplicity of the famous Imager.js solution with the future power of native responsive images implementations.
+
 ###[OPTIMUMX plugin](plugins/optimumx)
 The ``srcset`` attribute with the *w* descriptor and ``sizes`` attribute automatically also includes high DPI images. But each image has a different optimal pixel density, which might be lower (1.5x) than the pixel density of your device (2x or 3x). This information is unknown to the browser and therefore can't be optimized for. The [lazySizes optimumx extension](plugins/optimumx) gives you more control to trade between perceived quality vs. perceived performance.
 

@@ -3,15 +3,6 @@
 <head lang="en">
 	<meta charset="UTF-8">
 	<title>lazysizes - the restful responsive image service extension/plugin </title>
-	<!-- polyfill responsive images: https://github.com/aFarkas/respimage -->
-	<script>
-		function loadJS(u){var r = document.getElementsByTagName( "script" )[ 0 ], s = document.createElement( "script" );s.src = u;r.parentNode.insertBefore( s, r );}
-
-		if(!window.HTMLPictureElement){
-			document.createElement('picture');
-			loadJS("https://afarkas.github.io/respimage/respimage.min.js");
-		}
-	</script>
 
 	<link href="../assets/css/tidy.css" rel="stylesheet" />
 	<style>
@@ -55,11 +46,12 @@
 		window.lazySizesConfig.rias = window.lazySizesConfig.rias || {};
 
 		window.lazySizesConfig.preloadAfterLoad = true;
-		window.lazySizesConfig.rias.maxdpr = 1.6;
 	</script>
 	<script src="../lazysizes.js"></script>
-	<script src="../plugins/rias/ls.rias.js"></script>
+	<script src="../plugins/optimumx/ls.optimumx.js"></script>
+	<script src="https://afarkas.github.io/respimage/respimage.min.js"></script>
 
+	<script src="../plugins/rias/ls.rias.js"></script>
 </head>
 <body>
 
@@ -69,7 +61,7 @@
 	<div class="jumbotron">
 		<h1>lazySizes - <abbr title="Responsive Image as Service">RIaS</abbr> plugin</h1>
 		<p>The <strong>lazySizes Responsive Image as Service</strong> plugin allows you to extend <strong>lazysizes</strong> with any third party or self hosted REST like image API / image on demand service.</p>
-		<p>For a short but <a href="https://github.com/aFarkas/lazysizes/blob/gh-pages/plugins/rias/README.md">full API description go to the readme.md</a>.</p>
+		<p>For a short but <a href="https://github.com/aFarkas/lazysizes/blob/gh-pages/plugins/rias/">full API description go to the readme.md</a>.</p>
 	</div>
 
 	<div id="examples">
@@ -106,16 +98,16 @@
 
 		<div class="row">
 			<div class="col-sm-6">
-				<h3><code>maxdpr</code> and the <code>quality</code></h3>
+				<h3><code>optimumx</code> and the <code>quality</code></h3>
 				<p>All options can be controlled globally through the <code>lazySizesConfig.rias</code> object or by using <code>data-*</code> attributes.</p>
 				<p>The <code>quality (default: 80)</code> and <code>hdQuality (default: 70)</code> feature helps you to control the quality of the generated image (in case your API supports this). Due to the fact, that retina images can be often heavier compressed without hurting perceived quality, this can be specified separately.</p>
-				<p>The <code>maxdpr</code> feature helps you to constrain the devicePixelRatio, which is used to calculate the resulting width.</p>
+				<p>The rias extension can also be combined with the <a href="https://github.com/aFarkas/lazysizes/blob/gh-pages/plugins/optimumx/"><code>optimumx</code> extension</a>. The optimumx feature helps you to constrain the maximum pixel density for an image.</p>
 <pre>&lt;img
 	src="low-quality.jpg"
 	data-src="image?width={width}&amp;amp;quality={quality}"
 	data-hdquality="60"
 	data-quality="75"
-	data-maxdpr="1.5"
+	data-optimumx="1.5"
 	class="lazyload"
 	alt="" /&gt;
 </pre>
@@ -126,7 +118,7 @@
 						<img
 							 src="http://app.resrc.it/S=W300M/O=20,B/http://www.your-site.co/image.jpg"
 							 data-src="http://app.resrc.it/S=W{width}M/O={quality},B/http://www.your-site.co/image.jpg"
-							 data-maxdpr="1.5"
+							 data-optimumx="1"
 							 data-hdquality="60"
 							 data-quality="75"
 							 data-sizes="auto"
@@ -200,10 +192,10 @@
 						<picture>
 							<!--[if IE 9]><audio><![endif]-->
 							<source
-									data-src="http://app.resrc.it/C=W1050,H900/S=W700/http://www.your-site.co/image.jpg"
+									data-src="http://app.resrc.it/C=W1050,H900/S=W{width}/http://www.your-site.co/image.jpg"
 									media="(max-width: 800px)" />
 							<source
-									data-src="http://app.resrc.it/C=W1350,H1100,X100,Y100/S=W700/http://www.your-site.co/image.jpg"
+									data-src="http://app.resrc.it/C=W1350,H1100,X100,Y100/S=W{width}/http://www.your-site.co/image.jpg"
 									media="(max-width: 1200px)" />
 							<!--[if IE 9]></audio><![endif]-->
 							<img
