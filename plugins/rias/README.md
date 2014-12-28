@@ -175,7 +175,7 @@ Additionally the ``modifyOptions`` callback or the equivalent ``lazyriasmodifyop
 
 ```html
 <img
-    data-custom="yo"
+    data-custom="foo"
     data-src="http://placehold.it/{width}/{custom}"
     data-sizes="auto"
     class="lazyload" />
@@ -205,9 +205,14 @@ window.lazySizesConfig.rias = {
 ```html
 <script>
 document.addEventListener('lazyriasmodifyoptions', function(e){
-    // change available widths for special-widths elements
-    if(e.target.matches('.special-widths')){
+    // change available widths and widthmap for .special-widths elements
+    if($(e.target).is('.special-widths')){
         e.details.widths = [320, 480, 600];
+        e.details.widthmap = {
+              320: 'small',
+              480: 'medium',
+              600: 'large'
+         };
     }
 
     //add new custom property with value 'foo'

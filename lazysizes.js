@@ -243,11 +243,11 @@
 
 				if(srcset){
 
-					if(fixChrome && (elem.getAttribute('src')) && sizes){
-						elem.src = 'data:image/gif;base64,R0lGODlhAQABAAAAADs=';
-					}
-
 					elem.setAttribute('srcset', srcset);
+
+					if(fixChrome && elem.getAttribute('src') && sizes){
+						elem.removeAttribute('src');
+					}
 
 					if(lazySizesConfig.clearAttr){
 						elem.removeAttribute(lazySizesConfig.srcsetAttr);
