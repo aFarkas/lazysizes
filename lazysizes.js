@@ -448,6 +448,8 @@
 				lazySizesConfig[prop] = lazySizesDefaults[prop];
 			}
 		}
+
+		window.lazySizesConfig = lazySizesConfig;
 	})();
 
 	setTimeout(function(){

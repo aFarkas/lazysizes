@@ -99,20 +99,19 @@ All RiAS options can also be used as a {placeholder} inside the url.
 
 * ``lazySizesConfig.rias.modifySrc`` (default: ``function`` noop ): A function that gets passed the generated src, the ``img``/``source`` element and the option object. The function can modify/change the generated src and return it.
 * ``lazySizesConfig.rias.prefix`` (default: ``""``): A string, which is prepended to the generated src.
-```html
-<script>
-window.lazySizesConfig = window.lazySizesConfig || {};
-window.lazySizesConfig.rias = {
-    prefix: 'http://placehold.it/'
-};
-</script>
-<img
-    src="http://placehold.it/100"
-    data-src="{width}"
-    data-sizes="auto"
-    class="lazyload"
-    alt="" />
-```
+    ```html
+    <script>
+    window.lazySizesConfig = window.lazySizesConfig || {};
+    window.lazySizesConfig.rias = {
+        prefix: 'http://placehold.it/'
+    };
+    </script>
+    <img
+        data-src="{width}"
+        data-sizes="auto"
+        class="lazyload"
+        alt="" />
+    ```
 * ``lazySizesConfig.rias.postfix`` (default: ``""`` ): A string, which is appended to the generated src.
 
 With lazysizes + rias extension you have a script to rule them all. You won't need to include a script provided by a third party image on demand service.
@@ -129,7 +128,18 @@ In case you want to use a CDN you can use jsDelivr's combohandler service:
 
 ###Tip: Constraining the pixel density for a generated ``srcset`` attribute.
 
-In case you want to constrain the pixel density for the generated ``srcset`` list you can combine the RiAS plugin with [the optimumx extension](../optimumx).
+In case you want to constrain the maximum pixel density for the generated ``srcset`` list you can combine the RiAS plugin with [the optimumx extension](../optimumx).
+
+```html
+<script src="http://cdn.jsdelivr.net/g/respimage(respimage.min.js),lazysizes(lazysizes.min.js+plugins/rias/ls.rias.min.js+plugins/optimumx/ls.optimumx.min.js)" async=""></script>
+
+
+<img
+    data-src="image-width-{width}.jpg"
+    data-optimumx="1.6"
+    data-sizes="auto"
+    class="lazyload" />
+```
 
 ###Using art direction
 

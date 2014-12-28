@@ -106,6 +106,8 @@ In case you want to save more initial image data the LQIP pattern can't be used 
     alt="my image" />
 ```
 
+Note: In case you are using the simple markup pattern, consider to set the ``preloadAfterLoad`` to ``true``. Otherwise you will hide below the fold images from google image search.
+
 ###The noscript pattern
 
 In case disabled javascript is a concern you can combine the simple pattern with an image inside a ``noscript`` element.
