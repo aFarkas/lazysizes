@@ -176,8 +176,6 @@
 		event.details = opts;
 
 		elem.dispatchEvent(event);
-		console.log(opts);
-
 		return opts;
 	}
 
