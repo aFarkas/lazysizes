@@ -22,6 +22,8 @@
 	var regPicture = /^picture$/i;
 	var regImg = /^img$/i;
 	var inViewThreshold = 0;
+	var inViewHigh = 10;
+	var inViewLow = 0;
 
 	var setImmediate = window.setImmediate || window.setTimeout;
 	var addRemoveImgEvents = function(dom, fn, add){
@@ -98,7 +100,6 @@
 	var eLnow = Date.now();
 	var resetPreloading = function(e){
 		isPreloading--;
-		clearTimeout(resetPreloadingTimer);
 		if(e && e.target){
 			addRemoveImgEvents(e.target, resetPreloading);
 		}
@@ -153,7 +154,7 @@
 				} else  {
 					if(globalLazyIndex < eLlen - 1 && Date.now() - eLnow > 9){
 						autoLoadElem = false;
-						globalLazyTimer = setTimeout(evalLazyElements, 4);
+						globalLazyTimer = setTimeout(evalLazyElements);
 						break;
 					}
 
@@ -167,6 +168,10 @@
 
 			if(autoLoadElem && !loadedSomething){
 				preload(autoLoadElem);
+			} if (inViewThreshold < inViewHigh && isPreloading < 1 && !loadedSomething){
+				inViewThreshold = inViewHigh;
+			} else if(inViewThreshold != inViewLow){
+				inViewThreshold = inViewLow;
 			}
 		}
 	};
@@ -190,7 +195,7 @@
 	}
 
 	function unveilLazy(elem, force){
-		var sources, i, len, sourceSrcset, sizes, src, srcset, parent, isImg, isPicture, realSrc;
+		var sources, i, len, sourceSrcset, sizes, src, srcset, parent, isImg, isPicture;
 
 		var event = triggerEvent(elem, 'lazybeforeunveil', {force: !!force});
 		var curSrc = elem.currentSrc || elem.src;
@@ -238,9 +243,8 @@
 
 				if(srcset){
 
-					if(fixChrome && (realSrc = elem.getAttribute('src'))){
+					if(fixChrome && (elem.getAttribute('src')) && sizes){
 						elem.src = 'data:image/gif;base64,R0lGODlhAQABAAAAADs=';
-						setTimeout(function(){elem.src = realSrc;});
 					}
 
 					elem.setAttribute('srcset', srcset);
@@ -369,7 +373,9 @@
 	// The main check functions are written to run extreme fast without consuming memory.
 
 	var onload = function(){
-		inViewThreshold = lazySizesConfig.threshold || (lazySizesConfig.preloadAfterLoad ? 160 : 320);
+		inViewThreshold = lazySizesConfig.threshold || 200;
+		inViewLow = inViewThreshold;
+		inViewHigh = inViewThreshold * 4;
 
 		document.addEventListener('load', lazyEvalLazy, true);
 		isWinloaded = true;
@@ -426,7 +432,7 @@
 			srcsetAttr: 'data-srcset',
 			sizesAttr: 'data-sizes',
 			//addClasses: false,
-			preloadAfterLoad: true,
+			//preloadAfterLoad: false,
 			onlyLargerSizes: true
 		};
 
