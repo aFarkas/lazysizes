@@ -79,21 +79,18 @@
 
 	function updatePolyfill(el, full){
 		var imageData, src;
-		if(fixChrome && full.srcset && (src = el.getAttribute('src'))){
-			el.src = 'data:image/gif;base64,R0lGODlhAQABAAAAADs=';
-			setTimeout(function(){
-				el.src = src;
-			});
-		} else if(window.picturefill){
-			picturefill({reevaluate: true, reparse: true, elements: [el]});
-		} else if(window.respimage){
-			if(full){
-				imageData = el[respimage._.ns];
-				if(imageData){
-					imageData[full.srcset ? 'srcset' : 'src'] = undefined;
+		if(!window.HTMLPictureElement){
+			if(window.picturefill){
+				picturefill({reevaluate: true, reparse: true, elements: [el]});
+			} else if(window.respimage){
+				if(full){
+					imageData = el[respimage._.ns];
+					if(imageData){
+						imageData[full.srcset ? 'srcset' : 'src'] = undefined;
+					}
 				}
+				respimage({reparse: true, elements: [el]});
 			}
-			respimage({reparse: true, elements: [el]});
 		}
 	}
 
@@ -193,7 +190,7 @@
 	}
 
 	function unveilLazy(elem, force){
-		var sources, i, len, sourceSrcset, sizes, src, srcset, parent, isImg, isPicture;
+		var sources, i, len, sourceSrcset, sizes, src, srcset, parent, isImg, isPicture, realSrc;
 
 		var event = triggerEvent(elem, 'lazybeforeunveil', {force: !!force});
 		var curSrc = elem.currentSrc || elem.src;
@@ -241,6 +238,12 @@
 
 				if(srcset){
 					elem.setAttribute('srcset', srcset);
+					if(fixChrome && (realSrc = elem.getAttribute('src'))){
+						elem.src = 'data:image/gif;base64,R0lGODlhAQABAAAAADs=';
+						setTimeout(function(){
+							elem.src = realSrc;
+						});
+					}
 					if(lazySizesConfig.clearAttr){
 						elem.removeAttribute(lazySizesConfig.srcsetAttr);
 					}
