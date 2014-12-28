@@ -136,17 +136,19 @@ Options can be set by declaring a global configuration option object named ``laz
 ```js
 window.lazySizesConfig = {
     lazyClass: 'postbone', // use .postbone instead of .lazyload
-    preloadAfterLoad: true // preload all lazy elements in a download queue
+    // preload all lazy elements in a download queue, if on desktop
+    preloadAfterLoad: !(/mobi/i.test(navigator.userAgent))
 };
 ```
 
 Here the list of options:
 
 * ``lazySizesConfig.lazyClass`` (default: ``"lazyload"``): Marker class for all elements which should be lazy loaded (There can be only one ``class``. In case you need to add some other element, without the defined class, simply add it per JS: ``$('.lazy-others').addClass('lazyload');``)
-* ``lazySizesConfig.preloadAfterLoad`` (default: ``true``): Wether lazysizes should load all elements after the window onload event. (Note: The default of this option was changed to ``true`` with version 0.6.0). Setting this to ``false`` and not providing a suitable low quality image placeholder will hide below the fold images from google.
+* ``lazySizesConfig.preloadAfterLoad`` (default: ``false``): Wether lazysizes should load all elements after the window onload event. Note: lazySizes will then still download those not-in-view images inside of a lazy queue, so that other downloads after onload are not blocked.) In case this option is ``false`` and not providing a suitable low quality image placeholder will hide below the fold images from google.
 * ``lazySizesConfig.addClasses`` (default: ``false``): Wether lazysizes should add loading and loaded classes. This can be used to add unveil effects or to apply new styles (background-image). (see also ``preloadAfterLoad`` option).
 * ``lazySizesConfig.loadingClass`` (default: ``"lazyloading"``): If ``addClasses`` is set to ``true`` this ``class`` will be added to ``img`` element as soon as image loading starts. Can be used to add unveil effects.
 * ``lazySizesConfig.loadedClass`` (default: ``"lazyloaded"``): If ``addClasses`` is set to ``true`` this ``class`` will be added to any element as soon as the image is loaded or the image comes into view. Can be used to add unveil effects or to apply styles.
+* ``lazySizesConfig.threshold`` (default: ``200``): The ``threshold`` option expands the calculated viewport area in all directions, so that elements can be loaded before they are becoming visible. (Note: Smallest possible value is ``1``).
 * ``lazySizesConfig.onlyLargerSizes`` (default: ``true``): In case a responsive image had the ``data-sizes="auto"`` attribute and the computed new size decreases, lazysizes won't normally change the ``sizes`` attribute to a lower value.
 * ``lazySizesConfig.clearAttr`` (default: ``false``): Set this to ``true`` if you want lazysizes to remove the ``data-`` attributes after doing it's work.
 * ``lazySizesConfig.srcAttr`` (default: ``"data-src"``): The attribute, which should be transformed to ``src``.
@@ -180,7 +182,8 @@ img.lazyload {
 
 <script>
 window.lazySizesConfig = {
-    preloadAfterLoad: false
+    preloadAfterLoad: false,
+    threshold: 1
 };
 
 $(document).on('lazybeforeunveil', (function(){
@@ -203,7 +206,7 @@ $(document).on('lazybeforeunveil', (function(){
 </script>
 ```
 
-For CSS transition/animations use the ``addClasses`` option:
+For CSS transition/animations use the ``addClasses`` option. See also the [animate.html](http://afarkas.github.io/lazysizes/animate.html) and our [no-src.html](http://afarkas.github.io/lazysizes/no-src.html) examples:
 
 ```html 
 <style>
@@ -221,6 +224,7 @@ For CSS transition/animations use the ``addClasses`` option:
 window.lazySizesConfig = {
 	addClasses: true
 	//,preloadAfterLoad: false
+	//,threshold: 1
 };
 </script>
 ```

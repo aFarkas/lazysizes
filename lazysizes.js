@@ -24,6 +24,7 @@
 	var inViewThreshold = 0;
 	var inViewHigh = 10;
 	var inViewLow = 0;
+	var lowRuns = 0;
 
 	var setImmediate = window.setImmediate || window.setTimeout;
 	var addRemoveImgEvents = function(dom, fn, add){
@@ -31,8 +32,10 @@
 		if(add){
 			addRemoveImgEvents(dom, fn);
 		}
-		dom[action]('load', fn, false);
-		dom[action]('error', fn, false);
+		if(('onload' in dom) || ('onerror' in dom)){
+			dom[action]('load', fn, false);
+			dom[action]('error', fn, false);
+		}
 		dom[action]('lazyincluded', fn, false);
 	};
 
@@ -166,10 +169,14 @@
 				}
 			}
 
+			lowRuns++;
+
 			if(autoLoadElem && !loadedSomething){
 				preload(autoLoadElem);
-			} if (inViewThreshold < inViewHigh && isPreloading < 1 && !loadedSomething){
+			} if (inViewThreshold < inViewHigh && isPreloading < 1 && !loadedSomething && lowRuns > 9){
 				inViewThreshold = inViewHigh;
+				lowRuns = 0;
+				lazyEvalLazy();
 			} else if(inViewThreshold != inViewLow){
 				inViewThreshold = inViewLow;
 			}
@@ -186,7 +193,7 @@
 		elem = unveilLazy(elem);
 		addRemoveImgEvents(elem, resetPreloading, true);
 		clearTimeout(resetPreloadingTimer);
-		resetPreloadingTimer = setTimeout(resetPreloading, 3000);
+		resetPreloadingTimer = setTimeout(resetPreloading, ('onload' in elem) ? 4000 : 999);
 	}
 
 	function clearLazyTimer(){
@@ -245,7 +252,7 @@
 
 					elem.setAttribute('srcset', srcset);
 
-					if(fixChrome && elem.getAttribute('src') && sizes){
+					if(fixChrome && sizes){
 						elem.removeAttribute('src');
 					}
 
@@ -459,7 +466,7 @@
 		if(/^i|^loade|c/.test(document.readyState)){
 			onready();
 		} else {
-			document.addEventListener('DOMContentLoaded', onready, false);
+			setTimeout(onready);
 		}
 
 		if(document.readyState == 'complete'){

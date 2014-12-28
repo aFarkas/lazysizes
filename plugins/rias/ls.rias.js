@@ -5,7 +5,6 @@
 	if(!document.addEventListener){return;}
 
 	var config, riasCfg;
-	var copyAttrs = {string: 1, boolean: 1, number: 1};
 	var regNumber = /^\-*\+*\d+\.*\d*$/;
 	var regPicture = /^picture$/i;
 	var r20 = /%20/g;
@@ -14,6 +13,25 @@
 	var regObj = /^\[.*\]|\{.*\}$/;
 	var anchor = document.createElement('a');
 
+	var partialFill = (function(){
+		var reduceNearest = function (prev, curr, initial, ar) {
+			return (Math.abs(curr.w - ar.w) < Math.abs(prev.w - ar.w) ? curr : prev);
+		};
+		return function(elem, srces){
+			var src;
+			if(!window.HTMLPictureElement && !window.respimage && !window.picturefill){
+				srces.w = Math.max(elem.offsetWidth, (elem.parentNode || {offsetWidth: 0}).offsetWidth) *
+					Math.min(window.devicePixelRatio || 1, 2);
+				src = srces.reduce(reduceNearest);
+
+				if(src && src.url){
+					elem.setAttribute(config.srcAttr, src.url);
+					elem.setAttribute('src', src.url);
+				}
+			}
+		};
+	})();
+
 	(function(){
 		var prop;
 		var noop = function(){};
@@ -21,8 +39,6 @@
 			prefix: '',
 			postfix: '',
 			srcAttr: 'data-src',
-			quality: 78,
-			hdQuality: 60,
 			absUrl: false,
 			encodeSrc: false,
 			modifySrc: noop,
@@ -66,7 +82,6 @@
 		}
 	})();
 
-
 	function getElementOptions(elem, src){
 		var attr, parent, setOption, options;
 
@@ -94,7 +109,7 @@
 					} catch(e){}
 				}
 				options[attr] = attrVal;
-			} else if(copyAttrs[typeof riasCfg[attr]]){
+			} else if(typeof riasCfg[attr] != 'function'){
 				options[attr] = riasCfg[attr];
 			} else if(run && typeof riasCfg[attr] == 'function'){
 				options[attr] = riasCfg[attr](elem, attrVal);
@@ -115,10 +130,11 @@
 	}
 
 	function replaceUrlProps(url, options){
-		var urls;
+		var candidates = [];
 		var replaceFn = function(full, match){
 			return (!(match in options)) ? full : options[match];
 		};
+		candidates.srcset = [];
 
 		url = (options.prefix || '') + url + (options.postfix || '');
 
@@ -127,31 +143,26 @@
 			url = anchor.href;
 		}
 
-		urls = options.widths.map(function(width){
+		options.widths.forEach(function(width){
 			var candidate = url.replace(regWidth, options.widthmap[width] || width).replace(regPlaceholder, replaceFn);
 			if(options.encodeSrc){
 				candidate = encodeURIComponent(candidate).replace(r20, '+');
 			}
-
-			return candidate +' '+width+'w';
+			candidates.push({url: candidate, w: width});
+			candidates.srcset.push(candidate +' '+width+'w');
 		});
-		return urls;
+		return candidates;
 	}
 
 	function setSrc(src, opts, elem){
-		var retSrc;
 
 		if(!src){return;}
 
 		src = replaceUrlProps(src, opts);
 
-		retSrc = riasCfg.modifySrc(src, opts, elem, riasCfg);
 
-		if(retSrc == null){
-			retSrc = src;
-		}
-
-		elem.setAttribute(config.srcsetAttr, retSrc.join(', '));
+		elem.setAttribute(config.srcsetAttr, src.srcset.join(', '));
+		partialFill(elem, src);
 	}
 
 	function createAttrObject(elem, src){
@@ -159,20 +170,13 @@
 		var opts = getElementOptions(elem, src);
 		var event = document.createEvent('Event');
 
-		if(!opts.widths){
-			opts.widths = riasCfg.widthgroup[opts.widthgroup] || riasCfg.widths;
-		}
-
-		if(!opts.widthmap){
-			opts.widthmap = riasCfg.widthmap;
-		}
-
 		riasCfg.modifyOptions.call(elem, {target: elem, details: opts});
 
 		event.initEvent('lazyriasmodifyoptions', true, false);
 		event.details = opts;
 
 		elem.dispatchEvent(event);
+		console.log(opts);
 
 		return opts;
 	}
