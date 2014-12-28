@@ -17,7 +17,7 @@
 	var document = window.document;
 	var docElem = document.documentElement;
 	var isPreloading = 0;
-	var fixChrome = navigator.userAgent.match(/hrome\/(\d+)/) && (RegExp.$1 == 40 || RegExp.$1 == 41);
+	var fixChrome = window.HTMLPictureElement && navigator.userAgent.match(/hrome\/(\d+)/) && (RegExp.$1 == 40 || RegExp.$1 == 41);
 
 	var regPicture = /^picture$/i;
 	var regImg = /^img$/i;
