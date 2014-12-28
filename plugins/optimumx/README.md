@@ -48,7 +48,7 @@ In case you want to use a CDN you can use the combohandler service provided by j
 <script src="http://cdn.jsdelivr.net/g/respimage(respimage.min.js),lazysizes(lazysizes.min.js+plugins/optimumx/ls.optimumx.min.js)" async=""></script>
 ```
 
-The optimumx extension needs to parse the srcset attribute. This is normally handled by the respimage polyfill. In case you don't want to include a full polyfill for all browsers you can include this [excellent srcset parser](https://github.com/baloneysandwiches/parse-srcset).
+The optimumx extension needs to parse the srcset attribute. This is normally handled by the respimage polyfill. In case you don't want to include a full polyfill for all browsers or you want to use picturefill as a polyfill you can include this [excellent srcset parser](https://github.com/baloneysandwiches/parse-srcset).
 
 ```html
 <!-- polyfill responsive images: https://github.com/aFarkas/respimage -->
@@ -66,4 +66,49 @@ The optimumx extension needs to parse the srcset attribute. This is normally han
 <script src="lazysizes.min.js"></script>
 <script src="ls.optimumx.js"></script>
 <script src="parse-srcset.js"></script>
+```
+
+###The ``getOptimumX`` option callback
+
+Normally the image specific optimal pixel density should be added as a floating point number using the ``data-optimumx`` attribute. Additionally it is also possible to add the ``"auto"`` keyword as a value. In that case the ``getOptimumX`` option callback is invoked with the element as the first argument.
+
+```html
+<script>
+window.lazySizesConfig = window.lazySizesConfig || {};
+window.lazySizesConfig.getOptimumX = function(element){
+    return window.devicePixelRatio > 1 ? devicePixelRatio * 0.9 : 1;
+};
+</script>
+
+<img
+    data-srcset="http://placehold.it/300x150 300w,
+    	http://placehold.it/700x300 700w,
+    	http://placehold.it/1400x600 1400w,
+    	http://placehold.it/2800x1200 2800w"
+     data-sizes="auto"
+     data-optimumx="auto"
+     class="lazyload"
+     src="http://placehold.it/300x150"
+     alt="flexible image" />
+```
+
+Due to the fact, that picturefill and some browsers with an infantile native implementation doesn't include any smart source selection algorithms this plugin can be used to include one.
+
+The predefined ``getOptimumX`` callback looks like this:
+
+```js
+window.lazySizesConfig = window.lazySizesConfig || {};
+window.lazySizesConfig.getOptimumX = function(/*element*/){
+    var dpr = window.devicePixelRatio;
+    if(dpr > 2.5){
+        dpr *= 0.7; // returns 2.1 for 3
+    } else if(dpr > 1.9){
+        dpr *= 0.8; // returns 1.6 for 2
+    } else if(dpr > 1.4){
+        dpr *= 0.9; // returns 1.35 for 1.5
+    } else {
+        dpr *= 0.99; // returns 0.99 for 1 or 1.24 for 1.3
+    }
+    return Math.round(dpr * 100) / 100;
+};
 ```

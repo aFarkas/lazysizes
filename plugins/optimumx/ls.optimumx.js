@@ -19,9 +19,33 @@
 (function(window, document, undefined){
 	/*jshint eqnull:true */
 	'use strict';
+	var config;
 	var regPicture = /^picture$/i;
-	if(!window.addEventListener){
+	if(!window.addEventListener || !window.devicePixelRatio){
 		return;
+	}
+
+	config = (window.lazySizes && lazySizes.cfg) || window.lazySizesConfig;
+
+	if(!config){
+		config = {};
+		window.lazySizesConfig = config;
+	}
+
+	if(typeof config.getOptimumX != 'function'){
+		config.getOptimumX = function(/*element*/){
+			var dpr = window.devicePixelRatio;
+			if(dpr > 2.5){
+				dpr *= 0.7; // returns 2.1 for 3
+			} else if(dpr > 1.9){
+				dpr *= 0.8; // returns 1.6 for 2
+			} else if(dpr > 1.4){
+				dpr *= 0.9; // returns 1.35 for 1.5
+			} else {
+				dpr *= 0.99; // returns 0.99 for 1 or 1.24 for 1.3
+			}
+			return Math.round(dpr * 100) / 100;
+		};
 	}
 
 	function ascendingSort( a, b ) {
@@ -78,15 +102,15 @@
 	}
 
 	function takeHighRes(beforeCan, curCanWidth, width){
-		var low, high, curRes;
+		var low, high;
 		if(!beforeCan || !beforeCan.w){
 			return true;
 		}
-		curRes = beforeCan.w / width;
-		low = (1 - (beforeCan.w / width)) * 0.9;
-		high = (curCanWidth / width) - 1;
 
-		high *= Math.pow(curRes, 1.3);
+		if(beforeCan.w > width){return false;}
+
+		low = 1 - (beforeCan.w / width);
+		high = (curCanWidth / width) - 1;
 
 		return high - low < 0;
 	}
@@ -97,9 +121,9 @@
 		for(i = data.index + 1; i < data.cands.length; i++){
 			can = data.cands[i];
 			take = false;
-			if(!can.w && (can.x || can.d)){
-				if(!can.x && can.d){
-					can.x = can.d;
+			if(!can.w){
+				if(!can.x){
+					can.x = can.d || 1;
 				}
 				take = 'x';
 			} else if(can.w <= width || takeHighRes(data.cands[i - 1], can.w, width)){
@@ -107,6 +131,7 @@
 			} else {
 				break;
 			}
+
 			if(take){
 				data.cSrcset.push(can.url +' '+ can[take] + take);
 				data.index = i;
@@ -127,23 +152,45 @@
 			elem.setAttribute(attr, lazyData.cSrcset.join(', '));
 			lazyData.dirty = true;
 
-			if(lazyData.isImg && attr == 'srcset' && !window.HTMLPictureElement && window.respimage && !respimage._.observer){
-				imageData = elem[respimage._.ns];
-				if(imageData){
-					imageData.srcset = undefined;
+			if(lazyData.isImg && attr == 'srcset' && !window.HTMLPictureElement){
+				if(window.respimage && !respimage._.observer){
+					imageData = elem[respimage._.ns];
+					if(imageData){
+						imageData.srcset = undefined;
+					}
+					respimage({reevaluate: true, reparse: true, elements: [elem]});
+				} else if(window.picturefill){
+					picturefill({reevaluate: true, reparse: true, elements: [elem]});
 				}
-				respimage({reparse: true, elements: [elem]});
+			}
+
+			if(lazyData.cSrcset.length >= lazyData.cands.length){
+				elem.removeAttribute('data-optimumx');
 			}
 		}
 	}
 
+	function getOptimumX(element){
+		var lazyData;
+		var optimumx = element.getAttribute('data-optimumx') || element.getAttribute('data-maxdpr');
+		if(optimumx){
+			if(optimumx == 'auto'){
+				lazyData = element._lazyMaxDprSrcset || parseImg(element);
+				optimumx = config.getOptimumX(element, lazyData);
+			} else {
+				optimumx = parseFloat(optimumx, 10);
+			}
+		}
+		return optimumx;
+	}
+
 	document.addEventListener('lazybeforesizes', function(e){
-		var maxdpr, lazyData, width, data, attr, parent, sources, i, len;
+		var maxdpr, lazyData, width, attr, parent, sources, i, len;
 
 		if((!window.respimage && !window.parseSrcset) ||
 			e.defaultPrevented ||
-			!(maxdpr = e.target.getAttribute('data-optimumx') || e.target.getAttribute('data-maxdpr') || lazySizes.cfg.optimumx) ||
-			maxdpr > (window.devicePixelRatio || 1) ||
+			!(maxdpr = getOptimumX(e.target)) ||
+			maxdpr >= window.devicePixelRatio ||
 			(e.target._lazysizesWidth && e.target._lazysizesWidth > e.details.width)){return;}
 
 		lazyData = e.target._lazyMaxDprSrcset || parseImg(e.target);
