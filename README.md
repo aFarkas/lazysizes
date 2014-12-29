@@ -138,7 +138,7 @@ Options can be set by declaring a global configuration option object named ``laz
 ```js
 window.lazySizesConfig = {
     lazyClass: 'postbone', // use .postbone instead of .lazyload
-    // preload all lazy elements in a download queue, if on desktop
+    // preload all lazy elements in a lazy loading queue after onload, if on desktop
     preloadAfterLoad: !(/mobi/i.test(navigator.userAgent))
 };
 ```

@@ -48,7 +48,7 @@ In case you want to use a CDN you can use the combohandler service provided by j
 <script src="http://cdn.jsdelivr.net/g/respimage(respimage.min.js),lazysizes(lazysizes.min.js+plugins/optimumx/ls.optimumx.min.js)" async=""></script>
 ```
 
-The optimumx extension needs to parse the srcset attribute. This is normally handled by the respimage polyfill. In case you don't want to include a full polyfill for all browsers or you want to use picturefill as a polyfill you can include this [excellent srcset parser](https://github.com/baloneysandwiches/parse-srcset).
+The optimumx extension needs to parse the ``srcset`` attribute. This is normally handled by the [respimage polyfill](https://github.com/aFarkas/respimage). In case you don't want to include a full polyfill for all browsers or you want to use picturefill as a polyfill you can include this [excellent srcset parser](https://github.com/baloneysandwiches/parse-srcset).
 
 ```html
 <!-- polyfill responsive images: https://github.com/aFarkas/respimage -->
@@ -70,7 +70,7 @@ The optimumx extension needs to parse the srcset attribute. This is normally han
 
 ###The ``getOptimumX`` option callback
 
-Normally the image specific optimal pixel density should be added as a floating point number using the ``data-optimumx`` attribute. Additionally it is also possible to add the ``"auto"`` keyword as a value. In that case the ``getOptimumX`` option callback is invoked with the element as the first argument.
+Normally the image specific optimal pixel density should be added as a floating point number using the ``data-optimumx`` attribute. Additionally it is also possible to add the ``"auto"`` keyword as a value of the ``data-optimumx`` attribute. In that case the ``getOptimumX`` option callback is invoked with the element as the first argument.
 
 ```html
 <script>
@@ -92,9 +92,7 @@ window.lazySizesConfig.getOptimumX = function(element){
      alt="flexible image" />
 ```
 
-Due to the fact, that picturefill and some browsers with an infantile native implementation doesn't include any smart source selection algorithms this plugin can be used to include one.
-
-The predefined ``getOptimumX`` callback looks like this:
+The predefined ugly ``getOptimumX`` callback looks like this:
 
 ```js
 window.lazySizesConfig = window.lazySizesConfig || {};
@@ -112,3 +110,5 @@ window.lazySizesConfig.getOptimumX = function(/*element*/){
     return Math.round(dpr * 100) / 100;
 };
 ```
+
+Due to the fact, that picturefill 2.x and some browsers with an infantile native respimg implementation doesn't include any smart source selection algorithms this plugin can be used to include one.

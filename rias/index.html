@@ -96,14 +96,12 @@
 
 		<div class="row">
 			<div class="col-sm-6">
-				<h3><code>optimumx</code> and the <code>quality</code></h3>
+				<h3><code>optimumx</code></h3>
 				<p>All options can be controlled globally through the <code>lazySizesConfig.rias</code> object or by using <code>data-*</code> attributes.</p>
-				<p>The <code>quality (default: 80)</code> and <code>hdQuality (default: 70)</code> feature helps you to control the quality of the generated image (in case your API supports this). Due to the fact, that retina images can be often heavier compressed without hurting perceived quality, this can be specified separately.</p>
 				<p>The rias extension can also be combined with the <a href="https://github.com/aFarkas/lazysizes/blob/gh-pages/plugins/optimumx/"><code>optimumx</code> extension</a>. The optimumx feature helps you to constrain the maximum pixel density for an image.</p>
 <pre>&lt;img
 	src="low-quality.jpg"
 	data-src="image?width={width}&amp;amp;quality={quality}"
-	data-hdquality="60"
 	data-quality="75"
 	data-optimumx="1.5"
 	class="lazyload"
@@ -116,8 +114,7 @@
 						<img
 							 src="http://app.resrc.it/S=W300M/O=20,B/http://www.your-site.co/image.jpg"
 							 data-src="http://app.resrc.it/S=W{width}M/O={quality},B/http://www.your-site.co/image.jpg"
-							 data-optimumx="1"
-							 data-hdquality="60"
+							 data-optimumx="1.3"
 							 data-quality="75"
 							 data-sizes="auto"
 							 class="lazyload"

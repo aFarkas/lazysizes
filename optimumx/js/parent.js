@@ -50,6 +50,10 @@
 			$('#arena').prop('src', 'child.html?'+ (new Date().getTime()));
 			return false;
 		});
+		$('.btn-auto').on('click', function(){
+			$('#arena').prop('src', 'child.html?optimumx=auto');
+			return false;
+		});
 		$('#arena').prop('src', 'child.html');
 	})
 

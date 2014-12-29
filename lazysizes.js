@@ -21,7 +21,7 @@
 
 	var regPicture = /^picture$/i;
 	var regImg = /^img$/i;
-	var inViewThreshold = 0;
+	var inViewThreshold = -21;
 	var inViewHigh = 10;
 	var inViewLow = 0;
 	var lowRuns = 0;

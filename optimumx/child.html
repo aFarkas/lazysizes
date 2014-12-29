@@ -812,7 +812,7 @@ https://farm1.staticflickr.com/113/284651694_69e63b374d_o.jpg 800w"
 
 		var dpr = (window.devicePixelRatio || 1);
 		var max = params.optimumx || 'image specific optimum';
-		var calcDpr = Math.min(dpr, max) || 'image specific';
+		var calcDpr = Math.min(dpr, max) || params.optimumx == 'auto' ? 'what the default <code>getOptimumX</code></code> callback returns' : 'image specific';
 		$('<div class="alert alert-info"><p>Your device has a pixel ratio of '+ dpr +', ' +
 		'while <code>data-optimumx="'+ max +'"</code> is set.</p>' +
 		'<p>This means images should be around a pixel density of "'+ calcDpr +'".</p></div>')

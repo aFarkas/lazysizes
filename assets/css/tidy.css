@@ -252,6 +252,7 @@ pre {
   margin-right: -15px;
 }
 
+.col-sm-4,
 .col-sm-6,
 .col-sm-12 {
   position: relative;
@@ -261,6 +262,7 @@ pre {
 }
 
 @media (min-width:768px) {
+  .col-sm-4,
   .col-sm-6,
   .col-sm-12 {
     float: left;
@@ -268,6 +270,10 @@ pre {
 
   .col-sm-12 {
     width: 100%;
+  }
+
+  .col-sm-4 {
+    width: 33%;
   }
 
   .col-sm-6 {
