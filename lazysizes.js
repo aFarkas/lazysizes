@@ -95,6 +95,8 @@
 					}
 				}
 				respimage({reparse: true, elements: [el]});
+			} else if(full && full.src){
+				el.src = full.src;
 			}
 		}
 	}
