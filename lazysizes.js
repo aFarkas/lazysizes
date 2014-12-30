@@ -21,9 +21,11 @@
 
 	var regPicture = /^picture$/i;
 	var regImg = /^img$/i;
-	var inViewThreshold = -21;
-	var inViewHigh = 10;
-	var inViewLow = 0;
+
+	var inViewLow = -21;
+	var inViewThreshold = inViewLow;
+	var inViewHigh = 9;
+
 	var lowRuns = 0;
 
 	var setImmediate = window.setImmediate || window.setTimeout;
