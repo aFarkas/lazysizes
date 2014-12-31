@@ -348,11 +348,9 @@
 				elemWidth :
 				parentWidth;
 
-			if(!width && !elem._lazysizesWidth){
-				while(parent && parent != document.body && !width){
-					width =  parent.offsetWidth;
-					parent = parent.parentNode;
-				}
+			while(parent && parent != document.body && width < lazySizesConfig.minSize && !elem._lazysizesWidth){
+				width =  parent.offsetWidth;
+				parent = parent.parentNode;
 			}
 
 			event = triggerEvent(elem, 'lazybeforesizes', {width: width, dataAttr: !!dataAttr});
@@ -444,7 +442,8 @@
 			sizesAttr: 'data-sizes',
 			//addClasses: false,
 			//preloadAfterLoad: false,
-			onlyLargerSizes: true
+			onlyLargerSizes: true,
+			minSize: 1
 		};
 
 		for(prop in lazySizesDefaults){
