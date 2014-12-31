@@ -338,10 +338,14 @@
 	}
 
 	function updateSizes(elem, dataAttr){
-		var parentWidth, elemWidth, width, parent, sources, i, len, event;
+		var parentWidth, elemWidth, width, parent, sources, i, len, event, alt;
 		parent = elem.parentNode;
 
 		if(parent){
+			if(!elem._lazysizesWidth){
+				alt = elem.getAttribute('alt');
+				elem.alt = '';
+			}
 			parentWidth = parent.offsetWidth;
 			elemWidth = elem.offsetWidth;
 			width = (elemWidth > parentWidth) ?
@@ -351,6 +355,14 @@
 			while(parent && parent != document.body && width < lazySizesConfig.minSize && !elem._lazysizesWidth){
 				width =  parent.offsetWidth;
 				parent = parent.parentNode;
+			}
+
+			if(!elem._lazysizesWidth){
+				if(alt == null){
+					elem.removeAttribute('alt');
+				} else {
+					elem.alt = alt;
+				}
 			}
 
 			event = triggerEvent(elem, 'lazybeforesizes', {width: width, dataAttr: !!dataAttr});
