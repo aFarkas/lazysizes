@@ -184,6 +184,61 @@ if(!window.HTMLPictureElement){
 </picture>
 ```
 
+###Using different ``widths`` options for different images
+Often you will have different image formats with different allowed available ``widths``. This can be configured in two ways:
+
+####Descriptive way the ``data-widths`` attribute
+
+```html
+<img
+        data-srcset="http://placehold.it/{width}"
+        data-widths="[320, 480, 640]"
+        data-sizes="auto"
+        class="lazyload"
+        alt="" />
+
+<img
+        data-srcset="http://placehold.it/{width}"
+        data-widths="[640, 800, 960]"
+        data-sizes="auto"
+        class="lazyload"
+        alt="" />
+
+```
+
+####Scripted way using the ``lazyriasmodifyoptions`` event
+
+
+```html
+<script>
+document.addEventListener('lazyriasmodifyoptions', (function(){
+    var formats = {
+        full: [640, 800, 960, 1280, 1600],
+        content: [320, 380, 640]
+    };
+    return function(e){
+       var format = e.target.getAttribute('data-format');
+       if(formats[format]){
+           e.details.widths = formats[format];
+       }
+   };
+})());
+</script>
+
+<img
+    data-src="http://placehold.it/{width}"
+    data-format="full"
+    data-sizes="auto"
+    class="lazyload special-widths"
+    alt="" />
+
+<img
+    data-src="http://placehold.it/{width}"
+    data-format="content"
+    data-sizes="auto"
+    class="lazyload special-widths"
+    alt="" />
+```
 
 ###Overriding existing placeholders or Extending new placeholders
 
