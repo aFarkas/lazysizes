@@ -19,7 +19,7 @@
 (function(window, document, undefined){
 	/*jshint eqnull:true */
 	'use strict';
-	var config;
+	var config, extentLazySizes;
 	var regPicture = /^picture$/i;
 	if(!window.addEventListener || !window.devicePixelRatio){
 		return;
@@ -171,12 +171,10 @@
 	}
 
 	function getOptimumX(element){
-		var lazyData;
 		var optimumx = element.getAttribute('data-optimumx') || element.getAttribute('data-maxdpr');
 		if(optimumx){
 			if(optimumx == 'auto'){
-				lazyData = element._lazyMaxDprSrcset || parseImg(element);
-				optimumx = config.getOptimumX(element, lazyData);
+				optimumx = config.getOptimumX(element);
 			} else {
 				optimumx = parseFloat(optimumx, 10);
 			}
@@ -184,7 +182,13 @@
 		return optimumx;
 	}
 
-	document.addEventListener('lazybeforesizes', function(e){
+	extentLazySizes = function(){
+		if(window.lazySizes && !window.lazySizes.getOptimumX){
+			window.lazySizes.getX = getOptimumX;
+		}
+	};
+
+	addEventListener('lazybeforesizes', function(e){
 		var maxdpr, lazyData, width, attr, parent, sources, i, len;
 
 		if((!window.respimage && !window.parseSrcset) ||
@@ -208,5 +212,8 @@
 			constrainSrces(e.target, width, attr);
 		}
 	}, false);
+
+	extentLazySizes();
+	setTimeout(extentLazySizes);
 
 })(window, document);

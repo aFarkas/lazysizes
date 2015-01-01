@@ -405,7 +405,9 @@
 
 			modules.forEach(loadModule, moduleObj);
 
-			lazySizes.fire(elem, 'lazyincluded', details);
+			setTimeout(function(){
+				lazySizes.fire(elem, 'lazyincluded', details);
+			});
 
 			xhrObj = null;
 			modules = null;
@@ -458,10 +460,10 @@
 	function beforeUnveil(e){
 		if(e.defaultPrevented || !e.target.getAttribute('data-include')){return;}
 		queue.q(e.target);
-		e.details.stopSwitchClass = true;
+		e.details.firesLoad = true;
 	}
 
-	document.addEventListener('lazybeforeunveil', beforeUnveil, false);
+	addEventListener('lazybeforeunveil', beforeUnveil, false);
 
 	addEventListener('resize', refreshIncludes, false);
 	addEventListener('lazyrefreshincludes', refreshIncludes, false);

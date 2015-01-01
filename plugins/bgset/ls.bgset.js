@@ -1,4 +1,4 @@
-document.addEventListener('lazybeforeunveil', (function(){
+addEventListener('lazybeforeunveil', (function(){
 	'use strict';
 	var parent = document.createElement('div');
 

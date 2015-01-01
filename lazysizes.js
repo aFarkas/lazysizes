@@ -1,9 +1,7 @@
 (function (factory) {
 	window.lazySizes = factory(window);
 	if (typeof define === 'function' && define.amd) {
-		define(function() {
-			return window.lazySizes;
-		});
+		define(window.lazySizes);
 	}
 }(function (window) {
 	'use strict';
@@ -28,17 +26,14 @@
 
 	var lowRuns = 0;
 
-	var setImmediate = window.setImmediate || window.setTimeout;
-	var addRemoveImgEvents = function(dom, fn, add){
+	var addRemoveLoadEvents = function(dom, fn, add){
 		var action = add ? 'addEventListener' : 'removeEventListener';
 		if(add){
-			addRemoveImgEvents(dom, fn);
+			addRemoveLoadEvents(dom, fn);
 		}
-		if(('onload' in dom) || ('onerror' in dom)){
-			dom[action]('load', fn, false);
-			dom[action]('error', fn, false);
-		}
-		dom[action]('lazyincluded', fn, false);
+		['load', 'error', 'lazyincluded'].forEach(function(evt){
+			dom[action](evt, fn, true);
+		});
 	};
 
 	var triggerEvent = function(elem, name, details){
@@ -52,22 +47,6 @@
 		return event;
 	};
 
-	/*
-	if(document.documentElement.classList){
-		addClass = function(el, cls){
-			el.classList.add(cls);
-		};
-		removeClass = function(el, cls){
-			el.classList.remove(cls);
-		};
-		hasClass = function(el, cls){
-			return el.classList.contains(cls);
-		};
-	} else {
-
-	}
-	*/
-
 	addClass = function(ele, cls) {
 		if (!hasClass(ele, cls)){
 			ele.className += " "+cls;
@@ -75,13 +54,13 @@
 	};
 	removeClass = function(ele, cls) {
 		var reg;
-		if (hasClass(ele,cls)) {
-			reg = new RegExp('(\\s|^)'+cls+'(\\s|$)');
+		if ((reg = hasClass(ele,cls))) {
 			ele.className = ele.className.replace(reg,' ');
 		}
 	};
-	hasClass = function hasClass(ele,cls) {
-		return ele.className.match(new RegExp('(\\s|^)'+cls+'(\\s|$)'));
+	hasClass = function(ele,cls) {
+		var reg = new RegExp('(\\s|^)'+cls+'(\\s|$)');
+		return ele.className.match(reg) && reg;
 	};
 
 	function updatePolyfill(el, full){
@@ -108,9 +87,9 @@
 	var resetPreloading = function(e){
 		isPreloading--;
 		if(e && e.target){
-			addRemoveImgEvents(e.target, resetPreloading);
+			addRemoveLoadEvents(e.target, resetPreloading);
 		}
-		if(!e || isPreloading < 0 || !e.target) {
+		if(!e || isPreloading < 0 || !e.target){
 			isPreloading = 0;
 		}
 	};
@@ -123,7 +102,7 @@
 			clearTimeout(timer);
 			clearLazyTimer();
 			evalLazyElements();
-			setTimeout(unblock);
+			setTimeout(unblock, 3);
 		};
 		return  function(){
 			if(!running){
@@ -151,12 +130,8 @@
 					(eLright = rect.right) >= eLnegativeTreshhold &&
 					(eLleft = rect.left) <= eLvW &&
 					(eLbottom || eLright || eLleft || eLtop) &&
-					(!isWinloaded || getComputedStyle(lazyloadElems[globalLazyIndex], null).visibility != 'hidden')){
-					if(('onload' in lazyloadElems[globalLazyIndex])){
-						preload(lazyloadElems[globalLazyIndex]);
-					} else {
-						unveilLazy(lazyloadElems[globalLazyIndex]);
-					}
+					((!isWinloaded && isPreloading < 4) || getComputedStyle(lazyloadElems[globalLazyIndex], null).visibility != 'hidden')){
+					unveilLazy(lazyloadElems[globalLazyIndex]);
 					loadedSomething = true;
 				} else  {
 					if(globalLazyIndex < eLlen - 1 && Date.now() - eLnow > 9){
@@ -176,11 +151,12 @@
 			lowRuns++;
 
 			if(autoLoadElem && !loadedSomething){
-				preload(autoLoadElem);
+				unveilLazy(autoLoadElem);
 			} if (inViewThreshold < inViewHigh && isPreloading < 1 && !loadedSomething && lowRuns > 9){
 				inViewThreshold = inViewHigh;
 				lowRuns = 0;
-				lazyEvalLazy();
+				//delay = 4 moves it after unblock delay of 3
+				globalLazyTimer = setTimeout(lazyEvalLazy, 4);
 			} else if(inViewThreshold != inViewLow){
 				inViewThreshold = inViewLow;
 			}
@@ -189,16 +165,8 @@
 	var switchLoadingClass = function(e){
 		addClass(e.target, lazySizesConfig.loadedClass);
 		removeClass(e.target, lazySizesConfig.loadingClass);
-		addRemoveImgEvents(e.target, switchLoadingClass);
+		addRemoveLoadEvents(e.target, switchLoadingClass);
 	};
-
-	function preload(elem){
-		isPreloading++;
-		elem = unveilLazy(elem);
-		addRemoveImgEvents(elem, resetPreloading, true);
-		clearTimeout(resetPreloadingTimer);
-		resetPreloadingTimer = setTimeout(resetPreloading, ('onload' in elem) ? 4000 : 999);
-	}
 
 	function clearLazyTimer(){
 		globalLazyIndex = 0;
@@ -212,6 +180,12 @@
 		var curSrc = elem.currentSrc || elem.src;
 
 		if(!event.defaultPrevented){
+
+			isPreloading++;
+			addRemoveLoadEvents(elem, resetPreloading, true);
+			clearTimeout(resetPreloadingTimer);
+			resetPreloadingTimer = setTimeout(resetPreloading, 9999);
+
 			//allow using sizes="auto", but don't use. it's invalid. Use data-sizes="auto" or a valid value for sizes instead (i.e.: sizes="80vw")
 			sizes = elem.getAttribute(lazySizesConfig.sizesAttr) || elem.getAttribute('sizes');
 
@@ -237,7 +211,7 @@
 			if(lazySizesConfig.addClasses){
 				addClass(elem, lazySizesConfig.loadingClass);
 
-				addRemoveImgEvents(elem, switchLoadingClass, true);
+				addRemoveLoadEvents(elem, switchLoadingClass, true);
 			}
 
 			if(srcset || src){
@@ -272,7 +246,7 @@
 			}
 		}
 
-		setImmediate(function(){
+		setTimeout(function(){
 			removeClass(elem, lazySizesConfig.lazyClass);
 			if(sizes == 'auto'){
 				addClass(elem, lazySizesConfig.autosizesClass);
@@ -287,11 +261,15 @@
 			}
 
 			//remove curSrc == (elem.currentSrc || elem.src) it's a workaround for FF. see: https://bugzilla.mozilla.org/show_bug.cgi?id=608261
-			if( !event.details.stopSwitchClass && lazySizesConfig.addClasses && (!isImg || (!srcset && !src) || (elem.complete && curSrc == (elem.currentSrc || elem.src))) ){
-				switchLoadingClass({target: elem});
+			if( !event.details.firesLoad && (!isImg || (!srcset && !src) || (elem.complete && curSrc == (elem.currentSrc || elem.src))) ){
+				if(lazySizesConfig.addClasses){
+					switchLoadingClass({target: elem});
+				}
+				addRemoveLoadEvents(elem, resetPreloading);
 			}
-		});
-		return elem;
+			elem = null;
+			//delay = 1 moves it before unblock delay of 3
+		}, 1);
 	}
 
 	var lazyEvalSizes = (function(){
@@ -325,11 +303,39 @@
 				if(i > checkTime && i < len - 1 && Date.now() - now > 9){
 					globalSizesIndex = i + 1;
 
-					globalSizesTimer = setTimeout(evalSizesElements, 4);
+					globalSizesTimer = setTimeout(evalSizesElements);
 					break;
 				}
 			}
 		}
+	};
+	var getWidth = function(elem, parent){
+		var parentWidth, elemWidth, width, alt;
+		if(!elem._lazysizesWidth){
+			alt = elem.getAttribute('alt');
+			elem.alt = '';
+		}
+
+		parentWidth = parent.offsetWidth;
+		elemWidth = elem.offsetWidth;
+		width = (elemWidth >= parentWidth || (elemWidth > lazySizesConfig.minSize && getComputedStyle(elem, null).display == 'block')) ?
+			elemWidth :
+			parentWidth;
+
+		while(parent && parent != document.body && width < lazySizesConfig.minSize && !elem._lazysizesWidth){
+			width =  parent.offsetWidth;
+			parent = parent.parentNode;
+		}
+
+		if(!elem._lazysizesWidth){
+			if(alt == null){
+				elem.removeAttribute('alt');
+			} else {
+				elem.alt = alt;
+			}
+		}
+
+		return width;
 	};
 
 	function clearSizesTimer(){
@@ -338,33 +344,11 @@
 	}
 
 	function updateSizes(elem, dataAttr){
-		var parentWidth, elemWidth, width, parent, sources, i, len, event, alt;
-		parent = elem.parentNode;
+		var width, sources, i, len, event;
+		var parent = elem.parentNode;
 
 		if(parent){
-			if(!elem._lazysizesWidth){
-				alt = elem.getAttribute('alt');
-				elem.alt = '';
-			}
-			parentWidth = parent.offsetWidth;
-			elemWidth = elem.offsetWidth;
-			width = (elemWidth > parentWidth) ?
-				elemWidth :
-				parentWidth;
-
-			while(parent && parent != document.body && width < lazySizesConfig.minSize && !elem._lazysizesWidth){
-				width =  parent.offsetWidth;
-				parent = parent.parentNode;
-			}
-
-			if(!elem._lazysizesWidth){
-				if(alt == null){
-					elem.removeAttribute('alt');
-				} else {
-					elem.alt = alt;
-				}
-			}
-
+			width = getWidth(elem, parent);
 			event = triggerEvent(elem, 'lazybeforesizes', {width: width, dataAttr: !!dataAttr});
 
 			if(!event.defaultPrevented){
@@ -419,15 +403,15 @@
 		//:focus/active
 		document.addEventListener('focus', lazyEvalLazy, true);
 		//:target
-		window.addEventListener('hashchange', lazyEvalLazy, true);
+		addEventListener('hashchange', lazyEvalLazy, true);
 
 		//:fullscreen
 		if(('onmozfullscreenchange' in docElem)){
-			window.addEventListener('mozfullscreenchange', lazyEvalLazy, true);
+			addEventListener('mozfullscreenchange', lazyEvalLazy, true);
 		} else if(('onwebkitfullscreenchange' in docElem)){
-			window.addEventListener('webkitfullscreenchange', lazyEvalLazy, true);
+			addEventListener('webkitfullscreenchange', lazyEvalLazy, true);
 		} else {
-			window.addEventListener('fullscreenchange', lazyEvalLazy, true);
+			addEventListener('fullscreenchange', lazyEvalLazy, true);
 		}
 
 		if(lazySizesConfig.cssanimation){
@@ -455,7 +439,7 @@
 			//addClasses: false,
 			//preloadAfterLoad: false,
 			onlyLargerSizes: true,
-			minSize: 1
+			minSize: 33
 		};
 
 		for(prop in lazySizesDefaults){
@@ -514,11 +498,13 @@
 				unveilLazy(el);
 			}
 		},
-		updateSizes: updateSizes,
-		updatePolyfill: updatePolyfill,
+		//undocumented methods
+		uS: updateSizes,
+		uP: updatePolyfill,
 		aC: addClass,
 		rC: removeClass,
 		hC: hasClass,
-		fire: triggerEvent
+		fire: triggerEvent,
+		gW: getWidth
 	};
 }));

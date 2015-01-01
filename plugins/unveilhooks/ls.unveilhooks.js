@@ -46,7 +46,7 @@ For background images, use data-bg attribute:
 			}
 		};
 
-		document.addEventListener('lazybeforeunveil', function(e){
+		addEventListener('lazybeforeunveil', function(e){
 			var tmp, bg, load;
 			if(!e.defaultPrevented) {
 

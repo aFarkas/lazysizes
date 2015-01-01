@@ -2,7 +2,7 @@
 
 The RiaS plugin enables lazySizes to hook into any third party (ReSrc, Pixtulate, mobify, WURFL's Image Tailor ...) or self hosted restful responsive image service (responsive image on demand).
 
-In general the RIaS  plugin combines the simplicity of the famous Imager.js solution with the future power of native responsive images implementations.
+In general the RIaS  plugin combines the simplicity of the famous Imager.js solution with the future power of native responsive images implementations and the webcomponent-like working of lazySizes ``.lazyload`` elements (self-initialization, self-configuration and self-destroying).
 
 The rias plugin also allows art direction by combining rias with a ``picture`` element.
 
@@ -22,6 +22,12 @@ The rias plugin also allows art direction by combining rias with a ``picture`` e
 ```html
 <img
 	data-src="http://placehold.it/{width}"
+	data-sizes="auto"
+	class="lazyload"
+	alt="" />
+
+<img
+    data-src="http://wit.wurfl.io/w_{width}/http://wurfl.io/assets/sunsetbeach.jpg"
 	data-sizes="auto"
 	class="lazyload"
 	alt="" />
@@ -78,8 +84,6 @@ All RiAS options can also be used as a {placeholder} inside the url.
         940: 'large'
    };
     ```
-* ``lazySizesConfig.rias.absUrl`` (default: ``false``): Wether the value of the ``data-src``/``srcsetAttr`` attribute should be resolved to an absolute url.
-* ``lazySizesConfig.rias.encodeSrc`` (default: ``false``): Wether the value of the ``data-src``/``srcsetAttr`` should be encoded using ``encodeURIComponent``.
 * ``lazySizesConfig.rias.modifyOptions`` (default: ``function`` noop ): A ``function`` that gets an data object passed with the options as the ``details`` and the corresponding ``img`` element as the ``target``. Can be used to modify existing options/placeholder values or to add new placeholder values. An event with the name ``lazyriasmodifyoptions`` is also fired at the element.
     ```html
     <script>
@@ -96,8 +100,23 @@ All RiAS options can also be used as a {placeholder} inside the url.
         class="lazyload"
         alt="" />
     ```
+* ``lazySizesConfig.rias.absUrl`` (default: ``false``): Wether the value of the ``data-src``/``srcsetAttr`` attribute should be resolved to an absolute url. The value must not contain any placeholders in this case. Use in conjunction with ``prefix`` and/or ``postfix`` option.
+    ```html
+    <script>
+        window.lazySizesConfig = window.lazySizesConfig || {};
+        window.lazySizesConfig.rias = {
+            prefix: 'http://wit.wurfl.io/w_{width}/',
+            absUrl: true
+        };
+    </script>
 
-* ``lazySizesConfig.rias.modifySrc`` (default: ``function`` noop ): A function that gets passed the generated src, the ``img``/``source`` element and the option object. The function can modify/change the generated src and return it.
+    <img
+        data-src="assets/sunsetbeach.jpg"
+        data-sizes="auto"
+        class="lazyload"
+        alt="" />
+    ```
+
 * ``lazySizesConfig.rias.prefix`` (default: ``""``): A string, which is prepended to the generated src.
     ```html
     <script>
@@ -214,7 +233,7 @@ Often you will have different image formats with different allowed available ``w
 document.addEventListener('lazyriasmodifyoptions', (function(){
     var formats = {
         full: [640, 800, 960, 1280, 1600],
-        content: [320, 380, 640]
+        content: [320, 480, 640]
     };
     return function(e){
        var format = e.target.getAttribute('data-format');
@@ -229,14 +248,14 @@ document.addEventListener('lazyriasmodifyoptions', (function(){
     data-src="http://placehold.it/{width}"
     data-format="full"
     data-sizes="auto"
-    class="lazyload special-widths"
+    class="lazyload"
     alt="" />
 
 <img
     data-src="http://placehold.it/{width}"
     data-format="content"
     data-sizes="auto"
-    class="lazyload special-widths"
+    class="lazyload"
     alt="" />
 ```
 
@@ -302,10 +321,12 @@ document.addEventListener('lazyriasmodifyoptions', function(e){
 
     //add new custom property with value 'foo'
     e.details.custom = 'foo';
+
+    e.details.quality = (window.devicePixelRatio || 1) > 1.3 ? 65 : 80;
 });
 </script>
 <img
-    data-src="http://placehold.it/{width}/{custom}/"
+    data-src="image-w{width}-w{custom}-q{quality}.jpg"
     data-sizes="auto"
     class="lazyload special-widths"
     alt="" />

@@ -71,7 +71,7 @@ Add the ``class`` ``lazyload`` to all ``img`` and ``iframe`` elements, which sho
     responsive-image3.jpg 900w" class="lazyload" />
 ```
 
-**Important: How ``sizes`` is calculated**: The automatic sizes calculation takes the width of the image and the width of its parent element and uses the largest number of those two calculated numbers. It's therefore important that all images with a ``data-sizes="auto"`` attribute are constrained in width by its parent element. Otherwise a wrong (too big) ``sizes`` attribute will be calculated.
+**Important: How ``sizes`` is calculated**: The automatic sizes calculation takes the width of the image and the width of its parent element and uses the largest number of those two calculated numbers. It's therefore important that all images with a ``data-sizes="auto"`` attribute are constrained in width by its parent element. Otherwise a wrong (too big) ``sizes`` attribute will be calculated. Often the following general CSS rule might help: ``img[data-sizes="auto"] { display: block; }``.
 
 ##Recommended markup patterns
 For some image bots (search engines and social networks), legacy browsers (IE8) or JS disabled browsers, it is important to serve a usable ``src`` attribute:
@@ -208,7 +208,7 @@ $(document).on('lazybeforeunveil', (function(){
 </script>
 ```
 
-For CSS transition/animations use the ``addClasses`` option. See also the [animate.html](http://afarkas.github.io/lazysizes/animate.html) and our [no-src.html](http://afarkas.github.io/lazysizes/no-src.html) examples:
+For CSS transition/animations use the ``addClasses`` option. See also the [animate.html](http://afarkas.github.io/lazysizes/animate.html) and the [no-src.html](http://afarkas.github.io/lazysizes/no-src.html) examples:
 
 ```html 
 <style>
@@ -225,8 +225,7 @@ For CSS transition/animations use the ``addClasses`` option. See also the [anima
 <script>
 window.lazySizesConfig = {
 	addClasses: true
-	//,preloadAfterLoad: false
-	//,threshold: 1
+	//,threshold: 1 //default was 200
 };
 </script>
 ```
@@ -258,10 +257,10 @@ Fixes, PRs and issues are always welcome, make sure to create a new branch from 
 
 ##Available plugins in this repo
 
-###[RIAS plugin](plugins/rias)
+###[RIAS plugin - (Responsive images as a service / Responsive image on demand](plugins/rias)
 The [RIAS plugin](plugins/rias) plugin enables lazySizes to hook into any third party (ReSrc, Pixtulate, mobify, WURFL's Image Tailor ...) or self hosted restful responsive image service (responsive image on demand). It makes responsive images even more easier without any need for another third party script.
 
-In general the RIaS  plugin combines the simplicity of the famous Imager.js solution with the future power of native responsive images implementations.
+In general the RIaS  plugin combines the simplicity of the famous Imager.js solution with the future power of native responsive images implementations and the webcomponent-like working of lazySizes ``.lazyload`` elements (self-initialization, self-configuration and self-destroying).
 
 ###[OPTIMUMX plugin](plugins/optimumx)
 The ``srcset`` attribute with the *w* descriptor and ``sizes`` attribute automatically also includes high DPI images. But each image has a different optimal pixel density, which might be lower (1.5x) than the pixel density of your device (2x or 3x). This information is unknown to the browser and therefore can't be optimized for. The [lazySizes optimumx extension](plugins/optimumx) gives you more control to trade between perceived quality vs. perceived performance.
@@ -316,7 +315,7 @@ For flexible responsive images [CSS intrinsic ratio scaling](http://alistapart.c
 ```html
 <style>
 .ratio-container {
-	position: relative;
+    position: relative;
     padding-bottom: 42.86%; /* 56.25%: 16:9 ratio */
     height: 0;
     overflow: hidden;
@@ -324,7 +323,8 @@ For flexible responsive images [CSS intrinsic ratio scaling](http://alistapart.c
 .ratio-container img,
 .ratio-container video,
 .ratio-container iframe {
-	position: absolute;
+    display: block;
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
