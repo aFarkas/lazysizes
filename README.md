@@ -37,7 +37,7 @@
 ##What makes lazysizes so awesome:
 **lazysizes** is different than other lazy image loaders.
 
-1. **Works without any configuration**: The script detects any changes to the visibility of an image/iframe automatically no matter whether it becomes visible through a user scroll, a CSS animation triggered through ``:hover`` or through any kind of JS behavior (carousel, infinite scroll, AJAX)...
+1. **Works without any configuration in any web enviroment**: The script works as a universal, self-initializing and self-configuring component and detects any changes to the visibility of an image/iframe automatically no matter whether it becomes visible through a user scroll, a CSS animation triggered through ``:hover`` or through any kind of JS behavior (carousel, infinite scroll, AJAX, SPA...). Also works in conjunction with any kind of JS-/Frontend-Framework (jQuery, AngularJS, React, Bootstrap, Foundation, VanillaJS, Webplatform etc.)...
 2. **Future-proof**: It directly includes standard responsive image support (``picture`` and ``srcset``)
 3. **Separation of concerns**: For responsive image support it adds an automatic ``sizes`` calculation feature.
 4. **Performance**: It's based on high efficient code (runtime **and** memory) to work jank-free at 60fps.
@@ -47,7 +47,7 @@
 Can be seen [here](http://afarkas.github.io/lazysizes/#examples).
 
 ##About responsive image support
-For full cross browser responsive image support you must use a polyfill like [respimage (recommended) (srcset and picture polyfill)](https://github.com/aFarkas/respimage) or [picturefill](https://github.com/scottjehl/picturefill).
+For full cross browser responsive image support you must either use a polyfill like [respimage (recommended) (srcset and picture polyfill)](https://github.com/aFarkas/respimage) or [picturefill](https://github.com/scottjehl/picturefill) or use the [responsive image on demand plugin](plugins/rias).
 
 ##More about the API
 **lazysizes** comes with a simple markup and JS API. Normally you will only need to use the markup API.
@@ -225,7 +225,7 @@ For CSS transition/animations use the ``addClasses`` option. See also the [anima
 <script>
 window.lazySizesConfig = {
 	addClasses: true
-	//,threshold: 1 //default was 200
+	//,threshold: 1 //default is 200
 };
 </script>
 ```
@@ -260,7 +260,7 @@ Fixes, PRs and issues are always welcome, make sure to create a new branch from 
 ###[RIAS plugin - (Responsive images as a service / Responsive image on demand](plugins/rias)
 The [RIAS plugin](plugins/rias) plugin enables lazySizes to hook into any third party (ReSrc, Pixtulate, mobify, WURFL's Image Tailor ...) or self hosted restful responsive image service (responsive image on demand). It makes responsive images even more easier without any need for another third party script.
 
-In general the RIaS  plugin combines the simplicity of the famous Imager.js solution with the future power of native responsive images implementations and the webcomponent-like working of lazySizes ``.lazyload`` elements (self-initialization, self-configuration and self-destroying).
+In general the RIaS  plugin combines the simplicity of the famous Imager.js solution with the future power of native responsive images implementations and the webcomponent-like working of lazySizes' ``.lazyload`` elements (self-initialization, self-configuration and self-destroying).
 
 ###[OPTIMUMX plugin](plugins/optimumx)
 The ``srcset`` attribute with the *w* descriptor and ``sizes`` attribute automatically also includes high DPI images. But each image has a different optimal pixel density, which might be lower (1.5x) than the pixel density of your device (2x or 3x). This information is unknown to the browser and therefore can't be optimized for. The [lazySizes optimumx extension](plugins/optimumx) gives you more control to trade between perceived quality vs. perceived performance.
@@ -298,7 +298,7 @@ Due to the fact, that it is designed to be invoked with a high frequency and the
 <img src="lqip-src.jpg" data-src="image.jpg" class="lazyload" />
 ```
 
-##Specifying image dimensions (minimizing reflows)
+##Specifying image dimensions (minimizing reflows and avoiding page jumps)
 To minimize reflows and content jumping the width **and** the height of an image should be specified. For "static" images this can done using either CSS or using the content attributes:
 
 ```html

@@ -37,12 +37,17 @@
     "performance",
     "responsive",
     "image",
+    "images",
     "responsive images",
     "picture",
     "srcset",
     "respimg",
     "respimage",
     "include",
-    "include"
+    "ajax",
+    "img",
+    "imager",
+    "imager.js",
+    "component"
   ]
 }

@@ -2,7 +2,7 @@
 
 The RiaS plugin enables lazySizes to hook into any third party (ReSrc, Pixtulate, mobify, WURFL's Image Tailor ...) or self hosted restful responsive image service (responsive image on demand).
 
-In general the RIaS  plugin combines the simplicity of the famous Imager.js solution with the future power of native responsive images implementations and the webcomponent-like working of lazySizes ``.lazyload`` elements (self-initialization, self-configuration and self-destroying).
+In general the RIaS  plugin combines the simplicity of the famous Imager.js solution with the future power of native responsive images implementations and the webcomponent-like working of lazySizes' ``.lazyload`` elements (self-initialization, self-configuration and self-destroying).
 
 The rias plugin also allows art direction by combining rias with a ``picture`` element.
 
@@ -45,16 +45,31 @@ window.lazySizesConfig = window.lazySizesConfig || {};
 window.lazySizesConfig.rias = window.lazySizesConfig.rias || {};
 
 window.lazySizesConfig.rias.widths = [320, 480, 640, 960];
-window.lazySizesConfig.rias.encodeSrc = true;
+window.lazySizesConfig.rias.absUrl = true;
 ```
 
-or element specific with corresponding ``data-*`` attributes:
+or element specific and declarative with corresponding ``data-*`` attributes:
 
 ```html
 <img
     data-widths="[160, 320]"
-    data-encodesrc="false"
+    data-absurl="false"
     data-src="http://placehold.it/{width}"
+    data-sizes="auto"
+    class="lazyload"
+    alt="" />
+```
+
+or element specific and functional using the ``lazyriasmodifyoptions`` event.
+
+```html
+<script>
+document.addEventListener('lazyriasmodifyoptions', function(data){
+    data.details.quality = (window.devicePixelRatio || 1) > 1.4 ? 65 : 80;
+};
+</script>
+<img
+    data-src="image-w{width}-q{quality}.jpg"
     data-sizes="auto"
     class="lazyload"
     alt="" />
@@ -100,7 +115,7 @@ All RiAS options can also be used as a {placeholder} inside the url.
         class="lazyload"
         alt="" />
     ```
-* ``lazySizesConfig.rias.absUrl`` (default: ``false``): Wether the value of the ``data-src``/``srcsetAttr`` attribute should be resolved to an absolute url. The value must not contain any placeholders in this case. Use in conjunction with ``prefix`` and/or ``postfix`` option.
+* ``lazySizesConfig.rias.absUrl`` (default: ``false``): Wether the value of the ``data-src`` attribute should be resolved to an absolute url. The value must not contain any placeholders in this case. Use in conjunction with ``prefix`` and/or ``postfix`` option.
     ```html
     <script>
         window.lazySizesConfig = window.lazySizesConfig || {};
@@ -162,7 +177,7 @@ In case you want to constrain the maximum pixel density for the generated ``srcs
 
 ###Using art direction
 
-In case you want to use art direction simply also use placeholder inside of your ``source[data-srcset]``/``source[data-src]`` attributes. For full cross browser support a [responsive image polyfill](https://github.com/aFarkas/respimage) has to be used.
+In case you want to use art direction simply also use also placeholder urls inside of your ``source[data-srcset]`` or ``source[data-src]`` attributes. For full cross browser support a [responsive image polyfill](https://github.com/aFarkas/respimage) has to be used.
 
 ```html
 <!-- polyfill responsive images: https://github.com/aFarkas/respimage -->
