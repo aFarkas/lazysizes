@@ -130,7 +130,7 @@
 					(eLright = rect.right) >= eLnegativeTreshhold &&
 					(eLleft = rect.left) <= eLvW &&
 					(eLbottom || eLright || eLleft || eLtop) &&
-					((!isWinloaded && isPreloading < 4) || getComputedStyle(lazyloadElems[globalLazyIndex], null).visibility != 'hidden')){
+					((isWinloaded && isPreloading < 3) || getComputedStyle(lazyloadElems[globalLazyIndex], null).visibility != 'hidden')){
 					unveilLazy(lazyloadElems[globalLazyIndex]);
 					loadedSomething = true;
 				} else  {
