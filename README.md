@@ -37,7 +37,7 @@
 ##What makes lazysizes so awesome:
 **lazysizes** is different than other lazy image loaders.
 
-1. **Works without any configuration in any web enviroment**: The script works as a universal, self-initializing and self-configuring component and detects any changes to the visibility of an image/iframe automatically no matter whether it becomes visible through a user scroll, a CSS animation triggered through ``:hover`` or through any kind of JS behavior (carousel, infinite scroll, AJAX, SPA...). Also works in conjunction with any kind of JS-/Frontend-Framework (jQuery, AngularJS, React, Bootstrap, Foundation, VanillaJS, Webplatform etc.)...
+1. **Works without any configuration in any web enviroment**: The script works as a universal, self-initializing, self-configuring and self-destroying component and detects any changes to the visibility of an image/iframe automatically no matter whether it becomes visible through a user scroll, a CSS animation triggered through ``:hover`` or through any kind of JS behavior (carousel, infinite scroll, AJAX, SPA...). Also works in conjunction with any kind of JS-/Frontend-Framework (AngularJS, React, Knockout, Backbone, jQuery, Bootstrap, Foundation, VanillaJS, Webplatform etc.)...
 2. **Future-proof**: It directly includes standard responsive image support (``picture`` and ``srcset``)
 3. **Separation of concerns**: For responsive image support it adds an automatic ``sizes`` calculation feature.
 4. **Performance**: It's based on high efficient code (runtime **and** memory) to work jank-free at 60fps.
@@ -310,7 +310,7 @@ To minimize reflows and content jumping the width **and** the height of an image
     http://placehold.it/700x300 2x" class="lazyload" />
 ```
 
-For flexible responsive images [CSS intrinsic ratio scaling](http://alistapart.com/article/creating-intrinsic-ratios-for-video/) can be used:
+For flexible responsive images the [CSS intrinsic ratio scaling technique](http://alistapart.com/article/creating-intrinsic-ratios-for-video/) can be used:
 
 ```html
 <style>

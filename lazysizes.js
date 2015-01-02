@@ -20,7 +20,7 @@
 	var regPicture = /^picture$/i;
 	var regImg = /^img$/i;
 
-	var inViewLow = -21;
+	var inViewLow = 0;
 	var inViewThreshold = inViewLow;
 	var inViewHigh = 9;
 
@@ -82,6 +82,10 @@
 		}
 	}
 
+	function getCSS(elem, style){
+		return getComputedStyle(elem, null)[style];
+	}
+
 	var eLlen, resetPreloadingTimer, eLvW, elvH, eLtop, eLleft, eLright, eLbottom, eLnegativeTreshhold;
 	var eLnow = Date.now();
 	var resetPreloading = function(e){
@@ -112,6 +116,30 @@
 			}
 		};
 	})();
+	var isDeepVisibile = function(elem){
+		var outerRect;
+		var parent = elem;
+		var visible = getCSS(elem, 'visibility') != 'hidden';
+		var expand = isPreloading < 3 ? inViewThreshold : inViewLow;
+
+		eLtop -= expand;
+		eLbottom += expand;
+		eLleft -= expand;
+		eLright += expand;
+
+		while(visible &&  (parent = parent.offsetParent) && parent != docElem && parent != document.body){
+			visible = getCSS(parent, 'opacity') > 0.01;
+			if(visible && getCSS(parent, 'overflow') != 'visible'){
+				outerRect = parent.getBoundingClientRect();
+				visible = eLright > outerRect.left - 1 &&
+					eLleft < outerRect.right + 1 &&
+					eLbottom > outerRect.top - 1 &&
+					eLtop < outerRect.bottom + 1
+				;
+			}
+		}
+		return visible;
+	};
 
 	var evalLazyElements = function (){
 		var rect, autoLoadElem, loadedSomething;
@@ -130,7 +158,7 @@
 					(eLright = rect.right) >= eLnegativeTreshhold &&
 					(eLleft = rect.left) <= eLvW &&
 					(eLbottom || eLright || eLleft || eLtop) &&
-					((isWinloaded && isPreloading < 3) || getComputedStyle(lazyloadElems[globalLazyIndex], null).visibility != 'hidden')){
+					((isWinloaded && inViewThreshold == inViewLow && lowRuns < 9 && isPreloading < 3) || isDeepVisibile(lazyloadElems[globalLazyIndex]))){
 					unveilLazy(lazyloadElems[globalLazyIndex]);
 					loadedSomething = true;
 				} else  {
@@ -318,7 +346,7 @@
 
 		parentWidth = parent.offsetWidth;
 		elemWidth = elem.offsetWidth;
-		width = (elemWidth >= parentWidth || (elemWidth > lazySizesConfig.minSize && getComputedStyle(elem, null).display == 'block')) ?
+		width = (elemWidth >= parentWidth || (elemWidth > lazySizesConfig.minSize && getCSS(elem, 'display') == 'block')) ?
 			elemWidth :
 			parentWidth;
 
@@ -384,6 +412,7 @@
 
 		document.addEventListener('load', lazyEvalLazy, true);
 		isWinloaded = true;
+		lazyEvalLazy();
 	};
 	var onready = function(){
 
