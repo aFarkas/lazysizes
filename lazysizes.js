@@ -21,7 +21,7 @@
 	var regImg = /^img$/i;
 	var regLoadElems = /^(?:img|iframe)$/i;
 
-	var inViewLow = 0;
+	var inViewLow = -2;
 	var inViewThreshold = inViewLow;
 	var inViewHigh = 9;
 
@@ -406,7 +406,7 @@
 	var onload = function(){
 		inViewThreshold = lazySizesConfig.threshold || 160;
 		inViewLow = inViewThreshold;
-		inViewHigh = Math.max(inViewThreshold * 3, 99);
+		inViewHigh = Math.max(inViewThreshold * 3.5, 99);
 
 		document.addEventListener('load', lazyEvalLazy, true);
 		isWinloaded = true;
