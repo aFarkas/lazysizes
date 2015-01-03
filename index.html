@@ -70,6 +70,15 @@
 			height: auto;
 		}
 
+		.no-src.lazyload,
+		.no-src.lazyloading {
+			opacity: 0;
+		}
+		.no-src.lazyloaded {
+			opacity: 1;
+			transition: opacity 300ms;
+		}
+
 	</style>
 
 	<script>
@@ -77,10 +86,10 @@
 		window.lazySizesConfig = {
 			//preloadAfterLoad: true
 			//clearAttr: true
-			//addClasses: true
+			addClasses: true
 		};
 	</script>
-	<script src="lazysizes.js" async=""></script>
+	<script src="lazysizes.min.js" async=""></script>
 
 	<script src="plugins/unveilhooks/ls.unveilhooks.min.js" async=""></script>
 	<script src="plugins/print/ls.print.min.js" async=""></script>
@@ -127,7 +136,7 @@
 			<div class="col-sm-12">
 				<div class="thumbnail">
 					<div class="intrinsic">
-						<img alt="Desert Road" data-src="https://farm6.staticflickr.com/5531/9638435181_7e3e44c2b8_b.jpg" class="lazyload" />
+						<img alt="Desert Road" data-src="https://farm6.staticflickr.com/5531/9638435181_7e3e44c2b8_b.jpg" class="lazyload no-src" />
 					</div>
 
 					<div class="caption">
@@ -151,7 +160,7 @@
 	https://farm5.staticflickr.com/4078/5441060528_31db7838ba.jpg 500w,
 	https://farm5.staticflickr.com/4078/5441060528_31db7838ba_z.jpg 640w,
 	https://farm5.staticflickr.com/4078/5441060528_31db7838ba_b.jpg 1024w"
-							  class="lazyload" />
+							  class="lazyload no-src" />
 					</div>
 
 					<div class="caption">
@@ -186,7 +195,7 @@
 							<img
 									src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
 									data-srcset="http://placehold.it/2100x1550/117fe8/fff"
-									class="lazyload"
+									class="lazyload no-src"
 									alt="image with artdirection" />
 						</picture>
 					</div>
@@ -265,7 +274,7 @@ https://farm9.staticflickr.com/8200/8248153196_7a7664e147_b.jpg 1024w"
 			<div class="col-sm-12">
 				<div class="thumbnail">
 					<div class="intrinsic intrinsic-2">
-						<iframe data-src="//www.youtube.com/embed/ZfV-aYdU4uE" frameborder="0" allowfullscreen="" class="lazyload">
+						<iframe data-src="//www.youtube.com/embed/ZfV-aYdU4uE" frameborder="0" allowfullscreen="" class="lazyload no-src">
 						</iframe>
 					</div>
 					<div class="caption">
@@ -282,7 +291,7 @@ https://farm9.staticflickr.com/8200/8248153196_7a7664e147_b.jpg 1024w"
 			<div class="col-sm-12">
 				<div class="thumbnail">
 					<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
-					<div data-ride="carousel" data-script="assets/js/bootstrap.min.js" data-link="assets/css/carousel.css" class="carousel lazyload slide" data-interval="false" id="carousel-example-captions">
+					<div data-ride="carousel" data-script="assets/js/bootstrap.min.js" data-link="assets/css/carousel.css" class="carousel lazyload slide no-src" data-interval="false" id="carousel-example-captions">
 						<ol class="carousel-indicators">
 							<li data-slide-to="0" data-target="#carousel-example-captions"></li>
 							<li data-slide-to="1" data-target="#carousel-example-captions"></li>
@@ -364,7 +373,7 @@ https://farm4.staticflickr.com/3059/2835191823_e3636abb34_b.jpg 1024w"
 						<div class="thumbnail">
 							<img
 									data-sizes="auto"
-									class="lazyload"
+									class="lazyload no-src"
 									src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
 									data-srcset="https://farm6.staticflickr.com/5531/9638435181_7e3e44c2b8_m.jpg 240w,
 						https://farm6.staticflickr.com/5531/9638435181_7e3e44c2b8_n.jpg 320w,
@@ -379,7 +388,7 @@ https://farm4.staticflickr.com/3059/2835191823_e3636abb34_b.jpg 1024w"
 						<div class="thumbnail">
 							<img
 									data-sizes="auto"
-									class="lazyload"
+									class="lazyload no-src"
 									src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
 									data-srcset="https://farm5.staticflickr.com/4078/5441060528_31db7838ba_m.jpg 240w,
 https://farm5.staticflickr.com/4078/5441060528_31db7838ba_n.jpg 320w,
@@ -392,7 +401,7 @@ https://farm5.staticflickr.com/4078/5441060528_31db7838ba_z.jpg 640w"
 						<div class="thumbnail">
 							<img
 									data-sizes="auto"
-									class="lazyload"
+									class="lazyload no-src"
 									src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
 									data-srcset="https://farm9.staticflickr.com/8200/8248153196_7a7664e147_m.jpg 240w,
 https://farm9.staticflickr.com/8200/8248153196_7a7664e147_n.jpg 320w,
@@ -404,7 +413,7 @@ https://farm9.staticflickr.com/8200/8248153196_7a7664e147.jpg 500w"
 						<div class="thumbnail">
 							<img
 									data-sizes="auto"
-									class="lazyload"
+									class="lazyload no-src"
 									src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
 									data-srcset="https://farm1.staticflickr.com/113/284651694_69e63b374d_m.jpg 240w,
 https://farm1.staticflickr.com/113/284651694_69e63b374d.jpg 500w"
@@ -415,7 +424,7 @@ https://farm1.staticflickr.com/113/284651694_69e63b374d.jpg 500w"
 						<div class="thumbnail">
 							<img
 									data-sizes="auto"
-									class="lazyload"
+									class="lazyload no-src"
 									src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
 									data-srcset="https://farm3.staticflickr.com/2401/2171553538_37d0a133da_m.jpg 240w,
 https://farm3.staticflickr.com/2401/2171553538_37d0a133da.jpg 500w"
@@ -426,7 +435,7 @@ https://farm3.staticflickr.com/2401/2171553538_37d0a133da.jpg 500w"
 						<div class="thumbnail">
 							<img
 									data-sizes="auto"
-									class="lazyload"
+									class="lazyload no-src"
 									src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
 									data-srcset="https://farm1.staticflickr.com/17/92230866_713ae1eeef_n.jpg 240w,
 https://farm1.staticflickr.com/17/92230866_713ae1eeef.jpg 375w,
@@ -438,7 +447,7 @@ https://farm1.staticflickr.com/17/92230866_713ae1eeef_z.jpg 480w"
 						<div class="thumbnail">
 							<img
 									data-sizes="auto"
-									class="lazyload"
+									class="lazyload no-src"
 									src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
 									data-srcset="https://farm1.staticflickr.com/192/504251019_ffc94c77b5_n.jpg 240w,
 https://farm1.staticflickr.com/192/504251019_ffc94c77b5.jpg 375w,
@@ -450,7 +459,7 @@ https://farm1.staticflickr.com/192/504251019_ffc94c77b5_z.jpg 480w"
 						<div class="thumbnail">
 							<img
 									data-sizes="auto"
-									class="lazyload"
+									class="lazyload no-src"
 									src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
 									data-srcset="https://farm6.staticflickr.com/5139/5546134597_0b19627066_m.jpg 240w,
 https://farm6.staticflickr.com/5139/5546134597_0b19627066_n.jpg 320w,
@@ -462,7 +471,7 @@ https://farm6.staticflickr.com/5139/5546134597_0b19627066.jpg 500w"
 						<div class="thumbnail">
 							<img
 									data-sizes="auto"
-									class="lazyload"
+									class="lazyload no-src"
 									src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
 									data-srcset="https://farm3.staticflickr.com/2377/1657712955_131576bcd8_m.jpg 240w,
 https://farm3.staticflickr.com/2377/1657712955_131576bcd8.jpg 500w"
@@ -473,7 +482,7 @@ https://farm3.staticflickr.com/2377/1657712955_131576bcd8.jpg 500w"
 						<div class="thumbnail">
 							<img
 									data-sizes="auto"
-									class="lazyload"
+									class="lazyload no-src"
 									src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
 									data-srcset="https://farm3.staticflickr.com/2727/4393975099_c212622aa0_m.jpg 240w,
 https://farm3.staticflickr.com/2727/4393975099_c212622aa0_n.jpg 320w"
@@ -484,7 +493,7 @@ https://farm3.staticflickr.com/2727/4393975099_c212622aa0_n.jpg 320w"
 						<div class="thumbnail">
 							<img
 									data-sizes="auto"
-									class="lazyload"
+									class="lazyload no-src"
 									src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
 									data-srcset="https://farm4.staticflickr.com/3059/2835191823_e3636abb34_m.jpg 240w,
 https://farm4.staticflickr.com/3059/2835191823_e3636abb34_n.jpg 320w"
@@ -495,7 +504,7 @@ https://farm4.staticflickr.com/3059/2835191823_e3636abb34_n.jpg 320w"
 						<div class="thumbnail">
 							<img
 									data-sizes="auto"
-									class="lazyload"
+									class="lazyload no-src"
 									src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
 									data-srcset="https://farm8.staticflickr.com/7356/11122919374_55294abec3_m.jpg 240w,
 https://farm8.staticflickr.com/7356/11122919374_55294abec3_n.jpg 320w,
@@ -507,7 +516,7 @@ https://farm8.staticflickr.com/7356/11122919374_55294abec3.jpg 500w"
 						<div class="thumbnail">
 							<img
 									data-sizes="auto"
-									class="lazyload"
+									class="lazyload no-src"
 									src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
 									data-srcset="https://farm6.staticflickr.com/5506/11122805655_e63cb3a9fc_m.jpg 240w,
 https://farm6.staticflickr.com/5506/11122805655_e63cb3a9fc_n.jpg 320w,
@@ -519,7 +528,7 @@ https://farm6.staticflickr.com/5506/11122805655_e63cb3a9fc.jpg 500w"
 						<div class="thumbnail">
 							<img
 									data-sizes="auto"
-									class="lazyload"
+									class="lazyload no-src"
 									src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
 									data-srcset="https://farm4.staticflickr.com/3023/2994603808_a3036a3cdf_n.jpg 240w,
 https://farm4.staticflickr.com/3023/2994603808_a3036a3cdf.jpg 375w,

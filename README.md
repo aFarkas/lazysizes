@@ -150,7 +150,7 @@ Here the list of options:
 * ``lazySizesConfig.addClasses`` (default: ``false``): Wether lazysizes should add loading and loaded classes. This can be used to add unveil effects or to apply new styles (background-image). (see also ``preloadAfterLoad`` option).
 * ``lazySizesConfig.loadingClass`` (default: ``"lazyloading"``): If ``addClasses`` is set to ``true`` this ``class`` will be added to ``img`` element as soon as image loading starts. Can be used to add unveil effects.
 * ``lazySizesConfig.loadedClass`` (default: ``"lazyloaded"``): If ``addClasses`` is set to ``true`` this ``class`` will be added to any element as soon as the image is loaded or the image comes into view. Can be used to add unveil effects or to apply styles.
-* ``lazySizesConfig.threshold`` (default: ``200``): The ``threshold`` option expands the calculated viewport area in all directions, so that elements can be loaded before they are becoming visible. (Note: Smallest possible value is ``1``).
+* ``lazySizesConfig.threshold`` (default: ``160``): The ``threshold`` option expands the calculated viewport area in all directions, so that elements can be loaded before they are becoming visible. (Note: Smallest possible value is ``1``). Recommended values are between 100 and 300.
 * ``lazySizesConfig.onlyLargerSizes`` (default: ``true``): In case a responsive image had the ``data-sizes="auto"`` attribute and the computed new size decreases, lazysizes won't normally change the ``sizes`` attribute to a lower value.
 * ``lazySizesConfig.clearAttr`` (default: ``false``): Set this to ``true`` if you want lazysizes to remove the ``data-`` attributes after doing it's work.
 * ``lazySizesConfig.srcAttr`` (default: ``"data-src"``): The attribute, which should be transformed to ``src``.
@@ -225,7 +225,7 @@ For CSS transition/animations use the ``addClasses`` option. See also the [anima
 <script>
 window.lazySizesConfig = {
 	addClasses: true
-	//,threshold: 1 //default is 200
+	//,threshold: 80 //default is 160
 };
 </script>
 ```

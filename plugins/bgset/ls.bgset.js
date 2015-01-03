@@ -18,12 +18,17 @@ addEventListener('lazybeforeunveil', (function(){
 			if(lazySizes.cfg.clearAttr){
 				e.target.removeAttribute('data-bgset');
 			}
-			image.removeEventListener('load', load);
+			lazySizes.fire(e.target, '_lazyloaded');
+			image.onload = null;
+			image.onerror = null;
 			parent.removeChild(image);
 			image = null;
 		};
 
-		image.addEventListener('load', load);
+		e.details.firesLoad = true;
+
+		image.onload = load;
+		image.onerror = load;
 
 		image.setAttribute('srcset', set);
 		parent.appendChild(image);
@@ -36,7 +41,7 @@ addEventListener('lazybeforeunveil', (function(){
 			}
 		}
 
-		if(image.complete && (image.src || image.currentSrc)){
+		if(image && image.onload && image.complete && (image.src || image.currentSrc)){
 			load();
 		}
 	};

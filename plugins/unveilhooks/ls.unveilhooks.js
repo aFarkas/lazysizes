@@ -35,9 +35,11 @@ For background images, use data-bg attribute:
 			var img = document.createElement('img');
 			img.onload = function(){
 				img.onload = null;
+				img.onerror = null;
 				img = null;
 				cb();
 			};
+			img.onerror = img.onload;
 
 			img.src = url;
 
@@ -52,7 +54,6 @@ For background images, use data-bg attribute:
 
 				if(e.target.preload == 'none'){
 					e.target.preload = 'auto';
-					e.preventDefault();
 				}
 
 				tmp = e.target.getAttribute('data-link');
@@ -66,16 +67,13 @@ For background images, use data-bg attribute:
 				// handle data-bg
 				tmp = e.target.getAttribute('data-bg');
 				if (tmp) {
-					bg = getComputedStyle(e.target).getPropertyValue("backgroundImage");
+					e.details.firesLoad = true;
 					load = function(){
 						e.target.style.backgroundImage = 'url(' + tmp + ')';
+						lazySizes.fire(e.target, '_lazyloaded');
 					};
 
-					if(bg && bg != 'none'){
-						bgLoad(tmp, load);
-					} else {
-						load();
-					}
+					bgLoad(tmp, load);
 
 					if(config.clearAttr){
 						e.target.removeAttribute('data-bg');

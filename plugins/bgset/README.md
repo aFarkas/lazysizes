@@ -6,7 +6,7 @@ The extension will then load the best image size for the current viewport and de
 
 ```html
 <script src="lazysizes.min.js"></script>
-<script src="ls.bgset.js"></script>
+<script src="ls.bgset.min.js"></script>
 <script src="respimage.min.js"></script>
 
 <div class="lazyload" data-bgset="image-200.jpg 200w, image-300.jpg 300w, image-400.jpg 400w">

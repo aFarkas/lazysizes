@@ -9,7 +9,7 @@
 	if(!Date.now || !window.document.getElementsByClassName){return;}
 
 	var lazyloadElems, autosizesElems, lazySizesConfig, globalSizesTimer,
-		globalSizesIndex, globalLazyTimer, globalLazyIndex,
+		globalSizesIndex, globalLazyIndex,
 		addClass, removeClass, hasClass, isWinloaded;
 
 	var document = window.document;
@@ -19,6 +19,7 @@
 
 	var regPicture = /^picture$/i;
 	var regImg = /^img$/i;
+	var regLoadElems = /^(?:img|iframe)$/i;
 
 	var inViewLow = 0;
 	var inViewThreshold = inViewLow;
@@ -31,7 +32,7 @@
 		if(add){
 			addRemoveLoadEvents(dom, fn);
 		}
-		['load', 'error', 'lazyincluded'].forEach(function(evt){
+		['load', 'error', 'lazyincluded', '_lazyloaded'].forEach(function(evt){
 			dom[action](evt, fn, true);
 		});
 	};
@@ -66,6 +67,7 @@
 	function updatePolyfill(el, full){
 		var imageData, src;
 		if(!window.HTMLPictureElement){
+
 			if(window.picturefill){
 				picturefill({reevaluate: true, reparse: true, elements: [el]});
 			} else if(window.respimage){
@@ -79,6 +81,7 @@
 			} else if(full && full.src){
 				el.src = full.src;
 			}
+
 		}
 	}
 
@@ -104,7 +107,7 @@
 		};
 		var run = function(){
 			clearTimeout(timer);
-			clearLazyTimer();
+			globalLazyIndex = 0;
 			evalLazyElements();
 			setTimeout(unblock, 3);
 		};
@@ -127,7 +130,7 @@
 		eLleft -= expand;
 		eLright += expand;
 
-		while(visible &&  (parent = parent.offsetParent) && parent != docElem && parent != document.body){
+		while(visible && (parent = parent.offsetParent) && parent != docElem && parent != document.body){
 			visible = getCSS(parent, 'opacity') > 0.01;
 			if(visible && getCSS(parent, 'overflow') != 'visible'){
 				outerRect = parent.getBoundingClientRect();
@@ -162,31 +165,34 @@
 					unveilLazy(lazyloadElems[globalLazyIndex]);
 					loadedSomething = true;
 				} else  {
-					if(globalLazyIndex < eLlen - 1 && Date.now() - eLnow > 9){
-						autoLoadElem = false;
-						globalLazyTimer = setTimeout(evalLazyElements);
-						break;
-					}
 
 					if(!loadedSomething && isWinloaded && !autoLoadElem &&
-						lazySizesConfig.preloadAfterLoad && isPreloading < 3 &&
+						lazySizesConfig.preloadAfterLoad && isPreloading < 3 && lowRuns < 9 &&
 						((eLbottom || eLright || eLleft || eLtop) || lazyloadElems[globalLazyIndex].getAttribute(lazySizesConfig.sizesAttr) != 'auto')){
 						autoLoadElem = lazyloadElems[globalLazyIndex];
+					}
+
+					if(globalLazyIndex < eLlen - 1 && Date.now() - eLnow > 9){
+						autoLoadElem = false;
+						setTimeout(evalLazyElements);
+						break;
 					}
 				}
 			}
 
 			lowRuns++;
 
-			if(autoLoadElem && !loadedSomething){
-				unveilLazy(autoLoadElem);
-			} if (inViewThreshold < inViewHigh && isPreloading < 1 && !loadedSomething && lowRuns > 9){
+			if (inViewThreshold < inViewHigh && isPreloading < 1 && !loadedSomething && lowRuns > 9){
 				inViewThreshold = inViewHigh;
 				lowRuns = 0;
 				//delay = 4 moves it after unblock delay of 3
-				globalLazyTimer = setTimeout(lazyEvalLazy, 4);
+				setTimeout(lazyEvalLazy, 4);
 			} else if(inViewThreshold != inViewLow){
 				inViewThreshold = inViewLow;
+			}
+
+			if(autoLoadElem && !loadedSomething){
+				unveilLazy(autoLoadElem);
 			}
 		}
 	};
@@ -196,13 +202,8 @@
 		addRemoveLoadEvents(e.target, switchLoadingClass);
 	};
 
-	function clearLazyTimer(){
-		globalLazyIndex = 0;
-		clearTimeout(globalLazyTimer);
-	}
-
 	function unveilLazy(elem, force){
-		var sources, i, len, sourceSrcset, sizes, src, srcset, parent, isImg, isPicture;
+		var sources, i, len, sourceSrcset, sizes, src, srcset, parent, isPicture;
 
 		var event = triggerEvent(elem, 'lazybeforeunveil', {force: !!force});
 		var curSrc = elem.currentSrc || elem.src;
@@ -212,7 +213,7 @@
 			isPreloading++;
 			addRemoveLoadEvents(elem, resetPreloading, true);
 			clearTimeout(resetPreloadingTimer);
-			resetPreloadingTimer = setTimeout(resetPreloading, 9999);
+			resetPreloadingTimer = setTimeout(resetPreloading, 3000);
 
 			//allow using sizes="auto", but don't use. it's invalid. Use data-sizes="auto" or a valid value for sizes instead (i.e.: sizes="80vw")
 			sizes = elem.getAttribute(lazySizesConfig.sizesAttr) || elem.getAttribute('sizes');
@@ -231,7 +232,7 @@
 			srcset = elem.getAttribute(lazySizesConfig.srcsetAttr);
 			src = elem.getAttribute(lazySizesConfig.srcAttr);
 
-			if((isImg = regImg.test(elem.nodeName || ''))) {
+			if(regImg.test(elem.nodeName)) {
 				parent = elem.parentNode;
 				isPicture = regPicture.test(parent.nodeName || '');
 			}
@@ -289,11 +290,11 @@
 			}
 
 			//remove curSrc == (elem.currentSrc || elem.src) it's a workaround for FF. see: https://bugzilla.mozilla.org/show_bug.cgi?id=608261
-			if( !event.details.firesLoad && (!isImg || (!srcset && !src) || (elem.complete && curSrc == (elem.currentSrc || elem.src))) ){
+			if( !event.details.firesLoad && (!regLoadElems.test(elem.nodeName) || (!srcset && !src) || (elem.complete && curSrc == (elem.currentSrc || elem.src))) ){
 				if(lazySizesConfig.addClasses){
 					switchLoadingClass({target: elem});
 				}
-				addRemoveLoadEvents(elem, resetPreloading);
+				resetPreloading({target: elem});
 			}
 			elem = null;
 			//delay = 1 moves it before unblock delay of 3
@@ -402,18 +403,17 @@
 		}
 	}
 
-	// bind to all possible events ;-) This might look like a performance disaster, but it isn't.
-	// The main check functions are written to run extreme fast without consuming memory.
-
 	var onload = function(){
-		inViewThreshold = lazySizesConfig.threshold || 200;
+		inViewThreshold = lazySizesConfig.threshold || 160;
 		inViewLow = inViewThreshold;
-		inViewHigh = inViewThreshold * 4;
+		inViewHigh = Math.max(inViewThreshold * 3, 99);
 
 		document.addEventListener('load', lazyEvalLazy, true);
 		isWinloaded = true;
 		lazyEvalLazy();
 	};
+	// bind to all possible events ;-) This might look like a performance disaster, but it isn't.
+	// The main check functions are written to run extreme fast without consuming memory.
 	var onready = function(){
 
 		if(lazySizesConfig.mutation){
@@ -509,14 +509,12 @@
 		lazyEvalLazy();
 	});
 
-	removeClass(docElem, 'no-js');
-
 	return {
 		cfg: lazySizesConfig,
 		updateAllSizes: lazyEvalSizes,
 		updateAllLazy: function(force){
 			if(force){
-				clearLazyTimer();
+				globalLazyIndex = 0;
 				evalLazyElements();
 			} else {
 				lazyEvalLazy();
