@@ -23,7 +23,7 @@
 
 	var inViewLow = -2;
 	var inViewThreshold = inViewLow;
-	var inViewHigh = 9;
+	var inViewHigh = 2;
 
 	var lowRuns = 0;
 
