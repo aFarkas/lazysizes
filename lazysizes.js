@@ -9,8 +9,7 @@
 	if(!Date.now || !window.document.getElementsByClassName){return;}
 
 	var lazyloadElems, autosizesElems, lazySizesConfig, globalSizesTimer,
-		globalSizesIndex, globalLazyIndex,
-		addClass, removeClass, hasClass, isWinloaded;
+		globalSizesIndex, addClass, removeClass, hasClass, isWinloaded;
 
 	var document = window.document;
 	var docElem = document.documentElement;
@@ -23,9 +22,10 @@
 
 	var inViewLow = -2;
 	var inViewThreshold = inViewLow;
-	var inViewHigh = 2;
+	var inViewHigh = 9;
 
 	var lowRuns = 0;
+	var globalLazyIndex = 0;
 
 	var addRemoveLoadEvents = function(dom, fn, add){
 		var action = add ? 'addEventListener' : 'removeEventListener';
@@ -119,11 +119,11 @@
 			}
 		};
 	})();
-	var isDeepVisibile = function(elem){
+	var isNestedVisibile = function(elem){
 		var outerRect;
 		var parent = elem;
 		var visible = getCSS(elem, 'visibility') != 'hidden';
-		var expand = isPreloading < 3 ? inViewThreshold : inViewLow;
+		var expand = isPreloading < 3 ? inViewThreshold : -2;
 
 		eLtop -= expand;
 		eLbottom += expand;
@@ -131,7 +131,7 @@
 		eLright += expand;
 
 		while(visible && (parent = parent.offsetParent) && parent != docElem && parent != document.body){
-			visible = getCSS(parent, 'opacity') > 0.01;
+			visible = getCSS(parent, 'opacity') > 0;
 			if(visible && getCSS(parent, 'overflow') != 'visible'){
 				outerRect = parent.getBoundingClientRect();
 				visible = eLright > outerRect.left - 1 &&
@@ -149,11 +149,19 @@
 		eLlen = lazyloadElems.length;
 		eLnow = Date.now();
 		if(eLlen){
-			eLvW = window.innerWidth + inViewThreshold;
-			elvH = window.innerHeight + inViewThreshold;
+			eLvW = innerWidth + inViewThreshold;
+			elvH = innerHeight + inViewThreshold;
 			eLnegativeTreshhold = inViewThreshold * -1;
 
 			for(; globalLazyIndex < eLlen; globalLazyIndex++){
+
+				if(isPreloading > 3 && inViewThreshold > 0){
+					inViewThreshold = -2;
+					eLvW = innerWidth + inViewThreshold;
+					elvH = innerHeight + inViewThreshold;
+					eLnegativeTreshhold = inViewThreshold * -1;
+				}
+
 				rect = lazyloadElems[globalLazyIndex].getBoundingClientRect();
 
 				if ((eLbottom = rect.bottom) >= eLnegativeTreshhold &&
@@ -161,7 +169,7 @@
 					(eLright = rect.right) >= eLnegativeTreshhold &&
 					(eLleft = rect.left) <= eLvW &&
 					(eLbottom || eLright || eLleft || eLtop) &&
-					((isWinloaded && inViewThreshold == inViewLow && lowRuns < 9 && isPreloading < 3) || isDeepVisibile(lazyloadElems[globalLazyIndex]))){
+					((isWinloaded && inViewThreshold == inViewLow && isPreloading < 3 && lowRuns < 9) || isNestedVisibile(lazyloadElems[globalLazyIndex]))){
 					unveilLazy(lazyloadElems[globalLazyIndex]);
 					loadedSomething = true;
 				} else  {
@@ -182,7 +190,7 @@
 
 			lowRuns++;
 
-			if (inViewThreshold < inViewHigh && isPreloading < 1 && !loadedSomething && lowRuns > 9){
+			if(inViewThreshold < inViewHigh && isPreloading < 2 && lowRuns > 9){
 				inViewThreshold = inViewHigh;
 				lowRuns = 0;
 				//delay = 4 moves it after unblock delay of 3
@@ -404,13 +412,10 @@
 	}
 
 	var onload = function(){
-		inViewThreshold = lazySizesConfig.threshold || 160;
-		inViewLow = inViewThreshold;
-		inViewHigh = Math.max(inViewThreshold * 3.5, 99);
-
-		document.addEventListener('load', lazyEvalLazy, true);
-		isWinloaded = true;
-		lazyEvalLazy();
+		inViewLow = Math.max( Math.min(lazySizesConfig.threshold || 200, 300), 60 );
+		inViewHigh = Math.min( inViewLow * 4, Math.max(innerHeight + 9, 500, docElem.clientHeight + 9) );
+		isWinloaded = /d$|^c/.test(document.readyState);
+		inViewThreshold = isWinloaded ? inViewHigh : inViewLow;
 	};
 	// bind to all possible events ;-) This might look like a performance disaster, but it isn't.
 	// The main check functions are written to run extreme fast without consuming memory.
@@ -447,6 +452,7 @@
 			document.addEventListener('animationstart', lazyEvalLazy, true);
 			document.addEventListener('transitionstart', lazyEvalLazy, true);
 		}
+		document.addEventListener('load', lazyEvalLazy, true);
 	};
 
 	lazySizesConfig = window.lazySizesConfig || {};
@@ -481,8 +487,7 @@
 	})();
 
 	setTimeout(function(){
-
-
+		var readyState = document.readyState;
 		lazyloadElems = document.getElementsByClassName(lazySizesConfig.lazyClass);
 		autosizesElems = document.getElementsByClassName(lazySizesConfig.autosizesClass);
 
@@ -493,20 +498,20 @@
 		addEventListener('resize', lazyEvalLazy, false);
 		addEventListener('resize', lazyEvalSizes, false);
 
-		if(/^i|^loade|c/.test(document.readyState)){
+		if(/^i|^loade|c/.test(readyState)){
 			onready();
 		} else {
 			setTimeout(onready);
 		}
 
-		if(document.readyState == 'complete'){
+		if(/d$|^c/.test(readyState)){
 			onload();
 		} else {
 			addEventListener('load', onload, false);
+			setTimeout(onload, 9999);
 			document.addEventListener('readystatechange', lazyEvalLazy, false);
 		}
-
-		lazyEvalLazy();
+		setTimeout(evalLazyElements, document.body ? 0 : 55);
 	});
 
 	return {
