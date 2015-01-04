@@ -413,56 +413,19 @@
 
 	var onload = function(){
 		inViewLow = Math.max( Math.min(lazySizesConfig.threshold || 200, 300), 60 );
-		inViewHigh = Math.min( inViewLow * 4, Math.max(innerHeight + 9, 500, docElem.clientHeight + 9) );
+		inViewHigh = Math.min( inViewLow * 5, Math.max(innerHeight + 9, 500, docElem.clientHeight + 9) );
 		isWinloaded = /d$|^c/.test(document.readyState);
 		inViewThreshold = isWinloaded ? inViewHigh : inViewLow;
 	};
 	// bind to all possible events ;-) This might look like a performance disaster, but it isn't.
 	// The main check functions are written to run extreme fast without consuming memory.
-	var onready = function(){
 
-		if(lazySizesConfig.mutation){
-			if(window.MutationObserver){
-				new MutationObserver( lazyEvalLazy ).observe( docElem, {childList: true, subtree: true, attributes: true} );
-			} else {
-				docElem.addEventListener('DOMNodeInserted', lazyEvalLazy, true);
-				docElem.addEventListener('DOMAttrModified', lazyEvalLazy, true);
-			}
-		}
-
-		//:hover
-		if(lazySizesConfig.hover){
-			document.addEventListener('mouseover', lazyEvalLazy, true);
-		}
-		//:focus/active
-		document.addEventListener('focus', lazyEvalLazy, true);
-		//:target
-		addEventListener('hashchange', lazyEvalLazy, true);
-
-		//:fullscreen
-		if(('onmozfullscreenchange' in docElem)){
-			addEventListener('mozfullscreenchange', lazyEvalLazy, true);
-		} else if(('onwebkitfullscreenchange' in docElem)){
-			addEventListener('webkitfullscreenchange', lazyEvalLazy, true);
-		} else {
-			addEventListener('fullscreenchange', lazyEvalLazy, true);
-		}
-
-		if(lazySizesConfig.cssanimation){
-			document.addEventListener('animationstart', lazyEvalLazy, true);
-			document.addEventListener('transitionstart', lazyEvalLazy, true);
-		}
-		document.addEventListener('load', lazyEvalLazy, true);
-	};
 
 	lazySizesConfig = window.lazySizesConfig || {};
 
 	(function(){
 		var prop;
 		var lazySizesDefaults = {
-			mutation: true,
-			hover: true,
-			cssanimation: true,
 			lazyClass: 'lazyload',
 			loadedClass: 'lazyloaded',
 			loadingClass: 'lazyloading',
@@ -498,20 +461,29 @@
 		addEventListener('resize', lazyEvalLazy, false);
 		addEventListener('resize', lazyEvalSizes, false);
 
-		if(/^i|^loade|c/.test(readyState)){
-			onready();
+		if(window.MutationObserver){
+			new MutationObserver( lazyEvalLazy ).observe( docElem, {childList: true, subtree: true, attributes: true} );
 		} else {
-			setTimeout(onready);
+			docElem.addEventListener('DOMNodeInserted', lazyEvalLazy, true);
+			docElem.addEventListener('DOMAttrModified', lazyEvalLazy, true);
 		}
+
+		addEventListener('hashchange', lazyEvalLazy, true);
+
+		//ToDo?: 'animationstart', 'animationend', 'fullscreenchange'
+		['transitionstart', 'transitionend', 'load', 'focus', 'mouseover'].forEach(function(evt){
+			document.addEventListener(evt, lazyEvalLazy, true);
+		});
+
+		document.addEventListener('DOMContentLoaded', lazyEvalLazy, false);
 
 		if(/d$|^c/.test(readyState)){
 			onload();
 		} else {
 			addEventListener('load', onload, false);
 			setTimeout(onload, 9999);
-			document.addEventListener('readystatechange', lazyEvalLazy, false);
+			setTimeout(lazyEvalLazy);
 		}
-		setTimeout(evalLazyElements, document.body ? 0 : 55);
 	});
 
 	return {

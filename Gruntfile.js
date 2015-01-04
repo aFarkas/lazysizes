@@ -70,7 +70,7 @@
 				},
 				minified: {
 					options: {
-						maxBytes: 6600
+						maxBytes: 6100
 					},
 					src: ["lazysizes.min.js"]
 				}
