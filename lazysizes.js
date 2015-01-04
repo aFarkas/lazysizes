@@ -102,14 +102,12 @@
 	};
 	var lazyEvalLazy = (function(){
 		var timer, running;
-		var unblock = function(){
-			running = false;
-		};
+
 		var run = function(){
 			clearTimeout(timer);
 			globalLazyIndex = 0;
 			evalLazyElements();
-			setTimeout(unblock, 3);
+			running = false;
 		};
 		return  function(){
 			if(!running){
@@ -193,8 +191,7 @@
 			if(inViewThreshold < inViewHigh && isPreloading < 2 && lowRuns > 9){
 				inViewThreshold = inViewHigh;
 				lowRuns = 0;
-				//delay = 4 moves it after unblock delay of 3
-				setTimeout(lazyEvalLazy, 4);
+				setTimeout(lazyEvalLazy);
 			} else if(inViewThreshold != inViewLow){
 				inViewThreshold = inViewLow;
 			}
@@ -305,8 +302,7 @@
 				resetPreloading({target: elem});
 			}
 			elem = null;
-			//delay = 1 moves it before unblock delay of 3
-		}, 1);
+		});
 	}
 
 	var lazyEvalSizes = (function(){
@@ -417,9 +413,6 @@
 		isWinloaded = /d$|^c/.test(document.readyState);
 		inViewThreshold = isWinloaded ? inViewHigh : inViewLow;
 	};
-	// bind to all possible events ;-) This might look like a performance disaster, but it isn't.
-	// The main check functions are written to run extreme fast without consuming memory.
-
 
 	lazySizesConfig = window.lazySizesConfig || {};
 
@@ -470,8 +463,8 @@
 
 		addEventListener('hashchange', lazyEvalLazy, true);
 
-		//ToDo?: 'animationstart', 'animationend', 'fullscreenchange'
-		['transitionstart', 'transitionend', 'load', 'focus', 'mouseover'].forEach(function(evt){
+		//ToDo?: 'animationstart', 'fullscreenchange'
+		['transitionstart', 'transitionend', 'load', 'focus', 'mouseover', 'animationend'].forEach(function(evt){
 			document.addEventListener(evt, lazyEvalLazy, true);
 		});
 
@@ -482,7 +475,7 @@
 		} else {
 			addEventListener('load', onload, false);
 			setTimeout(onload, 9999);
-			setTimeout(lazyEvalLazy);
+			setTimeout(evalLazyElements);
 		}
 	});
 
