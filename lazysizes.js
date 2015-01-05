@@ -6,9 +6,9 @@
 }(function (window) {
 	'use strict';
 	/*jshint eqnull:true */
-	if(!Date.now || !window.document.getElementsByClassName){return;}
+	if(!window.document.getElementsByClassName){return;}
 
-	var lazyloadElems, autosizesElems, lazySizesConfig, globalSizesTimer,
+	var lazyloadElems, autosizesElems, preloadElems, lazySizesConfig, globalSizesTimer,
 		globalSizesIndex, addClass, removeClass, hasClass, isWinloaded;
 
 	var document = window.document;
@@ -157,7 +157,7 @@
 					inViewThreshold = -2;
 					eLvW = innerWidth + inViewThreshold;
 					elvH = innerHeight + inViewThreshold;
-					eLnegativeTreshhold = inViewThreshold * -1;
+					eLnegativeTreshhold = 2;
 				}
 
 				rect = lazyloadElems[globalLazyIndex].getBoundingClientRect();
@@ -173,9 +173,10 @@
 				} else  {
 
 					if(!loadedSomething && isWinloaded && !autoLoadElem &&
-						lazySizesConfig.preloadAfterLoad && isPreloading < 3 && lowRuns < 9 &&
-						((eLbottom || eLright || eLleft || eLtop) || lazyloadElems[globalLazyIndex].getAttribute(lazySizesConfig.sizesAttr) != 'auto')){
-						autoLoadElem = lazyloadElems[globalLazyIndex];
+						isPreloading < 3 && lowRuns < 9 &&
+						(preloadElems[0] || lazySizesConfig.preloadAfterLoad) &&
+						(preloadElems[0] || (eLbottom || eLright || eLleft || eLtop) || lazyloadElems[globalLazyIndex].getAttribute(lazySizesConfig.sizesAttr) != 'auto')){
+						autoLoadElem = preloadElems[0] || lazyloadElems[globalLazyIndex];
 					}
 
 					if(globalLazyIndex < eLlen - 1 && Date.now() - eLnow > 9){
@@ -351,7 +352,7 @@
 
 		parentWidth = parent.offsetWidth;
 		elemWidth = elem.offsetWidth;
-		width = (elemWidth >= parentWidth || (elemWidth > lazySizesConfig.minSize && getCSS(elem, 'display') == 'block')) ?
+		width = (elemWidth >= parentWidth || getCSS(elem, 'display') == 'block') ?
 			elemWidth :
 			parentWidth;
 
@@ -409,7 +410,7 @@
 
 	var onload = function(){
 		inViewLow = Math.max( Math.min(lazySizesConfig.threshold || 200, 300), 60 );
-		inViewHigh = Math.min( inViewLow * 5, Math.max(innerHeight + 9, 500, docElem.clientHeight + 9) );
+		inViewHigh = Math.min( inViewLow * 5, Math.max(innerHeight * 1.2, 500, docElem.clientHeight * 1.2, inViewLow * 2.5) );
 		isWinloaded = /d$|^c/.test(document.readyState);
 		inViewThreshold = isWinloaded ? inViewHigh : inViewLow;
 	};
@@ -422,6 +423,7 @@
 			lazyClass: 'lazyload',
 			loadedClass: 'lazyloaded',
 			loadingClass: 'lazyloading',
+			preloadClass: 'lazypreload',
 			scroll: true,
 			autosizesClass: 'lazyautosizes',
 			srcAttr: 'data-src',
@@ -445,6 +447,7 @@
 	setTimeout(function(){
 		var readyState = document.readyState;
 		lazyloadElems = document.getElementsByClassName(lazySizesConfig.lazyClass);
+		preloadElems = document.getElementsByClassName(lazySizesConfig.lazyClass+' '+lazySizesConfig.preloadClass);
 		autosizesElems = document.getElementsByClassName(lazySizesConfig.autosizesClass);
 
 		if(lazySizesConfig.scroll) {
@@ -474,7 +477,7 @@
 			onload();
 		} else {
 			addEventListener('load', onload, false);
-			setTimeout(onload, 9999);
+			setTimeout(onload, 6000);
 			setTimeout(evalLazyElements);
 		}
 	});

@@ -147,6 +147,7 @@ Here the list of options:
 
 * ``lazySizesConfig.lazyClass`` (default: ``"lazyload"``): Marker class for all elements which should be lazy loaded (There can be only one ``class``. In case you need to add some other element, without the defined class, simply add it per JS: ``$('.lazy-others').addClass('lazyload');``)
 * ``lazySizesConfig.preloadAfterLoad`` (default: ``false``): Wether lazysizes should load all elements after the window onload event. Note: lazySizes will then still download those not-in-view images inside of a lazy queue, so that other downloads after onload are not blocked.) In case this option is ``false`` and not providing a suitable low quality image placeholder will hide below the fold images from google.
+* ``lazySizesConfig.preloadClass`` (default: ``"lazypreload"``): Marker class for elements which should be lazy pre-loaded after onload. Those elements will be even preloaded, if the ``preloadAfterLoad`` option is set to ``false``. Note: This *class* can also simply dynamically set (``$currentSlide.next().find('.lazyload').addClass('lazypreload');``).
 * ``lazySizesConfig.addClasses`` (default: ``false``): Wether lazysizes should add loading and loaded classes. This can be used to add unveil effects or to apply new styles (background-image). (see also ``preloadAfterLoad`` option).
 * ``lazySizesConfig.loadingClass`` (default: ``"lazyloading"``): If ``addClasses`` is set to ``true`` this ``class`` will be added to ``img`` element as soon as image loading starts. Can be used to add unveil effects.
 * ``lazySizesConfig.loadedClass`` (default: ``"lazyloaded"``): If ``addClasses`` is set to ``true`` this ``class`` will be added to any element as soon as the image is loaded or the image comes into view. Can be used to add unveil effects or to apply styles.
@@ -299,7 +300,7 @@ Due to the fact, that it is designed to be invoked with a high frequency and the
 ```
 
 ##Specifying image dimensions (minimizing reflows and avoiding page jumps)
-To minimize reflows and content jumping the width **and** the height of an image should be specified. For "static" images this can done using either CSS or using the content attributes:
+To minimize reflows, content jumping or unpredictable behavior with some other JS widgets (isotope, masonry, some sliders...) the width **and** the height of an image should be specified. For "static" images this can done using either CSS or using the content attributes:
 
 ```html
 <img
@@ -316,14 +317,17 @@ For flexible responsive images the [CSS intrinsic ratio scaling technique](http:
 <style>
 .ratio-container {
     position: relative;
-    padding-bottom: 42.86%; /* 56.25%: 16:9 ratio */
-    height: 0;
-    overflow: hidden;
 }
-.ratio-container img,
-.ratio-container video,
-.ratio-container iframe {
+.ratio-container:after {
+    content: '';
     display: block;
+    height: 0;
+    width: 100%;
+    /* 16:9 = 56.25% = calc(9 / 16 * 100%) */
+    padding-bottom: 42.86%;
+    content: "";
+}
+.ratio-container > * {
     position: absolute;
     top: 0;
     left: 0;
