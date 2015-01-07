@@ -49,7 +49,7 @@ For background images, use data-bg attribute:
 		};
 
 		addEventListener('lazybeforeunveil', function(e){
-			var tmp, bg, load;
+			var tmp, load, bg, poster;
 			if(!e.defaultPrevented) {
 
 				if(e.target.preload == 'none'){
@@ -61,41 +61,6 @@ For background images, use data-bg attribute:
 					addStyleScript(tmp, true);
 					if(config.clearAttr){
 						e.target.removeAttribute('data-link');
-					}
-				}
-
-				// handle data-bg
-				tmp = e.target.getAttribute('data-bg');
-				if (tmp) {
-					e.details.firesLoad = true;
-					load = function(){
-						e.target.style.backgroundImage = 'url(' + tmp + ')';
-						lazySizes.fire(e.target, '_lazyloaded');
-					};
-
-					bgLoad(tmp, load);
-
-					if(config.clearAttr){
-						e.target.removeAttribute('data-bg');
-					}
-				}
-
-				// handle data-poster
-				tmp = e.target.getAttribute('data-poster');
-				if(tmp){
-
-					load = function(){
-						e.target.poster = tmp;
-					};
-
-					if(e.target.getAttribute('poster')){
-						bgLoad(tmp, load);
-					} else {
-						load();
-					}
-
-					if(config.clearAttr){
-						e.target.removeAttribute('data-poster');
 					}
 				}
 
@@ -116,6 +81,38 @@ For background images, use data-bg attribute:
 					}
 					if(config.clearAttr){
 						e.target.removeAttribute('data-require');
+					}
+				}
+
+				// handle data-bg
+				bg = e.target.getAttribute('data-bg');
+				if (bg) {
+					e.details.firesLoad = true;
+					load = function(){
+						e.target.style.backgroundImage = 'url(' + bg + ')';
+						lazySizes.fire(e.target, '_lazyloaded');
+					};
+
+					bgLoad(bg, load);
+
+					if(config.clearAttr){
+						e.target.removeAttribute('data-bg');
+					}
+				}
+
+				// handle data-poster
+				poster = e.target.getAttribute('data-poster');
+				if(poster){
+					e.details.firesLoad = true;
+					load = function(){
+						e.target.poster = poster;
+						lazySizes.fire(e.target, '_lazyloaded');
+					};
+
+					bgLoad(poster, load);
+
+					if(config.clearAttr){
+						e.target.removeAttribute('data-poster');
 					}
 				}
 			}

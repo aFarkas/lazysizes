@@ -37,11 +37,12 @@
 ##What makes lazysizes so awesome:
 **lazysizes** is different than other lazy image loaders.
 
-1. **Works without any configuration in any web enviroment**: The script works as a universal, self-initializing, self-configuring and self-destroying component and detects any changes to the visibility of an image/iframe automatically no matter whether it becomes visible through a user scroll, a CSS animation triggered through ``:hover`` or through any kind of JS behavior (carousel, infinite scroll, AJAX, SPA...). Also works in conjunction with any kind of JS-/Frontend-Framework (AngularJS, React, Knockout, Backbone, jQuery, Bootstrap, Foundation, VanillaJS, Webplatform etc.)...
+1. **Works without any configuration in any web enviroment**: The script works as an universal, self-initializing, self-configuring and self-destroying component and detects any changes to the visibility of an image/iframe automatically no matter whether it becomes visible through a user scroll, a CSS animation triggered through ``:hover`` or through any kind of JS behavior (carousel, infinite scroll, AJAX, SPA...). Simple works in conjunction with any kind of JS-/Frontend-Framework.
 2. **Future-proof**: It directly includes standard responsive image support (``picture`` and ``srcset``)
 3. **Separation of concerns**: For responsive image support it adds an automatic ``sizes`` calculation feature.
 4. **Performance**: It's based on high efficient code (runtime **and** memory) to work jank-free at 60fps.
 5. **Extendable**: It provides JS and CSS hooks to extend lazySizes with any kind of lazy loading or effects.
+6. **Intelligent prefetch**: lazySizes prefetches near the view assets, while the browser network is idling. (see also ``threshold`` option)
 
 ##[Demo with code examples](http://afarkas.github.io/lazysizes/#examples)
 Can be seen [here](http://afarkas.github.io/lazysizes/#examples).
@@ -151,7 +152,7 @@ Here the list of options:
 * ``lazySizesConfig.addClasses`` (default: ``false``): Wether lazysizes should add loading and loaded classes. This can be used to add unveil effects or to apply new styles (background-image). (see also ``preloadAfterLoad`` option).
 * ``lazySizesConfig.loadingClass`` (default: ``"lazyloading"``): If ``addClasses`` is set to ``true`` this ``class`` will be added to ``img`` element as soon as image loading starts. Can be used to add unveil effects.
 * ``lazySizesConfig.loadedClass`` (default: ``"lazyloaded"``): If ``addClasses`` is set to ``true`` this ``class`` will be added to any element as soon as the image is loaded or the image comes into view. Can be used to add unveil effects or to apply styles.
-* ``lazySizesConfig.threshold`` (default: ``160``): The ``threshold`` option expands the calculated viewport area in all directions, so that elements can be loaded before they are becoming visible. (Note: Smallest possible value is ``1``. Largest possible value is ``300``.). Recommended values are between ``100`` and ``300``.
+* ``lazySizesConfig.threshold`` (default: ``150``): The ``threshold`` option expands the calculated visual viewport area in all directions, so that elements can be loaded before they are becoming visible. (Note: Reasonable values are between ``50`` and ``250``.) In case you have a lot of small images or you are using the LQIP pattern you can lower the value, in case you have larger images set it to a higher value.
 * ``lazySizesConfig.onlyLargerSizes`` (default: ``true``): In case a responsive image had the ``data-sizes="auto"`` attribute and the computed new size decreases, lazysizes won't normally change the ``sizes`` attribute to a lower value.
 * ``lazySizesConfig.clearAttr`` (default: ``false``): Set this to ``true`` if you want lazysizes to remove the ``data-`` attributes after doing it's work.
 * ``lazySizesConfig.srcAttr`` (default: ``"data-src"``): The attribute, which should be transformed to ``src``.
@@ -230,6 +231,8 @@ window.lazySizesConfig = {
 };
 </script>
 ```
+
+Note: In case you do not use the LQIP pattern or progressive JPEGs it is recommended to add an unveiling effect to improve the user experience.
 
 * ``lazybeforesizes``: This event will be fired on each element with the ``data-sizes="auto"`` attribute right before the calculated ``sizes`` attribute will be set. The ``event.details.width`` property is set to the calculated width of the element and can be changed to any number. In case the event is ``defaultPrevented`` the ``sizes`` attribute won't be set.
 

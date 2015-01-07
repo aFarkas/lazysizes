@@ -15,14 +15,16 @@
 	var docElem = document.documentElement;
 	var isPreloading = 0;
 	var fixChrome = window.HTMLPictureElement && navigator.userAgent.match(/hrome\/(\d+)/) && (RegExp.$1 == 40 || RegExp.$1 == 41);
+	//var supportNativeLQIP = (/blink|webkit/i).test(navigator.userAgent);
 
 	var regPicture = /^picture$/i;
 	var regImg = /^img$/i;
 	var regLoadElems = /^(?:img|iframe)$/i;
 
+
 	var inViewLow = -2;
 	var inViewThreshold = inViewLow;
-	var inViewHigh = 9;
+	var inViewHigh = 40;
 
 	var lowRuns = 0;
 	var globalLazyIndex = 0;
@@ -209,17 +211,13 @@
 	};
 
 	function unveilLazy(elem, force){
-		var sources, i, len, sourceSrcset, sizes, src, srcset, parent, isPicture;
+		var sources, i, len, sourceSrcset, sizes, src, srcset, parent, isPicture, event;
 
-		var event = triggerEvent(elem, 'lazybeforeunveil', {force: !!force});
 		var curSrc = elem.currentSrc || elem.src;
+		var isImg = regImg.test(elem.nodeName);
 
-		if(!event.defaultPrevented){
-
-			isPreloading++;
-			addRemoveLoadEvents(elem, resetPreloading, true);
-			clearTimeout(resetPreloadingTimer);
-			resetPreloadingTimer = setTimeout(resetPreloading, 3000);
+		//if(!supportNativeLQIP && isImg && curSrc && !elem.complete){return;}
+		if(!(event = triggerEvent(elem, 'lazybeforeunveil', {force: !!force})).defaultPrevented){
 
 			//allow using sizes="auto", but don't use. it's invalid. Use data-sizes="auto" or a valid value for sizes instead (i.e.: sizes="80vw")
 			sizes = elem.getAttribute(lazySizesConfig.sizesAttr) || elem.getAttribute('sizes');
@@ -238,12 +236,17 @@
 			srcset = elem.getAttribute(lazySizesConfig.srcsetAttr);
 			src = elem.getAttribute(lazySizesConfig.srcAttr);
 
-			if(regImg.test(elem.nodeName)) {
+			isPreloading++;
+			addRemoveLoadEvents(elem, resetPreloading, true);
+			clearTimeout(resetPreloadingTimer);
+			resetPreloadingTimer = setTimeout(resetPreloading, 3000);
+
+			if(isImg) {
 				parent = elem.parentNode;
 				isPicture = regPicture.test(parent.nodeName || '');
 			}
 
-			if(lazySizesConfig.addClasses){
+			if(isImg){
 				addClass(elem, lazySizesConfig.loadingClass);
 
 				addRemoveLoadEvents(elem, switchLoadingClass, true);
@@ -409,8 +412,8 @@
 	}
 
 	var onload = function(){
-		inViewLow = Math.max( Math.min(lazySizesConfig.threshold || 200, 300), 60 );
-		inViewHigh = Math.min( inViewLow * 5, Math.max(innerHeight * 1.2, 500, docElem.clientHeight * 1.2, inViewLow * 2.5) );
+		inViewLow = Math.max( Math.min(lazySizesConfig.threshold || 150, 300), 40 );
+		inViewHigh = Math.min( inViewLow * 7, Math.max(innerHeight * 1.2, docElem.clientHeight * 1.2, inViewLow * 4) );
 		isWinloaded = /d$|^c/.test(document.readyState);
 		inViewThreshold = isWinloaded ? inViewHigh : inViewLow;
 	};
