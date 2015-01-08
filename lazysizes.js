@@ -15,7 +15,7 @@
 	var docElem = document.documentElement;
 	var isPreloading = 0;
 	var fixChrome = window.HTMLPictureElement && navigator.userAgent.match(/hrome\/(\d+)/) && (RegExp.$1 == 40 || RegExp.$1 == 41);
-	//var supportNativeLQIP = (/blink|webkit/i).test(navigator.userAgent);
+	var supportNativeLQIP = (/blink|webkit/i).test(navigator.userAgent);
 
 	var regPicture = /^picture$/i;
 	var regImg = /^img$/i;
@@ -216,7 +216,7 @@
 		var curSrc = elem.currentSrc || elem.src;
 		var isImg = regImg.test(elem.nodeName);
 
-		//if(!supportNativeLQIP && isImg && curSrc && !elem.complete){return;}
+		if(!supportNativeLQIP && !isWinloaded && isImg && curSrc && !elem.complete){return;}
 		if(!(event = triggerEvent(elem, 'lazybeforeunveil', {force: !!force})).defaultPrevented){
 
 			//allow using sizes="auto", but don't use. it's invalid. Use data-sizes="auto" or a valid value for sizes instead (i.e.: sizes="80vw")

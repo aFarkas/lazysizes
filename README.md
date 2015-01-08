@@ -37,7 +37,7 @@
 ##What makes lazysizes so awesome:
 **lazysizes** is different than other lazy image loaders.
 
-1. **Works without any configuration in any web enviroment**: The script works as an universal, self-initializing, self-configuring and self-destroying component and detects any changes to the visibility of an image/iframe automatically no matter whether it becomes visible through a user scroll, a CSS animation triggered through ``:hover`` or through any kind of JS behavior (carousel, infinite scroll, AJAX, SPA...). Simple works in conjunction with any kind of JS-/Frontend-Framework.
+1. **Works without any configuration in any web enviroment**: The script works as an universal, self-initializing, self-configuring and self-destroying component and detects any changes to the visibility of an image/iframe automatically no matter whether it becomes visible through a user scroll, a CSS animation triggered through ``:hover`` or through any kind of JS behavior (carousel, infinite scroll, AJAX, SPA...). Also works in conjunction with any kind of JS-/Frontend-Framework.
 2. **Future-proof**: It directly includes standard responsive image support (``picture`` and ``srcset``)
 3. **Separation of concerns**: For responsive image support it adds an automatic ``sizes`` calculation feature.
 4. **Performance**: It's based on high efficient code (runtime **and** memory) to work jank-free at 60fps.
@@ -78,7 +78,7 @@ Add the ``class`` ``lazyload`` to all ``img`` and ``iframe`` elements, which sho
 For some image bots (search engines and social networks), legacy browsers (IE8) or JS disabled browsers, it is important to serve a usable ``src`` attribute:
 
 ###LQIP
-The LQIP pattern (low quality image placeholder): Simply add a low quality image as the ``src``:
+The LQIP pattern (low quality image placeholder). Simply add a low quality image as the ``src``:
 
 ```html
 <!-- responsive example: -->
@@ -98,7 +98,7 @@ The LQIP pattern has the following advantages: The lqip-src is not hidden from t
 
 ###Simple pattern
 
-In case you want to save more initial image data the LQIP pattern can't be used (an extreme fuzzy image does neither work as a good enough first impression nor as a fallback), you do use client side rendering (no preload parser advantage) or you can't even generate a LQIP src, simply add a data uri as fallback ``src``.
+For non crucial or below the fold images or in case you want to save more initial image data the LQIP pattern can't be used (an extreme fuzzy image does neither work as a good enough first impression nor as a fallback), you do use client side rendering (no preload parser advantage) or you can't even generate a LQIP src, simply omit the ``src`` attribute  or add a data uri as fallback ``src``.
 
 ```html
 <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
@@ -107,7 +107,7 @@ In case you want to save more initial image data the LQIP pattern can't be used 
     alt="my image" />
 ```
 
-Note: In case you are using the simple markup pattern, consider to set the ``preloadAfterLoad`` to ``true``. Otherwise you will hide below the fold images from google image search.
+Note: In case you are using the simple markup pattern, consider to set the ``preloadAfterLoad`` to ``true`` (for SEO) and to add unobtrusive unveil effects using the ``addClasses`` option ([demo](http://afarkas.github.io/lazysizes/no-src.html#examples)).
 
 ###The noscript pattern
 
@@ -127,8 +127,6 @@ In case disabled javascript is a concern you can combine the simple pattern with
 <img src="grey.jpg" data-src="image.jpg" class="lazyload" />
 <!--<![endif]-->
 ```
-
-Note: While the noscript and the simple pattern do save more bandwidth, they often still generate a slower perceived performance than the LQIP pattern due to the lack of the preload parser advantage. In case you are using the noscript/simple pattern it is wise to add unveil effects using the ``addClasses`` option.
 
 ###JS API
 **lazysizes** automatically detects new elements with the class ``lazyload`` so you won't need to call or configure anything in most situations.
@@ -152,7 +150,7 @@ Here the list of options:
 * ``lazySizesConfig.addClasses`` (default: ``false``): Wether lazysizes should add loading and loaded classes. This can be used to add unveil effects or to apply new styles (background-image). (see also ``preloadAfterLoad`` option).
 * ``lazySizesConfig.loadingClass`` (default: ``"lazyloading"``): If ``addClasses`` is set to ``true`` this ``class`` will be added to ``img`` element as soon as image loading starts. Can be used to add unveil effects.
 * ``lazySizesConfig.loadedClass`` (default: ``"lazyloaded"``): If ``addClasses`` is set to ``true`` this ``class`` will be added to any element as soon as the image is loaded or the image comes into view. Can be used to add unveil effects or to apply styles.
-* ``lazySizesConfig.threshold`` (default: ``150``): The ``threshold`` option expands the calculated visual viewport area in all directions, so that elements can be loaded before they are becoming visible. (Note: Reasonable values are between ``50`` and ``250``.) In case you have a lot of small images or you are using the LQIP pattern you can lower the value, in case you have larger images set it to a higher value.
+* ``lazySizesConfig.threshold`` (default: ``150``): The ``threshold`` option expands the calculated visual viewport area in all directions, so that elements can be loaded before they are becoming visible. (Note: Reasonable values are between ``40`` and ``300``.) In case you have a lot of small images or you are using the LQIP pattern you can lower the value, in case you have larger images set it to a higher value.
 * ``lazySizesConfig.onlyLargerSizes`` (default: ``true``): In case a responsive image had the ``data-sizes="auto"`` attribute and the computed new size decreases, lazysizes won't normally change the ``sizes`` attribute to a lower value.
 * ``lazySizesConfig.clearAttr`` (default: ``false``): Set this to ``true`` if you want lazysizes to remove the ``data-`` attributes after doing it's work.
 * ``lazySizesConfig.srcAttr`` (default: ``"data-src"``): The attribute, which should be transformed to ``src``.
@@ -231,8 +229,6 @@ window.lazySizesConfig = {
 };
 </script>
 ```
-
-Note: In case you do not use the LQIP pattern or progressive JPEGs it is recommended to add an unveiling effect to improve the user experience.
 
 * ``lazybeforesizes``: This event will be fired on each element with the ``data-sizes="auto"`` attribute right before the calculated ``sizes`` attribute will be set. The ``event.details.width`` property is set to the calculated width of the element and can be changed to any number. In case the event is ``defaultPrevented`` the ``sizes`` attribute won't be set.
 
