@@ -4,7 +4,7 @@ In general the RIaS  plugin combines the simplicity of the famous Imager.js solu
 
 The RiaS plugin enables lazySizes to generate the best suitable image source based on a URL pattern. It works with pre-build images (i.e. grunt-responsive-images) as also with any third party (ReSrc, Pixtulate, mobify, WURFL's Image Tailor ...) or self hosted restful responsive image services (responsive image on demand).
 
-In case the browser does support ``srcset`` the RIaS plugin will also produce a list of source candidates so that any improvements (low bandwidth, metered bandwidth, user preferences, browser zoom etc.) to the native responsive image support can be automatically exploited.
+In case the browser does support ``srcset`` the RIaS plugin will also produce a list of source candidates so that any current and future improvements (low bandwidth, metered bandwidth, user preferences, browser zoom etc.) to the native responsive image support is automatically exploited.
 
 The RiaS plugin also allows art direction by combining placeholder URLs with a ``picture`` element.
 

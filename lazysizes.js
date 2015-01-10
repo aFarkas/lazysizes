@@ -118,19 +118,22 @@
 			}
 		};
 	})();
-	var isNestedVisibile = function(elem){
+	var isNestedVisibile = function(elem, elemExpand){
 		var outerRect;
 		var parent = elem;
 		var visible = getCSS(elem, 'visibility') != 'hidden';
-		var expand = isPreloading < 3 ? inViewThreshold : -2;
 
-		eLtop -= expand;
-		eLbottom += expand;
-		eLleft -= expand;
-		eLright += expand;
+		if(isPreloading > 2 && elemExpand > 0){
+			elemExpand = -2;
+		}
+
+		eLtop -= elemExpand;
+		eLbottom += elemExpand;
+		eLleft -= elemExpand;
+		eLright += elemExpand;
 
 		while(visible && (parent = parent.offsetParent) && parent != docElem && parent != document.body){
-			visible = (getCSS(parent, 'opacity') || 1) > 0;
+			visible = isPreloading < 3 || ((getCSS(parent, 'opacity') || 1) > 0);
 			if(visible && getCSS(parent, 'overflow') != 'visible'){
 				outerRect = parent.getBoundingClientRect();
 				visible = eLright > outerRect.left - 1 &&
@@ -144,20 +147,25 @@
 	};
 
 	var evalLazyElements = function (){
-		var rect, autoLoadElem, loadedSomething;
+		var rect, autoLoadElem, loadedSomething, elemExpandVal, elemExpand, beforeExpandVal;
 		eLlen = lazyloadElems.length;
-		if(eLlen){
-			eLvW = innerWidth + inViewThreshold;
-			elvH = innerHeight + inViewThreshold;
-			eLnegativeTreshhold = inViewThreshold * -1;
 
+		if(eLlen){
 			for(; globalLazyIndex < eLlen; globalLazyIndex++){
 
-				if(isPreloading > 3 && inViewThreshold > 0){
-					inViewThreshold = -2;
-					eLvW = innerWidth + inViewThreshold;
-					elvH = innerHeight + inViewThreshold;
-					eLnegativeTreshhold = 2;
+				if(!(elemExpandVal = lazyloadElems[globalLazyIndex].getAttribute('data-expand')) || !(elemExpand = elemExpandVal * 1)){
+					elemExpand = inViewThreshold;
+				}
+
+				if(isPreloading > 3 && elemExpand > 0){
+					elemExpand = -2;
+				}
+
+				if(beforeExpandVal !== elemExpand){
+					eLvW = innerWidth + elemExpand;
+					elvH = innerHeight + elemExpand;
+					eLnegativeTreshhold = elemExpand * -1;
+					beforeExpandVal = elemExpand;
 				}
 
 				rect = lazyloadElems[globalLazyIndex].getBoundingClientRect();
@@ -167,7 +175,7 @@
 					(eLright = rect.right) >= eLnegativeTreshhold &&
 					(eLleft = rect.left) <= eLvW &&
 					(eLbottom || eLright || eLleft || eLtop) &&
-					((isWinloaded && inViewThreshold == inViewLow && isPreloading < 3 && lowRuns < 9) || isNestedVisibile(lazyloadElems[globalLazyIndex]))){
+					((isWinloaded && inViewThreshold == inViewLow && isPreloading < 3 && lowRuns < 9 && !elemExpandVal) || isNestedVisibile(lazyloadElems[globalLazyIndex], elemExpand))){
 					unveilLazy(lazyloadElems[globalLazyIndex]);
 					loadedSomething = true;
 				} else  {
@@ -175,7 +183,7 @@
 					if(!loadedSomething && isWinloaded && !autoLoadElem &&
 						isPreloading < 3 && lowRuns < 9 &&
 						(preloadElems[0] || lazySizesConfig.preloadAfterLoad) &&
-						(preloadElems[0] || (eLbottom || eLright || eLleft || eLtop) || lazyloadElems[globalLazyIndex].getAttribute(lazySizesConfig.sizesAttr) != 'auto')){
+						(preloadElems[0] || (!elemExpandVal && ((eLbottom || eLright || eLleft || eLtop) || lazyloadElems[globalLazyIndex].getAttribute(lazySizesConfig.sizesAttr) != 'auto')))){
 						autoLoadElem = preloadElems[0] || lazyloadElems[globalLazyIndex];
 					}
 				}
@@ -209,6 +217,7 @@
 		var isImg = regImg.test(elem.nodeName);
 
 		if(!supportNativeLQIP && !isWinloaded && isImg && curSrc && !elem.complete){return;}
+
 		if(!(event = triggerEvent(elem, 'lazybeforeunveil', {force: !!force})).defaultPrevented){
 
 			//allow using sizes="auto", but don't use. it's invalid. Use data-sizes="auto" or a valid value for sizes instead (i.e.: sizes="80vw")
@@ -238,7 +247,7 @@
 				isPicture = regPicture.test(parent.nodeName || '');
 			}
 
-			if(isImg){
+			if(lazySizesConfig.addClasses){
 				addClass(elem, lazySizesConfig.loadingClass);
 
 				addRemoveLoadEvents(elem, switchLoadingClass, true);
@@ -305,7 +314,9 @@
 		var timer;
 		var run = function(){
 			clearTimeout(timer);
+			calcExpand();
 			globalSizesIndex = 0;
+			inViewThreshold = inViewLow;
 			evalSizesElements();
 		};
 		return function(){
@@ -381,8 +392,8 @@
 		}
 	}
 
-	var onload = function(){
-		inViewLow = Math.max( Math.min(lazySizesConfig.threshold || 150, 300), 9 );
+	var calcExpand = function(){
+		inViewLow = Math.max( Math.min(lazySizesConfig.expand || lazySizesConfig.threshold || 150, 300), 9 );
 		inViewHigh = Math.min( inViewLow * 7, Math.max(innerHeight * 1.3, docElem.clientHeight * 1.3, inViewLow * 4) );
 		isWinloaded = /d$|^c/.test(document.readyState);
 		inViewThreshold = isWinloaded ? inViewHigh : inViewLow;
@@ -446,11 +457,11 @@
 
 
 		if(/d$|^c/.test(readyState)){
-			onload();
+			calcExpand();
 		} else {
 			document.addEventListener('DOMContentLoaded', lazyEvalLazy, false);
-			addEventListener('load', onload, false);
-			setTimeout(onload, 6000);
+			addEventListener('load', calcExpand, false);
+			setTimeout(calcExpand, 6000);
 		}
 		lazyEvalLazy();
 	});

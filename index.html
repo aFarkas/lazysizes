@@ -25,8 +25,12 @@
 			padding-bottom: 75%;
 			height: 0;
 		}
+
 		.intrinsic-2 {
 			padding-bottom: 56.25%;
+		}
+		.intrinsic-3 {
+			padding-bottom: 133.333%;
 		}
 		.intrinsic img,
 		.intrinsic iframe,
@@ -74,9 +78,21 @@
 		.no-src.lazyloading {
 			opacity: 0;
 		}
+
 		.no-src.lazyloaded {
 			opacity: 1;
 			transition: opacity 300ms;
+		}
+
+		[data-expand].lazyload {
+			opacity: 0;
+			transform: scale(0.8);
+		}
+
+		[data-expand].lazyloaded {
+			opacity: 1;
+			transition: all 700ms;
+			transform: scale(1);
 		}
 
 	</style>
@@ -279,9 +295,63 @@ https://farm9.staticflickr.com/8200/8248153196_7a7664e147_b.jpg 1024w"
 					<div class="caption">
 						<h3>iframe</h3>
 						<p>Iframes can be loaded too:</p>
-<pre>&lt;iframe data-src="//www.youtube.com/embed/ZfV-aYdU4uE" class="lazyload" frameborder="0" allowfullscreen>&lt;/iframe&gt;
+<pre>&lt;iframe data-src="//www.youtube.com/embed/ZfV-aYdU4uE" class="lazyload" frameborder="0" allowfullscreen&gt;&lt;/iframe&gt;
 </pre>
 					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="row lazyload" data-expand="-50">
+			<div class="col-sm-6">
+				<div class="thumbnail">
+					<div class="intrinsic intrinsic-3">
+						<img
+								data-sizes="auto"
+								class="lazyload no-src"
+								data-srcset="https://farm1.staticflickr.com/192/504251019_ffc94c77b5_n.jpg 240w,
+https://farm1.staticflickr.com/192/504251019_ffc94c77b5.jpg 375w,
+https://farm1.staticflickr.com/192/504251019_ffc94c77b5_z.jpg 480w,
+https://farm1.staticflickr.com/192/504251019_ffc94c77b5_b.jpg 768w"
+								alt="Windows on Istanbul" />
+					</div>
+
+			</div>
+
+				</div>
+			<div class="col-sm-6">
+				<div class="caption">
+					<h3><code>[data-expand]</code> + <code>addClasses</code>: More than lazyloading</h3>
+					<p>LazySizes normally loads in view elements as fast as possible and near the view elements are lazily pre-loaded. This can be modified in general using the <code>expand</code> option. With the <code>data-expand</code> attribute this can be changed element specific to expand or shrink the viewport.</p>
+
+					<p>In conjunction with the <code>addClasses</code> option this can be used to create unveiling effects for elements with or even without loading anything.</p>
+<pre>
+&lt;style&gt;
+.teaser.lazyload {
+	opacity: 0;
+	transform: scale(0.8);
+}
+
+.teaser.lazyloaded {
+	opacity: 1;
+	transform: scale(1);
+	transition: all 700ms;
+}
+&lt;/style&gt;
+
+&lt;script&gt;
+
+window.lazySizesConfig = {
+	addClasses: true
+};
+&lt;/script&gt;
+
+&lt;div class="teaser lazyload" data-expand="-50"&gt;
+	&lt;img data-src="image.jpg" class="lazyload" /&gt;
+	&lt;h1&gt;Teaser Title&lt;/h1&gt;
+	&lt;p&gt;...&lt;/p&gt;
+&lt;/div&gt;
+</pre>
 				</div>
 			</div>
 		</div>
