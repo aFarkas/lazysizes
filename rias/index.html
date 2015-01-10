@@ -96,35 +96,30 @@
 
 		<div class="row">
 			<div class="col-sm-6">
-				<h3><code>optimumx</code></h3>
-				<p>All options can be controlled globally through the <code>lazySizesConfig.rias</code> object or by using <code>data-*</code> attributes.</p>
-				<p>The rias extension can also be combined with the <a href="https://github.com/aFarkas/lazysizes/blob/gh-pages/plugins/optimumx/"><code>optimumx</code> extension</a>. The optimumx feature helps you to constrain the maximum pixel density for an image.</p>
-<pre>&lt;img
-	src="low-quality.jpg"
-	data-src="image?width={width}&amp;amp;quality={quality}"
-	data-quality="75"
-	data-optimumx="1.5"
-	class="lazyload"
-	alt="" /&gt;
+				<h3><abbr title="Responsive Image as Service">RIaS</abbr> and Art direction using the <code>picture</code> element</h3>
+				<p>A responsive image service can be also combined with the art direction approach using the HTML5 <code>picture</code> element:</p>
+<pre>&lt;picture>
+&lt;!--[if IE 9]>&lt;audio&gt;&lt;![endif]--&gt;
+&lt;source
+		data-src="http://placehold.it/{width}/1111ee/fff"
+		media="(max-width: 500px)" /&gt;
+	&lt;source
+			data-src="http://placehold.it/{width}/e8117f/fff"
+			media="(max-width: 1090px)" /&gt;
+	&lt;source
+			data-src="http://placehold.it/{width}/7D26CD/fff"
+			media="(min-width: 1224px)" /&gt;
+
+&lt;!--[if IE 9]&gt;&lt;/audio&gt;&lt;![endif]--&gt;
+&lt;img
+		src="http://placehold.it/100"
+		data-src="http://placehold.it/{width}"
+		data-sizes="auto"
+		class="lazyload"
+		alt="" /&gt;
+&lt;/picture&gt;
 </pre>
 			</div>
-			<div class="col-sm-6">
-				<div class="thumbnail">
-					<div class="intrinsic">
-						<img
-							 src="http://app.resrc.it/S=W300M/O=20,B/http://www.your-site.co/image.jpg"
-							 data-src="http://app.resrc.it/S=W{width}M/O={quality},B/http://www.your-site.co/image.jpg"
-							 data-optimumx="1.3"
-							 data-quality="75"
-							 data-sizes="auto"
-							 class="lazyload"
-							 alt="" />
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<div class="row">
 			<div class="col-sm-6">
 				<div class="thumbnail">
 					<div class="intrinsic intrinsic-square">
@@ -152,32 +147,37 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-sm-6">
-				<h3><abbr title="Responsive Image as Service">RIaS</abbr> and Art direction using the <code>picture</code> element</h3>
-				<p>A responsive image service can be also combined with the art direction approach using the HTML5 <code>picture</code> element:</p>
-<pre>&lt;picture>
-&lt;!--[if IE 9]>&lt;audio&gt;&lt;![endif]--&gt;
-&lt;source
-		data-src="http://placehold.it/{width}/1111ee/fff"
-		media="(max-width: 500px)" /&gt;
-	&lt;source
-			data-src="http://placehold.it/{width}/e8117f/fff"
-			media="(max-width: 1090px)" /&gt;
-	&lt;source
-			data-src="http://placehold.it/{width}/7D26CD/fff"
-			media="(min-width: 1224px)" /&gt;
 
-&lt;!--[if IE 9]&gt;&lt;/audio&gt;&lt;![endif]--&gt;
-&lt;img
-		src="http://placehold.it/100"
-		data-src="http://placehold.it/{width}"
-		data-sizes="auto"
-		class="lazyload"
-		alt="" /&gt;
-&lt;/picture&gt;
+
+		</div>
+
+		<div class="row">
+			<div class="col-sm-6">
+				<div class="thumbnail">
+					<div class="intrinsic">
+						<img
+								src="http://app.resrc.it/S=W300M/O=20,B/http://www.your-site.co/image.jpg"
+								data-src="http://app.resrc.it/S=W{width}M/O={quality},B/http://www.your-site.co/image.jpg"
+								data-optimumx="1.3"
+								data-quality="75"
+								data-sizes="auto"
+								class="lazyload"
+								alt="" />
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<h3><code>optimumx</code></h3>
+				<p>All options can be controlled globally through the <code>lazySizesConfig.rias</code> object or by using <code>data-*</code> attributes.</p>
+				<p>The rias extension can also be combined with the <a href="https://github.com/aFarkas/lazysizes/blob/gh-pages/plugins/optimumx/"><code>optimumx</code> extension</a>. The optimumx feature helps you to constrain the maximum pixel density for an image.</p>
+<pre>&lt;img
+	data-src="image?width={width}&amp;amp;quality={quality}"
+	data-quality="75"
+	data-optimumx="1.5"
+	class="lazyload"
+	alt="" /&gt;
 </pre>
 			</div>
-
 		</div>
 
 		<div class="row">

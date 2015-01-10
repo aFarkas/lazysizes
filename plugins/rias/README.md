@@ -1,10 +1,12 @@
 #lazysizes RIaS extension (Responsive image as a service / Responsive image on demand) 
 
-The RiaS plugin enables lazySizes to hook into any third party (ReSrc, Pixtulate, mobify, WURFL's Image Tailor ...) or self hosted restful responsive image service (responsive image on demand).
-
 In general the RIaS  plugin combines the simplicity of the famous Imager.js solution with the future power of native responsive images implementations and the webcomponent-like working of lazySizes' ``.lazyload`` elements (self-initialization, self-configuration and self-destroying).
 
-The rias plugin also allows art direction by combining rias with a ``picture`` element.
+The RiaS plugin enables lazySizes to generate the best suitable image source based on a URL pattern. It works with pre-build images (i.e. grunt-responsive-images) as also with any third party (ReSrc, Pixtulate, mobify, WURFL's Image Tailor ...) or self hosted restful responsive image services (responsive image on demand).
+
+In case the browser does support ``srcset`` the RIaS plugin will also produce a list of source candidates so that any improvements (low bandwidth, metered bandwidth, user preferences, browser zoom etc.) to the native responsive image support can be automatically exploited.
+
+The RiaS plugin also allows art direction by combining placeholder URLs with a ``picture`` element.
 
 ##Basic/quick usage
 
@@ -38,7 +40,7 @@ A [demo with markup and code examples can be seen here](http://afarkas.github.io
 
 ##Configuration/Options
 
-The rias plugin can be configured through the ``lazySizesConfig.rias`` option object, which should be configured before the lazysizes script.
+The RiaS plugin can be configured through the ``lazySizesConfig.rias`` option object, which should be configured before the lazysizes script.
 
 ```js
 window.lazySizesConfig = window.lazySizesConfig || {};
@@ -85,7 +87,7 @@ All RiAS options can also be used as a {placeholder} inside the url.
 
 ###List of Options
 
-* ``lazySizesConfig.rias.srcAttr`` (default: ``"data-src"``): The attribute, which should be transformed to ``srcset``. (The extension will also automatically check the ``lazySizesConfig.srcsetAttr`` and ``lazySizesConfig.srcAttr``)
+* ``lazySizesConfig.rias.srcAttr`` (default: ``"data-src"``): The attribute, which should be transformed to ``src``/``srcset``. (The extension will also automatically check the ``lazySizesConfig.srcsetAttr`` and ``lazySizesConfig.srcAttr``)
 * ``lazySizesConfig.rias.widths`` (``array of numbers``): The widths option reduces the calculated ``width`` to the allowed widths. The numeric width can also be simply mapped to a string (i.e.: small, medium, large) using the ``widthmap`` option. The default value is the following array: ``[96, 160, 320, 480, 640, 800, 960, 1280, 1600, 1920, 2240, 2560, 2880]``.
 * ``lazySizesConfig.rias.widthmap`` (``{}``): The widthmap option allows you to simply transform a numeric width to a string.
     ```js
@@ -158,21 +160,6 @@ In case you want to use a CDN you can use jsDelivr's combohandler service:
 
 ```html
 <script src="http://cdn.jsdelivr.net/g/lazysizes(lazysizes.min.js+plugins/rias/ls.rias.min.js)" async=""></script>
-```
-
-###Tip: Constraining the pixel density for a generated ``srcset`` attribute.
-
-In case you want to constrain the maximum pixel density for the generated ``srcset`` list you can combine the RiAS plugin with [the optimumx extension](../optimumx).
-
-```html
-<script src="http://cdn.jsdelivr.net/g/respimage(respimage.min.js),lazysizes(lazysizes.min.js+plugins/rias/ls.rias.min.js+plugins/optimumx/ls.optimumx.min.js)" async=""></script>
-
-
-<img
-    data-src="image-width-{width}.jpg"
-    data-optimumx="1.6"
-    data-sizes="auto"
-    class="lazyload" />
 ```
 
 ###Using art direction
@@ -276,7 +263,7 @@ document.addEventListener('lazyriasmodifyoptions', (function(){
 
 ###Overriding existing placeholders or Extending new placeholders
 
-The RIaS plugin is highly flexible in extending possible {{placeholder}} values. Each {{placeholder}} will be tried to be replaced by searching it in the ``lazySizesConfig.rias`` option object or by searching for a corresponding ``data-*`` attribute.
+The RIaS plugin is highly flexible in extending possible {placeholder} values. Each {placeholder} will be tried to be replaced by searching it in the ``lazySizesConfig.rias`` option object or by searching for a corresponding ``data-*`` attribute.
 
 Additionally the ``modifyOptions`` callback or the equivalent ``lazyriasmodifyoptions`` event can be used to generate new or modify existing placeholders:
 
@@ -345,5 +332,20 @@ document.addEventListener('lazyriasmodifyoptions', function(e){
     data-sizes="auto"
     class="lazyload special-widths"
     alt="" />
+```
+
+###Tip: Constraining the pixel density for a generated ``srcset`` attribute.
+
+In case you want to constrain the maximum pixel density for the generated ``srcset`` list you can combine the RiAS plugin with [the optimumx extension](../optimumx).
+
+```html
+<script src="http://cdn.jsdelivr.net/g/respimage(respimage.min.js),lazysizes(lazysizes.min.js+plugins/rias/ls.rias.min.js+plugins/optimumx/ls.optimumx.min.js)" async=""></script>
+
+
+<img
+    data-src="image-width-{width}.jpg"
+    data-optimumx="1.6"
+    data-sizes="auto"
+    class="lazyload" />
 ```
 

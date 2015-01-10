@@ -94,8 +94,6 @@ The LQIP pattern (low quality image placeholder). Simply add a low quality image
 <img src="lqip-src.jpg" data-src="image.jpg" class="lazyload" />
 ```
 
-The LQIP pattern has the following advantages: The lqip-src is not hidden from the preload parser and loads very fast, which leads to an extreme fast first impression and in case of legacy / JS disabled browsers/devices or some searchengines (bots) as a good enough fallback (IE8 and Android 2 devices as also JS disabled).
-
 ###Simple pattern
 
 For non crucial or below the fold images or in case you want to save more initial image data the LQIP pattern can't be used (an extreme fuzzy image does neither work as a good enough first impression nor as a fallback), you do use client side rendering (no preload parser advantage) or you can't even generate a LQIP src, simply omit the ``src`` attribute  or add a data uri as fallback ``src``.
@@ -138,7 +136,8 @@ Options can be set by declaring a global configuration option object named ``laz
 window.lazySizesConfig = {
     lazyClass: 'postbone', // use .postbone instead of .lazyload
     // preload all lazy elements in a lazy loading queue after onload, if on desktop
-    preloadAfterLoad: !(/mobi/i.test(navigator.userAgent))
+    preloadAfterLoad: !(/mobi/i.test(navigator.userAgent)),
+    addClasses: true
 };
 ```
 
@@ -166,9 +165,8 @@ Here the list of options:
 document.addEventListener('lazybeforeunveil', function(e){
     var bg = e.target.getAttribute('data-bg');
     if(bg){
-        e.target.style.backgroundImage = bg;
+        e.target.style.backgroundImage = 'url(' + bg + ')';
         e.target.removeAttribute('data-bg');
-        e.preventDefault();
     }
 }, false);
 ```
@@ -262,6 +260,14 @@ The [RIAS plugin](plugins/rias) plugin enables lazySizes to hook into any third 
 
 In general the RIaS  plugin combines the simplicity of the famous Imager.js solution with the future power of native responsive images implementations and the webcomponent-like working of lazySizes' ``.lazyload`` elements (self-initialization, self-configuration and self-destroying).
 
+```html
+<img
+	data-src="image-service/w_{width}/image.jpg"
+	data-sizes="auto"
+	class="lazyload"
+	alt="" />
+```
+
 ###[OPTIMUMX plugin](plugins/optimumx)
 The ``srcset`` attribute with the *w* descriptor and ``sizes`` attribute automatically also includes high DPI images. But each image has a different optimal pixel density, which might be lower (1.5x) than the pixel density of your device (2x or 3x). This information is unknown to the browser and therefore can't be optimized for. The [lazySizes optimumx extension](plugins/optimumx) gives you more control to trade between perceived quality vs. perceived performance.
 
@@ -310,7 +316,7 @@ To minimize reflows, content jumping or unpredictable behavior with some other J
     http://placehold.it/700x300 2x" class="lazyload" />
 ```
 
-For flexible responsive images the [CSS intrinsic ratio scaling technique](http://alistapart.com/article/creating-intrinsic-ratios-for-video/) can be used:
+For flexible responsive images the [CSS intrinsic ratio scaling technique](http://www.mademyday.de/css-height-equals-width-with-pure-css.html) can be used:
 
 ```html
 <style>
