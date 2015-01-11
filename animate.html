@@ -39,6 +39,13 @@
 			border: none;
 			overflow: hidden;
 		}
+
+		.thumbnail-small {
+			width: 400px;
+			margin-left: auto;
+			margin-right: auto;
+		}
+
 		pre {
 			-moz-tab-size: 2;
 			tab-size: 2;
@@ -532,7 +539,143 @@ https://farm7.staticflickr.com/6211/6254520191_c7868f3a5d_z.jpg 453w"
 				</div>
 			</div>
 		</div>
+		<div class="row">
+			<div class="alert alert-danger lazyload">
+				<p>While other lazy loaders or responsive images solution need to be called, if new elements are added to the DOM or do become visible through a special user interaction or a JavaScript behavior.</p>
+				<p>LazySizes does automatically detect any changes to the DOM and the visibility of <code>.lazyload</code> elements.</p>
+				<button type="button" class="add-new btn btn-primary">click to add new elements</button>
+			</div>
 
+			<script type="text/html" class="template">
+				<div class="thumbnail thumbnail-small lazyload lazyrollIn lazyspecial" data-expand="-20">
+					<div class="intrinsic">
+						<img
+								class="lazyload no-src"
+								data-src="http://lorempixel.com/400/300/abstract"
+								alt="" />
+					</div>
+				</div>
+
+				<div class="thumbnail thumbnail-small lazyload" data-expand="-20">
+					<div class="intrinsic">
+						<img
+								class="lazyload no-src"
+								data-src="http://lorempixel.com/400/300/animals"
+								alt="" />
+					</div>
+				</div>
+
+				<div class="thumbnail thumbnail-small lazyload" data-expand="-20">
+					<div class="intrinsic">
+						<img
+								class="lazyload no-src"
+								data-src="http://lorempixel.com/400/300/business"
+								alt="" />
+					</div>
+				</div>
+
+				<div class="thumbnail thumbnail-small lazyload" data-expand="-20">
+					<div class="intrinsic">
+						<img
+								class="lazyload no-src"
+								data-src="http://lorempixel.com/400/300/cats"
+								alt="" />
+					</div>
+				</div>
+
+				<div class="thumbnail thumbnail-small lazyload" data-expand="-20">
+					<div class="intrinsic">
+						<img
+								class="lazyload no-src"
+								data-src="http://lorempixel.com/400/300/city"
+								alt="" />
+					</div>
+				</div>
+
+				<div class="thumbnail thumbnail-small lazyload" data-expand="-20">
+					<div class="intrinsic">
+						<img
+								class="lazyload no-src"
+								data-src="http://lorempixel.com/400/300/food"
+								alt="" />
+					</div>
+				</div>
+
+				<div class="thumbnail thumbnail-small lazyload" data-expand="-20">
+					<div class="intrinsic">
+						<img
+								class="lazyload no-src"
+								data-src="http://lorempixel.com/400/300/nightlife"
+								alt="" />
+					</div>
+				</div>
+
+				<div class="thumbnail thumbnail-small lazyload" data-expand="-20">
+					<div class="intrinsic">
+						<img
+								class="lazyload no-src"
+								data-src="http://lorempixel.com/400/300/fashion"
+								alt="" />
+					</div>
+				</div>
+
+				<div class="thumbnail thumbnail-small lazyload" data-expand="-20">
+					<div class="intrinsic">
+						<img
+								class="lazyload no-src"
+								data-src="http://lorempixel.com/400/300/people"
+								alt="" />
+					</div>
+				</div>
+
+				<div class="thumbnail thumbnail-small lazyload" data-expand="-20">
+					<div class="intrinsic">
+						<img
+								class="lazyload no-src"
+								data-src="http://lorempixel.com/400/300/nature"
+								alt="" />
+					</div>
+				</div>
+
+				<div class="thumbnail thumbnail-small lazyload" data-expand="-20">
+					<div class="intrinsic">
+						<img
+								class="lazyload no-src"
+								data-src="http://lorempixel.com/400/300/sports"
+								alt="" />
+					</div>
+				</div>
+
+				<div class="thumbnail thumbnail-small lazyload" data-expand="-20">
+					<div class="intrinsic">
+						<img
+								class="lazyload no-src"
+								data-src="http://lorempixel.com/400/300/technics"
+								alt="" />
+					</div>
+				</div>
+
+				<div class="thumbnail thumbnail-small lazyload" data-expand="-20">
+					<div class="intrinsic">
+						<img
+								class="lazyload no-src"
+								data-src="http://lorempixel.com/400/300/transport"
+								alt="" />
+					</div>
+				</div>
+			</script>
+			<script>
+				$('.add-new').on('click', function(){
+					var $template = $('.template');
+					$template.after($template.html());
+				});
+			</script>
+			<br />
+			<br />
+			<br />
+			<br />
+
+		</div>
 
 	</div>
 
