@@ -398,7 +398,7 @@
 
 	var calcExpand = function(){
 		inViewLow = Math.max( Math.min(lazySizesConfig.expand || lazySizesConfig.threshold || 80, 300), 30 );
-		inViewHigh = Math.min( inViewLow * 7, Math.max(innerHeight * 1.1, docElem.clientHeight * 1.1, inViewLow * 4) );
+		inViewHigh = Math.min( inViewLow * 7, Math.max(innerHeight, docElem.clientHeight, inViewLow * 4) );
 		isWinloaded = /d$|^c/.test(document.readyState);
 		inViewThreshold = isWinloaded ? inViewHigh : inViewLow;
 	};
