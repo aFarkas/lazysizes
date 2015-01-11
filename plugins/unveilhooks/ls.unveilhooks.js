@@ -90,6 +90,7 @@ For background images, use data-bg attribute:
 					e.details.firesLoad = true;
 					load = function(){
 						e.target.style.backgroundImage = 'url(' + bg + ')';
+						e.details.firesLoad = false;
 						lazySizes.fire(e.target, '_lazyloaded');
 					};
 
@@ -106,6 +107,7 @@ For background images, use data-bg attribute:
 					e.details.firesLoad = true;
 					load = function(){
 						e.target.poster = poster;
+						e.details.firesLoad = false;
 						lazySizes.fire(e.target, '_lazyloaded');
 					};
 

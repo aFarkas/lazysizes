@@ -15,6 +15,7 @@ addEventListener('lazybeforeunveil', (function(){
 			if(bg){
 				e.target.style.backgroundImage = 'url('+ bg +')';
 			}
+			e.details.firesLoad = false;
 			if(lazySizes.cfg.clearAttr){
 				e.target.removeAttribute('data-bgset');
 			}

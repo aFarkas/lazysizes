@@ -118,14 +118,11 @@
 			}
 		};
 	})();
+
 	var isNestedVisibile = function(elem, elemExpand){
 		var outerRect;
 		var parent = elem;
 		var visible = getCSS(elem, 'visibility') != 'hidden';
-
-		if(isPreloading > 2 && elemExpand > 0){
-			elemExpand = -2;
-		}
 
 		eLtop -= elemExpand;
 		eLbottom += elemExpand;
@@ -133,7 +130,7 @@
 		eLright += elemExpand;
 
 		while(visible && (parent = parent.offsetParent) && parent != docElem && parent != document.body){
-			visible = (isWinloaded && isPreloading < 3) || ((getCSS(parent, 'opacity') || 1) > 0);
+			visible = (isWinloaded && isPreloading < 4) || ((getCSS(parent, 'opacity') || 1) > 0);
 			if(visible && getCSS(parent, 'overflow') != 'visible'){
 				outerRect = parent.getBoundingClientRect();
 				visible = eLright > outerRect.left - 1 &&
@@ -153,11 +150,13 @@
 		if(eLlen){
 			for(; globalLazyIndex < eLlen; globalLazyIndex++){
 
+				if(isPreloading > 6 && ('src' in lazyloadElems[globalLazyIndex])){continue;}
+
 				if(!(elemExpandVal = lazyloadElems[globalLazyIndex].getAttribute('data-expand')) || !(elemExpand = elemExpandVal * 1)){
 					elemExpand = inViewThreshold;
 				}
 
-				if(isPreloading > 3 && elemExpand > 0){
+				if(isPreloading > 2 && elemExpand > 0){
 					elemExpand = -2;
 				}
 
@@ -211,7 +210,7 @@
 	};
 
 	function unveilLazy(elem, force){
-		var sources, i, len, sourceSrcset, sizes, src, srcset, parent, isPicture, event;
+		var sources, i, len, sourceSrcset, sizes, src, srcset, parent, isPicture, event, firesLoad;
 
 		var curSrc = elem.currentSrc || elem.src;
 		var isImg = regImg.test(elem.nodeName);
@@ -237,19 +236,22 @@
 			srcset = elem.getAttribute(lazySizesConfig.srcsetAttr);
 			src = elem.getAttribute(lazySizesConfig.srcAttr);
 
-			isPreloading++;
-			addRemoveLoadEvents(elem, resetPreloading, true);
-			clearTimeout(resetPreloadingTimer);
-			resetPreloadingTimer = setTimeout(resetPreloading, 3000);
+			firesLoad = event.details.firesLoad || (regLoadElems.test(elem.nodeName) && (srcset || src));
 
-			if(isImg) {
-				parent = elem.parentNode;
-				isPicture = regPicture.test(parent.nodeName || '');
+			if(firesLoad){
+				isPreloading++;
+				addRemoveLoadEvents(elem, resetPreloading, true);
+				clearTimeout(resetPreloadingTimer);
+				resetPreloadingTimer = setTimeout(resetPreloading, 3000);
+
+				if(isImg) {
+					parent = elem.parentNode;
+					isPicture = regPicture.test(parent.nodeName || '');
+				}
 			}
 
 			if(lazySizesConfig.addClasses){
 				addClass(elem, lazySizesConfig.loadingClass);
-
 				addRemoveLoadEvents(elem, switchLoadingClass, true);
 			}
 
@@ -300,11 +302,13 @@
 			}
 
 			//remove curSrc == (elem.currentSrc || elem.src) it's a workaround for FF. see: https://bugzilla.mozilla.org/show_bug.cgi?id=608261
-			if( !event.details.firesLoad && (!regLoadElems.test(elem.nodeName) || (!srcset && !src) || (elem.complete && curSrc == (elem.currentSrc || elem.src))) ){
+			if( !firesLoad || (elem.complete && curSrc == (elem.currentSrc || elem.src)) ){
+				if(firesLoad){
+					resetPreloading({target: elem});
+				}
 				if(lazySizesConfig.addClasses){
 					switchLoadingClass({target: elem});
 				}
-				resetPreloading({target: elem});
 			}
 			elem = null;
 		});
@@ -393,8 +397,8 @@
 	}
 
 	var calcExpand = function(){
-		inViewLow = Math.max( Math.min(lazySizesConfig.expand || lazySizesConfig.threshold || 150, 300), 9 );
-		inViewHigh = Math.min( inViewLow * 9, Math.max(innerHeight * 1.3, docElem.clientHeight * 1.3, inViewLow * 4) );
+		inViewLow = Math.max( Math.min(lazySizesConfig.expand || lazySizesConfig.threshold || 130, 300), 9 );
+		inViewHigh = Math.min( inViewLow * 8, Math.max(innerHeight * 1.2, docElem.clientHeight * 1.2, inViewLow * 4) );
 		isWinloaded = /d$|^c/.test(document.readyState);
 		inViewThreshold = isWinloaded ? inViewHigh : inViewLow;
 	};

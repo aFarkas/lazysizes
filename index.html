@@ -44,9 +44,9 @@
 			overflow: hidden;
 		}
 		.thumbnail-small {
-			width: 400px;
-			margin-left: auto;
-			margin-right: auto;
+			width: 32%;
+			display: inline-block;
+			margin-bottom: 35px;
 		}
 		pre {
 			-moz-tab-size: 2;
@@ -100,6 +100,23 @@
 			transform: scale(1);
 		}
 
+		.effect-row-middle  > [data-expand]:nth-child(2),
+		.effect-row-reverse  > [data-expand]:nth-child(3),
+		.effect-row > [data-expand]:nth-child(1) {
+			transition-delay: 100ms;
+		}
+
+		.effect-row-middle  > [data-expand]:nth-child(1),
+		.effect-row-middle  > [data-expand]:nth-child(3),
+		.effect-row-reverse  > [data-expand]:nth-child(2),
+		.effect-row > [data-expand]:nth-child(2) {
+			transition-delay: 400ms;
+		}
+
+		.effect-row-reverse  > [data-expand]:nth-child(1),
+		.effect-row > [data-expand]:nth-child(3) {
+			transition-delay: 700ms;
+		}
 	</style>
 
 	<script>
@@ -307,7 +324,7 @@ https://farm9.staticflickr.com/8200/8248153196_7a7664e147_b.jpg 1024w"
 			</div>
 		</div>
 
-		<div class="row lazyload" data-expand="-90">
+		<div class="row lazyload" data-expand="-110">
 			<div class="col-sm-6">
 				<div class="thumbnail">
 					<div class="intrinsic intrinsic-3">
@@ -351,7 +368,7 @@ window.lazySizesConfig = {
 };
 &lt;/script&gt;
 
-&lt;div class="teaser lazyload" data-expand="-90"&gt;
+&lt;div class="teaser lazyload" data-expand="-110"&gt;
 	&lt;img data-src="image.jpg" class="lazyload" /&gt;
 	&lt;h1&gt;Teaser Title&lt;/h1&gt;
 	&lt;p&gt;...&lt;/p&gt;
@@ -627,136 +644,168 @@ https://farm7.staticflickr.com/6211/6254520191_c7868f3a5d_z.jpg 453w"
 		</div>
 
 		<div class="row">
-			<div class="alert alert-danger lazyload">
+			<div class="alert alert-info">
 				<p>While other lazy loaders or responsive images solution need to be called, if new elements are added to the DOM or do become visible through a special user interaction or a JavaScript behavior.</p>
 				<p>LazySizes does automatically detect any changes to the DOM and the visibility of <code>.lazyload</code> elements.</p>
 				<button type="button" class="add-new btn btn-primary">click to add new elements</button>
 			</div>
 
-<script type="text/html" class="template">
-	<div class="thumbnail thumbnail-small lazyload lazyrollIn lazyspecial" data-expand="-20">
-		<div class="intrinsic">
-			<img
-				class="lazyload no-src"
-				data-src="http://lorempixel.com/400/300/abstract"
-				alt="" />
-		</div>
-	</div>
+			<script type="text/html" class="template">
+				<div class="row">
+					<div class="thumbnail thumbnail-small lazyload" data-expand="-40">
+						<div class="intrinsic">
+							<img
+									class="lazyload no-src"
+									data-src="http://lorempixel.com/400/300/abstract/1"
+									alt="" />
+						</div>
+					</div>
 
-	<div class="thumbnail thumbnail-small lazyload" data-expand="-20">
-		<div class="intrinsic">
-			<img
-					class="lazyload no-src"
-					data-src="http://lorempixel.com/400/300/animals"
-					alt="" />
-		</div>
-	</div>
+					<div class="thumbnail thumbnail-small lazyload" data-expand="-40">
+						<div class="intrinsic">
+							<img
+									class="lazyload no-src"
+									data-src="http://lorempixel.com/400/300/animals/1"
+									alt="" />
+						</div>
+					</div>
 
-	<div class="thumbnail thumbnail-small lazyload" data-expand="-20">
-		<div class="intrinsic">
-			<img
-					class="lazyload no-src"
-					data-src="http://lorempixel.com/400/300/business"
-					alt="" />
-		</div>
-	</div>
+					<div class="thumbnail thumbnail-small lazyload" data-expand="-40">
+						<div class="intrinsic">
+							<img
+									class="lazyload no-src"
+									data-src="http://lorempixel.com/400/300/business/1"
+									alt="" />
+						</div>
+					</div>
+				</div>
 
-	<div class="thumbnail thumbnail-small lazyload" data-expand="-20">
-		<div class="intrinsic">
-			<img
-					class="lazyload no-src"
-					data-src="http://lorempixel.com/400/300/cats"
-					alt="" />
-		</div>
-	</div>
+				<div class="row effect-row">
 
-	<div class="thumbnail thumbnail-small lazyload" data-expand="-20">
-		<div class="intrinsic">
-			<img
-					class="lazyload no-src"
-					data-src="http://lorempixel.com/400/300/city"
-					alt="" />
-		</div>
-	</div>
+					<div class="thumbnail thumbnail-small lazyload lightSpeedIn" data-expand="-40">
+						<div class="intrinsic">
+							<img
+									class="lazyload no-src"
+									data-src="http://lorempixel.com/400/300/cats/1"
+									alt="" />
+						</div>
+					</div>
 
-	<div class="thumbnail thumbnail-small lazyload" data-expand="-20">
-		<div class="intrinsic">
-			<img
-					class="lazyload no-src"
-					data-src="http://lorempixel.com/400/300/food"
-					alt="" />
-		</div>
-	</div>
+					<div class="thumbnail thumbnail-small lazyload lightSpeedIn" data-expand="-40">
+						<div class="intrinsic">
+							<img
+									class="lazyload no-src"
+									data-src="http://lorempixel.com/400/300/city/1"
+									alt="" />
+						</div>
+					</div>
 
-	<div class="thumbnail thumbnail-small lazyload" data-expand="-20">
-		<div class="intrinsic">
-			<img
-					class="lazyload no-src"
-					data-src="http://lorempixel.com/400/300/nightlife"
-					alt="" />
-		</div>
-	</div>
+					<div class="thumbnail thumbnail-small lazyload lightSpeedIn" data-expand="-40">
+						<div class="intrinsic">
+							<img
+									class="lazyload no-src"
+									data-src="http://lorempixel.com/400/300/food/1"
+									alt="" />
+						</div>
+					</div>
+				</div>
 
-	<div class="thumbnail thumbnail-small lazyload" data-expand="-20">
-		<div class="intrinsic">
-			<img
-					class="lazyload no-src"
-					data-src="http://lorempixel.com/400/300/fashion"
-					alt="" />
-		</div>
-	</div>
+				<div class="row effect-row-middle">
+					<div class="thumbnail thumbnail-small lazyload" data-expand="-40">
+						<div class="intrinsic">
+							<img
+									class="lazyload no-src"
+									data-src="http://lorempixel.com/400/300/nature/1"
+									alt="" />
+						</div>
+					</div>
 
-	<div class="thumbnail thumbnail-small lazyload" data-expand="-20">
-		<div class="intrinsic">
-			<img
-					class="lazyload no-src"
-					data-src="http://lorempixel.com/400/300/people"
-					alt="" />
-		</div>
-	</div>
+					<div class="thumbnail thumbnail-small lazyload" data-expand="-40">
+						<div class="intrinsic">
+							<img
+									class="lazyload no-src"
+									data-src="http://lorempixel.com/400/300/sports/1"
+									alt="" />
+						</div>
+					</div>
 
-	<div class="thumbnail thumbnail-small lazyload" data-expand="-20">
-		<div class="intrinsic">
-			<img
-					class="lazyload no-src"
-					data-src="http://lorempixel.com/400/300/nature"
-					alt="" />
-		</div>
-	</div>
+					<div class="thumbnail thumbnail-small lazyload" data-expand="-40">
+						<div class="intrinsic">
+							<img
+									class="lazyload no-src"
+									data-src="http://lorempixel.com/400/300/technics/1"
+									alt="" />
+						</div>
 
-	<div class="thumbnail thumbnail-small lazyload" data-expand="-20">
-		<div class="intrinsic">
-			<img
-					class="lazyload no-src"
-					data-src="http://lorempixel.com/400/300/sports"
-					alt="" />
-		</div>
-	</div>
+					</div>
+				</div>
 
-	<div class="thumbnail thumbnail-small lazyload" data-expand="-20">
-		<div class="intrinsic">
-			<img
-					class="lazyload no-src"
-					data-src="http://lorempixel.com/400/300/technics"
-					alt="" />
-		</div>
-	</div>
+				<div class="row effect-row-reverse">
+					<div class="thumbnail thumbnail-small lazyload flipInX" data-expand="-40">
+						<div class="intrinsic">
+							<img
+									class="lazyload no-src"
+									data-src="http://lorempixel.com/400/300/nightlife/1"
+									alt="" />
+						</div>
+					</div>
 
-	<div class="thumbnail thumbnail-small lazyload" data-expand="-20">
-		<div class="intrinsic">
-			<img
-					class="lazyload no-src"
-					data-src="http://lorempixel.com/400/300/transport"
-					alt="" />
-		</div>
-	</div>
-</script>
+					<div class="thumbnail thumbnail-small lazyload flipInX" data-expand="-40">
+						<div class="intrinsic">
+							<img
+									class="lazyload no-src"
+									data-src="http://lorempixel.com/400/300/fashion/1"
+									alt="" />
+						</div>
+					</div>
+
+					<div class="thumbnail thumbnail-small lazyload flipInX" data-expand="-40">
+						<div class="intrinsic">
+							<img
+									class="lazyload no-src"
+									data-src="http://lorempixel.com/400/300/people/1"
+									alt="" />
+						</div>
+					</div>
+				</div>
+
+
+
+				<div class="row">
+					<div class="thumbnail thumbnail-small lazyload" data-expand="-40">
+						<div class="intrinsic">
+							<img
+									class="lazyload no-src"
+									data-src="http://lorempixel.com/400/300/transport/1"
+									alt="" />
+						</div>
+					</div>
+					<div class="thumbnail thumbnail-small lazyload" data-expand="-40">
+						<div class="intrinsic">
+							<img
+									class="lazyload no-src"
+									data-src="http://lorempixel.com/400/300/animals/1"
+									alt="" />
+						</div>
+					</div>
+					<div class="thumbnail thumbnail-small lazyload" data-expand="-40">
+						<div class="intrinsic">
+							<img
+									class="lazyload no-src"
+									data-src="http://lorempixel.com/400/300/food/2"
+									alt="" />
+						</div>
+					</div>
+				</div>
+			</script>
 			<script>
 				$('.add-new').on('click', function(){
 					var $template = $('.template');
 					$template.after($template.html());
 				});
 			</script>
+			<br />
+			<br />
 			<br />
 			<br />
 			<br />

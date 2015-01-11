@@ -129,7 +129,7 @@ In case disabled javascript is a concern you can combine the simple pattern with
 ###[data-expand] attribute
 Normally lazySizes will expand the viewport area to lazy preload images/iframes which might become visible soon. This value can be adjusted using the ``expand`` option.
 
-Additionally this general option can be overridden with the ``data-expand`` attribute for each element. Different than the normal ``expand`` option the ``data-expand`` attribute also accepts negative values.
+Additionally this general option can be overridden with the ``data-expand`` attribute for each element. Different than the general ``expand`` option the ``data-expand`` attribute also accepts negative values (All numbers but ``0`` are accepted!).
 
 This becomes especially handy to add unveiling effects for teasers or other elements:
 
@@ -182,7 +182,7 @@ Here the list of options:
 * ``lazySizesConfig.addClasses`` (default: ``false``): Wether lazysizes should add loading and loaded classes. This can be used to add unveil effects or to apply new styles (background-image). (see also ``preloadAfterLoad`` option).
 * ``lazySizesConfig.loadingClass`` (default: ``"lazyloading"``): If ``addClasses`` is set to ``true`` this ``class`` will be added to ``img`` element as soon as image loading starts. Can be used to add unveil effects.
 * ``lazySizesConfig.loadedClass`` (default: ``"lazyloaded"``): If ``addClasses`` is set to ``true`` this ``class`` will be added to any element as soon as the image is loaded or the image comes into view. Can be used to add unveil effects or to apply styles.
-* ``lazySizesConfig.expand`` (default: ``150``): The ``expand`` option expands the calculated visual viewport area in all directions, so that elements can be loaded before they are becoming visible. (Note: Reasonable values are between ``40`` and ``300``.) In case you have a lot of small images or you are using the LQIP pattern you can lower the value, in case you have larger images set it to a higher value. Also note, that lazySizes will dynamically adjust this value to shrink, if the browser is currently downloading and to expand if the browser network is currently idling. This option can be overridden with the ``[data-expand]`` attribute.
+* ``lazySizesConfig.expand`` (default: ``130``): The ``expand`` option expands the calculated visual viewport area in all directions, so that elements can be loaded before they are becoming visible. (Note: Reasonable values are between ``40`` and ``250``.) In case you have a lot of small images or you are using the LQIP pattern you can lower the value, in case you have larger images set it to a higher value. Also note, that lazySizes will dynamically adjust this value to shrink, if the browser is currently downloading and to expand if the browser network is currently idling. This option can be overridden with the ``[data-expand]`` attribute.
 * ``lazySizesConfig.onlyLargerSizes`` (default: ``true``): In case a responsive image had the ``data-sizes="auto"`` attribute and the computed new size decreases, lazysizes won't normally change the ``sizes`` attribute to a lower value.
 * ``lazySizesConfig.clearAttr`` (default: ``false``): Set this to ``true`` if you want lazysizes to remove the ``data-`` attributes after doing it's work.
 * ``lazySizesConfig.srcAttr`` (default: ``"data-src"``): The attribute, which should be transformed to ``src``.
