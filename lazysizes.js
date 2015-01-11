@@ -27,7 +27,6 @@
 	var inViewHigh = 40;
 
 	var lowRuns = 0;
-	var globalLazyIndex = 0;
 
 	var addRemoveLoadEvents = function(dom, fn, add){
 		var action = add ? 'addEventListener' : 'removeEventListener';
@@ -106,7 +105,6 @@
 
 		var run = function(){
 			clearTimeout(timer);
-			globalLazyIndex = 0;
 			evalLazyElements();
 			running = false;
 		};
@@ -145,14 +143,16 @@
 
 	var evalLazyElements = function (){
 		var rect, autoLoadElem, loadedSomething, elemExpandVal, elemExpand, beforeExpandVal;
+		var i = 0;
+
 		eLlen = lazyloadElems.length;
 
 		if(eLlen){
-			for(; globalLazyIndex < eLlen; globalLazyIndex++){
+			for(; i < eLlen; i++){
 
-				if(isPreloading > 6 && ('src' in lazyloadElems[globalLazyIndex])){continue;}
+				if(isPreloading > 6 && ('src' in lazyloadElems[i])){continue;}
 
-				if(!(elemExpandVal = lazyloadElems[globalLazyIndex].getAttribute('data-expand')) || !(elemExpand = elemExpandVal * 1)){
+				if(!(elemExpandVal = lazyloadElems[i].getAttribute('data-expand')) || !(elemExpand = elemExpandVal * 1)){
 					elemExpand = inViewThreshold;
 				}
 
@@ -167,23 +167,23 @@
 					beforeExpandVal = elemExpand;
 				}
 
-				rect = lazyloadElems[globalLazyIndex].getBoundingClientRect();
+				rect = lazyloadElems[i].getBoundingClientRect();
 
 				if ((eLbottom = rect.bottom) >= eLnegativeTreshhold &&
 					(eLtop = rect.top) <= elvH &&
 					(eLright = rect.right) >= eLnegativeTreshhold &&
 					(eLleft = rect.left) <= eLvW &&
 					(eLbottom || eLright || eLleft || eLtop) &&
-					((isWinloaded && inViewThreshold == inViewLow && isPreloading < 3 && lowRuns < 9 && !elemExpandVal) || isNestedVisibile(lazyloadElems[globalLazyIndex], elemExpand))){
-					unveilLazy(lazyloadElems[globalLazyIndex]);
+					((isWinloaded && inViewThreshold == inViewLow && isPreloading < 3 && lowRuns < 9 && !elemExpandVal) || isNestedVisibile(lazyloadElems[i], elemExpand))){
+					unveilLazy(lazyloadElems[i]);
 					loadedSomething = true;
 				} else  {
 
 					if(!loadedSomething && isWinloaded && !autoLoadElem &&
 						isPreloading < 3 && lowRuns < 9 &&
 						(preloadElems[0] || lazySizesConfig.preloadAfterLoad) &&
-						(preloadElems[0] || (!elemExpandVal && ((eLbottom || eLright || eLleft || eLtop) || lazyloadElems[globalLazyIndex].getAttribute(lazySizesConfig.sizesAttr) != 'auto')))){
-						autoLoadElem = preloadElems[0] || lazyloadElems[globalLazyIndex];
+						(preloadElems[0] || (!elemExpandVal && ((eLbottom || eLright || eLleft || eLtop) || lazyloadElems[i].getAttribute(lazySizesConfig.sizesAttr) != 'auto')))){
+						autoLoadElem = preloadElems[0] || lazyloadElems[i];
 					}
 				}
 			}
@@ -397,8 +397,8 @@
 	}
 
 	var calcExpand = function(){
-		inViewLow = Math.max( Math.min(lazySizesConfig.expand || lazySizesConfig.threshold || 130, 300), 9 );
-		inViewHigh = Math.min( inViewLow * 8, Math.max(innerHeight * 1.2, docElem.clientHeight * 1.2, inViewLow * 4) );
+		inViewLow = Math.max( Math.min(lazySizesConfig.expand || lazySizesConfig.threshold || 80, 300), 30 );
+		inViewHigh = Math.min( inViewLow * 7, Math.max(innerHeight * 1.1, docElem.clientHeight * 1.1, inViewLow * 4) );
 		isWinloaded = /d$|^c/.test(document.readyState);
 		inViewThreshold = isWinloaded ? inViewHigh : inViewLow;
 	};
@@ -475,7 +475,6 @@
 		updateAllSizes: lazyEvalSizes,
 		updateAllLazy: function(force){
 			if(force){
-				globalLazyIndex = 0;
 				evalLazyElements();
 			} else {
 				lazyEvalLazy();
