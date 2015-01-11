@@ -133,7 +133,7 @@
 		eLright += elemExpand;
 
 		while(visible && (parent = parent.offsetParent) && parent != docElem && parent != document.body){
-			visible = isPreloading < 3 || ((getCSS(parent, 'opacity') || 1) > 0);
+			visible = (isWinloaded && isPreloading < 3) || ((getCSS(parent, 'opacity') || 1) > 0);
 			if(visible && getCSS(parent, 'overflow') != 'visible'){
 				outerRect = parent.getBoundingClientRect();
 				visible = eLright > outerRect.left - 1 &&
