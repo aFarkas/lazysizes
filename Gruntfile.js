@@ -46,6 +46,13 @@
 					src: [ "lazysizes.js", "plugins/**/*.js", "!*.min.js", "!plugins/**/*.min.js" ] //, "Gruntfile.js", "tests/*.js"
 				}
 			},
+			plato: {
+				all: {
+					files: {
+						"plato-report/": ["lazysizes.js", "plugins/**/*.js", "!*.min.js", "!plugins/**/*.min.js"]
+					}
+				}
+			},
 			watch: {
 				gruntfile: {
 					files: [ "Gruntfile.js", "lazysizes.js" ],
@@ -84,6 +91,7 @@
 		grunt.loadNpmTasks('grunt-uncss');
 		grunt.loadNpmTasks('grunt-bytesize');
 		grunt.loadNpmTasks('grunt-max-filesize');
+		grunt.loadNpmTasks('grunt-plato');
 
 
 		// Default task.
