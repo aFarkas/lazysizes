@@ -90,7 +90,7 @@
 		return getComputedStyle(elem, null)[style];
 	}
 
-	var eLlen, resetPreloadingTimer, eLvW, elvH, eLtop, eLleft, eLright, eLbottom, eLnegativeTreshhold;
+	var isExpandCalced, eLlen, resetPreloadingTimer, eLvW, elvH, eLtop, eLleft, eLright, eLbottom, eLnegativeTreshhold;
 	var resetPreloading = function(e){
 		isPreloading--;
 		if(e && e.target){
@@ -100,11 +100,21 @@
 			isPreloading = 0;
 		}
 	};
+	var calcExpand = function(){
+		inViewLow = Math.max( Math.min(lazySizesConfig.expand || lazySizesConfig.threshold || 95, 300), 30 );
+		inViewHigh = Math.min( inViewLow * 7, Math.max(innerHeight, docElem.clientHeight, 500) );
+		isWinloaded = /d$|^c/.test(document.readyState);
+		isExpandCalced = true;
+		inViewThreshold = isWinloaded ? inViewHigh : inViewLow;
+	};
 	var lazyEvalLazy = (function(){
 		var timer, running;
 
 		var run = function(){
 			clearTimeout(timer);
+			if(!isExpandCalced){
+				calcExpand();
+			}
 			evalLazyElements();
 			running = false;
 		};
@@ -404,13 +414,6 @@
 		}
 	}
 
-	var calcExpand = function(){
-		inViewLow = Math.max( Math.min(lazySizesConfig.expand || lazySizesConfig.threshold || 95, 300), 30 );
-		inViewHigh = Math.min( inViewLow * 7, Math.max(innerHeight, docElem.clientHeight, 500) );
-		isWinloaded = /d$|^c/.test(document.readyState);
-		inViewThreshold = isWinloaded ? inViewHigh : inViewLow;
-	};
-
 	lazySizesConfig = window.lazySizesConfig || {};
 
 	(function(){
@@ -442,6 +445,11 @@
 
 	setTimeout(function(){
 		var readyState = document.readyState;
+		var onload = function(){
+			calcExpand();
+			evalLazyElements();
+		};
+
 		lazyloadElems = document.getElementsByClassName(lazySizesConfig.lazyClass);
 		preloadElems = document.getElementsByClassName(lazySizesConfig.lazyClass+' '+lazySizesConfig.preloadClass);
 		autosizesElems = document.getElementsByClassName(lazySizesConfig.autosizesClass);
@@ -450,7 +458,11 @@
 			addEventListener('scroll', lazyEvalLazy, true);
 		}
 
-		addEventListener('resize', lazyEvalLazy, false);
+		addEventListener('resize', function(){
+			isExpandCalced = false;
+			lazyEvalLazy();
+		}, false);
+
 		addEventListener('resize', lazyEvalSizes, false);
 
 		if(window.MutationObserver){
@@ -469,10 +481,10 @@
 
 
 		if(/d$|^c/.test(readyState)){
-			calcExpand();
+			onload();
 		} else {
 			document.addEventListener('DOMContentLoaded', lazyEvalLazy, false);
-			addEventListener('load', calcExpand, false);
+			addEventListener('load', onload, false);
 			setTimeout(calcExpand, 6000);
 		}
 		lazyEvalLazy();
