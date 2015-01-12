@@ -19,7 +19,7 @@
 
 	var regPicture = /^picture$/i;
 	var regImg = /^img$/i;
-	var regLoadElems = /^(?:img|iframe)$/i;
+	var regIframe = /^iframe$/i;
 
 
 	var inViewLow = -2;
@@ -236,7 +236,7 @@
 			srcset = elem.getAttribute(lazySizesConfig.srcsetAttr);
 			src = elem.getAttribute(lazySizesConfig.srcAttr);
 
-			firesLoad = event.details.firesLoad || (regLoadElems.test(elem.nodeName) && (srcset || src));
+			firesLoad = event.details.firesLoad || (('src' in elem) && (srcset || src));
 
 			if(firesLoad){
 				isPreloading++;
@@ -279,7 +279,15 @@
 						elem.removeAttribute(lazySizesConfig.srcsetAttr);
 					}
 				} else if(src){
-					elem.setAttribute('src', src);
+					if(!isImg && regIframe.test(elem.nodeName)){
+						try {
+							elem.contentWindow.location.replace(src);
+						} catch(e){
+							elem.setAttribute('src', src);
+						}
+					} else {
+						elem.setAttribute('src', src);
+					}
 					if(lazySizesConfig.clearAttr) {
 						elem.removeAttribute(lazySizesConfig.srcAttr);
 					}
