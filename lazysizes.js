@@ -265,6 +265,14 @@
 			addRemoveLoadEvents(e.target, switchLoadingClass);
 		};
 
+		var changeIframeSrc = function(elem, src){
+			try {
+				elem.contentWindow.location.replace(src);
+			} catch(e){
+				elem.setAttribute('src', src);
+			}
+		};
+
 		var unveilElement = function (elem, force){
 			var sources, i, len, sourceSrcset, sizes, src, srcset, parent, isPicture, event, firesLoad;
 
@@ -336,11 +344,7 @@
 						}
 					} else if(src){
 						if(!isImg && regIframe.test(elem.nodeName)){
-							try {
-								elem.contentWindow.location.replace(src);
-							} catch(e){
-								elem.setAttribute('src', src);
-							}
+							changeIframeSrc(elem, src);
 						} else {
 							elem.setAttribute('src', src);
 						}
