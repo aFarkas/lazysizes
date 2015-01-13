@@ -72,7 +72,7 @@ Add the ``class`` ``lazyload`` to all ``img`` and ``iframe`` elements, which sho
     responsive-image3.jpg 900w" class="lazyload" />
 ```
 
-**Important: How ``sizes`` is calculated**: The automatic sizes calculation takes the width of the image and the width of its parent element and uses the largest number of those two calculated numbers. It's therefore important that all images with a ``data-sizes="auto"`` attribute are constrained in width by its parent element. Otherwise a wrong (too big) ``sizes`` attribute will be calculated. Often the following general CSS rule might help: ``img[data-sizes="auto"] { display: block; }``.
+**Important: How ``sizes`` is calculated**: The automatic sizes calculation takes the width of the image if it is over ``40`` (see also ``minSize`` option). In case it's under it traverses up the DOM tree until it finds a parent which is over ``40`` and uses this number. Often the following general CSS rule might help: ``img[data-sizes="auto"] { display: block; }``.
 
 ##Recommended markup patterns
 For some image bots (search engines and social networks), legacy browsers (IE8) or JS disabled browsers, it is important to serve a usable ``src`` attribute:
@@ -184,7 +184,7 @@ Here the list of options:
 * ``lazySizesConfig.loadedClass`` (default: ``"lazyloaded"``): If ``addClasses`` is set to ``true`` this ``class`` will be added to any element as soon as the image is loaded or the image comes into view. Can be used to add unveil effects or to apply styles.
 * ``lazySizesConfig.expand`` (default: ``80``): The ``expand`` option expands the calculated visual viewport area in all directions, so that elements can be loaded before they are becoming visible. (Note: Reasonable values are between ``40`` and ``200``.) In case you have a lot of small images or you are using the LQIP pattern you can lower the value, in case you have larger images set it to a higher value. Also note, that lazySizes will dynamically shrink this value, if the browser is currently downloading and expand it if the browser network is currently idling. This option can be overridden with the ``[data-expand]`` attribute.
 * ``lazySizesConfig.onlyLargerSizes`` (default: ``true``): In case a responsive image had the ``data-sizes="auto"`` attribute and the computed new size decreases, lazysizes won't normally change the ``sizes`` attribute to a lower value.
-* ``lazySizesConfig.clearAttr`` (default: ``false``): Set this to ``true`` if you want lazysizes to remove the ``data-`` attributes after doing it's work.
+* ``lazySizesConfig.minSize`` (default: ``40``): For ``data-sizes="auto"`` feature. The minimum size of an image that is used to calculate the ``sizes`` attribute. In case it is under ``minSize`` the script traverses up the DOM tree until it finds a parent that is over ``minSize``.
 * ``lazySizesConfig.srcAttr`` (default: ``"data-src"``): The attribute, which should be transformed to ``src``.
 * ``lazySizesConfig.srcset`` (default: ``"data-srcset"``): The attribute, which should be transformed to ``srcset``.
 * ``lazySizesConfig.sizesAttr`` (default: ``"data-sizes"``): The attribute, which should be transformed to ``sizes``.

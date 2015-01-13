@@ -1,16 +1,15 @@
-(function (factory) {
-	window.lazySizes = factory(window);
+(function (window, factory) {
+	window.lazySizes = factory(window, window.document);
 	if (typeof define === 'function' && define.amd) {
 		define(window.lazySizes);
 	}
-}(function (window) {
+}(window, function (window, document) {
 	'use strict';
 	/*jshint eqnull:true */
-	if(!window.document.getElementsByClassName){return;}
+	if(!document.getElementsByClassName){return;}
 
 	var lazySizesConfig;
 
-	var document = window.document;
 	var docElem = document.documentElement;
 
 	var regPicture = /^picture$/i;
@@ -197,6 +196,7 @@
 
 			var eLlen = lazyloadElems.length;
 			var start = Date.now();
+			var i = checkElementsIndex;
 
 			if(!isExpandCalculated){
 				calcExpand();
@@ -204,15 +204,15 @@
 
 			if(eLlen){
 
-				for(; checkElementsIndex < eLlen; checkElementsIndex++){
+				for(; i < eLlen; i++, checkElementsIndex++){
 
-					if(!lazyloadElems[checkElementsIndex]){break;}
+					if(!lazyloadElems[i]){break;}
 
-					if(!(elemExpandVal = lazyloadElems[checkElementsIndex].getAttribute('data-expand')) || !(elemExpand = elemExpandVal * 1)){
+					if(!(elemExpandVal = lazyloadElems[i].getAttribute('data-expand')) || !(elemExpand = elemExpandVal * 1)){
 						elemExpand = currentExpand;
 					}
 
-					if(isLoading > 6 && (!elemExpandVal || ('src' in lazyloadElems[checkElementsIndex]))){continue;}
+					if(isLoading > 6 && (!elemExpandVal || ('src' in lazyloadElems[i]))){continue;}
 
 					if(isLoading > 2 && elemExpand > 0){
 						elemExpand = INVIEWEXPAND;
@@ -225,21 +225,21 @@
 						beforeExpandVal = elemExpand;
 					}
 
-					rect = lazyloadElems[checkElementsIndex].getBoundingClientRect();
+					rect = lazyloadElems[i].getBoundingClientRect();
 
 					if ((eLbottom = rect.bottom) >= elemNegativeExpand &&
 						(eLtop = rect.top) <= elvH &&
 						(eLright = rect.right) >= elemNegativeExpand &&
 						(eLleft = rect.left) <= eLvW &&
 						(eLbottom || eLright || eLleft || eLtop) &&
-						((isWinloaded && currentExpand == defaultExpand && isLoading < 3 && lowRuns < 9 && !elemExpandVal) || isNestedVisibile(lazyloadElems[checkElementsIndex], elemExpand))){
-						unveilElement(lazyloadElems[checkElementsIndex]);
+						((isWinloaded && currentExpand == defaultExpand && isLoading < 3 && lowRuns < 9 && !elemExpandVal) || isNestedVisibile(lazyloadElems[i], elemExpand))){
 						checkElementsIndex--;
-						eLlen--;
+						start++;
+						unveilElement(lazyloadElems[i]);
 						loadedSomething = true;
 					} else  {
 
-						if(Date.now() - start > 9){
+						if(Date.now() - start > 6){
 							checkElementsIndex++;
 							throttledCheckElements();
 							return;
@@ -248,8 +248,8 @@
 						if(!loadedSomething && isWinloaded && !autoLoadElem &&
 							isLoading < 3 && lowRuns < 9 &&
 							(preloadElems[0] || lazySizesConfig.preloadAfterLoad) &&
-							(preloadElems[0] || (!elemExpandVal && ((eLbottom || eLright || eLleft || eLtop) || lazyloadElems[checkElementsIndex].getAttribute(lazySizesConfig.sizesAttr) != 'auto')))){
-							autoLoadElem = preloadElems[0] || lazyloadElems[checkElementsIndex];
+							(preloadElems[0] || (!elemExpandVal && ((eLbottom || eLright || eLleft || eLtop) || lazyloadElems[i].getAttribute(lazySizesConfig.sizesAttr) != 'auto')))){
+							autoLoadElem = preloadElems[0] || lazyloadElems[i];
 						}
 					}
 				}
@@ -307,9 +307,6 @@
 					} else {
 						elem.setAttribute('sizes', sizes);
 					}
-					if(lazySizesConfig.clearAttr){
-						elem.removeAttribute(lazySizesConfig.sizesAttr);
-					}
 				}
 
 				srcset = elem.getAttribute(lazySizesConfig.srcsetAttr);
@@ -327,11 +324,6 @@
 						parent = elem.parentNode;
 						isPicture = regPicture.test(parent.nodeName || '');
 					}
-				}
-
-				if(lazySizesConfig.addClasses){
-					addClass(elem, lazySizesConfig.loadingClass);
-					addRemoveLoadEvents(elem, switchLoadingClass, true);
 				}
 
 				if(srcset || src){
@@ -354,23 +346,21 @@
 							elem.removeAttribute('src');
 						}
 
-						if(lazySizesConfig.clearAttr){
-							elem.removeAttribute(lazySizesConfig.srcsetAttr);
-						}
 					} else if(src){
-						if(!isImg && regIframe.test(elem.nodeName)){
+						if(regIframe.test(elem.nodeName)){
 							changeIframeSrc(elem, src);
 						} else {
 							elem.setAttribute('src', src);
 						}
-						if(lazySizesConfig.clearAttr) {
-							elem.removeAttribute(lazySizesConfig.srcAttr);
-						}
 					}
+				}
+
+				if(lazySizesConfig.addClasses){
+					addClass(elem, lazySizesConfig.loadingClass);
+					addRemoveLoadEvents(elem, switchLoadingClass, true);
 				}
 			}
 
-			removeClass(elem, lazySizesConfig.lazyClass);
 
 			setTimeout(function(){
 				if(sizes == 'auto'){
@@ -381,9 +371,7 @@
 					updatePolyfill(elem, {srcset: srcset, src: src});
 				}
 
-				if(elem.lazyload){
-					elem.lazyload = 0;
-				}
+				removeClass(elem, lazySizesConfig.lazyClass);
 
 				//remove curSrc == (elem.currentSrc || elem.src) it's a workaround for FF. see: https://bugzilla.mozilla.org/show_bug.cgi?id=608261
 				if( !firesLoad || (elem.complete && curSrc == (elem.currentSrc || elem.src)) ){

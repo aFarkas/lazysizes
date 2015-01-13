@@ -59,18 +59,12 @@ For background images, use data-bg attribute:
 				tmp = e.target.getAttribute('data-link');
 				if(tmp){
 					addStyleScript(tmp, true);
-					if(config.clearAttr){
-						e.target.removeAttribute('data-link');
-					}
 				}
 
 				// handle data-script
 				tmp = e.target.getAttribute('data-script');
 				if(tmp){
 					addStyleScript(tmp);
-					if(config.clearAttr){
-						e.target.removeAttribute('data-script');
-					}
 				}
 
 				// handle data-require
@@ -78,9 +72,6 @@ For background images, use data-bg attribute:
 				if(tmp){
 					if(window.require){
 						require([tmp]);
-					}
-					if(config.clearAttr){
-						e.target.removeAttribute('data-require');
 					}
 				}
 
@@ -95,10 +86,6 @@ For background images, use data-bg attribute:
 					};
 
 					bgLoad(bg, load);
-
-					if(config.clearAttr){
-						e.target.removeAttribute('data-bg');
-					}
 				}
 
 				// handle data-poster
@@ -113,9 +100,6 @@ For background images, use data-bg attribute:
 
 					bgLoad(poster, load);
 
-					if(config.clearAttr){
-						e.target.removeAttribute('data-poster');
-					}
 				}
 			}
 		}, false);
