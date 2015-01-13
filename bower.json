@@ -2,9 +2,9 @@
 	"name": "lazysizes",
 	"repo": "afarkas/lazysizes",
 	"version": "0.7.2",
-	"main": "lazysizes.min.js",
+	"main": "lazysizes.js",
 	"scripts": [
-		"lazysizes.min.js"
+		"lazysizes.js"
 	],
 	"license": "MIT",
 	"authors": [
