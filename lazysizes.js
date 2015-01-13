@@ -195,6 +195,7 @@
 
 
 			var eLlen = lazyloadElems.length;
+
 			var start = Date.now();
 			var i = checkElementsIndex;
 
@@ -205,8 +206,6 @@
 			if(eLlen){
 
 				for(; i < eLlen; i++, checkElementsIndex++){
-
-					if(!lazyloadElems[i]){break;}
 
 					if(!(elemExpandVal = lazyloadElems[i].getAttribute('data-expand')) || !(elemExpand = elemExpandVal * 1)){
 						elemExpand = currentExpand;
