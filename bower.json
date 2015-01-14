@@ -4,7 +4,8 @@
 	"version": "0.7.2",
 	"main": "lazysizes.js",
 	"scripts": [
-		"lazysizes.js"
+		"lazysizes.js",
+		"lazysizes.min.js"
 	],
 	"license": "MIT",
 	"authors": [

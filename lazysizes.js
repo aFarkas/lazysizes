@@ -133,8 +133,8 @@
 		var regIframe = /^iframe$/i;
 
 
-		var INVIEWEXPAND = -2;
-		var defaultExpand = INVIEWEXPAND;
+		var shrinkExpand = -2;
+		var defaultExpand = shrinkExpand;
 		var preloadExpand = 60;
 		var currentExpand = defaultExpand;
 		var isExpandCalculated = true;
@@ -157,8 +157,8 @@
 		var calcExpand = function(){
 
 			if(isWinloaded && !isExpandCalculated){
-				defaultExpand = Math.max( Math.min(lazySizesConfig.expand || lazySizesConfig.threshold || 95, 300), 30 );
-				preloadExpand = Math.min( defaultExpand * 7, Math.max(innerHeight, docElem.clientHeight, 500) );
+				defaultExpand = Math.max( Math.min(lazySizesConfig.expand || lazySizesConfig.threshold || 150, 300), 30 );
+				preloadExpand = Math.min( defaultExpand * 4, Math.max(innerHeight * 1.1, docElem.clientHeight, defaultExpand * 3) );
 			}
 
 			isExpandCalculated = true;
@@ -213,8 +213,8 @@
 
 					if(isLoading > 6 && (!elemExpandVal || ('src' in lazyloadElems[i]))){continue;}
 
-					if(isLoading > 2 && elemExpand > 0){
-						elemExpand = INVIEWEXPAND;
+					if(isLoading > 3 && elemExpand > shrinkExpand){
+						elemExpand = shrinkExpand;
 					}
 
 					if(beforeExpandVal !== elemExpand){
@@ -231,7 +231,7 @@
 						(eLright = rect.right) >= elemNegativeExpand &&
 						(eLleft = rect.left) <= eLvW &&
 						(eLbottom || eLright || eLleft || eLtop) &&
-						((isWinloaded && currentExpand == defaultExpand && isLoading < 3 && lowRuns < 9 && !elemExpandVal) || isNestedVisibile(lazyloadElems[i], elemExpand))){
+						((isWinloaded && currentExpand == defaultExpand && isLoading < 3 && lowRuns < 4 && !elemExpandVal) || isNestedVisibile(lazyloadElems[i], elemExpand))){
 						checkElementsIndex--;
 						start++;
 						unveilElement(lazyloadElems[i]);
@@ -245,7 +245,7 @@
 						}
 
 						if(!loadedSomething && isWinloaded && !autoLoadElem &&
-							isLoading < 3 && lowRuns < 9 &&
+							isLoading < 3 && lowRuns < 4 &&
 							(preloadElems[0] || lazySizesConfig.preloadAfterLoad) &&
 							(preloadElems[0] || (!elemExpandVal && ((eLbottom || eLright || eLleft || eLtop) || lazyloadElems[i].getAttribute(lazySizesConfig.sizesAttr) != 'auto')))){
 							autoLoadElem = preloadElems[0] || lazyloadElems[i];
@@ -257,7 +257,7 @@
 
 				lowRuns++;
 
-				if(currentExpand < preloadExpand && isLoading < 2 && lowRuns > 9){
+				if(currentExpand < preloadExpand && isLoading < 2 && lowRuns > 4){
 					currentExpand = preloadExpand;
 					lowRuns = 0;
 					throttledCheckElements();
