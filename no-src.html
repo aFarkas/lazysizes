@@ -90,13 +90,13 @@
 
 		[data-expand].lazyload {
 			opacity: 0;
-			transform: scale(0.8);
+			transform: scale(0.8) translateY(-100px);
 		}
 
 		[data-expand].lazyloaded {
 			opacity: 1;
 			transition: all 700ms;
-			transform: scale(1);
+			transform: scale(1) translateY(0px);
 		}
 
 		.effect-row-middle  > [data-expand]:nth-child(2),

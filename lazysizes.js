@@ -135,7 +135,7 @@
 
 		var shrinkExpand = -2;
 		var defaultExpand = shrinkExpand;
-		var preloadExpand = 60;
+		var preloadExpand = 120;
 		var currentExpand = defaultExpand;
 		var isExpandCalculated = true;
 		var lowRuns = 0;
@@ -424,7 +424,7 @@
 			} else {
 				document.addEventListener('DOMContentLoaded', throttledCheckElements, false);
 				addEventListener('load', onload, false);
-				setTimeout(onload, 9999);
+				setTimeout(onload, 12000);
 				throttledCheckElements();
 			}
 

@@ -39,10 +39,11 @@
 
 1. **Works without any configuration in any web enviroment**: The script works as an universal, self-initializing, self-configuring and self-destroying component and detects any changes to the visibility of an image/iframe automatically no matter whether it becomes visible through a user scroll, a CSS animation triggered through ``:hover`` or through any kind of JS behavior (carousel, infinite scroll, AJAX, SPA...). Also works in conjunction with any kind of JS-/Frontend-Framework.
 2. **Future-proof**: It directly includes standard responsive image support (``picture`` and ``srcset``)
-3. **Separation of concerns**: For responsive image support it adds an automatic ``sizes`` calculation feature.
+3. **Separation of concerns**: For responsive image support it adds an automatic ``sizes`` calculation feature. There is also no change needed if you add a scrollable container with CSS (overflow: auto) or create a mega menu containing images.
 4. **Performance**: It's based on high efficient code (runtime **and** memory) to work jank-free at 60fps.
 5. **Extendable**: It provides JS and CSS hooks to extend lazySizes with any kind of lazy loading or effects.
-6. **Intelligent prefetch**: lazySizes prefetches near the view assets, while the browser network is idling. (see also ``threshold`` option)
+6. **Intelligent prefetch**: lazySizes prefetches near the view assets, only while the browser network is idling. (see also ``expand`` option)
+7. **Lightweight, but mature solution**
 
 ##[Demo with code examples](http://afarkas.github.io/lazysizes/#examples)
 Can be seen [here](http://afarkas.github.io/lazysizes/#examples).
@@ -259,6 +260,25 @@ window.lazySizesConfig = {
 	//,expand: 80 //default is 150
 };
 </script>
+```
+
+The ``lazybeforeunveil`` can also be used for lazy initialization and due to the fact that lazySizes also detects new elements in the DOM automatically also for auto- and self-initialization of UI widgets:
+
+```html
+<script>
+document.addEventListener('lazybeforeunveil', function(e){
+    $(e.target)
+        .filter('.slider')
+        .slider({
+            sliderOption: true
+        })
+    ;
+});
+</script>
+
+<div class="slider lazyload">
+
+</div>
 ```
 
 * ``lazybeforesizes``: This event will be fired on each element with the ``data-sizes="auto"`` attribute right before the calculated ``sizes`` attribute will be set. The ``event.details.width`` property is set to the calculated width of the element and can be changed to any number. In case the event is ``defaultPrevented`` the ``sizes`` attribute won't be set.
