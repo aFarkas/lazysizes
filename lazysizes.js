@@ -124,7 +124,7 @@
 	};
 
 	var loader = (function(){
-		var lazyloadElems, preloadElems, isPreloadAllowed, isCompleted, resetPreloadingTimer;
+		var lazyloadElems, preloadElems, isPreloadAllowed, isCompleted, resetPreloadingTimer, runThrough;
 
 		var eLvW, elvH, eLtop, eLleft, eLright, eLbottom;
 
@@ -228,8 +228,9 @@
 						loadedSomething = true;
 					} else  {
 
-						if(Date.now() - start > 6){
+						if(!runThrough && Date.now() - start > 3){
 							checkElementsIndex++;
+							runThrough = true;
 							throttledCheckElements();
 							return;
 						}
@@ -245,6 +246,7 @@
 				}
 
 				checkElementsIndex = 0;
+				runThrough = false;
 
 				lowRuns++;
 
@@ -425,9 +427,11 @@
 				document.addEventListener(evt, throttledCheckElements, true);
 			});
 
-			addEventListener('load', onload, false);
+			if(!(isCompleted = /d$|^c/.test(document.readyState))){
+				addEventListener('load', onload, false);
+				document.addEventListener('DOMContentLoaded', throttledCheckElements, false);
+			}
 
-			document.addEventListener('DOMContentLoaded', throttledCheckElements, false);
 			setTimeout(allowPreload, 666);
 			throttledCheckElements();
 		};
@@ -528,10 +532,8 @@
 
 		window.lazySizesConfig = lazySizesConfig;
 
-		setTimeout(function(){
-			autoSizer.init();
-			loader.init();
-		});
+		autoSizer.init();
+		loader.init();
 	})();
 
 

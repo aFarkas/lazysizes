@@ -1,5 +1,5 @@
 #lazysizes
-**lazysizes** is a fast (jank-free) lazyloader for images (including responsive images), iframes, scripts/widgets and much more. It may become also your number one tool to integrate responsive images. Due to the fact that it can also automatically calculate the ``sizes`` attribute for your responsive images, it helps to separate layout (CSS) from content/structure (HTML) and makes integrating responsive images into any environment simply simple.
+**lazysizes** is a fast (jank-free) and self-initializing lazyloader for images (including responsive images), iframes, scripts/widgets and much more. It may become also your number one tool to integrate responsive images. Due to the fact that it can also automatically calculate the ``sizes`` attribute for your responsive images, it helps to separate layout (CSS) from content/structure (HTML) and makes integrating responsive images into any environment simply simple.
 
 ##How to
 
@@ -48,7 +48,7 @@
 ##[Demo with code examples](http://afarkas.github.io/lazysizes/#examples)
 Can be seen [here](http://afarkas.github.io/lazysizes/#examples).
 
-##About responsive image support
+##About responsive image support (``picture`` and/or ``srcset``)
 For full cross browser responsive image support you must either use a polyfill like [respimage (recommended) (srcset and picture polyfill)](https://github.com/aFarkas/respimage) or [picturefill](https://github.com/scottjehl/picturefill) or use the [responsive image on demand plugin](plugins/rias).
 
 ##More about the API
@@ -274,11 +274,20 @@ document.addEventListener('lazybeforeunveil', function(e){
         })
     ;
 });
+
+document.addEventListener('lazybeforeunveil', function(e){
+    $(e.target)
+        .filter('.chart')
+        .chart({
+            animate: true
+        })
+    ;
+});
 </script>
 
-<div class="slider lazyload">
+<div class="slider lazyload"></div>
 
-</div>
+<div class="chart lazyload" data-expand="-10"></div>
 ```
 
 * ``lazybeforesizes``: This event will be fired on each element with the ``data-sizes="auto"`` attribute right before the calculated ``sizes`` attribute will be set. The ``event.details.width`` property is set to the calculated width of the element and can be changed to any number. In case the event is ``defaultPrevented`` the ``sizes`` attribute won't be set.
