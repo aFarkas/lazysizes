@@ -265,7 +265,7 @@
 			<div class="alert alert-info">
 				<p><strong>automatic sizes feature</strong>: In case of lazy loading images the <code>sizes</code> attribute of the <code>img</code>/<code>source</code> elements can be calculated with JS.</p>
 				<p>This automatic sizes feature is directly included in <strong>lazySizes</strong>. Simply use the keyword <code>auto</code> inside of the <code>data-sizes</code> attributes (<code>data-sizes="auto"</code>).</p>
-				<p><strong>Important: How <code>sizes</code> is calculated</strong>: The automatic sizes calculation takes the width of the image if it is over <code>40</code> (see also <code>minSize</code> option). In case it's under it traverses up the DOM tree until it finds a parent which is over <code>40</code> and uses this number. Often the following general CSS rule might help: <code>img[data-sizes="auto"] { display: block; }</code>.</p>
+				<p><strong>Important: How <code>sizes</code> is calculated</strong>: The automatic sizes calculation takes the width of the image if it is over <code>40</code> (see also <code>minSize</code> option). In case it's below the <code>minSize</code> threshold, it traverses up the DOM tree until it finds a parent which is over <code>40</code> and uses this number. Often the following general CSS rule might help: <code>img[data-sizes="auto"] { display: block; }</code>.</p>
 			</div>
 
 			<div class="col-sm-12">

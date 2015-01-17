@@ -43,7 +43,7 @@
 4. **Performance**: It's based on high efficient code (runtime **and** memory) to work jank-free at 60fps.
 5. **Extendable**: It provides JS and CSS hooks to extend lazySizes with any kind of lazy loading or effects.
 6. **Intelligent prefetch**: lazySizes prefetches near the view assets, only while the browser network is idling. (see also ``expand`` option)
-7. **Lightweight, but mature solution**
+7. **Lightweight, but mature solution**: lazySizes has the right balance between lightweight and a reliable and fast solution
 
 ##[Demo with code examples](http://afarkas.github.io/lazysizes/#examples)
 Can be seen [here](http://afarkas.github.io/lazysizes/#examples).
@@ -73,7 +73,7 @@ Add the ``class`` ``lazyload`` to all ``img`` and ``iframe`` elements, which sho
     responsive-image3.jpg 900w" class="lazyload" />
 ```
 
-**Important: How ``sizes`` is calculated**: The automatic sizes calculation takes the width of the image if it is over ``40`` (see also ``minSize`` option). In case it's under it traverses up the DOM tree until it finds a parent which is over ``40`` and uses this number. Often the following general CSS rule might help: ``img[data-sizes="auto"] { display: block; }``.
+**Important: How ``sizes`` is calculated**: The automatic sizes calculation takes the width of the image. If it is below ``40`` (can be configured through the ``minSize`` option), lazySizes traverses up the DOM tree until it finds a parent which is over ``40`` and uses this number. Often the following general CSS rule might help: ``img[data-sizes="auto"] { display: block; }``.
 
 ##Recommended markup patterns
 For some image bots (search engines and social networks), legacy browsers (IE8) or JS disabled browsers, it is important to serve a usable ``src`` attribute:
@@ -309,9 +309,9 @@ Fixes, PRs and issues are always welcome, make sure to create a new branch from 
 ##Available plugins in this repo
 
 ###[RIAS plugin - (Responsive images as a service / Responsive image on demand](plugins/rias)
-The [RIAS plugin](plugins/rias) plugin enables lazySizes to hook into any third party (ReSrc, Pixtulate, mobify, WURFL's Image Tailor ...) or self hosted restful responsive image service (responsive image on demand). It makes responsive images even more easier without any need for another third party script.
+The [RIAS plugin](plugins/rias) plugin is simple and lighweight full responsive images solution without the need of any additionally plugin/polyfill. In general the RIaS  plugin combines the simplicity of the famous Imager.js solution with the future power of native responsive images implementations and the webcomponent-like working of lazySizes' ``.lazyload`` elements (self-initialization, self-configuration and self-destroying).
 
-In general the RIaS  plugin combines the simplicity of the famous Imager.js solution with the future power of native responsive images implementations and the webcomponent-like working of lazySizes' ``.lazyload`` elements (self-initialization, self-configuration and self-destroying).
+The [RIAS plugin](plugins/rias) plugin enables lazySizes to generate the best suitable image source based on a URL pattern. It works with pre-build images (i.e. grunt-responsive-images) as also with any third party (ReSrc, Pixtulate, mobify, WURFL's Image Tailor ...) or self hosted restful responsive image service (responsive image on demand). It makes responsive images even more easier without any need for another third party script.
 
 ```html
 <img

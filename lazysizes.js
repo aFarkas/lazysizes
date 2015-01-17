@@ -14,6 +14,8 @@
 
 	var regPicture = /^picture$/i;
 
+	var loadEvents = ['load', 'error', 'lazyincluded', '_lazyloaded'];
+
 	var hasClass = function(ele,cls) {
 		var reg = new RegExp('(\\s|^)'+cls+'(\\s|$)');
 		return ele.className.match(reg) && reg;
@@ -37,8 +39,8 @@
 		if(add){
 			addRemoveLoadEvents(dom, fn);
 		}
-		['load', 'error', 'lazyincluded', '_lazyloaded'].forEach(function(evt){
-			dom[action](evt, fn, true);
+		loadEvents.forEach(function(evt){
+			dom[action](evt, fn);
 		});
 	};
 
@@ -113,6 +115,7 @@
 
 		return function(force){
 			if(force === true){
+				run = false;
 				fn();
 			} else {
 				run = true;
@@ -153,18 +156,7 @@
 			}
 		};
 
-		var calcExpand = function(){
-
-			if(isPreloadAllowed && !isExpandCalculated){
-				defaultExpand = Math.max( Math.min(lazySizesConfig.expand || lazySizesConfig.threshold || 150, 300), 30 );
-				preloadExpand = Math.min( defaultExpand * 4, Math.max(innerHeight * 1.1, docElem.clientHeight, defaultExpand * 3) );
-			}
-
-			isExpandCalculated = true;
-		};
-
-
-		var isNestedVisibile = function(elem, elemExpand){
+		var isNestedVisible = function(elem, elemExpand){
 			var outerRect;
 			var parent = elem;
 			var visible = getCSS(elem, 'visibility') != 'hidden';
@@ -175,7 +167,7 @@
 			eLright += elemExpand;
 
 			while(visible && (parent = parent.offsetParent) && parent != docElem && parent != document.body){
-				visible = (isPreloadAllowed && isLoading < 4) || ((getCSS(parent, 'opacity') || 1) > 0);
+				visible = (isCompleted && isLoading < 4) || ((getCSS(parent, 'opacity') || 1) > 0);
 
 				if(visible && getCSS(parent, 'overflow') != 'visible'){
 					outerRect = parent.getBoundingClientRect();
@@ -191,7 +183,6 @@
 
 		var checkElements = function() {
 			var rect, autoLoadElem, loadedSomething, elemExpand, elemNegativeExpand, elemExpandVal, beforeExpandVal;
-
 
 			var eLlen = lazyloadElems.length;
 
@@ -230,7 +221,7 @@
 						(eLright = rect.right) >= elemNegativeExpand &&
 						(eLleft = rect.left) <= eLvW &&
 						(eLbottom || eLright || eLleft || eLtop) &&
-						((isPreloadAllowed && currentExpand == defaultExpand && isLoading < 3 && lowRuns < 4 && !elemExpandVal) || isNestedVisibile(lazyloadElems[i], elemExpand))){
+						((isCompleted && currentExpand == defaultExpand && isLoading < 3 && lowRuns < 4 && !elemExpandVal) || isNestedVisible(lazyloadElems[i], elemExpand))){
 						checkElementsIndex--;
 						start++;
 						unveilElement(lazyloadElems[i]);
@@ -249,6 +240,7 @@
 							(preloadElems[0] || (!elemExpandVal && ((eLbottom || eLright || eLleft || eLtop) || lazyloadElems[i].getAttribute(lazySizesConfig.sizesAttr) != 'auto')))){
 							autoLoadElem = preloadElems[0] || lazyloadElems[i];
 						}
+
 					}
 				}
 
@@ -292,7 +284,7 @@
 			var curSrc = elem.currentSrc || elem.src;
 			var isImg = regImg.test(elem.nodeName);
 
-			if(!supportNativeLQIP && !isPreloadAllowed && isImg && curSrc && !elem.complete){return;}
+			if(!supportNativeLQIP && !isCompleted && isImg && curSrc && !elem.complete){return;}
 
 			if(!(event = triggerEvent(elem, 'lazybeforeunveil', {force: !!force})).defaultPrevented){
 
@@ -381,6 +373,16 @@
 				}
 				elem = null;
 			});
+		};
+
+		var calcExpand = function(){
+
+			if(isPreloadAllowed && !isExpandCalculated){
+				defaultExpand = Math.max( Math.min(lazySizesConfig.expand || lazySizesConfig.threshold || 150, 300), 30 );
+				preloadExpand = Math.min( defaultExpand * 4, Math.max(innerHeight * 1.1, docElem.clientHeight, defaultExpand * 3) );
+			}
+
+			isExpandCalculated = true;
 		};
 
 		var allowPreload = function(){
