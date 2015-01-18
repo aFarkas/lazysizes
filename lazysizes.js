@@ -197,6 +197,8 @@
 
 				for(; i < eLlen; i++, checkElementsIndex++){
 
+					if(!lazyloadElems[i]){break;}
+
 					if(!(elemExpandVal = lazyloadElems[i].getAttribute('data-expand')) || !(elemExpand = elemExpandVal * 1)){
 						elemExpand = currentExpand;
 					}
@@ -380,7 +382,7 @@
 		var calcExpand = function(){
 
 			if(isPreloadAllowed && !isExpandCalculated){
-				defaultExpand = Math.max( Math.min(lazySizesConfig.expand || lazySizesConfig.threshold || 150, 300), 30 );
+				defaultExpand = Math.max( Math.min(lazySizesConfig.expand || lazySizesConfig.threshold || 150, 300), 9 );
 				preloadExpand = Math.min( defaultExpand * 4, Math.max(innerHeight * 1.1, docElem.clientHeight, defaultExpand * 3) );
 			}
 
@@ -393,9 +395,9 @@
 		};
 
 		var onload = function(){
-			allowPreload();
-
 			isCompleted = true;
+
+			allowPreload();
 			throttledCheckElements(true);
 		};
 

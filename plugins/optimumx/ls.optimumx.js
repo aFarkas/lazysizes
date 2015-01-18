@@ -180,6 +180,7 @@
 			optimumx >= window.devicePixelRatio){return;}
 
 		lazyData = e.target._lazyOptimumx || parseImg(e.target);
+
 		width = e.details.width * optimumx;
 
 		if(width && (lazyData.width || 0) < width){
