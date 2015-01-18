@@ -240,7 +240,7 @@ $(document).on('lazybeforeunveil', (function(){
 </script>
 ```
 
-For CSS transition/animations use the ``addClasses`` option. See also the [animate.html](http://afarkas.github.io/lazysizes/animate.html) and the [no-src.html](http://afarkas.github.io/lazysizes/no-src.html) examples:
+For CSS transition/animations or progress bars / spinners use the ``addClasses`` option. See also the [animate.html](http://afarkas.github.io/lazysizes/animate.html) and the [no-src.html](http://afarkas.github.io/lazysizes/no-src.html) examples:
 
 ```html 
 <style>
@@ -252,6 +252,14 @@ For CSS transition/animations use the ``addClasses`` option. See also the [anima
 	opacity: 1;
 	transition: opacity 300ms;
 }
+
+/* or add a progress loader gif instead || Note: you need to add a transparent gif/data uri */
+
+/*
+.lazyloading {
+	background: #f7f7f7 url(loader.gif) no-repeat center;
+}
+*/
 </style>
 
 <script>
@@ -260,6 +268,12 @@ window.lazySizesConfig = {
 	//,expand: 80 //default is 150
 };
 </script>
+
+<img
+    src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+    data-src="image.jpg"
+    class="lazyload" />
+
 ```
 
 The ``lazybeforeunveil`` can also be used for lazy initialization and due to the fact that lazySizes also detects new elements in the DOM automatically also for auto- and self-initialization of UI widgets:
@@ -358,14 +372,15 @@ Due to the fact, that it is designed to be invoked with a high frequency and the
 <!-- responsive example: -->
 <img
 	data-sizes="auto"
-    src="lqip-src.jpg"
-	data-srcset="lqip-src.jpg 100w,
-    image2.jpg 300w,
+    src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+	data-srcset="image2.jpg 300w,
     image3.jpg 600w,
     image4.jpg 900w" class="lazyload" />
     
 <!-- or non-responsive: -->
-<img src="lqip-src.jpg" data-src="image.jpg" class="lazyload" />
+<img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+    data-src="image.jpg"
+    class="lazyload" />
 ```
 
 ##Specifying image dimensions (minimizing reflows and avoiding page jumps)
@@ -373,7 +388,7 @@ To minimize reflows, content jumping or unpredictable behavior with some other J
 
 ```html
 <img
-	src="http://placehold.it/175x75"
+	src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
     width="350"
     height="150"
 	data-srcset="http://placehold.it/350x150 1x,
@@ -407,7 +422,7 @@ For flexible responsive images the [CSS intrinsic ratio scaling technique](http:
 
 <div class="ratio-container">
     <img
-        src="http://placehold.it/175x75"
+        src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
         data-sizes="auto"
         data-srcset="http://placehold.it/175x75 175w,
         http://placehold.it/350x150 350w,
@@ -415,3 +430,46 @@ For flexible responsive images the [CSS intrinsic ratio scaling technique](http:
         http://placehold.it/1400x600 1400w" class="lazyload" />
 </div>
 ```
+
+In case the exact ratio of your image is unknown you can also vary the intrinsic ratio like this:
+
+```html
+<style>
+.ratio-container {
+    position: relative;
+}
+.ratio-container:after {
+    content: '';
+    display: block;
+    height: 0;
+    width: 100%;
+    /* 16:9 = 56.25% = calc(9 / 16 * 100%) */
+    padding-bottom: 56.25%;
+    content: "";
+}
+.ratio-container > * {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* unknown ration variation */
+.unknown-ratio-container > * {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+}
+</style>
+
+<div class="ratio-container unknown-ratio-container">
+    <img
+        src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+        data-src="http://placehold.it/350x150"
+        class="lazyload" />
+</div>
+```
+
+**Note**: In case you use the "unknown intrinsic ratio pattern" the ``data-sizes="auto"`` feature should not be used.

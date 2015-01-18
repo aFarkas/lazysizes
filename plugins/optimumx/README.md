@@ -100,14 +100,14 @@ window.lazySizesConfig.getOptimumX = function(element){
      alt="flexible image" />
 ```
 
-The predefined ugly ``getOptimumX`` callback looks like this:
+The predefined (ugly) ``getOptimumX`` callback looks like this:
 
 ```js
 window.lazySizesConfig = window.lazySizesConfig || {};
 window.lazySizesConfig.getOptimumX = function(/*element*/){
     var dpr = window.devicePixelRatio;
-    if(dpr > 2.5){
-        dpr *= 0.7; // returns 2.1 for 3
+    if(dpr > 2.4){
+        dpr *= 0.63; // returns 1.9 for 3
     } else if(dpr > 1.9){
         dpr *= 0.8; // returns 1.6 for 2
     } else if(dpr > 1.4){
@@ -121,7 +121,7 @@ window.lazySizesConfig.getOptimumX = function(/*element*/){
 
 ##Background information
 
-From a perceived performance vs. perceived quality standpoint the best way to deal with High DPI images is to serve higher compressed candidates to the client.
+From a perceived performance vs. perceived quality standpoint the best way to deal with High DPI images is to serve higher compressed candidates to clients with high resolution displays.
 
 This is due to the fact, that on higher DPI displays small details can be compressed more aggressively.
 
@@ -172,4 +172,4 @@ document.addEventListener('lazyriasmodifyoptions', function(data){
 
 Unfortunately these techniques also double the amount of generated image candidates. In case you don't have so much resources the optimumx extension in conjunction with proper image compression is the best thing you can do.
 
-But be aware each image has different characteristics: While some images look great on a HIGH DPI device even with a ``data-optimumx="1.2"`` other will need a much higher density.
+But be aware each image has different characteristics: While some images look great on a HIGH DPI device even with a ``data-optimumx="1.2"`` other will need a much higher density for a good perceived quality.
