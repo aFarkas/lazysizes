@@ -1,7 +1,6 @@
 /*
- This lazySizes extension helps to use responsive images, but to opt-out from high retina support in case the w descriptor is used (for x descriptor this is not needed!),
+ This lazySizes extension helps to use responsive images, but to opt-out from too high retina support in case the w descriptor is used (for x descriptor this is not needed!),
  - data-sizes="auto" has to be used in conjunction
- - respimage.js needs to be loaded even if the browser supports responsive images
 
  <img src="100.jpg"
  	data-optimumx="1.8"
@@ -19,11 +18,30 @@
 (function(window, document, undefined){
 	/*jshint eqnull:true */
 	'use strict';
-	var config, extentLazySizes;
+	var config, extentLazySizes, parseWsrcset;
 	var regPicture = /^picture$/i;
-	if(!window.addEventListener || !window.devicePixelRatio){
-		return;
-	}
+	if(!window.devicePixelRatio){return;}
+
+	parseWsrcset = (function(){
+		var candidates;
+		var reg = /([^,\s].[^\s]+\s+(\d+)w)/g;
+		var regHDesc = /\s+\d+h/g;
+		var addCandidate = function(match, candidate, wDescriptor){
+			candidates.push({
+				c: candidate,
+				w: wDescriptor * 1
+			});
+		};
+
+		return function(input){
+			candidates = [];
+			input
+				.replace(regHDesc, '')
+				.replace(reg, addCandidate)
+			;
+			return candidates;
+		};
+	})();
 
 	config = (window.lazySizes && lazySizes.cfg) || window.lazySizesConfig;
 
@@ -52,33 +70,20 @@
 		return a.w - b.w;
 	}
 
-	function mapSetCan(can){
-		var nCan = {
-			url: can.url
-		};
-		nCan[can.desc.type] = can.desc.val;
-		return nCan;
-	}
-
 	function parseSets(elem){
-		var lazyData = {srcset: elem.getAttribute(lazySizes.cfg.srcsetAttr)} || '';
-		var cands = window.respimage ? respimage._.parseSet(lazyData) : window.parseSrcset(lazyData.srcset);
-		elem._lazyMaxDprSrcset = lazyData;
+		var lazyData = {srcset: elem.getAttribute(lazySizes.cfg.srcsetAttr)  || ''};
+		var cands = parseWsrcset(lazyData.srcset);
+		elem._lazyOptimumx = lazyData;
 
 		lazyData.cands = cands;
-
-		if(cands[0] && cands[0].desc){
-			cands = cands.map(mapSetCan);
-			lazyData.cands = cands;
-		}
 
 		lazyData.index = 0;
 		lazyData.dirty = false;
 		if(cands[0] && cands[0].w){
 			cands.sort( ascendingSort );
-			lazyData.cSrcset = [cands[0].url +' '+ cands[0].w + 'w'];
+			lazyData.cSrcset = [cands[0].c];
 		} else {
-			lazyData.cSrcset = [];
+			lazyData.cSrcset = [lazyData.srcset];
 			lazyData.cands = [];
 		}
 
@@ -116,32 +121,22 @@
 	}
 
 	function getConstrainedSrcSet(data, width){
-		var i, can, take;
+		var i, can;
 
 		for(i = data.index + 1; i < data.cands.length; i++){
 			can = data.cands[i];
-			take = false;
-			if(!can.w){
-				if(!can.x){
-					can.x = can.d || 1;
-				}
-				take = 'x';
-			} else if(can.w <= width || takeHighRes(data.cands[i - 1], can.w, width)){
-				take = 'w';
+			if(can.w <= width || takeHighRes(data.cands[i - 1], can.w, width)){
+				data.cSrcset.push(can.c);
+				data.index = i;
 			} else {
 				break;
-			}
-
-			if(take){
-				data.cSrcset.push(can.url +' '+ can[take] + take);
-				data.index = i;
 			}
 		}
 	}
 
 	function constrainSrces(elem, width, attr){
-		var imageData, curIndex;
-		var lazyData = elem._lazyMaxDprSrcset;
+		var curIndex;
+		var lazyData = elem._lazyOptimumx;
 
 		if(!lazyData){return;}
 		curIndex = lazyData.index;
@@ -152,20 +147,9 @@
 			elem.setAttribute(attr, lazyData.cSrcset.join(', '));
 			lazyData.dirty = true;
 
-			if(lazyData.isImg && attr == 'srcset' && !window.HTMLPictureElement){
-				if(window.respimage && !respimage._.observer){
-					imageData = elem[respimage._.ns];
-					if(imageData){
-						imageData.srcset = undefined;
-					}
-					respimage({reevaluate: true, reparse: true, elements: [elem]});
-				} else if(window.picturefill){
-					picturefill({reevaluate: true, reparse: true, elements: [elem]});
-				}
-			}
-
 			if(lazyData.cSrcset.length >= lazyData.cands.length){
 				elem.removeAttribute('data-optimumx');
+				elem.removeAttribute('data-maxdpr');
 			}
 		}
 	}
@@ -184,24 +168,24 @@
 
 	extentLazySizes = function(){
 		if(window.lazySizes && !window.lazySizes.getOptimumX){
-			window.lazySizes.getX = getOptimumX;
+			lazySizes.getX = getOptimumX;
 		}
 	};
 
 	addEventListener('lazybeforesizes', function(e){
-		var maxdpr, lazyData, width, attr, parent, sources, i, len;
+		var optimumx, lazyData, width, attr, parent, sources, i, len;
 
-		if((!window.respimage && !window.parseSrcset) ||
-			e.defaultPrevented ||
-			!(maxdpr = getOptimumX(e.target)) ||
-			maxdpr >= window.devicePixelRatio ||
-			(e.target._lazysizesWidth && e.target._lazysizesWidth > e.details.width)){return;}
+		if(e.defaultPrevented ||
+			!(optimumx = getOptimumX(e.target)) ||
+			optimumx >= window.devicePixelRatio){return;}
 
-		lazyData = e.target._lazyMaxDprSrcset || parseImg(e.target);
-		width = e.details.width * maxdpr;
+		lazyData = e.target._lazyOptimumx || parseImg(e.target);
+		width = e.details.width * optimumx;
 
-		if(width){
+		if(width && (lazyData.width || 0) < width){
 			attr = e.details.dataAttr ? lazySizes.cfg.srcsetAttr : 'srcset';
+
+			lazyData.width = width;
 
 			if(lazyData.picture && (parent = e.target.parentNode)){
 				sources = parent.getElementsByTagName('source');
@@ -210,6 +194,7 @@
 				}
 			}
 			constrainSrces(e.target, width, attr);
+			e.details.srcset = true;
 		}
 	}, false);
 

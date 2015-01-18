@@ -62,7 +62,7 @@
 			if(window.picturefill){
 				picturefill({reevaluate: true, reparse: true, elements: [el]});
 			} else if(window.respimage){
-				if(full){
+				if(full && (full.srcset || full.src)){
 					imageData = el[respimage._.ns];
 					if(imageData){
 						imageData[full.srcset ? 'srcset' : 'src'] = undefined;
@@ -471,7 +471,7 @@
 						}
 
 						if(!event.details.dataAttr){
-							updatePolyfill(elem);
+							updatePolyfill(elem, event.details);
 						}
 					}
 				}

@@ -4,7 +4,7 @@
 
 It gives you therefore more control to trade perceived quality against perceived performance on HD retina devices, than the HTML responsive image standard gives you.
 
-This plugin depends on the ``data-sizes="auto"`` feature of **lazysizes** and the [respimage polyfill](https://github.com/aFarkas/respimage).
+This plugin depends on the ``data-sizes="auto"`` feature of **lazysizes**.
 
 ```html
 <img
@@ -19,7 +19,7 @@ This plugin depends on the ``data-sizes="auto"`` feature of **lazysizes** and th
      alt="flexible image" />
 ```
 
-A **simple [demo can be seen here](http://afarkas.github.io/lazysizes/optimumx/)**. 
+A **simple [demo can be seen here](http://afarkas.github.io/lazysizes/optimumx/)**. This extension also supports art-directed responsive images using the ``picture`` element.
 
 ##Usage
 
@@ -27,7 +27,6 @@ A **simple [demo can be seen here](http://afarkas.github.io/lazysizes/optimumx/)
 <!-- concat the following scripts into one and add them to your HTML -->
 <script src="lazysizes.min.js"></script>
 <script src="ls.optimumx.js"></script>
-<script src="respimage.min.js"></script>
 
 <!-- then use it -->
 <img
@@ -45,7 +44,36 @@ A **simple [demo can be seen here](http://afarkas.github.io/lazysizes/optimumx/)
 In case you want to use a CDN you can use the combohandler service provided by jsDelivr:
 
 ```html
-<script src="http://cdn.jsdelivr.net/g/respimage(respimage.min.js),lazysizes(lazysizes.min.js+plugins/optimumx/ls.optimumx.min.js)" async=""></script>
+<script src="http://cdn.jsdelivr.net/g/lazysizes(lazysizes.min.js+plugins/optimumx/ls.optimumx.min.js)" async=""></script>
+```
+
+**Note**: For full cross-browser support either a [responsive images polyfill like respimage or picturefill](https://github.com/aFarkas/respimage) or the [neat Responsive Images as a Service extension (RIaS)](../rias) needs to be used.
+
+```html
+<!--  RIaS example: -->
+<script src="http://cdn.jsdelivr.net/g/lazysizes(lazysizes.min.js+plugins/optimumx/ls.optimumx.min.js+plugins/rias/ls.rias.min.js)" async=""></script>
+
+<img
+    data-src="http://wit.wurfl.io/w_{width}/http://wurfl.io/assets/sunsetbeach.jpg"
+	data-sizes="auto"
+	data-optimumx="1.5"
+	class="lazyload"
+	alt="" />
+```
+
+```html
+<!--  respimage example: -->
+<script>
+    function loadJS(u){var r=document.getElementsByTagName("script")[0],s=document.createElement("script");s.src=u;r.parentNode.insertBefore(s,r);}
+
+    if(!window.HTMLPictureElement){
+        loadJS("http://cdn.jsdelivr.net/g/respimage(respimage.min.js)");
+    }
+</script>
+
+<!--  your stylesheets -->
+
+<script src="http://cdn.jsdelivr.net/g/lazysizes(lazysizes.min.js+plugins/optimumx/ls.optimumx.min.js)" async=""></script>
 ```
 
 ###The ``getOptimumX`` option callback
@@ -91,23 +119,57 @@ window.lazySizesConfig.getOptimumX = function(/*element*/){
 };
 ```
 
-###Using optimumx extension without respimage
-The optimumx extension needs to parse the ``srcset`` attribute. This is normally handled by the [respimage polyfill](https://github.com/aFarkas/respimage). In case you don't want to include a full polyfill for all browsers or you want to use picturefill as a polyfill you can include this [excellent srcset parser](https://github.com/baloneysandwiches/parse-srcset).
+##Background information
+
+From a perceived performance vs. perceived quality standpoint the best way to deal with High DPI images is to serve higher compressed candidates to the client.
+
+This is due to the fact, that on higher DPI displays small details can be compressed more aggressively.
+
+For native images support the ``picture`` element can be used to achieve the result:
 
 ```html
-<!-- polyfill responsive images: https://github.com/aFarkas/respimage -->
-<script>
-    function loadJS(u){var r=document.getElementsByTagName("script")[0],s=document.createElement("script");s.src=u;r.parentNode.insertBefore(s,r);}
+<picture>
+<!--[if IE 9]><video style="display: none;"><![endif]-->
+<source
+    data-srcset="image-w1600-q60.jpg 1600w,
+        image-w1440-q60.jpg 1440w,
+        image-w1200-q60.jpg 1200w,
+        image-w800-q60.jpg 800w,
+        image-w600-q60.jpg 600w,
+        image-w400-q60.jpg 400w"
+    media="(-webkit-min-device-pixel-ratio: 1.5),
+        (min-resolution: 144dpi)"
+     />
+<!--[if IE 9]></video><![endif]-->
+<img
+    data-srcset="w1600-q80.jpg 1600w,
+        image-w1440-q80.jpg 1440w,
+        image-w1200-q80.jpg 1200w,
+        image-w800-q80.jpg 800w,
+        image-w600-q80.jpg 600w,
+        image-w400-q80.jpg 400w"
+    data-sizes="auto"
+    class="lazyload"
+    alt="picture but without artdirection" />
+</picture>
+```
 
-    if(!window.HTMLPictureElement){
-        document.createElement('picture');
-        loadJS("respimage.min.js");
-    }
+Or in case you are using the [Responsive Images as a Service extension (RIaS)](../rias):
+
+```html
+<script>
+document.addEventListener('lazyriasmodifyoptions', function(data){
+    data.details.quality = (window.devicePixelRatio || 1) > 1.4 ? 60 : 80;
+};
 </script>
 
-<!--  your stylesheets -->
-
-<script src="lazysizes.min.js"></script>
-<script src="ls.optimumx.js"></script>
-<script src="parse-srcset.js"></script>
+<img
+    data-src="image-w{width}-q{quality}.jpg"
+    data-sizes="auto"
+    class="lazyload"
+    alt="" />
 ```
+
+Unfortunately these techniques also double the amount of generated image candidates. In case you don't have so much resources the optimumx extension in conjunction with proper image compression is the best thing you can do.
+
+But be aware each image has different characteristics: While some images look great on a HIGH DPI device even with a ``data-optimumx="1.2"`` other will need a much higher density.

@@ -317,10 +317,10 @@ Fixes, PRs and issues are always welcome, make sure to create a new branch from 
 
 ##Available plugins in this repo
 
-###[RIAS plugin - (Responsive images as a service / Responsive image on demand](plugins/rias)
-The [RIAS plugin](plugins/rias) plugin is simple and lighweight full responsive images solution without the need of any additionally plugin/polyfill. In general the RIaS  plugin combines the simplicity of the famous Imager.js solution with the future power of native responsive images implementations and the webcomponent-like working of lazySizes' ``.lazyload`` elements (self-initialization, self-configuration and self-destroying).
+###[RIaS plugin - (Responsive Images as a Service / Responsive image on demand)](plugins/rias)
+The [RIaS plugin is a neat full responsive images solution](plugins/rias) without the need of any additionally plugin/polyfill.
 
-The [RIAS plugin](plugins/rias) plugin enables lazySizes to generate the best suitable image source based on a URL pattern. It works with pre-build images (i.e. grunt-responsive-images) as also with any third party (ReSrc, Pixtulate, mobify, WURFL's Image Tailor ...) or self hosted restful responsive image service (responsive image on demand). It makes responsive images even more easier without any need for another third party script.
+It enables lazySizes to generate the best suitable image source based on an URL pattern. It works with pre-build images (i.e. grunt-responsive-images) as also with any third party (ReSrc, Pixtulate, mobify, WURFL's Image Tailor ...) or self hosted restful responsive image service (responsive image on demand). It makes responsive images even more easier without any need for another third party script.
 
 ```html
 <img
@@ -329,6 +329,8 @@ The [RIAS plugin](plugins/rias) plugin enables lazySizes to generate the best su
 	class="lazyload"
 	alt="" />
 ```
+
+In general the [RIaS plugin](plugins/rias) plugin combines the simplicity of the famous Imager.js solution with the future power of native responsive images implementations and the webcomponent-like working of lazySizes' ``.lazyload`` elements (self-initialization, self-configuration and self-destroying).
 
 ###[OPTIMUMX plugin](plugins/optimumx)
 The ``srcset`` attribute with the *w* descriptor and ``sizes`` attribute automatically also includes high DPI images. But each image has a different optimal pixel density, which might be lower (1.5x) than the pixel density of your device (2x or 3x). This information is unknown to the browser and therefore can't be optimized for. The [lazySizes optimumx extension](plugins/optimumx) gives you more control to trade between perceived quality vs. perceived performance.

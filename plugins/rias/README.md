@@ -1,8 +1,8 @@
 #lazysizes RIaS extension (Responsive image as a service / Responsive image on demand) 
 
-In general the RIaS  plugin combines the simplicity of the famous Imager.js solution with the future power of native responsive images implementations and the webcomponent-like working of lazySizes' ``.lazyload`` elements (self-initialization, self-configuration and self-destroying).
+The RiaS plugin enables lazySizes to generate the best suitable image source based on an URL pattern. It works with pre-build images (i.e. grunt-responsive-images) as also with any third party (ReSrc, Pixtulate, mobify, WURFL's Image Tailor ...) or self hosted restful responsive image services (responsive image on demand).
 
-The RiaS plugin enables lazySizes to generate the best suitable image source based on a URL pattern. It works with pre-build images (i.e. grunt-responsive-images) as also with any third party (ReSrc, Pixtulate, mobify, WURFL's Image Tailor ...) or self hosted restful responsive image services (responsive image on demand).
+In general the RIaS  plugin combines the simplicity of the famous Imager.js solution with the future power of native responsive images implementations and the webcomponent-like working of lazySizes' ``.lazyload`` elements (self-initialization, self-configuration and self-destroying).
 
 In case the browser does support ``srcset`` the RIaS plugin will also produce a list of source candidates so that any current and future improvements (low bandwidth, metered bandwidth, user preferences, browser zoom etc.) to the native responsive image support is automatically exploited.
 
@@ -336,10 +336,10 @@ document.addEventListener('lazyriasmodifyoptions', function(e){
 
 ###Tip: Constraining the pixel density for a generated ``srcset`` attribute.
 
-In case you want to constrain the maximum pixel density for the generated ``srcset`` list you can combine the RiAS plugin with [the optimumx extension](../optimumx).
+In case you don't want to generate additional compressive images for high resolution displays you can combine the RIaS extension with the [optimumx extension](../optimumx) to constrain the maximum pixel density for the generated ``srcset`` list.
 
 ```html
-<script src="http://cdn.jsdelivr.net/g/respimage(respimage.min.js),lazysizes(lazysizes.min.js+plugins/rias/ls.rias.min.js+plugins/optimumx/ls.optimumx.min.js)" async=""></script>
+<script src="http://cdn.jsdelivr.net/g/lazysizes(lazysizes.min.js+plugins/rias/ls.rias.min.js+plugins/optimumx/ls.optimumx.min.js)" async=""></script>
 
 
 <img
