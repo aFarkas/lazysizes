@@ -1,20 +1,20 @@
 /*
 This lazySizes extension adds better support for browser rendering of progressive jpgs/pngs.
-Needs a proper low quality src, so use it with the LQIP pattern.
+Needs a usable low quality src, so use it with the LQIP pattern.
 When the lazysizes detects the image gets visible, the src will be inserted as background image until the image from srcset is completely loaded.
 */
 (function(document){
 	/*jshint eqnull:true */
 	'use strict';
-	var regImg, onload;
+	var regImg, onLoad;
 
 	if(document.addEventListener){
         regImg = /^img$/i;
 
-        onload = function(e){
+        onLoad = function(e){
             e.target.style.backgroundSize = '';
             e.target.style.backgroundImage = '';
-            e.target.removeEventListener(e.type, onload);
+            e.target.removeEventListener(e.type, onLoad);
         };
 
         document.addEventListener('lazybeforeunveil', function(e){
@@ -27,7 +27,7 @@ When the lazysizes detects the image gets visible, the src will be inserted as b
                 img.style.backgroundSize = '100% 100%';
                 img.style.backgroundImage = 'url(' + src + ')';
                 img.removeAttribute('src');
-                img.addEventListener('load', onload);
+                img.addEventListener('load', onLoad);
             }
         }, false);
 	}
