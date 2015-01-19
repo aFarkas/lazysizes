@@ -329,7 +329,7 @@ lazySizes.updateAllSizes();
 ##Contributing
 Fixes, PRs and issues are always welcome, make sure to create a new branch from the **master** (not the gh-pages branch), validate against JShint and test in all browsers. In case of an API/documentation change make sure to also document it here in the readme.md.
 
-##<a name="plugins">Available plugins in this repo</a>
+##<a name="plugins"></a>Available plugins in this repo
 
 ###[RIaS plugin - (Responsive Images as a Service / Responsive image on demand)](plugins/rias)
 The [RIaS plugin is a neat full responsive images solution](plugins/rias) without the need of any additional plugins/polyfills.
