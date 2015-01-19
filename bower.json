@@ -33,6 +33,7 @@
 	  	"animate.html",
 		"Gruntfile.js",
 		"component.json",
-		"package.json"
+		"package.json",
+	    "plato-report"
 	]
 }
