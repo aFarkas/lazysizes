@@ -521,7 +521,7 @@
 			//addClasses: false,
 			//preloadAfterLoad: false,
 			onlyLargerSizes: true,
-			minSize: 40
+			minSize: 50
 		};
 
 		lazySizesConfig = window.lazySizesConfig || {};
@@ -534,8 +534,10 @@
 
 		window.lazySizesConfig = lazySizesConfig;
 
-		autoSizer.init();
-		loader.init();
+		setTimeout(function(){
+			autoSizer.init();
+			loader.init();
+		});
 	})();
 
 
