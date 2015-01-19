@@ -135,7 +135,7 @@
 	}
 
 	function constrainSrces(elem, width, attr){
-		var curIndex;
+		var curIndex, srcset;
 		var lazyData = elem._lazyOptimumx;
 
 		if(!lazyData){return;}
@@ -144,6 +144,7 @@
 		getConstrainedSrcSet(lazyData, width);
 
 		if(!lazyData.dirty || curIndex != lazyData.index){
+			srcset = lazyData.cSrcset.join(', ');
 			elem.setAttribute(attr, lazyData.cSrcset.join(', '));
 			lazyData.dirty = true;
 
@@ -152,6 +153,7 @@
 				elem.removeAttribute('data-maxdpr');
 			}
 		}
+		return srcset;
 	}
 
 	function getOptimumX(element){
@@ -194,8 +196,8 @@
 					constrainSrces(sources[i], width, attr);
 				}
 			}
-			constrainSrces(e.target, width, attr);
-			e.details.srcset = true;
+
+			e.details.srcset = constrainSrces(e.target, width, attr);
 		}
 	}, false);
 

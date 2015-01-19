@@ -56,16 +56,17 @@
 	};
 
 	var updatePolyfill = function (el, full){
-		var imageData, src;
+		var imageData, attr;
 		if(!window.HTMLPictureElement){
 
 			if(window.picturefill){
 				picturefill({reevaluate: true, reparse: true, elements: [el]});
 			} else if(window.respimage){
-				if(full && (full.srcset || full.src)){
+				if(full && (attr = (full.srcset && 'srcset') || (full.src && 'src'))){
+
 					imageData = el[respimage._.ns];
-					if(imageData){
-						imageData[full.srcset ? 'srcset' : 'src'] = undefined;
+					if(imageData && imageData[attr] != full[attr] && el.getAttribute(attr) == full[attr]){
+						imageData[attr] = undefined;
 					}
 				}
 				respimage({reparse: true, elements: [el]});
@@ -360,7 +361,7 @@
 					addClass(elem, lazySizesConfig.autosizesClass);
 				}
 
-				if(srcset || sizes){
+				if(srcset || sizes || isPicture){
 					updatePolyfill(elem, {srcset: srcset, src: src});
 				}
 
