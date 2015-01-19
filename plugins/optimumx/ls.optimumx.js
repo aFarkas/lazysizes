@@ -83,7 +83,7 @@
 			cands.sort( ascendingSort );
 			lazyData.cSrcset = [cands[0].c];
 		} else {
-			lazyData.cSrcset = [lazyData.srcset];
+			lazyData.cSrcset = lazyData.srcset ? [lazyData.srcset] : [];
 			lazyData.cands = [];
 		}
 

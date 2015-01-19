@@ -1,4 +1,4 @@
-#lazysizes RIaS extension (Responsive image as a service / Responsive image on demand) 
+#lazySizes RIaS extension (Responsive image as a service / Responsive image on demand)
 
 The RiaS plugin enables lazySizes to generate the best suitable image source based on an URL pattern. It works with pre-build images (i.e. grunt-responsive-images) as also with any third party (ReSrc, Pixtulate, mobify, WURFL's Image Tailor ...) or self hosted restful responsive image services (responsive image on demand).
 
@@ -10,7 +10,7 @@ The RiaS plugin also allows art direction by combining placeholder URLs with a `
 
 ##Basic/quick usage
 
-* Simply add the rias plugin right after the lazysizes scripts or concat those scripts into your script bundle:
+* Add the RiaS plugin right after the lazysizes scripts or concat those scripts into your script bundle:
 
 ```html
 <!-- include lazysizes + rias extension -->
@@ -40,12 +40,13 @@ A [demo with markup and code examples can be seen here](http://afarkas.github.io
 
 ##Configuration/Options
 
-The RiaS plugin can be configured through the ``lazySizesConfig.rias`` option object, which should be configured before the lazysizes script.
+The RIaS plugin can be configured through the ``lazySizesConfig.rias`` option object, which should be configured before the lazySizes script.
 
 ```js
 window.lazySizesConfig = window.lazySizesConfig || {};
 window.lazySizesConfig.rias = window.lazySizesConfig.rias || {};
 
+// configure available widths to replace with the {width} placeholder
 window.lazySizesConfig.rias.widths = [320, 480, 640, 960];
 window.lazySizesConfig.rias.absUrl = true;
 ```
@@ -66,8 +67,9 @@ or element specific and functional using the ``lazyriasmodifyoptions`` event.
 
 ```html
 <script>
-document.addEventListener('lazyriasmodifyoptions', function(data){
-    data.details.quality = (window.devicePixelRatio || 1) > 1.4 ? 65 : 80;
+document.addEventListener('lazyriasmodifyoptions', function(event){
+    // event.details referes the placeholders/options and event.target the corresponding element
+    event.details.quality = (window.devicePixelRatio || 1) > 1.4 ? 65 : 80;
 };
 </script>
 <img
@@ -117,6 +119,7 @@ All RiAS options can also be used as a {placeholder} inside the url.
         class="lazyload"
         alt="" />
     ```
+
 * ``lazySizesConfig.rias.absUrl`` (default: ``false``): Wether the value of the ``data-src`` attribute should be resolved to an absolute url. The value must not contain any placeholders in this case. Use in conjunction with ``prefix`` and/or ``postfix`` option.
     ```html
     <script>
@@ -150,7 +153,7 @@ All RiAS options can also be used as a {placeholder} inside the url.
     ```
 * ``lazySizesConfig.rias.postfix`` (default: ``""`` ): A string, which is appended to the generated src.
 
-With lazysizes + rias extension you have a script to rule them all. You won't need to include a script provided by a third party image on demand service.
+With lazysizes + RIaS extension you have a script to rule them all. You won't need to include a script provided by a third party image on demand service.
 
 ##Advanced Examples
 
