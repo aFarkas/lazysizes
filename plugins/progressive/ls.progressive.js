@@ -8,7 +8,7 @@ When the lazysizes detects the image gets visible, the src will be inserted as b
 	'use strict';
 	var regImg, onLoad;
 
-	if(document.addEventListener){
+	if(document.addEventListener && 'srcset' in document.createElement('img')){
 		regImg = /^img$/i;
 
 		onLoad = function(e){
