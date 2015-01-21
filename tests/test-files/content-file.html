@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        img {
+            display: block;
+            width: 100%;
+            height: 200px;
+        }
+    </style>
+    <script src="../../node_modules/jquery/dist/jquery.js"></script>
+    <script src="../../node_modules/jquery-deparam/jquery-deparam.js"></script>
+    <script>
+        var liblist = {
+            respimage: '../../node_modules/respimage/respimage.js',
+            respmutation: '../../node_modules/respimage/plugins/mutation/ri.mutation.js',
+            respintrinsic: '../../node_modules/respimage/plugins/intrinsic-dimension/ri.intrinsic.js'
+        };
+        var pluginlist = {
+            optimumx: '../../plugins/optimumx/ls.optimumx.js',
+            rias: '../../plugins/rias/ls.rias.js'
+        };
+        var params = deparam(location.search.replace(/^\?/, ''));
+        window.lazySizesConfig = params.cfg || {};
+
+        if(params.libs){
+            params.libs.forEach(function(lib){
+                document.write('<script src="' + (liblist[lib] || lib) + '"><\/script>');
+            });
+        }
+
+
+    </script>
+
+    <script src="../../lazysizes.js"></script>
+    <script>
+        if(params.plugins){
+            params.plugins.forEach(function(plugin){
+                document.write('<script src="' + (pluginlist[plugin] || plugin) + '"><\/script>');
+            });
+        }
+    </script>
+
+</head>
+<body>
+
+</body>
+</html>

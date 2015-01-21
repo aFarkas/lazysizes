@@ -79,13 +79,19 @@
 			height: auto;
 		}
 
-		.lazyloading:not(iframe) {
+		.lazyload:not(iframe) {
 			opacity: 0;
+		}
+
+		.lazyloading:not(iframe) {
+			opacity: 1;
+			transition: 600ms opacity;
+			background: #f7f7f7 url(assets/imgs/loader.gif) no-repeat center;
 		}
 
 		.lazyloaded {
 			opacity: 1;
-			transition: 400ms opacity;
+			transition: 100ms opacity;
 		}
 
 		[data-expand].lazyload {
@@ -124,7 +130,8 @@
 		window.lazySizesConfig = {
 			//clearAttr: true
 			addClasses: true,
-			preloadAfterLoad: false
+			preloadAfterLoad: false,
+			expand: 80
 		};
 
 	</script>
@@ -174,7 +181,8 @@
 			<div class="col-sm-12">
 				<div class="thumbnail">
 					<div class="intrinsic">
-						<img alt="Desert Road" data-src="https://farm6.staticflickr.com/5531/9638435181_7e3e44c2b8_b.jpg" class="lazyload" />
+						<img alt="Desert Road"
+							 data-src="https://farm6.staticflickr.com/5531/9638435181_7e3e44c2b8_b.jpg" class="lazyload" />
 					</div>
 
 					<div class="caption">
@@ -192,8 +200,8 @@
 				<div class="thumbnail">
 					<div class="intrinsic">
 						<img
-							  sizes="(min-width: 1000px) 930px, 90vw"
-							  data-srcset="https://farm5.staticflickr.com/4078/5441060528_31db7838ba_m.jpg 240w,
+							sizes="(min-width: 1000px) 930px, 90vw"
+							data-srcset="https://farm5.staticflickr.com/4078/5441060528_31db7838ba_m.jpg 240w,
 	https://farm5.staticflickr.com/4078/5441060528_31db7838ba_n.jpg 320w,
 	https://farm5.staticflickr.com/4078/5441060528_31db7838ba.jpg 500w,
 	https://farm5.staticflickr.com/4078/5441060528_31db7838ba_z.jpg 640w,
@@ -419,7 +427,7 @@ https://farm3.staticflickr.com/2377/1657712955_1b941645fd_o.jpg 800w"
 							</div>
 							<div class="item active">
 								<div class="intrinsic">
-									<img alt="100%x200" 
+									<img alt="100%x200"
 										 data-srcset="https://farm4.staticflickr.com/3059/2835191823_e3636abb34_m.jpg 240w,
 https://farm4.staticflickr.com/3059/2835191823_e3636abb34_n.jpg 320w,
 https://farm4.staticflickr.com/3059/2835191823_e3636abb34.jpg 500w,

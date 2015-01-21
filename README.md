@@ -180,15 +180,15 @@ Here the list of options:
 * ``lazySizesConfig.lazyClass`` (default: ``"lazyload"``): Marker class for all elements which should be lazy loaded (There can be only one ``class``. In case you need to add some other element, without the defined class, simply add it per JS: ``$('.lazy-others').addClass('lazyload');``)
 * ``lazySizesConfig.preloadAfterLoad`` (default: ``false``): Wether lazysizes should load all elements after the window onload event. Note: lazySizes will then still download those not-in-view images inside of a lazy queue, so that other downloads after onload are not blocked.) In case this option is ``false`` and not providing a suitable low quality image placeholder will hide below the fold images from google.
 * ``lazySizesConfig.preloadClass`` (default: ``"lazypreload"``): Marker class for elements which should be lazy pre-loaded after onload. Those elements will be even preloaded, if the ``preloadAfterLoad`` option is set to ``false``. Note: This *class* can also simply dynamically set (``$currentSlide.next().find('.lazyload').addClass('lazypreload');``).
-* ``lazySizesConfig.addClasses`` (default: ``false``): Wether lazysizes should add loading and loaded classes. This can be used to add unveil effects or to apply new styles (background-image). (see also ``preloadAfterLoad`` option).
+* ``lazySizesConfig.addClasses`` (default: ``true``): Wether lazysizes should add loading and loaded classes. This can be used to add unveil effects or to apply new styles (background-image). (see also ``preloadAfterLoad`` option). Note: The default of this option was changed from ``false`` to ``true`` with version 0.8.3.
 * ``lazySizesConfig.loadingClass`` (default: ``"lazyloading"``): If ``addClasses`` is set to ``true`` this ``class`` will be added to ``img`` element as soon as image loading starts. Can be used to add unveil effects.
 * ``lazySizesConfig.loadedClass`` (default: ``"lazyloaded"``): If ``addClasses`` is set to ``true`` this ``class`` will be added to any element as soon as the image is loaded or the image comes into view. Can be used to add unveil effects or to apply styles.
 * ``lazySizesConfig.expand`` (default: ``150``): The ``expand`` option expands the calculated visual viewport area in all directions, so that elements can be loaded before they are becoming visible. (Note: Reasonable values are between ``30`` and ``200``.) In case you have a lot of small images or you are using the LQIP pattern you can lower the value, in case you have larger images set it to a higher value. Also note, that lazySizes will dynamically shrink this value to ``0``, if the browser is currently downloading and expand it (by multiplying the ``expand`` option with ``3.5``) if the browser network is currently idling. This option can be overridden with the ``[data-expand]`` attribute.
-* ``lazySizesConfig.onlyLargerSizes`` (default: ``true``): In case a responsive image had the ``data-sizes="auto"`` attribute and the computed new size decreases, lazysizes won't normally change the ``sizes`` attribute to a lower value.
 * ``lazySizesConfig.minSize`` (default: ``50``): For ``data-sizes="auto"`` feature. The minimum size of an image that is used to calculate the ``sizes`` attribute. In case it is under ``minSize`` the script traverses up the DOM tree until it finds a parent that is over ``minSize``.
 * ``lazySizesConfig.srcAttr`` (default: ``"data-src"``): The attribute, which should be transformed to ``src``.
 * ``lazySizesConfig.srcset`` (default: ``"data-srcset"``): The attribute, which should be transformed to ``srcset``.
-* ``lazySizesConfig.sizesAttr`` (default: ``"data-sizes"``): The attribute, which should be transformed to ``sizes``.
+* ``lazySizesConfig.sizesAttr`` (default: ``"data-sizes"``): The attribute, which should be transformed to ``sizes``. Makes almost only sense with the value ``"auto"``. Otherwise the ``sizes`` attribute should be used directly.
+* ``lazySizesConfig.onlyLargerSizes`` (default: ``false``): In case a responsive image had the ``data-sizes="auto"`` attribute and the computed new size decreases, lazysizes won't normally change the ``sizes`` attribute to a lower value.  Note: The default of this option was changed from ``true`` to ``false`` with version 0.8.3, because Chrome 40+ handles does cases more network friendly now. It is also deprecated and will be removed with next version, if it doesn't harm backward compatibility.
 
 ####JS API - events
 **lazysizes** provides two events to modify or extend the behavior of **lazysizes**.
@@ -257,6 +257,8 @@ For CSS transition/animations or progress bars / spinners use the ``addClasses``
 
 /*
 .lazyloading {
+    opacity: 1;
+	transition: opacity 300ms;
 	background: #f7f7f7 url(loader.gif) no-repeat center;
 }
 */

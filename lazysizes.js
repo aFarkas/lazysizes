@@ -30,7 +30,7 @@
 	var removeClass = function(ele, cls) {
 		var reg;
 		if ((reg = hasClass(ele,cls))) {
-			ele.className = ele.className.replace(reg,' ');
+			ele.className = ele.className.replace(reg, ' ');
 		}
 	};
 
@@ -82,44 +82,39 @@
 	};
 
 	var getWidth = function(elem, parent){
-		var width, alt;
-		if(!elem._lazysizesWidth){
-			alt = elem.getAttribute('alt');
-			elem.alt = '';
-		}
-
-		width = elem.offsetWidth;
+		var width = elem.offsetWidth;
 
 		while(width < lazySizesConfig.minSize && parent && parent != document.body && !elem._lazysizesWidth){
 			width =  parent.offsetWidth;
 			parent = parent.parentNode;
 		}
 
-		if(!elem._lazysizesWidth){
-			if(alt == null){
-				elem.removeAttribute('alt');
-			} else {
-				elem.alt = alt;
-			}
-		}
 		return width;
 	};
 
 	var throttle = function(fn){
-		var run;
-		setInterval(function(){
+		var run, timer;
+		var main = function(){
 			if(run){
 				run = false;
 				fn();
 			}
-		}, 66);
+		};
+		var handleVisibility = function(){
+			clearInterval(timer);
+			if(!document.hidden){
+				main();
+				timer = setInterval(main, 66);
+			}
+		};
+
+		document.addEventListener("visibilitychange", handleVisibility);
+		handleVisibility();
 
 		return function(force){
+			run = true;
 			if(force === true){
-				run = false;
-				fn();
-			} else {
-				run = true;
+				main();
 			}
 		};
 	};
@@ -414,7 +409,7 @@
 			addEventListener('resize', function(){
 				isExpandCalculated = false;
 				throttledCheckElements();
-			}, false);
+			});
 
 
 			if(window.MutationObserver){
@@ -431,8 +426,8 @@
 			});
 
 			if(!(isCompleted = /d$|^c/.test(document.readyState))){
-				addEventListener('load', onload, false);
-				document.addEventListener('DOMContentLoaded', throttledCheckElements, false);
+				addEventListener('load', onload);
+				document.addEventListener('DOMContentLoaded', throttledCheckElements);
 			}
 
 			setTimeout(allowPreload, 666);
@@ -497,7 +492,7 @@
 
 		var init = function(){
 			autosizesElems = document.getElementsByClassName(lazySizesConfig.autosizesClass);
-			addEventListener('resize', throttledUpdateElementsSizes, false);
+			addEventListener('resize', throttledUpdateElementsSizes);
 		};
 
 		return {
@@ -519,7 +514,7 @@
 			srcAttr: 'data-src',
 			srcsetAttr: 'data-srcset',
 			sizesAttr: 'data-sizes',
-			//addClasses: false,
+			addClasses: true,
 			//preloadAfterLoad: false,
 			onlyLargerSizes: true,
 			minSize: 50
