@@ -1,4 +1,4 @@
-var lazyTests = {
+window.lazyTests = {
 	simpleView: ['lazyloads simple image in view', function(assert){
 		var done = assert.async();
 
