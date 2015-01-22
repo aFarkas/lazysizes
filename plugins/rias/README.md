@@ -167,25 +167,9 @@ In case you want to use a CDN you can use jsDelivr's combohandler service:
 
 ###Using art direction
 
-In case you want to use art direction simply also use also placeholder urls inside of your ``source[data-srcset]`` or ``source[data-src]`` attributes. For full cross browser support a [responsive image polyfill](https://github.com/aFarkas/respimage) has to be used.
+In case you want to use art direction simply also use also placeholder urls inside of your ``source[data-srcset]`` or ``source[data-src]`` attributes.
 
 ```html
-<!-- polyfill responsive images: https://github.com/aFarkas/respimage -->
-<script>
-function loadJS(u){var r=document.getElementsByTagName("script")[0],s=document.createElement("script");s.src=u;r.parentNode.insertBefore(s,r);}
-
-if(!window.HTMLPictureElement){
-    document.createElement('picture');
-    loadJS("http://cdn.jsdelivr.net/g/respimage(respimage.min.js)");
-}
-</script>
-
-<!--  your stylesheets -->
-
-<script src="http://cdn.jsdelivr.net/g/lazysizes(lazysizes.min.js+plugins/rias/ls.rias.min.js)" async=""></script>
-</body>
-
-
 <picture>
     <!--[if IE 9]><audio><![endif]-->
     <source

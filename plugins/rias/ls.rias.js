@@ -13,13 +13,18 @@
 	var regObj = /^\[.*\]|\{.*\}$/;
 	var anchor = document.createElement('a');
 
+	var needsFill = function(){
+		return !window.HTMLPictureElement && !window.respimage && !window.picturefill;
+	};
+
 	var partialFill = (function(){
 		var reduceNearest = function (prev, curr, initial, ar) {
 			return (Math.abs(curr.w - ar.w) < Math.abs(prev.w - ar.w) ? curr : prev);
 		};
 		return function(elem, srces){
 			var src, parent;
-			if(!window.HTMLPictureElement && !window.respimage && !window.picturefill && (parent = elem.parentNode)){
+
+			if(needsFill() && (parent = elem.parentNode) && elem.nodeName.toUpperCase() == 'IMG'){
 				srces.w = lazySizes.gW(elem, parent) *
 				(lazySizes.getX ? lazySizes.getX(elem) : Math.min(window.devicePixelRatio || 1, 2));
 				src = srces.reduce(reduceNearest);
@@ -149,15 +154,15 @@
 		return candidates;
 	}
 
-	function setSrc(src, opts, elem){
+	function setSrc(src, opts, elem, takeSrc){
 
 		if(!src){return;}
 
 		src = replaceUrlProps(src, opts);
 
-
 		elem.setAttribute(config.srcsetAttr, src.srcset.join(', '));
-		partialFill(elem, src);
+		partialFill(elem, takeSrc || src);
+		return src;
 	}
 
 	function createAttrObject(elem, src){
@@ -179,8 +184,7 @@
 	}
 
 	addEventListener('lazybeforeunveil', function(e){
-		var elem, src, elemOpts, parent, sources, i, len, sourceSrc;
-
+		var elem, src, elemOpts, parent, sources, i, len, sourceSrc, takeSrc, media;
 		if(e.defaultPrevented || !(src = getSrc(e.target)) || riasCfg.disabled || !(e.target.getAttribute(config.sizesAttr) || e.getAttribute('sizes'))){return;}
 
 		elem = e.target;
@@ -192,11 +196,16 @@
 				sources = parent.getElementsByTagName('source');
 				for(i = 0, len = sources.length; i < len; i++){
 					sourceSrc = getSrc(sources[i]);
-					setSrc(sourceSrc, elemOpts, sources[i]);
+					takeSrc = setSrc(sourceSrc, elemOpts, sources[i]);
+					if(!needsFill() || sources[i].getAttribute('type') ||
+						((media = sources[i].getAttribute('media')) && (!window.matchMedia || !(matchMedia(media) || {}).matches))
+					){
+						takeSrc = false;
+					}
 				}
 			}
 
-			setSrc(src, elemOpts, elem);
+			setSrc(src, elemOpts, elem, takeSrc);
 		}
 
 
