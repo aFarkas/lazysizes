@@ -221,7 +221,7 @@
 						(eLbottom || eLright || eLleft || eLtop) &&
 						((isCompleted && currentExpand == defaultExpand && isLoading < 3 && lowRuns < 4 && !elemExpandVal) || isNestedVisible(lazyloadElems[i], elemExpand))){
 						checkElementsIndex--;
-						start++;
+						start += 2;
 						unveilElement(lazyloadElems[i]);
 						loadedSomething = true;
 					} else  {

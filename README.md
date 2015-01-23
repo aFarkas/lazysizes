@@ -148,10 +148,6 @@ This becomes especially handy to add unveiling effects for teasers or other elem
 </style>
 
 <script>
-window.lazySizesConfig = {
-	addClasses: true
-};
-</script>
 
 <div class="teaser lazyload" data-expand="-20">
     <img data-src="image.jpg" class="lazyload" />
@@ -170,8 +166,7 @@ Options can be set by declaring a global configuration option object named ``laz
 window.lazySizesConfig = {
     lazyClass: 'postbone', // use .postbone instead of .lazyload
     // preload all lazy elements in a lazy loading queue after onload, if on desktop
-    preloadAfterLoad: !(/mobi/i.test(navigator.userAgent)),
-    addClasses: true
+    preloadAfterLoad: !(/mobi/i.test(navigator.userAgent))
 };
 ```
 
@@ -216,8 +211,7 @@ img.lazyload {
 
 <script>
 window.lazySizesConfig = {
-    preloadAfterLoad: false,
-    expand: 10
+    expand: 40
 };
 
 $(document).on('lazybeforeunveil', (function(){
@@ -266,7 +260,6 @@ For CSS transition/animations or progress bars / spinners use the ``addClasses``
 
 <script>
 window.lazySizesConfig = {
-	addClasses: true
 	//,expand: 80 //default is 150
 };
 </script>
