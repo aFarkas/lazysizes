@@ -94,10 +94,7 @@ $.extend(window.lazyTests, {
 			};
 			var endTest = function(){
 				var nowSrc = window.HTMLPictureElement ?
-					'' :
-					frameWindow.respimage ?
-						'data:lazysource280' :
-						'data:lazysource150';
+					'' : 'data:lazysource280';
 				assert.equal($source.attr('srcset'), 'data:lazysource100 100w, data:lazysource150 150w, data:lazysource280 280w');
 				assert.equal($image.attr('srcset') || $image.attr('data-risrcset'), 'data:lazyimg100 100w, data:lazyimg150 150w, data:lazyimg280 280w');
 				assert.equal($image.prop('src'), nowSrc);

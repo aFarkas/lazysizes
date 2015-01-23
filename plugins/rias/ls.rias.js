@@ -13,30 +13,6 @@
 	var regObj = /^\[.*\]|\{.*\}$/;
 	var anchor = document.createElement('a');
 
-	var needsFill = function(){
-		return !window.HTMLPictureElement && !window.respimage && !window.picturefill;
-	};
-
-	var partialFill = (function(){
-		var reduceNearest = function (prev, curr, initial, ar) {
-			return (Math.abs(curr.w - ar.w) < Math.abs(prev.w - ar.w) ? curr : prev);
-		};
-		return function(elem, srces){
-			var src, parent;
-
-			if(needsFill() && (parent = elem.parentNode) && elem.nodeName.toUpperCase() == 'IMG'){
-				srces.w = lazySizes.gW(elem, parent) *
-				(lazySizes.getX ? lazySizes.getX(elem) : Math.min(window.devicePixelRatio || 1, 2));
-				src = srces.reduce(reduceNearest);
-
-				if(src && src.url){
-					elem.setAttribute(config.srcAttr, src.url);
-					elem.setAttribute('src', src.url);
-				}
-			}
-		};
-	})();
-
 	(function(){
 		var prop;
 		var noop = function(){};
@@ -154,28 +130,26 @@
 		return candidates;
 	}
 
-	function setSrc(src, opts, elem, takeSrc){
+	function setSrc(src, opts, elem){
 
 		if(!src){return;}
 
 		src = replaceUrlProps(src, opts);
 
+		src.isPicture = opts.isPicture;
+
 		elem.setAttribute(config.srcsetAttr, src.srcset.join(', '));
-		partialFill(elem, takeSrc || src);
-		return src;
+		Object.defineProperty(elem, '_lazyrias', {
+			value: src
+		});
 	}
 
 	function createAttrObject(elem, src){
-
 		var opts = getElementOptions(elem, src);
-		var event = document.createEvent('Event');
 
 		riasCfg.modifyOptions.call(elem, {target: elem, details: opts});
 
-		event.initEvent('lazyriasmodifyoptions', true, false);
-		event.details = opts;
-
-		elem.dispatchEvent(event);
+		lazySizes.fire(elem, 'lazyriasmodifyoptions', opts);
 		return opts;
 	}
 
@@ -184,7 +158,7 @@
 	}
 
 	addEventListener('lazybeforeunveil', function(e){
-		var elem, src, elemOpts, parent, sources, i, len, sourceSrc, takeSrc, media;
+		var elem, src, elemOpts, parent, sources, i, len, sourceSrc;
 		if(e.defaultPrevented || !(src = getSrc(e.target)) || riasCfg.disabled || !(e.target.getAttribute(config.sizesAttr) || e.getAttribute('sizes'))){return;}
 
 		elem = e.target;
@@ -196,19 +170,65 @@
 				sources = parent.getElementsByTagName('source');
 				for(i = 0, len = sources.length; i < len; i++){
 					sourceSrc = getSrc(sources[i]);
-					takeSrc = setSrc(sourceSrc, elemOpts, sources[i]);
-					if(!needsFill() || sources[i].getAttribute('type') ||
-						((media = sources[i].getAttribute('media')) && (!window.matchMedia || !(matchMedia(media) || {}).matches))
-					){
-						takeSrc = false;
+					setSrc(sourceSrc, elemOpts, sources[i]);
+				}
+			}
+
+			setSrc(src, elemOpts, elem);
+		}
+
+
+	});
+
+	// partial polyfill
+	(function(){
+		var reduceNearest = function (prev, curr, initial, ar) {
+			return (Math.abs(curr.w - ar.w) < Math.abs(prev.w - ar.w) ? curr : prev);
+		};
+
+		var getCandidate = function(elem, width){
+			var sources, i, len, media, srces;
+			width *= Math.min((lazySizes.getX && lazySizes.getX(elem)) || window.devicePixelRatio || 1, 2);
+			srces = elem._lazyrias;
+
+			if(srces.isPicture && window.matchMedia){
+				for(i = 0, sources = elem.parentNode.getElementsByTagName('source'), len = sources.length; i < len; i++){
+					if(sources[i]._lazyrias && !sources[i].getAttribute('type') && ( !(media = sources[i].getAttribute('media')) || ((matchMedia(media) || {}).matches))){
+						srces = sources[i]._lazyrias;
+						break;
 					}
 				}
 			}
 
-			setSrc(src, elemOpts, elem, takeSrc);
-		}
+			if(!srces.w || srces.w < width){
+				srces.w = width;
+			}
+			return srces.reduce(reduceNearest);
+		};
 
 
-	}, false);
+		var polyfill = function(e){
+			var candidate;
+			var elem = e.target;
+
+			if(window.HTMLPictureElement || window.respimage || window.picturefill){
+				removeEventListener('lazybeforesizes', polyfill);
+				return;
+			}
+
+			if(!elem._lazyrias){return;}
+
+			candidate = getCandidate(elem, e.details.width);
+
+			if(candidate && candidate.url && elem._lazyrias.cur != candidate.url){
+				elem._lazyrias.cur = candidate.url;
+				elem.setAttribute(config.srcAttr, candidate.url);
+				elem.setAttribute('src', candidate.url);
+			}
+		};
+
+		addEventListener('lazybeforesizes', polyfill);
+
+	})();
 
 })(window, document);
