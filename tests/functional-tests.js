@@ -182,12 +182,12 @@ window.lazyTests = {
 			});
 		});
 	}],
-	parentAutoSizes: ['takes width of parent of image and adds it to the sizes attribute', function(assert){
+	parentAutoSizes: ['takes width of parent of image and adds it to the sizes attribute2', function(assert){
 		var done = assert.async();
 
 		this.promise.always(function($){
-			var $topImage = $('<div style="width: 200px; ">' +
-			'<img data-sizes="auto" style="width: auto; display: inline-block; margin: 5px;" class="lazyload" alt="" />' +
+			var $topImage = $('<div style="width: 200px; min-width: 200px;">' +
+			'<img data-sizes="auto" style="width: 1px; display: inline; margin: 5px;" class="lazyload" alt="" />' +
 			'</div>').find('img');
 
 			$topImage.on('lazybeforeunveil', function(){

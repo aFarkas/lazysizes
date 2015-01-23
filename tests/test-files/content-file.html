@@ -16,6 +16,14 @@
             height: 200px;
         }
     </style>
+    <script>
+        function loadJS(u){var r=document.getElementsByTagName("script")[0],s=document.createElement("script");s.src=u;r.parentNode.insertBefore(s,r);}
+
+        if(!window.matchMedia){
+            loadJS("matchMedia.js");
+        }
+
+    </script>
     <script src="../../node_modules/jquery/dist/jquery.js"></script>
     <script src="../../node_modules/jquery-deparam/jquery-deparam.js"></script>
     <script>

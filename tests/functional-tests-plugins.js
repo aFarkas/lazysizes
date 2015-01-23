@@ -46,6 +46,12 @@ $.extend(window.lazyTests, {
 					done();
 				}
 			};
+
+			if(!window.devicePixelRatio){
+				assert.ok(true);
+				done();
+				return;
+			}
 			run();
 
 			$picture.appendTo('body');
@@ -112,6 +118,12 @@ $.extend(window.lazyTests, {
 					done();
 				}
 			};
+
+			if(!window.devicePixelRatio){
+				assert.ok(true);
+				done();
+				return;
+			}
 			run();
 
 			$picture.appendTo('body');
@@ -128,6 +140,128 @@ $.extend(window.lazyTests, {
 				}, 9);
 			});
 
+		});
+	}],
+	riasResize: ['lazysizes rias reacts on resize', function(assert){
+		var done = assert.async();
+		var $iframe = this.$iframe;
+
+		this.promise.always(function($, frameWindow){
+			var viewport, $image;
+			var initTest = function(){
+				var nowSrc = window.HTMLPictureElement ?
+					'' : 'data:img-small-yo';
+				assert.equal($image.attr('srcset'), 'data:img-1-yo 1w, data:img-small-yo 500w, data:img-large-yo 1200w');
+				assert.equal($image.prop('src'), nowSrc);
+			};
+			var largerTest = function(){
+				var nowSrc = window.HTMLPictureElement ?
+					'' : 'data:img-large-yo';
+				assert.equal($image.attr('srcset'), 'data:img-1-yo 1w, data:img-small-yo 500w, data:img-large-yo 1200w');
+				assert.equal($image.prop('src'), nowSrc);
+			};
+			var viewportTests = [
+				['300', initTest],
+				['400', initTest],
+				['1200', largerTest],
+				['600', largerTest]
+			];
+			var run = function(){
+				if(viewportTests.length){
+					viewport = viewportTests.shift();
+					$iframe.css('width', viewport[0]);
+				} else {
+					done();
+				}
+			};
+			run();
+
+			frameWindow.document.addEventListener('lazyriasmodifyoptions', function(e){
+				// change available widths and widthmap for .special-widths elements
+				e.details.widthmap = {
+					500: 'small',
+					1200: 'large'
+				};
+
+				//add new custom property with value 'foo'
+				e.details.foo = 'yo';
+			});
+
+			$image = $('<div style="width: 100%;">' +
+			'<img data-sizes="auto" style="width: 90%;" data-widths="[1, 500, 1200]" data-src="data:img-{width}-{foo}" class="lazyload" />' +
+			'</div>')
+				.appendTo('body')
+				.find('img');
+
+			$image.on('lazybeforesizes', function(e){
+				setTimeout(function(){
+					viewport[1]();
+					run();
+				}, 9);
+			});
+		});
+	}],
+	riasPictureResize: ['lazysizes rias reacts on resize and allows art direction', function(assert){
+		var done = assert.async();
+		var $iframe = this.$iframe;
+
+		this.promise.always(function($, frameWindow){
+			var viewport;
+			var initTest = function(){
+				var nowSrc = window.HTMLPictureElement ?
+					'' : 'data:lazysource780';
+				assert.equal($image.attr('srcset'), 'data:lazyimg780 780w, data:lazyimg1300 1300w');
+				assert.equal($source.attr('srcset'), 'data:lazysource780 780w, data:lazysource1300 1300w');
+				assert.equal($image.prop('src'), nowSrc);
+			};
+			var largerTest = function(){
+				var nowSrc = window.HTMLPictureElement ?
+					'' : 'data:lazyimg1300';
+				assert.equal($image.attr('srcset'), 'data:lazyimg780 780w, data:lazyimg1300 1300w');
+				assert.equal($source.attr('srcset'), 'data:lazysource780 780w, data:lazysource1300 1300w');
+				assert.equal($image.prop('src'), nowSrc);
+			};
+			var viewportTests = [
+				['300', initTest],
+				['400', initTest],
+				['1200', largerTest],
+				['520', largerTest],
+				['450', initTest]
+			];
+			var run = function(){
+				if(viewportTests.length){
+					viewport = viewportTests.shift();
+					$iframe.css('width', viewport[0]);
+				} else {
+					done();
+				}
+			};
+			var $picture = createPicture($, [
+				{
+					'data-srcset': 'data:lazysource{width}',
+					media: '(max-width: 500px)'
+				},
+				{
+					'data-srcset': 'data:lazyimg{width}',
+					'data-sizes': 'auto',
+					'data-widths': '[780, 1300]',
+					'class': 'lazyload'
+				}
+			]);
+			var $source = $picture.find('source');
+			var $image = $picture.find('img');
+
+			run();
+
+
+			$picture.appendTo('body');
+
+			$image.on('lazybeforesizes', function(e){
+				setTimeout(function(){
+					viewport[1]();
+					run();
+				}, 9);
+			});
 		});
 	}]
 });
@@ -164,6 +298,8 @@ QUnit.module( "optimumx + rias", {
 });
 QUnit.test.apply(QUnit, lazyTests.optimumxPictureResize);
 QUnit.test.apply(QUnit, lazyTests.optimumxRiasPictureResize);
+QUnit.test.apply(QUnit, lazyTests.riasResize);
+QUnit.test.apply(QUnit, lazyTests.riasPictureResize);
 
 QUnit.module( "optimumx + rias + respimage", {
 	beforeEach: createBeforeEach(
@@ -176,6 +312,8 @@ QUnit.module( "optimumx + rias + respimage", {
 	)
 });
 QUnit.test.apply(QUnit, lazyTests.optimumxPictureResize);
+QUnit.test.apply(QUnit, lazyTests.riasResize);
+QUnit.test.apply(QUnit, lazyTests.riasPictureResize);
 
 QUnit.module( "rias", {
 	beforeEach: createBeforeEach(
@@ -184,6 +322,8 @@ QUnit.module( "rias", {
 		}
 	)
 });
+QUnit.test.apply(QUnit, lazyTests.riasResize);
+QUnit.test.apply(QUnit, lazyTests.riasPictureResize);
 
 QUnit.module( "rias + respimage", {
 	beforeEach: createBeforeEach(
@@ -195,3 +335,5 @@ QUnit.module( "rias + respimage", {
 		}
 	)
 });
+QUnit.test.apply(QUnit, lazyTests.riasResize);
+QUnit.test.apply(QUnit, lazyTests.riasPictureResize);

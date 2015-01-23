@@ -10,7 +10,7 @@ The RiaS plugin also allows art direction by combining placeholder URLs with a `
 
 ##Basic/quick usage
 
-* Add the RiaS plugin right after the lazysizes scripts or concat those scripts into your script bundle:
+* Add the RiaS plugin right after the lazySizes script or concat those scripts into your script bundle:
 
 ```html
 <!-- include lazysizes + rias extension -->
@@ -79,7 +79,7 @@ document.addEventListener('lazyriasmodifyoptions', function(event){
     alt="" />
 ```
 
-All rias options can also be used as ``data-*`` attributes.
+All ``rias`` options can also be used as ``data-*`` attributes.
 
 ###URL generation and {placeholder}s
 
@@ -153,7 +153,7 @@ All RiAS options can also be used as a {placeholder} inside the url.
     ```
 * ``lazySizesConfig.rias.postfix`` (default: ``""`` ): A string, which is appended to the generated src.
 
-With lazysizes + RIaS extension you have a script to rule them all. You won't need to include a script provided by a third party image on demand service.
+With lazySizes + RIaS extension you have a script to rule them all. You won't need to include a script provided by a third party image on demand service.
 
 ##Advanced Examples
 
