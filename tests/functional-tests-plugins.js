@@ -20,14 +20,16 @@ $.extend(window.lazyTests, {
 			var $source = $picture.find('source');
 			var $image = $picture.find('img');
 			var initialTest = function(){
-				var nowSrc = window.HTMLPictureElement || !frameWindow.respimage ?
+				var haspolyfill = frameWindow.respimage || (frameWindow.lazySizes.cfg.rias && frameWindow.lazySizes.pWS);
+				var nowSrc = window.HTMLPictureElement || !haspolyfill ?
 					'' : 'data:lazysource150';
 				assert.equal($source.attr('srcset'), 'data:lazysource100 100w, data:lazysource150 150w');
 				assert.equal($image.attr('srcset') || $image.attr('data-risrcset'), 'data:lazyimg100 100w, data:lazyimg150 150w');
 				assert.equal($image.prop('src'), nowSrc);
 			};
 			var endTest = function(){
-				var nowSrc = window.HTMLPictureElement || !frameWindow.respimage ?
+				var haspolyfill = frameWindow.respimage || (frameWindow.lazySizes.cfg.rias && frameWindow.lazySizes.pWS);
+				var nowSrc = window.HTMLPictureElement || !haspolyfill ?
 					'' : 'data:lazysource280';
 				assert.equal($source.attr('srcset'), 'data:lazysource100 100w, data:lazysource150 150w, data:lazysource280 280w');
 				assert.equal($image.attr('srcset') || $image.attr('data-risrcset'), 'data:lazyimg100 100w, data:lazyimg150 150w, data:lazyimg200 200w');
@@ -275,6 +277,7 @@ QUnit.module( "optimumx + respimage", {
 	)
 });
 QUnit.test.apply(QUnit, lazyTests.optimumxPictureResize);
+QUnit.test.apply(QUnit, lazyTests.simplePicture);
 
 
 QUnit.module( "optimumx + respimage + respmutation", {
@@ -300,6 +303,8 @@ QUnit.test.apply(QUnit, lazyTests.optimumxPictureResize);
 QUnit.test.apply(QUnit, lazyTests.optimumxRiasPictureResize);
 QUnit.test.apply(QUnit, lazyTests.riasResize);
 QUnit.test.apply(QUnit, lazyTests.riasPictureResize);
+QUnit.test.apply(QUnit, lazyTests.simplePicture);
+QUnit.test.apply(QUnit, lazyTests.simpleAutoSizesPicture);
 
 QUnit.module( "optimumx + rias + respimage", {
 	beforeEach: createBeforeEach(
@@ -314,16 +319,18 @@ QUnit.module( "optimumx + rias + respimage", {
 QUnit.test.apply(QUnit, lazyTests.optimumxPictureResize);
 QUnit.test.apply(QUnit, lazyTests.riasResize);
 QUnit.test.apply(QUnit, lazyTests.riasPictureResize);
+QUnit.test.apply(QUnit, lazyTests.simpleAutoSizesPicture);
 
 QUnit.module( "rias", {
 	beforeEach: createBeforeEach(
 		{
-			plugins: ['optimumx', 'rias']
+			plugins: ['rias']
 		}
 	)
 });
 QUnit.test.apply(QUnit, lazyTests.riasResize);
 QUnit.test.apply(QUnit, lazyTests.riasPictureResize);
+QUnit.test.apply(QUnit, lazyTests.simplePicture);
 
 QUnit.module( "rias + respimage", {
 	beforeEach: createBeforeEach(

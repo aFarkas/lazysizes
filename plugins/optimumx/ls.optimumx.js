@@ -20,15 +20,16 @@
 	'use strict';
 	var config, extentLazySizes, parseWsrcset;
 	var regPicture = /^picture$/i;
-	if(!window.devicePixelRatio){return;}
+
 
 	parseWsrcset = (function(){
 		var candidates;
-		var reg = /([^,\s].[^\s]+\s+(\d+)w)/g;
+		var reg = /(([^,\s].[^\s]+)\s+(\d+)w)/g;
 		var regHDesc = /\s+\d+h/g;
-		var addCandidate = function(match, candidate, wDescriptor){
+		var addCandidate = function(match, candidate, url, wDescriptor){
 			candidates.push({
 				c: candidate,
+				u: url,
 				w: wDescriptor * 1
 			});
 		};
@@ -171,8 +172,14 @@
 	extentLazySizes = function(){
 		if(window.lazySizes && !window.lazySizes.getOptimumX){
 			lazySizes.getX = getOptimumX;
+			lazySizes.pWS = parseWsrcset;
 		}
 	};
+
+	if(!window.devicePixelRatio){return;}
+
+	extentLazySizes();
+	setTimeout(extentLazySizes);
 
 	addEventListener('lazybeforesizes', function(e){
 		var optimumx, lazyData, width, attr, parent, sources, i, len;
@@ -200,8 +207,5 @@
 			e.details.srcset = constrainSrces(e.target, width, attr);
 		}
 	}, false);
-
-	extentLazySizes();
-	setTimeout(extentLazySizes);
 
 })(window, document);

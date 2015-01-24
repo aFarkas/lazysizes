@@ -203,7 +203,6 @@ window.lazyTests = {
 		var done = assert.async();
 
 		this.promise.always(function($, frameWindow){
-			var lazySrcset = 'data:lazysrcset 300w';
 			var $picture = createPicture($, [
 				{
 					'data-srcset': 'data:lazysource 200w'
@@ -223,7 +222,6 @@ window.lazyTests = {
 
 			$image.on('lazybeforeunveil', function(){
 				setTimeout(function(){
-
 
 					assert.equal($source.attr('srcset'), 'data:lazysource 200w');
 					assert.equal($image.attr('srcset') || $image.attr('data-risrcset'), 'data:lazyimg 200w');
@@ -259,12 +257,12 @@ window.lazyTests = {
 
 			$image.on('lazybeforeunveil', function(){
 				setTimeout(function(){
-
+					var haspolyfill = frameWindow.respimage || (frameWindow.lazySizes.cfg.rias && frameWindow.lazySizes.pWS);
 
 					assert.equal($source.attr('srcset'), 'data:lazysource 200w');
 					assert.equal($source.attr('sizes'), $image.attr('sizes'));
 					assert.equal($image.attr('srcset') || $image.attr('data-risrcset'), 'data:lazyimg 200w');
-					assert.equal($image.prop('src'), window.HTMLPictureElement || !frameWindow.respimage ?  '' : 'data:lazysource');
+					assert.equal($image.prop('src'), window.HTMLPictureElement || !haspolyfill ?  '' : 'data:lazysource');
 					assert.equal($image.attr('sizes'), '300px');
 					done();
 				}, 9);

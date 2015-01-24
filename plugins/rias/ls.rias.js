@@ -122,10 +122,13 @@
 		url = ((options.prefix || '') + url + (options.postfix || '')).replace(regPlaceholder, replaceFn);
 
 		options.widths.forEach(function(width){
-			var candidate = url.replace(regWidth, options.widthmap[width] || width);
+			var candidate = {
+				u: url.replace(regWidth, options.widthmap[width] || width),
+				w: width
+			};
 
-			candidates.push({url: candidate, w: width});
-			candidates.srcset.push(candidate +' '+width+'w');
+			candidates.push(candidate);
+			candidates.srcset.push( (candidate.c = candidate.u + ' ' + width + 'w') );
 		});
 		return candidates;
 	}
@@ -159,9 +162,9 @@
 
 	addEventListener('lazybeforeunveil', function(e){
 		var elem, src, elemOpts, parent, sources, i, len, sourceSrc;
-		if(e.defaultPrevented || !(src = getSrc(e.target)) || riasCfg.disabled || !(e.target.getAttribute(config.sizesAttr) || e.getAttribute('sizes'))){return;}
-
 		elem = e.target;
+
+		if(e.defaultPrevented || !(src = getSrc(elem)) || riasCfg.disabled || !(elem.getAttribute(config.sizesAttr) || elem.getAttribute('sizes'))){return;}
 
 		elemOpts = createAttrObject(elem, src);
 
@@ -186,6 +189,19 @@
 			return (Math.abs(curr.w - ar.w) < Math.abs(prev.w - ar.w) ? curr : prev);
 		};
 
+		var getWSet = function(elem, testPicture){
+			var src;
+			if(!elem._lazyrias && lazySizes.pWS && (src = lazySizes.pWS(elem.getAttribute(config.srcsetAttr || ''))).length){
+				Object.defineProperty(elem, '_lazyrias', {
+					value: src
+				});
+				if(testPicture && elem.parentNode){
+					src.isPicture = elem.parentNode.nodeName.toUpperCase() == 'PICTURE';
+				}
+			}
+			return elem._lazyrias;
+		};
+
 		var getCandidate = function(elem, width){
 			var sources, i, len, media, srces;
 			width *= Math.min((lazySizes.getX && lazySizes.getX(elem)) || window.devicePixelRatio || 1, 2);
@@ -193,7 +209,7 @@
 
 			if(srces.isPicture && window.matchMedia){
 				for(i = 0, sources = elem.parentNode.getElementsByTagName('source'), len = sources.length; i < len; i++){
-					if(sources[i]._lazyrias && !sources[i].getAttribute('type') && ( !(media = sources[i].getAttribute('media')) || ((matchMedia(media) || {}).matches))){
+					if(getWSet(sources[i]) && !sources[i].getAttribute('type') && ( !(media = sources[i].getAttribute('media')) || ((matchMedia(media) || {}).matches))){
 						srces = sources[i]._lazyrias;
 						break;
 					}
@@ -206,28 +222,29 @@
 			return srces.reduce(reduceNearest);
 		};
 
-
 		var polyfill = function(e){
 			var candidate;
 			var elem = e.target;
 
 			if(window.HTMLPictureElement || window.respimage || window.picturefill){
-				removeEventListener('lazybeforesizes', polyfill);
+				document.removeEventListener('lazybeforesizes', polyfill);
 				return;
 			}
 
-			if(!elem._lazyrias){return;}
+			if(!elem._lazyrias && (!e.details.dataAttr || !getWSet(elem, true))){
+				return;
+			}
 
 			candidate = getCandidate(elem, e.details.width);
 
-			if(candidate && candidate.url && elem._lazyrias.cur != candidate.url){
-				elem._lazyrias.cur = candidate.url;
-				elem.setAttribute(config.srcAttr, candidate.url);
-				elem.setAttribute('src', candidate.url);
+			if(candidate && candidate.u && elem._lazyrias.cur != candidate.u){
+				elem._lazyrias.cur = candidate.u;
+				elem.setAttribute(config.srcAttr, candidate.u);
+				elem.setAttribute('src', candidate.u);
 			}
 		};
 
-		addEventListener('lazybeforesizes', polyfill);
+		document.addEventListener('lazybeforesizes', polyfill);
 
 	})();
 
