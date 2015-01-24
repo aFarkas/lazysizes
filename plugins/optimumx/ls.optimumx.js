@@ -176,10 +176,11 @@
 		}
 	};
 
-	if(!window.devicePixelRatio){return;}
 
 	extentLazySizes();
 	setTimeout(extentLazySizes);
+
+	if(!window.devicePixelRatio){return;}
 
 	addEventListener('lazybeforesizes', function(e){
 		var optimumx, lazyData, width, attr, parent, sources, i, len;
