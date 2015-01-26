@@ -1,5 +1,5 @@
 #lazysizes
-**lazysizes** is a fast (jank-free) and self-initializing lazyloader for images (including responsive images), iframes, scripts/widgets and much more. It may become also your number one tool to integrate responsive images. Due to the fact that it can also automatically calculate the ``sizes`` attribute for your responsive images, it helps to separate layout (CSS) from content/structure (HTML) and makes integrating responsive images into any environment simply simple.
+**lazysizes** is a fast (jank-free) and self-initializing lazyloader for images (including responsive images), iframes, scripts/widgets and much more. It may become also your number one tool to integrate responsive images. Due to the fact that it can also automatically calculate the ``sizes`` attribute for your responsive images based on your CSS as also allows to use custom labeled media queries for you ``media`` attributes, it helps to separate layout (CSS) from content/structure (HTML) and makes integrating responsive images into any environment simply simple.
 
 ##How to
 
@@ -49,7 +49,7 @@
 Can be seen [here](http://afarkas.github.io/lazysizes/#examples).
 
 ##About responsive image support (``picture`` and/or ``srcset``)
-For full cross browser responsive image support you must either use a polyfill like [respimage (srcset and picture polyfill)](https://github.com/aFarkas/respimage) or [picturefill](https://github.com/scottjehl/picturefill) or use the [responsive image on demand plugin (recommended)](plugins/rias).
+For full cross browser responsive image support you must either use a polyfill like [respimage (srcset and picture polyfill)](https://github.com/aFarkas/respimage) or [picturefill](https://github.com/scottjehl/picturefill) or use the [responsive image on demand plugin](plugins/rias).
 
 ##More about the API
 **lazysizes** comes with a simple markup and JS API. Normally you will only need to use the markup API.
@@ -183,7 +183,7 @@ Here the list of options:
 * ``lazySizesConfig.srcAttr`` (default: ``"data-src"``): The attribute, which should be transformed to ``src``.
 * ``lazySizesConfig.srcset`` (default: ``"data-srcset"``): The attribute, which should be transformed to ``srcset``.
 * ``lazySizesConfig.sizesAttr`` (default: ``"data-sizes"``): The attribute, which should be transformed to ``sizes``. Makes almost only sense with the value ``"auto"``. Otherwise the ``sizes`` attribute should be used directly.
-* ``lazySizesConfig.onlyLargerSizes`` (default: ``false``): In case a responsive image had the ``data-sizes="auto"`` attribute and the computed new size decreases, lazysizes won't normally change the ``sizes`` attribute to a lower value.  Note: The default of this option was changed from ``true`` to ``false`` with version 0.8.3, because Chrome 40+ handles does cases more network friendly now. It is also deprecated and will be removed with next version, if it doesn't harm backward compatibility.
+* ``lazySizesConfig.customMedia`` (default: ``{}``): 
 
 ####JS API - events
 **lazysizes** provides two events to modify or extend the behavior of **lazysizes**.

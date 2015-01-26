@@ -279,7 +279,7 @@
 		};
 
 		var unveilElement = function (elem, force){
-			var sources, i, len, sourceSrcset, sizes, src, srcset, parent, isPicture, event, firesLoad;
+			var sources, i, len, sourceSrcset, sizes, src, srcset, parent, isPicture, event, firesLoad, customMedia;
 
 			var curSrc = elem.currentSrc || elem.src;
 			var isImg = regImg.test(elem.nodeName);
@@ -321,6 +321,9 @@
 					if(isPicture){
 						sources = parent.getElementsByTagName('source');
 						for(i = 0, len = sources.length; i < len; i++){
+							if( (customMedia = lazySizesConfig.customMedia[sources[i].getAttribute('media')]) ){
+								sources[i].setAttribute('media', customMedia);
+							}
 							sourceSrcset = sources[i].getAttribute(lazySizesConfig.srcsetAttr);
 							if(sourceSrcset){
 								sources[i].setAttribute('srcset', sourceSrcset);
@@ -456,7 +459,7 @@
 				if(!event.defaultPrevented){
 					width = event.details.width;
 
-					if(width && width !== elem._lazysizesWidth && (!lazySizesConfig.onlyLargerSizes || (!elem._lazysizesWidth || elem._lazysizesWidth < width))){
+					if(width && width !== elem._lazysizesWidth){
 						elem._lazysizesWidth = width;
 						width += 'px';
 						elem.setAttribute('sizes', width);
@@ -516,8 +519,8 @@
 			sizesAttr: 'data-sizes',
 			addClasses: true,
 			//preloadAfterLoad: false,
-			onlyLargerSizes: true,
-			minSize: 50
+			minSize: 50,
+			customMedia: {}
 		};
 
 		lazySizesConfig = window.lazySizesConfig || {};
