@@ -26,8 +26,8 @@
 				});
 			};
 			return function(object, element){
-				element = element || document.querySelector('html');
 				object = object || {};
+				element = element || document.querySelector('html');
 				parse(getStyle(element, ':before'), object);
 				parse(getStyle(element, ':after'), object);
 				return object;
@@ -42,6 +42,5 @@
 		addEventListener('lazybeforesizes', create);
 	}
 	create();
-	setTimeout(create);
 
 })(window);

@@ -147,8 +147,6 @@ This becomes especially handy to add unveiling effects for teasers or other elem
 }
 </style>
 
-<script>
-
 <div class="teaser lazyload" data-expand="-20">
     <img data-src="image.jpg" class="lazyload" />
     <h1>Teaser Title</h1>
@@ -189,7 +187,7 @@ Here the list of options:
 window.lazySizesConfig = window.lazySizesConfig || {};
 window.lazySizesConfig.customMedia = {
     '--small': '(max-width: 500px)',
-    '--medium': (min-width: 1100px)',
+    '--medium': '(min-width: 1100px)',
     '--large': '(max-width: 1100px)'
 };
 </script>
