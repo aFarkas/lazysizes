@@ -49,7 +49,7 @@
 Can be seen [here](http://afarkas.github.io/lazysizes/#examples).
 
 ##About responsive image support (``picture`` and/or ``srcset``)
-For full cross browser responsive image support you must either use a polyfill like [respimage (srcset and picture polyfill)](https://github.com/aFarkas/respimage) or [picturefill](https://github.com/scottjehl/picturefill) or use the [responsive image on demand plugin](plugins/rias).
+For full cross browser responsive image support you must either use a polyfill like [respimage](https://github.com/aFarkas/respimage) or [picturefill](https://github.com/scottjehl/picturefill) or use the [responsive image on demand plugin](plugins/rias).
 
 ##More about the API
 **lazysizes** comes with a simple markup and JS API. Normally you will only need to use the markup API.
