@@ -1,13 +1,16 @@
 /*
-
+ html:after {
+ 	display: none;
+ 	content: '--small: (max-width: 500px) | --medium: (max-width: 1100px) | --large: (min-width: 1100px)';
+ }
 */
 (function(window){
 	/*jshint eqnull:true */
 	'use strict';
 
 	var create = function(){
-		if(!window.lazySizes || window.lazySizes.getCustomMedias){return;}
-		window.lazySizes.getCustomMedias = (function(){
+		if(!window.lazySizes || lazySizes.getCustomMedias){return;}
+		lazySizes.getCustomMedias = (function(){
 			var regCleanPseudos = /['"]/g;
 			var regSplit = /\s*\|\s*/g;
 			var regNamedQueries = /^([a-z0-9_-]+)\s*:\s*(.+)$/i;
