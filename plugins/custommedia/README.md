@@ -1,6 +1,6 @@
 #lazysizes custommedia extension
 
-lazySizes custommedia extension allows you to sync you breakpoints between your CSS and the ``customMedia`` option of lazySizes.
+lazySizes custommedia extension allows you to sync your breakpoints between your CSS and the ``customMedia`` option of lazySizes.
 
 ```css
 html:after {
@@ -28,6 +28,20 @@ html:after {
 		data-srcset="http://placehold.it/1800x900/117fe8/fff"
 		alt="image with artdirection" />
 </picture>
+```
+
+The parsed custom media query object can accessed through the ``lazySizesConfig.customMedia`` object:
+
+```js
+window.lazySizesConfig.customMedia; // returns:
+
+/*
+{
+	'--small': '(max-width: 500px)',
+    '--medium': (min-width: 1100px)',
+    '--large': '(max-width: 1100px)'
+}
+*/
 ```
 
 

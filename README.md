@@ -183,7 +183,35 @@ Here the list of options:
 * ``lazySizesConfig.srcAttr`` (default: ``"data-src"``): The attribute, which should be transformed to ``src``.
 * ``lazySizesConfig.srcset`` (default: ``"data-srcset"``): The attribute, which should be transformed to ``srcset``.
 * ``lazySizesConfig.sizesAttr`` (default: ``"data-sizes"``): The attribute, which should be transformed to ``sizes``. Makes almost only sense with the value ``"auto"``. Otherwise the ``sizes`` attribute should be used directly.
-* ``lazySizesConfig.customMedia`` (default: ``{}``): 
+* ``lazySizesConfig.customMedia`` (default: ``{}``): The ``customMedia`` option can be used to separate your specific media queries implementation from the ``source[media]`` attribute by creating labeled media queries. (See also the [custommedia extension](plugins/custommedia)).
+```html
+<script>
+window.lazySizesConfig = window.lazySizesConfig || {};
+window.lazySizesConfig.customMedia = {
+    '--small': '(max-width: 500px)',
+    '--medium': (min-width: 1100px)',
+    '--large': '(max-width: 1100px)'
+};
+</script>
+<picture>
+	<!--[if IE 9]><audio><![endif]-->
+	<source
+		data-srcset="http://placehold.it/500x600/11e87f/fff"
+		media="--small" />
+	<source
+		data-srcset="http://placehold.it/700x300"
+		media="--medium" />
+	<source
+		data-srcset="http://placehold.it/1400x600/e8117f/fff"
+		media="--large" />
+	<!--[if IE 9]></audio><![endif]-->
+	<img
+		src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+		class="lazyload"
+		data-srcset="http://placehold.it/1800x900/117fe8/fff"
+		alt="image with artdirection" />
+</picture>
+```
 
 ####JS API - events
 **lazysizes** provides two events to modify or extend the behavior of **lazysizes**.
