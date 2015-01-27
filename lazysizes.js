@@ -424,7 +424,7 @@
 
 			addEventListener('hashchange', throttledCheckElements, true);
 
-			['transitionstart', 'transitionend', 'load', 'focus', 'mouseover', 'animationend'].forEach(function(evt){
+			['transitionstart', 'transitionend', 'load', 'focus', 'mouseover', 'animationend', 'click'].forEach(function(evt){
 				document.addEventListener(evt, throttledCheckElements, true);
 			});
 

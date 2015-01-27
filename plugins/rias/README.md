@@ -167,7 +167,7 @@ In case you want to use a CDN you can use jsDelivr's combohandler service:
 
 ###Using art direction
 
-In case you want to use art direction simply also use also placeholder urls inside of your ``source[data-srcset]`` or ``source[data-src]`` attributes.
+In case you want to use art direction simply also use placeholder urls inside of your ``source[data-srcset]`` or ``source[data-src]`` attributes.
 
 ```html
 <picture>
@@ -181,7 +181,6 @@ In case you want to use art direction simply also use also placeholder urls insi
     <source
             data-srcset="http://placehold.it/{width}/7D26CD/fff"
             media="(min-width: 1224px)" />
-
     <!--[if IE 9]></audio><![endif]-->
     <img
         src="http://placehold.it/100"
