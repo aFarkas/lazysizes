@@ -22,6 +22,10 @@ window.lazyTests = {
 		});
 	}],
 	simpleScrollView: ['lazyloads simple image after it scrolls near to view', function(assert){
+		if(/mobi/i.test(navigator.userAgent)){
+			assert.ok(true);
+			return;
+		}
 		var done = assert.async();
 
 		this.promise.always(function($, frameWindow){
@@ -48,9 +52,6 @@ window.lazyTests = {
 
 			setTimeout(function(){
 				$(frameWindow).scrollTop(900);
-
-
-
 			}, 70);
 			$topImage.on('lazybeforeunveil', function(){
 				setTimeout(function(){
@@ -61,6 +62,10 @@ window.lazyTests = {
 		});
 	}],
 	simpleAnimateView: ['lazyloads simple image after it animates near to view', function(assert){
+		if(/mobi/i.test(navigator.userAgent)){
+			assert.ok(true);
+			return;
+		}
 		var done = assert.async();
 
 		this.promise.always(function($, frameWindow){
@@ -151,7 +156,7 @@ window.lazyTests = {
 			var viewportTests = [
 				['300', 150],
 				['400', 200],
-				['200', frameWindow.lazySizesConfig.onlyLargerSizes ? 200 : 100]
+				['200', 100]
 			];
 			var run = function(){
 				if(viewportTests.length){
@@ -165,6 +170,9 @@ window.lazyTests = {
 			run();
 
 			frameWindow.respimage = function(){
+				respimgCalls++;
+			};
+			frameWindow.picturefill = function(){
 				respimgCalls++;
 			};
 
@@ -224,7 +232,7 @@ window.lazyTests = {
 				setTimeout(function(){
 
 					assert.equal($source.attr('srcset'), 'data:lazysource 200w');
-					assert.equal($image.attr('srcset') || $image.attr('data-risrcset'), 'data:lazyimg 200w');
+					assert.equal($image.attr('srcset') || $image.attr('data-risrcset') || $image.attr('data-pfsrcset'), 'data:lazyimg 200w');
 					assert.equal($image.prop('src'), window.HTMLPictureElement || !frameWindow.respimage ?  '' : 'data:lazysource');
 					done();
 				}, 9);
@@ -257,11 +265,11 @@ window.lazyTests = {
 
 			$image.on('lazybeforeunveil', function(){
 				setTimeout(function(){
-					var haspolyfill = frameWindow.respimage || (frameWindow.lazySizes.cfg.rias && frameWindow.lazySizes.pWS);
+					var haspolyfill = frameWindow.respimage || frameWindow.picturefill || (frameWindow.lazySizes.cfg.rias && frameWindow.lazySizes.pWS);
 
 					assert.equal($source.attr('srcset'), 'data:lazysource 200w');
 					assert.equal($source.attr('sizes'), $image.attr('sizes'));
-					assert.equal($image.attr('srcset') || $image.attr('data-risrcset'), 'data:lazyimg 200w');
+					assert.equal($image.attr('srcset') || $image.attr('data-risrcset') || $image.attr('data-pfsrcset'), 'data:lazyimg 200w');
 					assert.equal($image.prop('src'), window.HTMLPictureElement || !haspolyfill ?  '' : 'data:lazysource');
 					assert.equal($image.attr('sizes'), '300px');
 					done();
@@ -292,7 +300,7 @@ window.lazyTests = {
 						initialSrc :
 						'data:lazysrcset';
 
-					assert.equal($topImage.attr('srcset') || $topImage.attr('data-risrcset'), lazySrcset);
+					assert.equal($topImage.attr('srcset') || $topImage.attr('data-risrcset') || $topImage.attr('data-pfsrcset'), lazySrcset);
 					assert.equal($topImage.prop('src'), nowSrc);
 					done();
 				}, 9);
@@ -326,7 +334,7 @@ window.lazyTests = {
 							'data:lazysrcset' :
 							lazySrc;
 
-					assert.equal($topImage.attr('srcset') || $topImage.attr('data-risrcset'), lazySrcset);
+					assert.equal($topImage.attr('srcset') || $topImage.attr('data-risrcset') || $topImage.attr('data-pfsrcset'), lazySrcset);
 					assert.equal($topImage.prop('src'), nowSrc);
 					done();
 				}, 9);
@@ -375,7 +383,7 @@ window.lazyTests = {
 
 
 QUnit.module( "clean lazySizes", {
-	beforeEach: createBeforeEach({cfg: {onlyLargerSizes: false}})
+	beforeEach: createBeforeEach()
 });
 QUnit.test.apply(QUnit, lazyTests.simpleView);
 QUnit.test.apply(QUnit, lazyTests.simpleScrollView);
@@ -403,7 +411,7 @@ QUnit.test.apply(QUnit, lazyTests.simpleAutoSizesPicture);
 
 
 QUnit.module( "lazySizes + options + respimage + respmutation", {
-	beforeEach: createBeforeEach({cfg: {onlyLargerSizes: true}, libs: ['respimage', 'respmutation']})
+	beforeEach: createBeforeEach({libs: ['respimage', 'respmutation']})
 });
 QUnit.test.apply(QUnit, lazyTests.simpleView);
 QUnit.test.apply(QUnit, lazyTests.simpleScrollView);

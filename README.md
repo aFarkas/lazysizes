@@ -39,7 +39,7 @@
 
 1. **Works without any configuration in any web enviroment**: The script works as an universal, self-initializing, self-configuring and self-destroying component and detects any changes to the visibility of an image/iframe automatically no matter whether it becomes visible through a user scroll, a CSS animation triggered through ``:hover`` or through any kind of JS behavior (carousel, infinite scroll, AJAX, SPA...). Also works in conjunction with any kind of JS-/Frontend-Framework.
 2. **Future-proof**: It directly includes standard responsive image support (``picture`` and ``srcset``)
-3. **Separation of concerns**: For responsive image support it adds an automatic ``sizes`` calculation feature. There is also no change needed if you add a scrollable container with CSS (overflow: auto) or create a mega menu containing images.
+3. **Separation of concerns**: For responsive image support it adds an automatic ``sizes`` calculation as also alias names for media queries feature. There is also no JS change needed if you add a scrollable container with CSS (overflow: auto) or create a mega menu containing images.
 4. **Performance**: It's based on high efficient and best practice code (runtime **and** memory) to work jank-free at 60fps.
 5. **Extendable**: It provides JS and CSS hooks to extend lazySizes with any kind of lazy loading or effects (see also the [available plugins/snippets](#plugins)).
 6. **Intelligent prefetch**: lazySizes prefetches near the view assets, only while the browser network is idling. (see also ``expand`` option)
@@ -181,16 +181,18 @@ Here the list of options:
 * ``lazySizesConfig.srcAttr`` (default: ``"data-src"``): The attribute, which should be transformed to ``src``.
 * ``lazySizesConfig.srcset`` (default: ``"data-srcset"``): The attribute, which should be transformed to ``srcset``.
 * ``lazySizesConfig.sizesAttr`` (default: ``"data-sizes"``): The attribute, which should be transformed to ``sizes``. Makes almost only sense with the value ``"auto"``. Otherwise the ``sizes`` attribute should be used directly.
-* ``lazySizesConfig.customMedia`` (default: ``{}``): The ``customMedia`` option can be used to separate your specific media queries implementation from the ``source[media]`` attribute by creating labeled media queries. (See also the [custommedia extension](plugins/custommedia)).
+* ``lazySizesConfig.customMedia`` (default: ``{}``): The ``customMedia`` option object is an alias map for different media queries. It can be used to separate your specific media queries implementation for the ``source[media]`` attribute by creating labeled media queries. (See also the [custommedia extension](plugins/custommedia)).
 ```html
 <script>
 window.lazySizesConfig = window.lazySizesConfig || {};
 window.lazySizesConfig.customMedia = {
-    '--small': '(max-width: 500px)',
-    '--medium': '(min-width: 1100px)',
-    '--large': '(max-width: 1100px)'
+    '--small': '(max-width: 480px)',
+    '--medium': '(max-width: 700px)',
+    '--large': '(max-width: 1400px)'
 };
 </script>
+
+
 <picture>
 	<!--[if IE 9]><audio><![endif]-->
 	<source

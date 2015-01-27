@@ -29,6 +29,7 @@
     <script>
         var liblist = {
             respimage: '../../node_modules/respimage/respimage.js',
+            picturefill: '../../node_modules/picturefill/dist/picturefill.js',
             respmutation: '../../node_modules/respimage/plugins/mutation/ri.mutation.js',
             respintrinsic: '../../node_modules/respimage/plugins/intrinsic-dimension/ri.intrinsic.js'
         };
@@ -41,6 +42,10 @@
 
         if(params.libs){
             params.libs.forEach(function(lib){
+                //for real tests, test once with respimage and once with picturefill
+                if(lib == 'respimage' && Math.random() > 0.4 && params.libs.indexOf('respmutation') == -1 && params.libs.indexOf('respintrinsic') == -1){
+                    lib = 'picturefill';
+                }
                 document.write('<script src="' + (liblist[lib] || lib) + '"><\/script>');
             });
         }

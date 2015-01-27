@@ -20,6 +20,7 @@
     "grunt-plato": "^1.2.1",
     "grunt-uncss": "~0.3.7",
     "jquery-deparam": "^0.1.0",
+    "picturefill": "^2.2.0",
     "qunitjs": "^1.17.0",
     "respimage": "^1.2.1"
   },

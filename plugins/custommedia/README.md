@@ -5,7 +5,7 @@ lazySizes custommedia extension allows you to sync your breakpoints between your
 ```css
 html:after {
 	display: none;
-	content: '--small: (max-width: 500px) | --medium: (max-width: 1100px) | --large: (min-width: 1100px)';
+	content: '--small: (max-width: 500px) | --medium: (max-width: 1100px) | --large: (max-width: 1500px)';
 }
 ```
 
@@ -30,7 +30,7 @@ html:after {
 </picture>
 ```
 
-The parsed custom media query object can accessed through the ``lazySizesConfig.customMedia`` object:
+The parsed custom media query object can be accessed through the ``lazySizesConfig.customMedia`` option object:
 
 ```js
 window.lazySizesConfig.customMedia; // returns:
