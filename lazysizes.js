@@ -108,7 +108,7 @@
 			}
 		};
 
-		document.addEventListener("visibilitychange", handleVisibility);
+		document.addEventListener('visibilitychange', handleVisibility);
 		handleVisibility();
 
 		return function(force){
@@ -126,7 +126,7 @@
 
 		var ua = navigator.userAgent;
 		var fixChrome = window.HTMLPictureElement && ua.match(/hrome\/(\d+)/) && (RegExp.$1 == 40);
-		var supportNativeLQIP = (/blink|webkit/i).test(ua);
+		var supportNativeLQIP = (/webkit/i).test(ua);
 
 		var regImg = /^img$/i;
 		var regIframe = /^iframe$/i;
@@ -359,7 +359,7 @@
 					addClass(elem, lazySizesConfig.autosizesClass);
 				}
 
-				if(srcset || sizes || isPicture){
+				if(srcset || isPicture){
 					updatePolyfill(elem, {srcset: srcset, src: src});
 				}
 
@@ -368,10 +368,10 @@
 				//remove curSrc == (elem.currentSrc || elem.src) it's a workaround for FF. see: https://bugzilla.mozilla.org/show_bug.cgi?id=608261
 				if( !firesLoad || (elem.complete && curSrc == (elem.currentSrc || elem.src)) ){
 					if(firesLoad){
-						resetPreloading({target: elem});
+						resetPreloading(event);
 					}
 					if(lazySizesConfig.addClasses){
-						switchLoadingClass({target: elem});
+						switchLoadingClass(event);
 					}
 				}
 				elem = null;
@@ -381,8 +381,8 @@
 		var calcExpand = function(){
 
 			if(isPreloadAllowed && !isExpandCalculated){
-				defaultExpand = Math.max( Math.min(lazySizesConfig.expand || lazySizesConfig.threshold || 150, 300), 9 );
-				preloadExpand = Math.min( defaultExpand * 4, Math.max(innerHeight * 1.1, docElem.clientHeight, defaultExpand * 3) );
+				defaultExpand = Math.max( Math.min(lazySizesConfig.expand || lazySizesConfig.threshold || 120, 300), 9 );
+				preloadExpand = defaultExpand * 4;
 			}
 
 			isExpandCalculated = true;
