@@ -35,7 +35,7 @@
 		})();
 
 		lazySizes.getCustomMedias(lazySizes.cfg.customMedia);
-		removeEventListener('lazybeforesizes', extendCustomMedia);
+		removeEventListener('lazybeforesizes', create);
 	};
 
 	if(window.addEventListener){
