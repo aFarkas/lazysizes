@@ -279,20 +279,21 @@
 		};
 
 		var unveilElement = function (elem, force){
-			var sources, i, len, sourceSrcset, sizes, src, srcset, parent, isPicture, event, firesLoad, customMedia;
+			var sources, i, len, sourceSrcset, src, srcset, parent, isPicture, event, firesLoad, customMedia;
 
 			var curSrc = elem.currentSrc || elem.src;
 			var isImg = regImg.test(elem.nodeName);
 
-			if(!supportNativeLQIP && !isCompleted && isImg && curSrc && !elem.complete){return;}
+			//allow using sizes="auto", but don't use. it's invalid. Use data-sizes="auto" or a valid value for sizes instead (i.e.: sizes="80vw")
+			var sizes = elem.getAttribute(lazySizesConfig.sizesAttr) || elem.getAttribute('sizes');
+			var isAuto = sizes == 'auto';
+
+			if( (isAuto || (!supportNativeLQIP && !isCompleted)) && isImg && curSrc && !elem.complete){return;}
 
 			if(!(event = triggerEvent(elem, 'lazybeforeunveil', {force: !!force})).defaultPrevented){
 
-				//allow using sizes="auto", but don't use. it's invalid. Use data-sizes="auto" or a valid value for sizes instead (i.e.: sizes="80vw")
-				sizes = elem.getAttribute(lazySizesConfig.sizesAttr) || elem.getAttribute('sizes');
-
 				if(sizes){
-					if(sizes == 'auto'){
+					if(isAuto){
 						autoSizer.updateElem(elem, true);
 					} else {
 						elem.setAttribute('sizes', sizes);
