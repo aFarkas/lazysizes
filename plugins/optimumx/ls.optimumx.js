@@ -72,7 +72,10 @@
 	function parseSets(elem){
 		var lazyData = {srcset: elem.getAttribute(lazySizes.cfg.srcsetAttr)  || ''};
 		var cands = parseWsrcset(lazyData.srcset);
-		elem._lazyOptimumx = lazyData;
+		Object.defineProperty(elem, '_lazyOptimumx', {
+			value: lazyData,
+			writeable: true
+		});
 
 		lazyData.cands = cands;
 
@@ -205,6 +208,12 @@
 
 			e.details.srcset = constrainSrces(e.target, width, attr);
 		}
-	}, false);
+	});
+
+	addEventListener('lazybeforeunveil', function(e){
+		if(e.target._lazyOptimumx){
+			e.target._lazyOptimumx = null;
+		}
+	});
 
 })(window, document);
