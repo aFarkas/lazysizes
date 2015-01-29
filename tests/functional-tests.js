@@ -148,23 +148,23 @@ window.lazyTests = {
 			var $topImage;
 			var respimgCalls = 0;
 			var repimgExpectedCalls = window.HTMLPictureElement ?
-				0 :
-				frameWindow.lazySizesConfig.onlyLargerSizes ?
-					2 :
-					3;
+				0 : 3;
 
 			var viewportTests = [
 				['300', 150],
 				['400', 200],
-				['200', 100]
+				['200', 100],
+				['400', 200]
 			];
 			var run = function(){
 				if(viewportTests.length){
 					viewport = viewportTests.shift();
 					$iframe.css('width', viewport[0]);
 				} else {
-					assert.equal(respimgCalls, repimgExpectedCalls);
-					done();
+					setTimeout(function(){
+						assert.equal(respimgCalls, repimgExpectedCalls);
+						done();
+					}, 90);
 				}
 			};
 			run();
