@@ -265,6 +265,84 @@ $.extend(window.lazyTests, {
 				}, 9);
 			});
 		});
+	}],
+	riasResize: ['lazysizes rias can be re-initialized', function(assert){
+		var done = assert.async();
+
+		this.promise.always(function($){
+			var placeholderSrc, $image;
+			var initTest = function(){
+				var success = [
+					{
+						u: 'data:img1-1',
+						w: 1,
+						c: 'data:img1-1 1w'
+					},
+					{
+						u: 'data:img1-500',
+						w: 500,
+						c: 'data:img1-500 500w'
+					},
+					{
+						u: 'data:img1-1200',
+						w: 1200,
+						c: 'data:img1-1200 1200w'
+					}
+				];
+				assert.equal(JSON.stringify($image.prop('_lazyrias')), JSON.stringify(success));
+				assert.equal($image.attr('srcset'), 'data:img1-1 1w, data:img1-500 500w, data:img1-1200 1200w');
+			};
+			var reinitTest = function(){
+				var success = [
+					{
+						u: 'data:img2-1',
+						w: 1,
+						c: 'data:img2-1 1w'
+					},
+					{
+						u: 'data:img2-500',
+						w: 500,
+						c: 'data:img2-500 500w'
+					},
+					{
+						u: 'data:img2-1200',
+						w: 1200,
+						c: 'data:img2-1200 1200w'
+					}
+				];
+				assert.equal(JSON.stringify($image.prop('_lazyrias')), JSON.stringify(success));
+				assert.equal($image.attr('srcset'), 'data:img2-1 1w, data:img2-500 500w, data:img2-1200 1200w');
+			};
+			var test = [
+				['data:img1-{width}', initTest],
+				['data:img2-{width}', reinitTest]
+			];
+			var run = function(){
+				if(test.length){
+					placeholderSrc = test.shift();
+					$image
+						.attr('data-src', placeholderSrc[0])
+						.addClass('lazyload')
+					;
+				} else {
+					done();
+				}
+			};
+
+
+			$image = $('<img data-sizes="auto" style="width: 90%;" data-widths="[1, 500, 1200]" class="lazyload" />')
+				.appendTo('body')
+			;
+
+			run();
+
+			$image.on('lazybeforeunveil', function(e){
+				setTimeout(function(){
+					placeholderSrc[1]();
+					run();
+				}, 9);
+			});
+		});
 	}]
 });
 
