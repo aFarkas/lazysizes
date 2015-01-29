@@ -143,7 +143,8 @@
 
 		elem.setAttribute(config.srcsetAttr, src.srcset.join(', '));
 		Object.defineProperty(elem, '_lazyrias', {
-			value: src
+			value: src,
+			writeable: true
 		});
 	}
 
@@ -193,7 +194,8 @@
 			var src;
 			if(!elem._lazyrias && lazySizes.pWS && (src = lazySizes.pWS(elem.getAttribute(config.srcsetAttr || ''))).length){
 				Object.defineProperty(elem, '_lazyrias', {
-					value: src
+					value: src,
+					writeable: true
 				});
 				if(testPicture && elem.parentNode){
 					src.isPicture = elem.parentNode.nodeName.toUpperCase() == 'PICTURE';
