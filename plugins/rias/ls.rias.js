@@ -143,7 +143,8 @@
 
 		elem.setAttribute(config.srcsetAttr, src.srcset.join(', '));
 		Object.defineProperty(elem, '_lazyrias', {
-			value: src
+			value: src,
+			writable: true
 		});
 	}
 
