@@ -75,7 +75,7 @@
 		var cands = parseWsrcset(lazyData.srcset);
 		Object.defineProperty(elem, '_lazyOptimumx', {
 			value: lazyData,
-			writeable: true
+			writable: true
 		});
 
 		lazyData.cands = cands;
@@ -179,8 +179,6 @@
 		}
 	};
 
-
-	extentLazySizes();
 	docElem.addEventListener('lazybeforeunveil', extentLazySizes);
 	setTimeout(extentLazySizes);
 
