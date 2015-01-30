@@ -371,7 +371,7 @@ lazySizes.init();
 Fixes, PRs and issues are always welcome, make sure to create a new branch from the **master** (not the gh-pages branch), validate against JShint and test in all browsers. In case of an API/documentation change make sure to also document it here in the readme.md.
 
 ##<a name="plugins"></a>Available plugins in this repo
-It is recommended to concat all plugins together with lazySizes. In case you don't concat it is recommended to include the plugin scripts *before** the lazySizes main script.
+It is recommended to concat all plugins together with lazySizes. In case you don't concat it is recommended to include the plugin scripts *before* the lazySizes main script.
 
 ###[RIaS plugin - (Responsive Images as a Service / Responsive image on demand)](plugins/rias)
 The [RIaS plugin is a neat full responsive images solution](plugins/rias) without the need of any additional plugins/polyfills.
@@ -425,8 +425,8 @@ Due to the fact, that it is designed to be invoked with a high frequency and the
     class="lazyload" />
 ```
 
-##Specifying image dimensions (minimizing reflows and avoiding page jumps)
-To minimize reflows, content jumping or unpredictable behavior with some other JS widgets (isotope, masonry, some sliders...) the width **and** the height of an image should be specified. For "static" images this can done using either CSS or using the content attributes:
+##Tip: Specifying image dimensions (minimizing reflows and avoiding page jumps)
+To minimize reflows, content jumping or unpredictable behavior with some other JS widgets (isotope, masonry, some sliders/carousels...) the width **and** the height of an image should be calculable by the browser before the image source itself is loaded. For "static" images this can done using either CSS or using the content attributes:
 
 ```html
 <img
@@ -437,7 +437,7 @@ To minimize reflows, content jumping or unpredictable behavior with some other J
     http://placehold.it/700x300 2x" class="lazyload" />
 ```
 
-For flexible responsive images the [CSS intrinsic ratio scaling technique](http://www.mademyday.de/css-height-equals-width-with-pure-css.html) can be used:
+For flexible responsive images the [CSS intrinsic ratio scaling technique](http://www.mademyday.de/css-height-equals-width-with-pure-css.html) should be used:
 
 ```html
 <style>
@@ -515,3 +515,12 @@ In case the exact ratio of your image is unknown you can also vary the intrinsic
 ```
 
 **Note**: In case you use the "unknown intrinsic ratio pattern" the ``data-sizes="auto"`` feature should not be used.
+
+##Tip: Where/How to include lazySizes
+While lazy loading is a great important feature, it is important for users that crucial inview images are loaded as fast as possible. (Most user start to interact with a page after inview images are loaded.)
+
+In case you are normally combine all your scripts into one large script and add this to the bottom of your page. It can be better for perceived performance to generate two or sometimes three script packages.
+
+One small package, which includes all scripts which have heavy influence on the content or the UI and another larger one which includes the normal behavior of the page.
+
+This smaller script, which includes lazySizes can than be placed before the other script (even in the head) to load the crucial content as fast possible.
