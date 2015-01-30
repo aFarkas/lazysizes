@@ -19,8 +19,9 @@
 	/*jshint eqnull:true */
 	'use strict';
 	var config, extentLazySizes, parseWsrcset;
-	var regPicture = /^picture$/i;
 
+	var regPicture = /^picture$/i;
+	var docElem = document.documentElement;
 
 	parseWsrcset = (function(){
 		var candidates;
@@ -174,11 +175,13 @@
 		if(window.lazySizes && !window.lazySizes.getOptimumX){
 			lazySizes.getX = getOptimumX;
 			lazySizes.pWS = parseWsrcset;
+			docElem.removeEventListener('lazybeforeunveil', extentLazySizes);
 		}
 	};
 
 
 	extentLazySizes();
+	docElem.addEventListener('lazybeforeunveil', extentLazySizes);
 	setTimeout(extentLazySizes);
 
 	if(!window.devicePixelRatio){return;}

@@ -182,6 +182,7 @@ Here the list of options:
 * ``lazySizesConfig.srcset`` (default: ``"data-srcset"``): The attribute, which should be transformed to ``srcset``.
 * ``lazySizesConfig.sizesAttr`` (default: ``"data-sizes"``): The attribute, which should be transformed to ``sizes``. Makes almost only sense with the value ``"auto"``. Otherwise the ``sizes`` attribute should be used directly.
 * ``lazySizesConfig.customMedia`` (default: ``{}``): The ``customMedia`` option object is an alias map for different media queries. It can be used to separate your specific media queries implementation for the ``source[media]`` attribute by creating labeled media queries. (See also the [custommedia extension](plugins/custommedia)).
+* ``lazySizesConfig.init`` (default: ``true``): By default lazySizes initializes itself as soon as possible, to load inview assets as soon as possible. In the unlikely case you need to setup/configure something with a later script you can set this option to ``false`` and call ``lazySizes.init();`` later explicitly.
 ```html
 <script>
 window.lazySizesConfig = window.lazySizesConfig || {};
@@ -346,6 +347,23 @@ In case one or more image elements with the attribute ``data-sizes="auto"`` have
 lazySizes.updateAllSizes();
 ```
 
+#####``lazySizes.init()``
+
+LazySizes initializes itself as soon as possible. In case you set ``lazySizesConfig.init`` to ``false`` you need to explicityl call ``lazySizes.init()``.
+
+```html
+<script>
+window.lazySizesConfig = window.lazySizesConfig || {};
+lazySizesConfig.init = false;
+</script>
+
+<script src="lazysizes.js"></script>
+<script src="other-script.js"></script>
+<script>
+lazySizes.init();
+</script>
+```
+
 ##Browser Support
 **lazysizes** supports at least the following browsers: IE9+, Firefox 21+, Chrome 27+, Safari 6.1+, iOS Safari 7.0+, Android 4.1+
 
@@ -353,6 +371,7 @@ lazySizes.updateAllSizes();
 Fixes, PRs and issues are always welcome, make sure to create a new branch from the **master** (not the gh-pages branch), validate against JShint and test in all browsers. In case of an API/documentation change make sure to also document it here in the readme.md.
 
 ##<a name="plugins"></a>Available plugins in this repo
+It is recommended to concat all plugins together with lazySizes. In case you don't concat it is recommended to include the plugin scripts *before** the lazySizes main script.
 
 ###[RIaS plugin - (Responsive Images as a Service / Responsive image on demand)](plugins/rias)
 The [RIaS plugin is a neat full responsive images solution](plugins/rias) without the need of any additional plugins/polyfills.

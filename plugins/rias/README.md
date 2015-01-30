@@ -14,8 +14,8 @@ The RiaS plugin also allows art direction by combining placeholder URLs with a `
 
 ```html
 <!-- include lazysizes + rias extension -->
-<script src="../lazysizes.js"></script>
 <script src="../plugins/rias/ls.rias.js"></script>
+<script src="../lazysizes.js"></script>
 ```
 
 

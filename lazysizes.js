@@ -506,6 +506,14 @@
 		};
 	})();
 
+	var init = function(){
+		if(!init.i){
+			init.i = true;
+			autoSizer.init();
+			loader.init();
+		}
+	};
+
 	(function(){
 		var prop;
 		var lazySizesDefaults = {
@@ -521,7 +529,8 @@
 			addClasses: true,
 			//preloadAfterLoad: false,
 			minSize: 50,
-			customMedia: {}
+			customMedia: {},
+			init: true
 		};
 
 		lazySizesConfig = window.lazySizesConfig || {};
@@ -534,10 +543,9 @@
 
 		window.lazySizesConfig = lazySizesConfig;
 
-		setTimeout(function(){
-			autoSizer.init();
-			loader.init();
-		});
+		if(lazySizesDefaults.init){
+			setTimeout(init);
+		}
 	})();
 
 
@@ -546,7 +554,7 @@
 		cfg: lazySizesConfig,
 		autoSizer: autoSizer,
 		loader: loader,
-
+		init: init,
 		//depreacated methods will be removed with next major version
 		updateAllSizes: autoSizer.updateElems,
 		updateAllLazy: loader.checkElems,

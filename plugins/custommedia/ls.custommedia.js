@@ -7,6 +7,7 @@
 (function(window){
 	/*jshint eqnull:true */
 	'use strict';
+	var docElem = document.documentElement;
 
 	var create = function(){
 		if(!window.lazySizes || lazySizes.getCustomMedias){return;}
@@ -35,12 +36,13 @@
 		})();
 
 		lazySizes.getCustomMedias(lazySizes.cfg.customMedia);
-		removeEventListener('lazybeforesizes', create);
+		docElem.removeEventListener('lazybeforeunveil', create);
 	};
 
 	if(window.addEventListener){
-		addEventListener('lazybeforesizes', create);
+		docElem.addEventListener('lazybeforeunveil', create);
 	}
 	create();
+	setTimeout(create);
 
 })(window);
