@@ -51,13 +51,7 @@
 
 		elem.appendChild(image);
 
-		if(!window.HTMLPictureElement){
-			if(window.respimage){
-				respimage({elements: [image]});
-			} else if(window.picturefill) {
-				picturefill({elements: [image]});
-			}
-		}
+		lazySizes.uP(image);
 	});
 
 	addEventListener('lazybeforesizes', function(e){
