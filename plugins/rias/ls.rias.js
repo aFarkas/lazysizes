@@ -11,6 +11,7 @@
 	var regWidth = /\s*\{\s*width\s*\}\s*/i;
 	var regPlaceholder = /\s*\{\s*([a-z0-9]+)\s*\}\s*/ig;
 	var regObj = /^\[.*\]|\{.*\}$/;
+	var regAllowedSizes = /^(?:auto|\d+(px)?)$/;
 	var anchor = document.createElement('a');
 
 	(function(){
@@ -162,10 +163,10 @@
 	}
 
 	addEventListener('lazybeforeunveil', function(e){
-		var elem, src, elemOpts, parent, sources, i, len, sourceSrc;
+		var elem, src, elemOpts, parent, sources, i, len, sourceSrc, sizes;
 		elem = e.target;
 
-		if(e.defaultPrevented || !(src = getSrc(elem)) || riasCfg.disabled || !(elem.getAttribute(config.sizesAttr) || elem.getAttribute('sizes'))){return;}
+		if(e.defaultPrevented || !(src = getSrc(elem)) || riasCfg.disabled || !((sizes = elem.getAttribute(config.sizesAttr) || elem.getAttribute('sizes')) && regAllowedSizes.test(sizes))){return;}
 
 		elemOpts = createAttrObject(elem, src);
 
@@ -181,11 +182,19 @@
 			setSrc(src, elemOpts, elem);
 		}
 
+		if(sizes != 'auto'){
+			polyfill({
+				target: elem,
+				details: {
+					width: parseInt(sizes, 10)
+				}
+			});
+		}
 
 	});
 
 	// partial polyfill
-	(function(){
+	var polyfill = (function(){
 		var reduceNearest = function (prev, curr, initial, ar) {
 			return (Math.abs(curr.w - ar.w) < Math.abs(prev.w - ar.w) ? curr : prev);
 		};
@@ -247,6 +256,8 @@
 		};
 
 		document.addEventListener('lazybeforesizes', polyfill);
+
+		return polyfill;
 
 	})();
 
