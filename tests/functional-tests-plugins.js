@@ -266,7 +266,7 @@ $.extend(window.lazyTests, {
 			});
 		});
 	}],
-	riasResize: ['lazysizes rias can be re-initialized', function(assert){
+	riasReinit: ['lazysizes rias can be re-initialized', function(assert){
 		var done = assert.async();
 
 		this.promise.always(function($){
@@ -289,7 +289,7 @@ $.extend(window.lazyTests, {
 						c: 'data:img1-1200 1200w'
 					}
 				];
-				assert.equal(JSON.stringify($image.prop('_lazyrias')), JSON.stringify(success));
+				assert.propEqual($image.prop('_lazyrias'), success);
 				assert.equal($image.attr('srcset'), 'data:img1-1 1w, data:img1-500 500w, data:img1-1200 1200w');
 			};
 			var reinitTest = function(){
@@ -310,7 +310,7 @@ $.extend(window.lazyTests, {
 						c: 'data:img2-1200 1200w'
 					}
 				];
-				assert.equal(JSON.stringify($image.prop('_lazyrias')), JSON.stringify(success));
+				assert.propEqual($image.prop('_lazyrias'), success);
 				assert.equal($image.attr('srcset'), 'data:img2-1 1w, data:img2-500 500w, data:img2-1200 1200w');
 			};
 			var test = [
@@ -343,11 +343,95 @@ $.extend(window.lazyTests, {
 				}, 9);
 			});
 		});
+	}],
+	optimumxReinit: ['lazysizes optimumx can be re-initialized', function(assert){
+		var done = assert.async();
+
+		this.promise.always(function($){
+			var placeholderSrc, $image;
+			var initTest = function(){
+				var success = [
+					{
+						u: 'data:img1-5000',
+						w: 5000,
+						c: 'data:img1-5000 5000w'
+					},
+					{
+						u: 'data:img1-50000',
+						w: 50000,
+						c: 'data:img1-50000 50000w'
+					},
+					{
+						u: 'data:img1-500000',
+						w: 500000,
+						c: 'data:img1-500000 500000w'
+					}
+				];
+				assert.propEqual($image.prop('_lazyOptimumx').cands, success);
+				assert.equal($image.prop('_lazyOptimumx').cSrcset.length, 1);
+				assert.equal($image.prop('_lazyOptimumx').cSrcset[0], 'data:img1-5000 5000w');
+				assert.equal($image.attr('srcset'), 'data:img1-5000 5000w');
+			};
+			var reinitTest = function(){
+				var success = [
+					{
+						u: 'data:img2-50',
+						w: 50,
+						c: 'data:img2-50 50w'
+					},
+					{
+						u: 'data:img2-100',
+						w: 100,
+						c: 'data:img2-100 100w'
+					},
+					{
+						u: 'data:img2-500000',
+						w: 500000,
+						c: 'data:img2-500000 500000w'
+					}
+				];
+				assert.propEqual($image.prop('_lazyOptimumx').cands, success);
+				assert.equal($image.prop('_lazyOptimumx').cSrcset.length, 2);
+				assert.equal($image.prop('_lazyOptimumx').cSrcset[0], 'data:img2-50 50w');
+				assert.equal($image.prop('_lazyOptimumx').cSrcset[1], 'data:img2-100 100w');
+				assert.equal($image.attr('srcset'), 'data:img2-50 50w, data:img2-100 100w');
+			};
+			var test = [
+				['data:img1-50000 50000w, data:img1-5000 5000w, data:img1-500000 500000w', initTest],
+				['data:img2-100 100w, data:img2-500000 500000w, data:img2-50 50w', reinitTest]
+			];
+			var run = function(){
+				if(test.length){
+					placeholderSrc = test.shift();
+					$image
+						.attr('data-srcset', placeholderSrc[0])
+						.attr('data-optimumx', '0.6')
+						.addClass('lazyload')
+					;
+				} else {
+					done();
+				}
+			};
+
+
+			$image = $('<img data-sizes="auto" style="width: 90%;" data-optimumx="0.6" class="lazyload" />')
+				.appendTo('body')
+			;
+
+			run();
+
+			$image.on('lazybeforeunveil', function(e){
+				setTimeout(function(){
+					placeholderSrc[1]();
+					run();
+				}, 9);
+			});
+		});
 	}]
 });
 
 
-QUnit.module( "optimumx + respimage", {
+QUnit.module( "optimumx", {
 	beforeEach: createBeforeEach(
 		{
 			plugins: ['optimumx']
@@ -356,7 +440,7 @@ QUnit.module( "optimumx + respimage", {
 });
 QUnit.test.apply(QUnit, lazyTests.optimumxPictureResize);
 QUnit.test.apply(QUnit, lazyTests.simplePicture);
-
+QUnit.test.apply(QUnit, lazyTests.optimumxReinit);
 
 QUnit.module( "optimumx + respimage + respmutation", {
 	beforeEach: createBeforeEach(
@@ -383,6 +467,7 @@ QUnit.test.apply(QUnit, lazyTests.riasResize);
 QUnit.test.apply(QUnit, lazyTests.riasPictureResize);
 QUnit.test.apply(QUnit, lazyTests.simplePicture);
 QUnit.test.apply(QUnit, lazyTests.simpleAutoSizesPicture);
+QUnit.test.apply(QUnit, lazyTests.riasReinit);
 
 QUnit.module( "optimumx + rias + respimage", {
 	beforeEach: createBeforeEach(
@@ -398,6 +483,7 @@ QUnit.test.apply(QUnit, lazyTests.optimumxPictureResize);
 QUnit.test.apply(QUnit, lazyTests.riasResize);
 QUnit.test.apply(QUnit, lazyTests.riasPictureResize);
 QUnit.test.apply(QUnit, lazyTests.simpleAutoSizesPicture);
+QUnit.test.apply(QUnit, lazyTests.riasReinit);
 
 QUnit.module( "rias", {
 	beforeEach: createBeforeEach(
@@ -409,6 +495,7 @@ QUnit.module( "rias", {
 QUnit.test.apply(QUnit, lazyTests.riasResize);
 QUnit.test.apply(QUnit, lazyTests.riasPictureResize);
 QUnit.test.apply(QUnit, lazyTests.simplePicture);
+QUnit.test.apply(QUnit, lazyTests.riasReinit);
 
 QUnit.module( "rias + respimage", {
 	beforeEach: createBeforeEach(
@@ -422,3 +509,4 @@ QUnit.module( "rias + respimage", {
 });
 QUnit.test.apply(QUnit, lazyTests.riasResize);
 QUnit.test.apply(QUnit, lazyTests.riasPictureResize);
+QUnit.test.apply(QUnit, lazyTests.riasReinit);
