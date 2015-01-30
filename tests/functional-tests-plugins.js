@@ -427,6 +427,48 @@ $.extend(window.lazyTests, {
 				}, 9);
 			});
 		});
+	}],
+	riasAutoSizes: ['lazysizes rias works with autosizes simple sizes', function(assert){
+		var done = assert.async();
+
+		this.promise.always(function($){
+			var $image;
+
+
+
+			$image = $('<img data-sizes="auto" style="width: 100%;" data-widths="[900, 1200]" class="lazyload" />')
+				.attr('data-src', 'data:image-{width}')
+				.appendTo('body')
+			;
+
+			$image.on('lazybeforeunveil', function(e){
+				setTimeout(function(){
+					assert.equal($image.prop('currentSrc') || $image.attr('src'), 'data:image-900');
+					done();
+				}, 9);
+			});
+		});
+	}],
+	riasSimpleSizes: ['lazysizes rias works with simple sizes', function(assert){
+		var done = assert.async();
+
+		this.promise.always(function($){
+			var $image;
+
+
+
+			$image = $('<img data-sizes="1200px" style="width: 100%;" data-widths="[300, 500, 1200]" class="lazyload" />')
+				.attr('data-src', 'data:image-{width}')
+				.appendTo('body')
+			;
+
+			$image.on('lazybeforeunveil', function(e){
+				setTimeout(function(){
+					assert.equal($image.prop('currentSrc') || $image.attr('src'), 'data:image-1200');
+					done();
+				}, 9);
+			});
+		});
 	}]
 });
 
@@ -468,6 +510,8 @@ QUnit.test.apply(QUnit, lazyTests.riasPictureResize);
 QUnit.test.apply(QUnit, lazyTests.simplePicture);
 QUnit.test.apply(QUnit, lazyTests.simpleAutoSizesPicture);
 QUnit.test.apply(QUnit, lazyTests.riasReinit);
+QUnit.test.apply(QUnit, lazyTests.riasSimpleSizes);
+QUnit.test.apply(QUnit, lazyTests.riasAutoSizes);
 
 QUnit.module( "optimumx + rias + respimage", {
 	beforeEach: createBeforeEach(
@@ -484,6 +528,8 @@ QUnit.test.apply(QUnit, lazyTests.riasResize);
 QUnit.test.apply(QUnit, lazyTests.riasPictureResize);
 QUnit.test.apply(QUnit, lazyTests.simpleAutoSizesPicture);
 QUnit.test.apply(QUnit, lazyTests.riasReinit);
+QUnit.test.apply(QUnit, lazyTests.riasSimpleSizes);
+QUnit.test.apply(QUnit, lazyTests.riasAutoSizes);
 
 QUnit.module( "rias", {
 	beforeEach: createBeforeEach(
@@ -496,6 +542,8 @@ QUnit.test.apply(QUnit, lazyTests.riasResize);
 QUnit.test.apply(QUnit, lazyTests.riasPictureResize);
 QUnit.test.apply(QUnit, lazyTests.simplePicture);
 QUnit.test.apply(QUnit, lazyTests.riasReinit);
+QUnit.test.apply(QUnit, lazyTests.riasSimpleSizes);
+QUnit.test.apply(QUnit, lazyTests.riasAutoSizes);
 
 QUnit.module( "rias + respimage", {
 	beforeEach: createBeforeEach(
@@ -510,3 +558,5 @@ QUnit.module( "rias + respimage", {
 QUnit.test.apply(QUnit, lazyTests.riasResize);
 QUnit.test.apply(QUnit, lazyTests.riasPictureResize);
 QUnit.test.apply(QUnit, lazyTests.riasReinit);
+QUnit.test.apply(QUnit, lazyTests.riasSimpleSizes);
+QUnit.test.apply(QUnit, lazyTests.riasAutoSizes);
