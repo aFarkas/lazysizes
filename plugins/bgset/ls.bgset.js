@@ -1,36 +1,55 @@
-addEventListener('lazybeforeunveil', (function(){
+(function(){
 	'use strict';
-	var parent = document.createElement('div');
+	if(!window.addEventListener){return;}
 
-	return function(e){
-		var set, image, load, sizes;
+	var proxyWidth = function(elem, image){
+		var width = lazySizes.gW(elem, elem.parentNode);
+		if(!elem._lazysizesWidth || width > elem._lazysizesWidth){
+			image.setAttribute('sizes',  width+'px');
+			elem._lazysizesWidth = width;
+		}
+		return elem._lazysizesWidth;
+	};
+
+	addEventListener('lazybeforeunveil', function(e){
+		var set, image, load, init, elem;
 
 		if(e.defaultPrevented || !(set = e.target.getAttribute('data-bgset'))){return;}
 		image = document.createElement('img');
-		sizes = e.target.getAttribute('data-sizes');
-		image.setAttribute('sizes', sizes && sizes != 'auto' ? sizes : (e.target.offsetWidth +'px'));
+		elem = e.target;
+		proxyWidth(elem, image);
 
-		load = function(){
-			var bg = image.currentSrc || image.src;
+		load = function(evt){
+			var bg = evt.type == 'load' ? image.currentSrc || image.src : false;
 			if(bg){
-				e.target.style.backgroundImage = 'url('+ bg +')';
+				elem.style.backgroundImage = 'url('+ bg +')';
 			}
-			e.details.firesLoad = false;
 
-			lazySizes.fire(e.target, '_lazyloaded');
-			image.onload = null;
-			image.onerror = null;
-			parent.removeChild(image);
-			image = null;
+			if(!init){
+				lazySizes.fire(elem, '_lazyloaded');
+				if(e && e.details){
+					e.details.firesLoad = false;
+				}
+				init = true;
+				e = null;
+			}
 		};
 
 		e.details.firesLoad = true;
 
-		image.onload = load;
-		image.onerror = load;
+		image.addEventListener('load', load);
+		image.addEventListener('error', load);
 
 		image.setAttribute('srcset', set);
-		parent.appendChild(image);
+		image.style.display = 'none';
+		image.className = lazySizes.cfg.autosizesClass;
+
+		Object.defineProperty(image, '_lazybgset', {
+			value: elem,
+			writable: true
+		});
+
+		elem.appendChild(image);
 
 		if(!window.HTMLPictureElement){
 			if(window.respimage){
@@ -39,9 +58,10 @@ addEventListener('lazybeforeunveil', (function(){
 				picturefill({elements: [image]});
 			}
 		}
+	});
 
-		if(image && image.onload && image.complete && (image.src || image.currentSrc)){
-			load();
-		}
-	};
-})());
+	addEventListener('lazybeforesizes', function(e){
+		if(e.defaultPrevented || !e.target._lazybgset){return;}
+		e.details.width = proxyWidth(e.target._lazybgset, e.target);
+	});
+})();
