@@ -40,10 +40,10 @@
 1. **Works without any configuration or JS callbacks in any web enviroment**: The script works as an universal, self-initializing, self-configuring and self-destroying component and detects any changes to the visibility of any current and future image/iframe elements automatically no matter whether it becomes visible through a user scroll, a CSS animation triggered through ``:hover`` or through any kind of JS behavior (carousel, slider, infinite scroll, isotope/filtering/sorting, AJAX, SPAs...). Also works automatically in conjunction with any kind of JS-/CSS-/Frontend-Framework (jQuery mobile, Bootstrap, Backbone, Angular, React, ember).
 2. **Future-proof**: It directly includes standard responsive image support (``picture`` and ``srcset``)
 3. **Separation of concerns**: For responsive image support it adds an automatic ``sizes`` calculation as also alias names for media queries feature. There is also no JS change needed if you add a scrollable container with CSS (overflow: auto) or create a mega menu containing images.
-4. **Performance**: It's based on high efficient and best practice code (runtime **and** memory) to work jank-free at 60fps.
-5. **Extendable**: It provides JS and CSS hooks to extend lazySizes with any kind of lazy loading or effects (see also the [available plugins/snippets](#plugins)).
+4. **Performance**: It's based on high efficient and best practice code (runtime **and** memory) to work jank-free at 60fps. Can be used with thousands of images/iframes on CSS and JS heavy pages/webapps.
+5. **Extendable**: It provides JS and CSS hooks to extend lazySizes with any kind of lazy loading, lazy instantiation, inview callbacks or effects (see also the [available plugins/snippets](#plugins)).
 6. **Intelligent prefetch**: lazySizes prefetches near the view assets, only while the browser network is idling. (see also ``expand`` option)
-7. **Lightweight, but mature solution**: lazySizes has the right balance between lightweight and a reliable and fast solution
+7. **Lightweight, but mature solution**: lazySizes has the right balance between a lightweight and a reliable and fast solution
 
 ##[Demo with code examples](http://afarkas.github.io/lazysizes/#examples)
 Can be seen [here](http://afarkas.github.io/lazysizes/#examples).
@@ -73,7 +73,7 @@ Add the ``class`` ``lazyload`` to all ``img`` and ``iframe`` elements, which sho
     responsive-image3.jpg 900w" class="lazyload" />
 ```
 
-**Important: How ``sizes`` is calculated**: The automatic sizes calculation takes the width of the image. If it is below ``50`` (can be configured through the ``minSize`` option), lazySizes traverses up the DOM tree until it finds a parent which is over ``50`` and uses this number. Often the following general CSS rule might help: ``img[data-sizes="auto"] { display: block; }``.
+**Important: How ``sizes`` is calculated**: The automatic sizes calculation takes the width of the image. If it is below ``50`` (can be configured through the ``minSize`` option), lazySizes traverses up the DOM tree until it finds a parent which is over ``50`` and uses this number. Often the following general CSS rule might help: ``img[data-sizes="auto"] { display: block; }``. (see also [specifying image/iframe dimensions](#specify-dimensions)
 
 ##Recommended markup patterns
 For some image bots (search engines and social networks), legacy browsers (IE8) or JS disabled browsers, it is important to serve a usable ``src`` attribute:
@@ -182,7 +182,6 @@ Here the list of options:
 * ``lazySizesConfig.srcset`` (default: ``"data-srcset"``): The attribute, which should be transformed to ``srcset``.
 * ``lazySizesConfig.sizesAttr`` (default: ``"data-sizes"``): The attribute, which should be transformed to ``sizes``. Makes almost only sense with the value ``"auto"``. Otherwise the ``sizes`` attribute should be used directly.
 * ``lazySizesConfig.customMedia`` (default: ``{}``): The ``customMedia`` option object is an alias map for different media queries. It can be used to separate your specific media queries implementation for the ``source[media]`` attribute by creating labeled media queries. (See also the [custommedia extension](plugins/custommedia)).
-* ``lazySizesConfig.init`` (default: ``true``): By default lazySizes initializes itself as soon as possible, to load inview assets as soon as possible. In the unlikely case you need to setup/configure something with a later script you can set this option to ``false`` and call ``lazySizes.init();`` later explicitly.
 ```html
 <script>
 window.lazySizesConfig = window.lazySizesConfig || {};
@@ -213,6 +212,7 @@ window.lazySizesConfig.customMedia = {
 		alt="image with artdirection" />
 </picture>
 ```
+* ``lazySizesConfig.init`` (default: ``true``): By default lazySizes initializes itself as soon as possible, to load inview assets as soon as possible. In the unlikely case you need to setup/configure something with a later script you can set this option to ``false`` and call ``lazySizes.init();`` later explicitly.
 
 ####JS API - events
 **lazysizes** provides two events to modify or extend the behavior of **lazysizes**.
@@ -289,7 +289,7 @@ For CSS transition/animations or progress bars / spinners use the ``addClasses``
 
 <script>
 window.lazySizesConfig = {
-	//,expand: 80 //default is 150
+	//,expand: 80 //default is 120
 };
 </script>
 
@@ -425,7 +425,7 @@ Due to the fact, that it is designed to be invoked with a high frequency and the
     class="lazyload" />
 ```
 
-##Tip: Specifying image dimensions (minimizing reflows and avoiding page jumps)
+##<a name="specify-dimensions"></a>Tip: Specifying image dimensions (minimizing reflows and avoiding page jumps)
 To minimize reflows, content jumping or unpredictable behavior with some other JS widgets (isotope, masonry, some sliders/carousels...) the width **and** the height of an image should be calculable by the browser before the image source itself is loaded. For "static" images this can done using either CSS or using the content attributes:
 
 ```html

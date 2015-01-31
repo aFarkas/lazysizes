@@ -54,7 +54,7 @@
 
 	if(typeof config.getOptimumX != 'function'){
 		config.getOptimumX = function(/*element*/){
-			var dpr = window.devicePixelRatio;
+			var dpr = window.devicePixelRatio || 1;
 			if(dpr > 2.4){
 				dpr *= 0.63; // returns 1.9 for 3
 			} else if(dpr > 1.9){

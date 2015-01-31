@@ -269,7 +269,7 @@ $.extend(window.lazyTests, {
 	riasReinit: ['lazysizes rias can be re-initialized', function(assert){
 		var done = assert.async();
 
-		this.promise.always(function($){
+		this.promise.always(function($, frameWindow){
 			var placeholderSrc, $image;
 			var initTest = function(){
 				var success = [
@@ -320,6 +320,11 @@ $.extend(window.lazyTests, {
 			var run = function(){
 				if(test.length){
 					placeholderSrc = test.shift();
+
+					if(!window.devicePixelRatio){
+						$image.removeAttr('src');
+					}
+
 					$image
 						.attr('data-src', placeholderSrc[0])
 						.addClass('lazyload')
@@ -328,23 +333,27 @@ $.extend(window.lazyTests, {
 					done();
 				}
 			};
-
-
-			$image = $('<img data-sizes="auto" style="width: 90%;" data-widths="[1, 500, 1200]" class="lazyload" />')
-				.appendTo('body')
-			;
-
-			run();
+			$image = $('<img data-sizes="auto" style="width: 90%;" data-widths="[1, 500, 1200]" class="lazyload" />');
 
 			$image.on('lazybeforeunveil', function(e){
 				setTimeout(function(){
+					console.log('jo')
 					placeholderSrc[1]();
 					run();
 				}, 9);
 			});
+
+			$image.appendTo('body');
+
+			run();
 		});
 	}],
 	optimumxReinit: ['lazysizes optimumx can be re-initialized', function(assert){
+
+		if(!window.devicePixelRatio){
+			assert.ok(true);
+			return;
+		}
 		var done = assert.async();
 
 		this.promise.always(function($){
