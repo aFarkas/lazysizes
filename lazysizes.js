@@ -303,49 +303,45 @@
 				srcset = elem.getAttribute(lazySizesConfig.srcsetAttr);
 				src = elem.getAttribute(lazySizesConfig.srcAttr);
 
-				firesLoad = event.details.firesLoad || (('src' in elem) && (srcset || src));
+				if(isImg) {
+					parent = elem.parentNode;
+					isPicture = regPicture.test(parent.nodeName || '');
+				}
+
+				firesLoad = event.details.firesLoad || (('src' in elem) && (srcset || src || isPicture));
 
 				if(firesLoad){
 					isLoading++;
 					addRemoveLoadEvents(elem, resetPreloading, true);
 					clearTimeout(resetPreloadingTimer);
 					resetPreloadingTimer = setTimeout(resetPreloading, 3000);
+				}
 
-					if(isImg) {
-						parent = elem.parentNode;
-						isPicture = regPicture.test(parent.nodeName || '');
+				if(isPicture){
+					sources = parent.getElementsByTagName('source');
+					for(i = 0, len = sources.length; i < len; i++){
+						if( (customMedia = lazySizesConfig.customMedia[sources[i].getAttribute('media')]) ){
+							sources[i].setAttribute('media', customMedia);
+						}
+						sourceSrcset = sources[i].getAttribute(lazySizesConfig.srcsetAttr);
+						if(sourceSrcset){
+							sources[i].setAttribute('srcset', sourceSrcset);
+						}
 					}
 				}
 
-				if(srcset || src){
+				if(srcset){
+					elem.setAttribute('srcset', srcset);
 
-					if(isPicture){
-						sources = parent.getElementsByTagName('source');
-						for(i = 0, len = sources.length; i < len; i++){
-							if( (customMedia = lazySizesConfig.customMedia[sources[i].getAttribute('media')]) ){
-								sources[i].setAttribute('media', customMedia);
-							}
-							sourceSrcset = sources[i].getAttribute(lazySizesConfig.srcsetAttr);
-							if(sourceSrcset){
-								sources[i].setAttribute('srcset', sourceSrcset);
-							}
-						}
+					if(fixChrome && sizes){
+						elem.removeAttribute('src');
 					}
 
-					if(srcset){
-
-						elem.setAttribute('srcset', srcset);
-
-						if(fixChrome && sizes){
-							elem.removeAttribute('src');
-						}
-
-					} else if(src){
-						if(regIframe.test(elem.nodeName)){
-							changeIframeSrc(elem, src);
-						} else {
-							elem.setAttribute('src', src);
-						}
+				} else if(src){
+					if(regIframe.test(elem.nodeName)){
+						changeIframeSrc(elem, src);
+					} else {
+						elem.setAttribute('src', src);
 					}
 				}
 
