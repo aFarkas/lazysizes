@@ -58,7 +58,6 @@
 	var updatePolyfill = function (el, full){
 		var polyfill;
 		if(!window.HTMLPictureElement){
-
 			if( ( polyfill = (window.picturefill || window.respimage) ) ){
 				polyfill({reevaluate: true, reparse: true, elements: [el]});
 			} else if(full && full.src){
