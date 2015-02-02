@@ -64,7 +64,10 @@
 			lazyData.index = 0;
 			lazyData.dirty = false;
 			if(cands[0] && cands[0].w){
-				lazyData.index = last ? cands.length - 1 : 0;
+				if(last){
+					lazyData.index = cands.length - 1;
+				}
+
 				cands.sort( ascendingSort );
 				lazyData.cSrcset = [cands[ lazyData.index ].c];
 			} else {
@@ -162,7 +165,6 @@
 				if(lazyData.cSrcset.length >= lazyData.cands.length){
 					elem.removeAttribute('data-optimumx');
 					elem.removeAttribute('data-maxdpr');
-					elem.removeAttribute('data-minx');
 				}
 			}
 		};
@@ -173,7 +175,7 @@
 
 			lazyData.width = width;
 
-			if(lazyData.picture && (parent = e.target.parentNode)){
+			if(lazyData.picture && (parent = image.parentNode)){
 				sources = parent.getElementsByTagName('source');
 				for(i = 0, len = sources.length; i < len; i++){
 					constrainSet(sources[i], width, attr, dataName);
@@ -266,6 +268,8 @@
 			attr = e.details.dataAttr ? lazySizes.cfg.srcsetAttr : 'srcset';
 
 			constrainSets(e.target, width, attr, '_lazyMinx');
+
+			e.target.removeAttribute('data-minx');
 		}
 	});
 
