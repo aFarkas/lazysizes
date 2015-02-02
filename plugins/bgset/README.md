@@ -23,7 +23,7 @@ The extension will then load the best image size for the current viewport and de
 </div>
 ```
 
-The bgset also supports art direction through multiple media query sets. To use this feature each set has to be separated using the ``" | "`` signs and the media query has to be added at end of the set inside of square bracket.
+The bgset also supports art direction through multiple media query sets. To use this feature each set has to be separated using the ``" | "`` signs and the media query has to be added at the end of the set inside of square brackets.
 
 Also the ``customMedia`` option can be used to separate the media queries implementation from the markup.
 
