@@ -56,20 +56,11 @@
 	};
 
 	var updatePolyfill = function (el, full){
-		var imageData, attr;
+		var polyfill;
 		if(!window.HTMLPictureElement){
 
-			if(window.picturefill){
-				picturefill({reevaluate: true, reparse: true, elements: [el]});
-			} else if(window.respimage){
-				if(full && (attr = (full.srcset && 'srcset') || (full.src && 'src'))){
-
-					imageData = el[respimage._.ns];
-					if(imageData && imageData[attr] != full[attr] && el.getAttribute(attr) == full[attr]){
-						imageData[attr] = undefined;
-					}
-				}
-				respimage({reparse: true, elements: [el]});
+			if( ( polyfill = (window.picturefill || window.respimage) ) ){
+				polyfill({reevaluate: true, reparse: true, elements: [el]});
 			} else if(full && full.src){
 				el.src = full.src;
 			}
@@ -431,6 +422,7 @@
 			}
 
 			setTimeout(allowPreload, 666);
+			throttledCheckElements(true);
 			throttledCheckElements();
 		};
 
