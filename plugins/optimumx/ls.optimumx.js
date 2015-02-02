@@ -18,12 +18,12 @@
 (function(window, document, undefined){
 	/*jshint eqnull:true */
 	'use strict';
-	var config, extentLazySizes, parseWsrcset;
+	var config;
 
 	var regPicture = /^picture$/i;
 	var docElem = document.documentElement;
 
-	parseWsrcset = (function(){
+	var parseWsrcset = (function(){
 		var candidates;
 		var reg = /(([^,\s].[^\s]+)\s+(\d+)w)/g;
 		var regHDesc = /\s+\d+h/g;
@@ -44,6 +44,151 @@
 			return candidates;
 		};
 	})();
+
+	var parseImg = (function(){
+
+		var ascendingSort = function ( a, b ) {
+			return a.w - b.w;
+		};
+
+		var parseSets =  function (elem, dataName, pos){
+			var lazyData = {srcset: elem.getAttribute(lazySizes.cfg.srcsetAttr)  || ''};
+			var cands = parseWsrcset(lazyData.srcset);
+			Object.defineProperty(elem, dataName, {
+				value: lazyData,
+				writable: true
+			});
+
+			lazyData.cands = cands;
+
+			lazyData.index = 0;
+			lazyData.dirty = false;
+			if(cands[0] && cands[0].w){
+				cands.sort( ascendingSort );
+				lazyData.cSrcset = [cands[0].c];
+			} else {
+				lazyData.cSrcset = lazyData.srcset ? [lazyData.srcset] : [];
+				lazyData.cands = [];
+			}
+
+			return lazyData;
+		};
+
+		return function parseImg(elem, dataName){
+			var sources, i, len, parent;
+
+			if(!elem[dataName]){
+				parent = elem.parentNode || {};
+				elem[dataName] = parseSets(elem, dataName);
+				elem[dataName].isImg = true;
+				if(regPicture.test(parent.nodeName || '')){
+					elem[dataName].picture = true;
+					sources = parent.getElementsByTagName('source');
+					for(i = 0, len = sources.length; i < len; i++){
+						parseSets(sources[i], dataName).isImg = false;
+					}
+				}
+			}
+
+			return elem[dataName];
+		};
+	})();
+
+	var constraintFns = {
+		_lazyOptimumx: (function(){
+			var takeHighRes = function (beforeCan, curCanWidth, width){
+				var low, high;
+				if(!beforeCan || !beforeCan.w){
+					return true;
+				}
+
+				if(beforeCan.w > width){return false;}
+
+				low = 1 - (beforeCan.w / width);
+				high = (curCanWidth / width) - 1;
+
+				return high - low < 0;
+			};
+
+			return function (data, width){
+				var i, can;
+
+				for(i = data.index + 1; i < data.cands.length; i++){
+					can = data.cands[i];
+					if(can.w <= width || takeHighRes(data.cands[i - 1], can.w, width)){
+						data.cSrcset.push(can.c);
+						data.index = i;
+					} else {
+						break;
+					}
+				}
+			};
+		})()
+	};
+
+	var constrainSets = (function(){
+
+		var constrainSet = function(elem, width, attr, dataName){
+			var curIndex;
+			var lazyData = elem[dataName];
+
+			if(!lazyData){return;}
+			curIndex = lazyData.index;
+
+			constraintFns[dataName](lazyData, width);
+
+			if(!lazyData.dirty || curIndex != lazyData.index){
+				lazyData.cSrcset.join(', ');
+				elem.setAttribute(attr, lazyData.cSrcset.join(', '));
+				lazyData.dirty = true;
+
+				if(lazyData.cSrcset.length >= lazyData.cands.length){
+					elem.removeAttribute('data-optimumx');
+					elem.removeAttribute('data-maxdpr');
+					elem.removeAttribute('data-minx');
+				}
+			}
+		};
+
+		return function(image, width, attr, dataName){
+			var sources, parent, len, i;
+			var lazyData = image[dataName];
+
+			lazyData.width = width;
+
+			if(lazyData.picture && (parent = e.target.parentNode)){
+				sources = parent.getElementsByTagName('source');
+				for(i = 0, len = sources.length; i < len; i++){
+					constrainSet(sources[i], width, attr, dataName);
+				}
+			}
+
+			constrainSet(image, width, attr, dataName);
+		};
+	})();
+
+	var getOptimumX = function(element){
+		var optimumx = element.getAttribute('data-optimumx') || element.getAttribute('data-maxdpr');
+		if(optimumx){
+			if(optimumx == 'auto'){
+				optimumx = config.getOptimumX(element);
+			} else {
+				optimumx = parseFloat(optimumx, 10);
+			}
+		}
+		return optimumx;
+	};
+
+	var extentLazySizes = function(){
+		if(window.lazySizes && !window.lazySizes.getOptimumX){
+			lazySizes.getX = getOptimumX;
+			lazySizes.pWS = parseWsrcset;
+			docElem.removeEventListener('lazybeforeunveil', extentLazySizes);
+		}
+	};
+
+	docElem.addEventListener('lazybeforeunveil', extentLazySizes);
+	setTimeout(extentLazySizes);
 
 	config = (window.lazySizes && lazySizes.cfg) || window.lazySizesConfig;
 
@@ -66,148 +211,23 @@
 		};
 	}
 
-	function ascendingSort( a, b ) {
-		return a.w - b.w;
-	}
-
-	function parseSets(elem){
-		var lazyData = {srcset: elem.getAttribute(lazySizes.cfg.srcsetAttr)  || ''};
-		var cands = parseWsrcset(lazyData.srcset);
-		Object.defineProperty(elem, '_lazyOptimumx', {
-			value: lazyData,
-			writable: true
-		});
-
-		lazyData.cands = cands;
-
-		lazyData.index = 0;
-		lazyData.dirty = false;
-		if(cands[0] && cands[0].w){
-			cands.sort( ascendingSort );
-			lazyData.cSrcset = [cands[0].c];
-		} else {
-			lazyData.cSrcset = lazyData.srcset ? [lazyData.srcset] : [];
-			lazyData.cands = [];
-		}
-
-		return lazyData;
-	}
-
-	function parseImg(elem){
-		var sources, i, len;
-		var parent = elem.parentNode || {};
-		var lazyData = parseSets(elem);
-		lazyData.isImg = true;
-		if(regPicture.test(parent.nodeName || '')){
-			lazyData.picture = true;
-			sources = parent.getElementsByTagName('source');
-			for(i = 0, len = sources.length; i < len; i++){
-				parseSets(sources[i]).isImg = false;
-			}
-		}
-
-		return lazyData;
-	}
-
-	function takeHighRes(beforeCan, curCanWidth, width){
-		var low, high;
-		if(!beforeCan || !beforeCan.w){
-			return true;
-		}
-
-		if(beforeCan.w > width){return false;}
-
-		low = 1 - (beforeCan.w / width);
-		high = (curCanWidth / width) - 1;
-
-		return high - low < 0;
-	}
-
-	function getConstrainedSrcSet(data, width){
-		var i, can;
-
-		for(i = data.index + 1; i < data.cands.length; i++){
-			can = data.cands[i];
-			if(can.w <= width || takeHighRes(data.cands[i - 1], can.w, width)){
-				data.cSrcset.push(can.c);
-				data.index = i;
-			} else {
-				break;
-			}
-		}
-	}
-
-	function constrainSrces(elem, width, attr){
-		var curIndex, srcset;
-		var lazyData = elem._lazyOptimumx;
-
-		if(!lazyData){return;}
-		curIndex = lazyData.index;
-
-		getConstrainedSrcSet(lazyData, width);
-
-		if(!lazyData.dirty || curIndex != lazyData.index){
-			srcset = lazyData.cSrcset.join(', ');
-			elem.setAttribute(attr, lazyData.cSrcset.join(', '));
-			lazyData.dirty = true;
-
-			if(lazyData.cSrcset.length >= lazyData.cands.length){
-				elem.removeAttribute('data-optimumx');
-				elem.removeAttribute('data-maxdpr');
-			}
-		}
-		return srcset;
-	}
-
-	function getOptimumX(element){
-		var optimumx = element.getAttribute('data-optimumx') || element.getAttribute('data-maxdpr');
-		if(optimumx){
-			if(optimumx == 'auto'){
-				optimumx = config.getOptimumX(element);
-			} else {
-				optimumx = parseFloat(optimumx, 10);
-			}
-		}
-		return optimumx;
-	}
-
-	extentLazySizes = function(){
-		if(window.lazySizes && !window.lazySizes.getOptimumX){
-			lazySizes.getX = getOptimumX;
-			lazySizes.pWS = parseWsrcset;
-			docElem.removeEventListener('lazybeforeunveil', extentLazySizes);
-		}
-	};
-
-	docElem.addEventListener('lazybeforeunveil', extentLazySizes);
-	setTimeout(extentLazySizes);
-
 	if(!window.devicePixelRatio){return;}
 
 	addEventListener('lazybeforesizes', function(e){
-		var optimumx, lazyData, width, attr, parent, sources, i, len;
+		var optimumx, lazyData, width, attr;
 
 		if(e.defaultPrevented ||
 			!(optimumx = getOptimumX(e.target)) ||
-			optimumx >= window.devicePixelRatio){return;}
+			optimumx >= devicePixelRatio){return;}
 
-		lazyData = e.target._lazyOptimumx || parseImg(e.target);
+		lazyData = parseImg(e.target, '_lazyOptimumx');
 
 		width = e.details.width * optimumx;
 
 		if(width && (lazyData.width || 0) < width){
 			attr = e.details.dataAttr ? lazySizes.cfg.srcsetAttr : 'srcset';
 
-			lazyData.width = width;
-
-			if(lazyData.picture && (parent = e.target.parentNode)){
-				sources = parent.getElementsByTagName('source');
-				for(i = 0, len = sources.length; i < len; i++){
-					constrainSrces(sources[i], width, attr);
-				}
-			}
-
-			e.details.srcset = constrainSrces(e.target, width, attr);
+			constrainSets(e.target, width, attr, '_lazyOptimumx');
 		}
 	});
 
