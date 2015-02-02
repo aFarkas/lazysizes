@@ -321,8 +321,8 @@ $.extend(window.lazyTests, {
 				if(test.length){
 					placeholderSrc = test.shift();
 
-					if(!window.devicePixelRatio){
-						$image.removeAttr('src');
+					if(window.isTrident){
+						$image.addClass('lazyerror');
 					}
 
 					$image
@@ -337,7 +337,6 @@ $.extend(window.lazyTests, {
 
 			$image.on('lazybeforeunveil', function(e){
 				setTimeout(function(){
-					console.log('jo')
 					placeholderSrc[1]();
 					run();
 				}, 9);

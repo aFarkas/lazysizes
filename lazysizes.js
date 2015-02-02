@@ -288,7 +288,7 @@
 			var sizes = elem.getAttribute(lazySizesConfig.sizesAttr) || elem.getAttribute('sizes');
 			var isAuto = sizes == 'auto';
 
-			if( (isAuto || (!supportNativeLQIP && !isCompleted)) && isImg && curSrc && !elem.complete){return;}
+			if( (isAuto || (!supportNativeLQIP && !isCompleted)) && isImg && curSrc && !elem.complete && !hasClass(elem, lazySizesConfig.errorClass)){return;}
 
 			if(!(event = triggerEvent(elem, 'lazybeforeunveil', {force: !!force})).defaultPrevented){
 
