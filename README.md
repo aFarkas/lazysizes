@@ -124,7 +124,6 @@ In case disabled javascript is a concern you can combine the simple pattern with
 	<img src="image.jpg" />
 </noscript>
 <img src="grey.jpg" data-src="image.jpg" class="lazyload" />
-<!--<![endif]-->
 ```
 
 ###[data-expand] attribute

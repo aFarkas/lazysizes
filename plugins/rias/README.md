@@ -70,7 +70,7 @@ or element specific and functional using the ``lazyriasmodifyoptions`` event.
 document.addEventListener('lazyriasmodifyoptions', function(event){
     // event.details referes the placeholders/options and event.target the corresponding element
     event.details.quality = (window.devicePixelRatio || 1) > 1.4 ? 65 : 80;
-};
+});
 </script>
 <img
     data-src="image-w{width}-q{quality}.jpg"
