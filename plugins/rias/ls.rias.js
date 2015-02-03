@@ -213,9 +213,22 @@
 			return elem._lazyrias;
 		};
 
+		var getX = function(elem){
+			var dpr = window.devicePixelRatio || 1;
+			var optimum = lazySizes.getX && lazySizes.getX(elem);
+			var x = Math.min(optimum || dpr, 2.2, dpr);
+
+			if(x < 1.2){
+				x *= 1.1;
+			} else if(x > 1.6 && !optimum){
+				x *= 0.9;
+			}
+			return x;
+		};
+
 		var getCandidate = function(elem, width){
 			var sources, i, len, media, srces;
-			width *= Math.min((lazySizes.getX && lazySizes.getX(elem)) || window.devicePixelRatio || 1, 2);
+			width = Math.round(width * getX(elem));
 			srces = elem._lazyrias;
 
 			if(srces.isPicture && window.matchMedia){
