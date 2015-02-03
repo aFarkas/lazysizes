@@ -200,7 +200,7 @@ In case the ``sizes`` attribute is faked to a lower value and the browser alread
 
 In case the ``sizes`` attribute is faked to a higher value and the browser already wants to select a higher candidate, (because the user has zoomed into this particular image) the browser might be tricked to download a much heavier image candidate than the device actually needs.
 
-But this technique can be used to tell the browser some small lies. Normally the browser runs a simple get the nearest candidate algorithm. This can in some cases cause a poor quality on 1x devices. In case our lie is small and limited we can workaround this problem with doing much harm:
+But this technique can be used to tell the browser some small lies. Normally the browser runs a simple get the nearest candidate algorithm. This can in some cases cause a poor quality on 1x devices. In case our lie is small and limited we can workaround this problem without causing unpredictable consequences:
 
 ```html
 <script>
