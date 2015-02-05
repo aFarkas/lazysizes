@@ -91,7 +91,9 @@
 
 		createPicture(set, elem, image);
 
-		lazySizes.loader.unveil(image);
+		setTimeout(function(){
+			lazySizes.loader.unveil(image);
+		});
 	});
 
 	addEventListener('lazybeforesizes', function(e){

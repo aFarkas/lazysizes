@@ -114,9 +114,7 @@
 
 		var eLvW, elvH, eLtop, eLleft, eLright, eLbottom;
 
-		var ua = navigator.userAgent;
-		var fixChrome = window.HTMLPictureElement && ua.match(/hrome\/(\d+)/) && (RegExp.$1 == 40);
-		var supportNativeLQIP = (/webkit/i).test(ua);
+		var fixChrome = window.HTMLPictureElement && navigator.userAgent.match(/hrome\/(\d+)/) && (RegExp.$1 == 40);
 
 		var regImg = /^img$/i;
 		var regIframe = /^iframe$/i;
@@ -152,7 +150,7 @@
 			eLleft -= elemExpand;
 			eLright += elemExpand;
 
-			while(visible && (parent = parent.offsetParent) && parent != docElem && parent != document.body){
+			while(visible && (parent = parent.offsetParent) && parent != docElem){
 				visible = (isCompleted && isLoading < 4) || ((getCSS(parent, 'opacity') || 1) > 0);
 
 				if(visible && getCSS(parent, 'overflow') != 'visible'){
@@ -278,7 +276,7 @@
 			var sizes = elem.getAttribute(lazySizesConfig.sizesAttr) || elem.getAttribute('sizes');
 			var isAuto = sizes == 'auto';
 
-			if( (isAuto || (!supportNativeLQIP && !isCompleted)) && isImg && curSrc && !elem.complete && !hasClass(elem, lazySizesConfig.errorClass)){return;}
+			if( (isAuto || !isCompleted) && isImg && curSrc && !elem.complete && !hasClass(elem, lazySizesConfig.errorClass)){return;}
 
 			if(!(event = triggerEvent(elem, 'lazybeforeunveil', {force: !!force})).defaultPrevented){
 
@@ -426,7 +424,7 @@
 		};
 
 		return {
-			init: init,
+			_i: init,
 			checkElems: throttledCheckElements,
 			unveil: unveilElement
 		};
@@ -487,7 +485,7 @@
 		};
 
 		return {
-			init: init,
+			_i: init,
 			checkElems: throttledUpdateElementsSizes,
 			updateElem: sizeElement
 		};
@@ -496,8 +494,8 @@
 	var init = function(){
 		if(!init.i){
 			init.i = true;
-			autoSizer.init();
-			loader.init();
+			autoSizer._i();
+			loader._i();
 		}
 	};
 
@@ -542,13 +540,6 @@
 		autoSizer: autoSizer,
 		loader: loader,
 		init: init,
-		//depreacated methods will be removed with next major version
-		updateAllSizes: autoSizer.updateElems,
-		updateAllLazy: loader.checkElems,
-		unveilLazy: loader.unveil,
-
-		//undocumented internal methods - use with caution
-		uS: autoSizer.updateElem, // will be removed with next major version
 		uP: updatePolyfill,
 		aC: addClass,
 		rC: removeClass,

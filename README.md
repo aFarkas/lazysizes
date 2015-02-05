@@ -180,7 +180,7 @@ Here the list of options:
 * ``lazySizesConfig.srcAttr`` (default: ``"data-src"``): The attribute, which should be transformed to ``src``.
 * ``lazySizesConfig.srcset`` (default: ``"data-srcset"``): The attribute, which should be transformed to ``srcset``.
 * ``lazySizesConfig.sizesAttr`` (default: ``"data-sizes"``): The attribute, which should be transformed to ``sizes``. Makes almost only sense with the value ``"auto"``. Otherwise the ``sizes`` attribute should be used directly.
-* ``lazySizesConfig.customMedia`` (default: ``{}``): The ``customMedia`` option object is an alias map for different media queries. It can be used to separate your specific media queries implementation for the ``source[media]`` attribute by creating labeled media queries. (See also the [custommedia extension](plugins/custommedia)).
+* ``lazySizesConfig.customMedia`` (default: ``{}``): The ``customMedia`` option object is an alias map for different media queries. It can be used to separate/centralize your multiple specific media queries implementation (layout) from the ``source[media]`` attribute (content/structure) by creating labeled media queries. (See also the [custommedia extension](plugins/custommedia)).
 ```html
 <script>
 window.lazySizesConfig = window.lazySizesConfig || {};
@@ -330,20 +330,20 @@ document.addEventListener('lazybeforeunveil', function(e){
 * ``lazybeforesizes``: This event will be fired on each element with the ``data-sizes="auto"`` attribute right before the calculated ``sizes`` attribute will be set. The ``event.details.width`` property is set to the calculated width of the element and can be changed to any number. In case the event is ``defaultPrevented`` the ``sizes`` attribute won't be set.
 
 ####JS API - methods
-#####``lazySizes.unveilLazy(DOMNode)``
+#####``lazySizes.loader.unveil(DOMNode)``
 
-In case a developer wants to show an image even if it is not inside the viewport the ``lazySizes.unveilLazy(DOMNode)`` can be called:
+In case a developer wants to show an image even if it is not inside the viewport the ``lazySizes.loader.unveil(DOMNode)`` can be called:
 
 ```js
-lazySizes.unveilLazy(imgElem);
+lazySizes.loader.unveil(imgElem);
 ```
 
-#####``lazySizes.updateAllSizes()``
+#####``lazySizes.autoSizer.updateElems()``
 
-In case one or more image elements with the attribute ``data-sizes="auto"`` have changed in size ``lazySizes.updateAllSizes`` can be called (For example to implement element queries):
+In case one or more image elements with the attribute ``data-sizes="auto"`` have changed in size ``lazySizes.autoSizer.updateElems`` can be called (For example to implement element queries):
 
 ```js
-lazySizes.updateAllSizes();
+lazySizes.autoSizer.updateElems();
 ```
 
 #####``lazySizes.init()``
@@ -364,7 +364,7 @@ lazySizes.init();
 ```
 
 ##Browser Support
-**lazysizes** supports at least the following browsers: IE9+, Firefox 21+, Chrome 27+, Safari 6.1+, iOS Safari 7.0+, Android 4.1+
+**lazysizes** supports at least the following browsers: IE9+, Firefox 21+, Chrome 27+, Safari 6.1+, iOS Safari 7.0+, Android 4.0+
 
 ##Contributing
 Fixes, PRs and issues are always welcome, make sure to create a new branch from the **master** (not the gh-pages branch), validate against JShint and test in all browsers. In case of an API/documentation change make sure to also document it here in the readme.md.
@@ -516,9 +516,9 @@ In case the exact ratio of your image is unknown you can also vary the intrinsic
 **Note**: In case you use the "unknown intrinsic ratio pattern" the ``data-sizes="auto"`` feature should not be used.
 
 ##Tip: Where/How to include lazySizes
-While lazy loading is a great important feature, it is important for users that crucial inview images are loaded as fast as possible. (Most user start to interact with a page after inview images are loaded.)
+While lazy loading is a great feature, it is important for users that crucial inview images are loaded as fast as possible. (Most users start to interact with a page after inview images are loaded.)
 
-In case you are normally combine all your scripts into one large script and add this to the bottom of your page. It can be better for perceived performance to generate two or sometimes three script packages.
+In case you normally combine all your scripts into one large script and add this to the bottom of your page. It can be better for perceived performance to generate two or sometimes three script packages.
 
 One small package, which includes all scripts which have heavy influence on the content or the UI and another larger one which includes the normal behavior of the page.
 

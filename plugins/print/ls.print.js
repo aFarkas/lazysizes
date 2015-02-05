@@ -18,7 +18,7 @@ In case the user starts to print lazysizes will load all images.
 
 			if(window.lazySizes){
 				for(i = 0, len = elements.length; i < len; i++){
-					lazySizes.unveilLazy(elements[i]);
+					lazySizes.loader.unveil(elements[i]);
 				}
 			}
 		};
