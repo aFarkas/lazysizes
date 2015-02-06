@@ -528,7 +528,7 @@
 
 		window.lazySizesConfig = lazySizesConfig;
 
-		if(lazySizesDefaults.init){
+		if(lazySizesConfig.init){
 			setTimeout(init);
 		}
 	})();
