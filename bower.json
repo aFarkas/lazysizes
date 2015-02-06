@@ -1,7 +1,7 @@
 {
 	"name": "lazysizes",
 	"repo": "afarkas/lazysizes",
-	"version": "0.8.0",
+	"version": "0.9.0",
 	"main": "lazysizes.js",
 	"scripts": [
 		"lazysizes.js",
@@ -33,6 +33,7 @@
 	  	"animate.html",
 		"Gruntfile.js",
 		"component.json",
-		"package.json"
+		"package.json",
+	    "plato-report"
 	]
 }

@@ -105,21 +105,19 @@ The predefined (ugly) ``getOptimumX`` callback looks like this:
 ```js
 window.lazySizesConfig = window.lazySizesConfig || {};
 window.lazySizesConfig.getOptimumX = function(/*element*/){
-    var dpr = window.devicePixelRatio;
+    var dpr = window.devicePixelRatio || 1;
     if(dpr > 2.4){
         dpr *= 0.63; // returns 1.9 for 3
     } else if(dpr > 1.9){
         dpr *= 0.8; // returns 1.6 for 2
     } else if(dpr > 1.4){
         dpr *= 0.9; // returns 1.35 for 1.5
-    } else {
-        dpr *= 0.99; // returns 0.99 for 1 or 1.24 for 1.3
     }
     return Math.round(dpr * 100) / 100;
 };
 ```
 
-##Background information
+##<a name="compressive-picture-pattern"></a>Background information: Compressive picture pattern
 
 From a perceived performance vs. perceived quality standpoint the best way to deal with High DPI images is to serve higher compressed candidates to clients with high resolution displays.
 
@@ -160,7 +158,7 @@ Or in case you are using the [Responsive Images as a Service extension (RIaS)](.
 <script>
 document.addEventListener('lazyriasmodifyoptions', function(data){
     data.details.quality = (window.devicePixelRatio || 1) > 1.4 ? 60 : 80;
-};
+});
 </script>
 
 <img
@@ -173,3 +171,51 @@ document.addEventListener('lazyriasmodifyoptions', function(data){
 Unfortunately these techniques also double the amount of generated image candidates. In case you don't have so much resources the optimumx extension in conjunction with proper image compression is the best thing you can do.
 
 But be aware each image has different characteristics: While some images look great on a HIGH DPI device even with a ``data-optimumx="1.2"`` other will need a much higher density for a good perceived quality.
+
+##<a name="lying-sizes"></a>Background information: Lying sizes attribute
+
+There is also another much more lightweight way to get a similar effect. Instead of parsing and constraining the ``srcset`` to meet the ``data-optimumx`` and ``data-minx`` constraints, there is also the possibility to modify the ``sizes`` attribute instead.
+
+A ``data-optimumx`` implementation with the ``lazybeforesizes`` event could then look something like this:
+
+```html
+<script>
+document.addEventListener('lazybeforesizes', function(e){
+    var maxx = parseFloat(e.target.getAttribute('data-optimumx') || '', 10);
+    var dpr = (window.devicePixelRatio || 1);
+    if(maxx && maxx < (window.devicePixelRatio || 1)){
+        e.details.width = e.details.width * (maxx / dpr);
+    }
+});
+</script>
+
+<img class="lazyload" data-sizes="auto" data-optimumx="1.5" data-srcset="..." />
+```
+
+Compared to the size of this plugin this is a very neat, simple and lightweight technique.
+
+But this technique should be used with caution because the browsers algorithm is tricked and operates with wrong values, which can result in unpredictable and bad results.
+
+In case the ``sizes`` attribute is faked to a lower value and the browser already wants to select a lower candidate, (because the device has a low or metered bandwidth) the browser might choose an unfeasible image candidate instead.
+
+In case the ``sizes`` attribute is faked to a higher value and the browser already wants to select a higher candidate, (because the user has zoomed into this particular image) the browser might be tricked to download a much heavier image candidate than the device actually needs.
+
+But this technique can be used to tell the browser some small lies. Normally the browser runs a simple get the nearest candidate algorithm. This can in some cases cause a poor quality on 1x devices. In case our lie is small and limited we can workaround this problem without causing unpredictable consequences:
+
+```html
+<script>
+//make the image sizes only 5% larger, if seen on a low DPI device
+document.addEventListener('lazybeforesizes', function(e){
+    var dpr = (window.devicePixelRatio || 1);
+    if(dpr < 1.1){
+        e.details.width = e.details.width * 1.05;
+    }
+});
+</script>
+
+<img class="lazyload"
+    data-sizes="auto"
+    data-srcset="image-480.jpg 480w, image-768.jpg"
+    style="width: 600px;"
+     />
+```

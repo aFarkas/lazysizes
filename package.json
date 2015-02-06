@@ -1,6 +1,6 @@
 {
   "name": "lazysizes",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "filename": "lazysizes.min.js",
   "author": "Alexander Farkas <info@corrupt-system.de>",
   "repository": {
@@ -13,11 +13,16 @@
     "grunt-bytesize": "~0.1.1",
     "grunt-cli": "~0.1",
     "grunt-contrib-jshint": "~0.10.0",
+    "grunt-contrib-qunit": "^0.5.2",
     "grunt-contrib-uglify": "^0.7.0",
     "grunt-contrib-watch": "~0.4.0",
     "grunt-max-filesize": "^0.1.0",
     "grunt-plato": "^1.2.1",
-    "grunt-uncss": "~0.3.7"
+    "grunt-uncss": "~0.3.7",
+    "jquery-deparam": "^0.1.0",
+    "picturefill": "^2.2.0",
+    "qunitjs": "^1.17.0",
+    "respimage": "^1.2.1"
   },
   "npmName": "lazysizes",
   "npmFileMap": [

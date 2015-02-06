@@ -185,10 +185,17 @@ In case a candidate includes new markup while another candidate only includes an
 </div>
 ```
 
-In case both candidates has an amd module but not a content include the markup won't be resetted automatically. But the unloading module can request this behavior inside of it's unload method:
+In case both candidates has an amd module but not a content include the markup won't be resetted automatically. But the unloading module can request this behavior inside of it's unload method or the to initialized module can request this inside the ``lazytransform`` method using the ``resetHTML`` propety:
 
 ```js
 Slider.lazyunload = function(data){
+    // data.element._slider.destroy();
+    data.resetHTML = true;
+};
+
+//or
+
+NewSlider.lazytransform = function(data){
     // data.element._slider.destroy();
     data.resetHTML = true;
 };

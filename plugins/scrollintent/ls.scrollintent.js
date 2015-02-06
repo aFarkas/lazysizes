@@ -21,14 +21,12 @@
 				var nLeft = checkElem.scrollLeft || checkElem.pageXOffset || 0;
 				checkElem = null;
 
-				if(Math.abs(top - nTop) < 66 && Math.abs(left - nLeft) < 66){
+				if(Math.abs(top - nTop) < 40 && Math.abs(left - nLeft) < 40){
 					update();
 				}
 			};
 			var update = function(){
-				if(window.lazySizes){
-					lazySizes.updateAllLazy();
-				}
+				lazySizes.loader.checkElems();
 				clearTimeout(afterScrollTimer);
 				clearTimeout(checkTimer);
 				checkElem = null;
@@ -39,14 +37,14 @@
 				var elem = e.target == document ? window : e.target;
 
 				clearTimeout(afterScrollTimer);
-				afterScrollTimer = setTimeout(update, 44);
+				afterScrollTimer = setTimeout(update, 66);
 
 				if(!checkElem){
 					checkElem = elem;
 					top = checkElem.scrollTop || checkElem.pageYOffset || 0;
 					left = checkElem.scrollLeft || checkElem.pageXOffset || 0;
 					clearTimeout(checkTimer);
-					checkTimer = setTimeout(checkFn, 99);
+					checkTimer = setTimeout(checkFn, 199);
 				} else if(elem != checkElem){
 					update();
 				}

@@ -30,7 +30,7 @@
 	var removeClass = function(ele, cls) {
 		var reg;
 		if ((reg = hasClass(ele,cls))) {
-			ele.className = ele.className.replace(reg,' ');
+			ele.className = ele.className.replace(reg, ' ');
 		}
 	};
 
@@ -56,19 +56,10 @@
 	};
 
 	var updatePolyfill = function (el, full){
-		var imageData, src;
+		var polyfill;
 		if(!window.HTMLPictureElement){
-
-			if(window.picturefill){
-				picturefill({reevaluate: true, reparse: true, elements: [el]});
-			} else if(window.respimage){
-				if(full && (full.srcset || full.src)){
-					imageData = el[respimage._.ns];
-					if(imageData){
-						imageData[full.srcset ? 'srcset' : 'src'] = undefined;
-					}
-				}
-				respimage({reparse: true, elements: [el]});
+			if( ( polyfill = (window.picturefill || window.respimage) ) ){
+				polyfill({reevaluate: true, reparse: true, elements: [el]});
 			} else if(full && full.src){
 				el.src = full.src;
 			}
@@ -81,44 +72,39 @@
 	};
 
 	var getWidth = function(elem, parent){
-		var width, alt;
-		if(!elem._lazysizesWidth){
-			alt = elem.getAttribute('alt');
-			elem.alt = '';
-		}
-
-		width = elem.offsetWidth;
+		var width = elem.offsetWidth;
 
 		while(width < lazySizesConfig.minSize && parent && parent != document.body && !elem._lazysizesWidth){
 			width =  parent.offsetWidth;
 			parent = parent.parentNode;
 		}
 
-		if(!elem._lazysizesWidth){
-			if(alt == null){
-				elem.removeAttribute('alt');
-			} else {
-				elem.alt = alt;
-			}
-		}
 		return width;
 	};
 
 	var throttle = function(fn){
-		var run;
-		setInterval(function(){
+		var run, timer;
+		var main = function(){
 			if(run){
 				run = false;
 				fn();
 			}
-		}, 66);
+		};
+		var handleVisibility = function(){
+			clearInterval(timer);
+			if(!document.hidden){
+				main();
+				timer = setInterval(main, 66);
+			}
+		};
+
+		document.addEventListener('visibilitychange', handleVisibility);
+		handleVisibility();
 
 		return function(force){
+			run = true;
 			if(force === true){
-				run = false;
-				fn();
-			} else {
-				run = true;
+				main();
 			}
 		};
 	};
@@ -128,9 +114,7 @@
 
 		var eLvW, elvH, eLtop, eLleft, eLright, eLbottom;
 
-		var ua = navigator.userAgent;
-		var fixChrome = window.HTMLPictureElement && ua.match(/hrome\/(\d+)/) && (RegExp.$1 == 40);
-		var supportNativeLQIP = (/blink|webkit/i).test(ua);
+		var fixChrome = window.HTMLPictureElement && navigator.userAgent.match(/hrome\/(\d+)/) && (RegExp.$1 == 40);
 
 		var regImg = /^img$/i;
 		var regIframe = /^iframe$/i;
@@ -166,7 +150,7 @@
 			eLleft -= elemExpand;
 			eLright += elemExpand;
 
-			while(visible && (parent = parent.offsetParent) && parent != docElem && parent != document.body){
+			while(visible && (parent = parent.offsetParent) && parent != docElem){
 				visible = (isCompleted && isLoading < 4) || ((getCSS(parent, 'opacity') || 1) > 0);
 
 				if(visible && getCSS(parent, 'overflow') != 'visible'){
@@ -225,7 +209,7 @@
 						(eLbottom || eLright || eLleft || eLtop) &&
 						((isCompleted && currentExpand == defaultExpand && isLoading < 3 && lowRuns < 4 && !elemExpandVal) || isNestedVisible(lazyloadElems[i], elemExpand))){
 						checkElementsIndex--;
-						start++;
+						start += 2;
 						unveilElement(lazyloadElems[i]);
 						loadedSomething = true;
 					} else  {
@@ -283,20 +267,21 @@
 		};
 
 		var unveilElement = function (elem, force){
-			var sources, i, len, sourceSrcset, sizes, src, srcset, parent, isPicture, event, firesLoad;
+			var sources, i, len, sourceSrcset, src, srcset, parent, isPicture, event, firesLoad, customMedia;
 
 			var curSrc = elem.currentSrc || elem.src;
 			var isImg = regImg.test(elem.nodeName);
 
-			if(!supportNativeLQIP && !isCompleted && isImg && curSrc && !elem.complete){return;}
+			//allow using sizes="auto", but don't use. it's invalid. Use data-sizes="auto" or a valid value for sizes instead (i.e.: sizes="80vw")
+			var sizes = elem.getAttribute(lazySizesConfig.sizesAttr) || elem.getAttribute('sizes');
+			var isAuto = sizes == 'auto';
+
+			if( (isAuto || !isCompleted) && isImg && curSrc && !elem.complete && !hasClass(elem, lazySizesConfig.errorClass)){return;}
 
 			if(!(event = triggerEvent(elem, 'lazybeforeunveil', {force: !!force})).defaultPrevented){
 
-				//allow using sizes="auto", but don't use. it's invalid. Use data-sizes="auto" or a valid value for sizes instead (i.e.: sizes="80vw")
-				sizes = elem.getAttribute(lazySizesConfig.sizesAttr) || elem.getAttribute('sizes');
-
 				if(sizes){
-					if(sizes == 'auto'){
+					if(isAuto){
 						autoSizer.updateElem(elem, true);
 					} else {
 						elem.setAttribute('sizes', sizes);
@@ -306,46 +291,45 @@
 				srcset = elem.getAttribute(lazySizesConfig.srcsetAttr);
 				src = elem.getAttribute(lazySizesConfig.srcAttr);
 
-				firesLoad = event.details.firesLoad || (('src' in elem) && (srcset || src));
+				if(isImg) {
+					parent = elem.parentNode;
+					isPicture = regPicture.test(parent.nodeName || '');
+				}
+
+				firesLoad = event.details.firesLoad || (('src' in elem) && (srcset || src || isPicture));
 
 				if(firesLoad){
 					isLoading++;
 					addRemoveLoadEvents(elem, resetPreloading, true);
 					clearTimeout(resetPreloadingTimer);
 					resetPreloadingTimer = setTimeout(resetPreloading, 3000);
+				}
 
-					if(isImg) {
-						parent = elem.parentNode;
-						isPicture = regPicture.test(parent.nodeName || '');
+				if(isPicture){
+					sources = parent.getElementsByTagName('source');
+					for(i = 0, len = sources.length; i < len; i++){
+						if( (customMedia = lazySizesConfig.customMedia[sources[i].getAttribute('media')]) ){
+							sources[i].setAttribute('media', customMedia);
+						}
+						sourceSrcset = sources[i].getAttribute(lazySizesConfig.srcsetAttr);
+						if(sourceSrcset){
+							sources[i].setAttribute('srcset', sourceSrcset);
+						}
 					}
 				}
 
-				if(srcset || src){
+				if(srcset){
+					elem.setAttribute('srcset', srcset);
 
-					if(isPicture){
-						sources = parent.getElementsByTagName('source');
-						for(i = 0, len = sources.length; i < len; i++){
-							sourceSrcset = sources[i].getAttribute(lazySizesConfig.srcsetAttr);
-							if(sourceSrcset){
-								sources[i].setAttribute('srcset', sourceSrcset);
-							}
-						}
+					if(fixChrome && sizes){
+						elem.removeAttribute('src');
 					}
 
-					if(srcset){
-
-						elem.setAttribute('srcset', srcset);
-
-						if(fixChrome && sizes){
-							elem.removeAttribute('src');
-						}
-
-					} else if(src){
-						if(regIframe.test(elem.nodeName)){
-							changeIframeSrc(elem, src);
-						} else {
-							elem.setAttribute('src', src);
-						}
+				} else if(src){
+					if(regIframe.test(elem.nodeName)){
+						changeIframeSrc(elem, src);
+					} else {
+						elem.setAttribute('src', src);
 					}
 				}
 
@@ -360,7 +344,7 @@
 					addClass(elem, lazySizesConfig.autosizesClass);
 				}
 
-				if(srcset || sizes){
+				if(srcset || isPicture){
 					updatePolyfill(elem, {srcset: srcset, src: src});
 				}
 
@@ -369,10 +353,10 @@
 				//remove curSrc == (elem.currentSrc || elem.src) it's a workaround for FF. see: https://bugzilla.mozilla.org/show_bug.cgi?id=608261
 				if( !firesLoad || (elem.complete && curSrc == (elem.currentSrc || elem.src)) ){
 					if(firesLoad){
-						resetPreloading({target: elem});
+						resetPreloading(event);
 					}
 					if(lazySizesConfig.addClasses){
-						switchLoadingClass({target: elem});
+						switchLoadingClass(event);
 					}
 				}
 				elem = null;
@@ -382,8 +366,8 @@
 		var calcExpand = function(){
 
 			if(isPreloadAllowed && !isExpandCalculated){
-				defaultExpand = Math.max( Math.min(lazySizesConfig.expand || lazySizesConfig.threshold || 150, 300), 9 );
-				preloadExpand = Math.min( defaultExpand * 4, Math.max(innerHeight * 1.1, docElem.clientHeight, defaultExpand * 3) );
+				defaultExpand = Math.max( Math.min(lazySizesConfig.expand || lazySizesConfig.threshold || 120, 300), 9 );
+				preloadExpand = defaultExpand * 4;
 			}
 
 			isExpandCalculated = true;
@@ -413,7 +397,7 @@
 			addEventListener('resize', function(){
 				isExpandCalculated = false;
 				throttledCheckElements();
-			}, false);
+			});
 
 
 			if(window.MutationObserver){
@@ -425,21 +409,22 @@
 
 			addEventListener('hashchange', throttledCheckElements, true);
 
-			['transitionstart', 'transitionend', 'load', 'focus', 'mouseover', 'animationend'].forEach(function(evt){
+			['transitionstart', 'transitionend', 'load', 'focus', 'mouseover', 'animationend', 'click'].forEach(function(evt){
 				document.addEventListener(evt, throttledCheckElements, true);
 			});
 
 			if(!(isCompleted = /d$|^c/.test(document.readyState))){
-				addEventListener('load', onload, false);
-				document.addEventListener('DOMContentLoaded', throttledCheckElements, false);
+				addEventListener('load', onload);
+				document.addEventListener('DOMContentLoaded', throttledCheckElements);
 			}
 
 			setTimeout(allowPreload, 666);
+			throttledCheckElements(true);
 			throttledCheckElements();
 		};
 
 		return {
-			init: init,
+			_i: init,
 			checkElems: throttledCheckElements,
 			unveil: unveilElement
 		};
@@ -460,7 +445,7 @@
 				if(!event.defaultPrevented){
 					width = event.details.width;
 
-					if(width && width !== elem._lazysizesWidth && (!lazySizesConfig.onlyLargerSizes || (!elem._lazysizesWidth || elem._lazysizesWidth < width))){
+					if(width && width !== elem._lazysizesWidth){
 						elem._lazysizesWidth = width;
 						width += 'px';
 						elem.setAttribute('sizes', width);
@@ -496,15 +481,23 @@
 
 		var init = function(){
 			autosizesElems = document.getElementsByClassName(lazySizesConfig.autosizesClass);
-			addEventListener('resize', throttledUpdateElementsSizes, false);
+			addEventListener('resize', throttledUpdateElementsSizes);
 		};
 
 		return {
-			init: init,
+			_i: init,
 			checkElems: throttledUpdateElementsSizes,
 			updateElem: sizeElement
 		};
 	})();
+
+	var init = function(){
+		if(!init.i){
+			init.i = true;
+			autoSizer._i();
+			loader._i();
+		}
+	};
 
 	(function(){
 		var prop;
@@ -518,10 +511,11 @@
 			srcAttr: 'data-src',
 			srcsetAttr: 'data-srcset',
 			sizesAttr: 'data-sizes',
-			//addClasses: false,
+			addClasses: true,
 			//preloadAfterLoad: false,
-			onlyLargerSizes: true,
-			minSize: 40
+			minSize: 50,
+			customMedia: {},
+			init: true
 		};
 
 		lazySizesConfig = window.lazySizesConfig || {};
@@ -534,8 +528,9 @@
 
 		window.lazySizesConfig = lazySizesConfig;
 
-		autoSizer.init();
-		loader.init();
+		if(lazySizesConfig.init){
+			setTimeout(init);
+		}
 	})();
 
 
@@ -544,14 +539,7 @@
 		cfg: lazySizesConfig,
 		autoSizer: autoSizer,
 		loader: loader,
-
-		//depreacated methods will be removed with next major version
-		updateAllSizes: autoSizer.updateElems,
-		updateAllLazy: loader.checkElems,
-		unveilLazy: loader.unveil,
-
-		//undocumented internal methods - use with caution
-		uS: autoSizer.updateElem, // will be removed with next major version
+		init: init,
 		uP: updatePolyfill,
 		aC: addClass,
 		rC: removeClass,

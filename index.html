@@ -4,6 +4,7 @@
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<title>lazysizes - the umltimate lazyloader for responsive images, iframes and widget</title>
+	<link rel="canonical" href="http://afarkas.github.io/lazysizes/index.html" />
 
 	<!-- polyfill responsive images: https://github.com/aFarkas/respimage -->
 	<script>
@@ -124,13 +125,14 @@
 		window.lazySizesConfig = {
 			//preloadAfterLoad: true
 			//clearAttr: true
-			addClasses: true
+			//addClasses: false
 		};
 	</script>
-	<script src="lazysizes.min.js" async=""></script>
 
 	<script src="plugins/unveilhooks/ls.unveilhooks.min.js" async=""></script>
 	<script src="plugins/print/ls.print.min.js" async=""></script>
+
+	<script src="lazysizes.min.js" async=""></script>
 
 </head>
 <body>
@@ -302,7 +304,7 @@ https://farm9.staticflickr.com/8200/8248153196_7a7664e147_b.jpg 1024w"
 
 		<div class="row">
 			<div class="alert alert-danger">
-				<p>Note that you must use either <a href="https://github.com/scottjehl/picturefill" target="_blank">picturefill</a> or <a href="https://github.com/aFarkas/respimage">respimage (recommended)</a> for full <strong>cross browser support of responsive images</strong>.</p>
+				<p>For responsive images support you must use either use a polyfill like <a href="https://github.com/scottjehl/picturefill" target="_blank">picturefill</a> or <a href="https://github.com/aFarkas/respimage">respimage</a> or use the <a href="https://github.com/aFarkas/lazysizes/tree/gh-pages/plugins/rias">Responsive Images as a Service extension</a>.</p>
 			</div>
 		</div>
 
@@ -382,7 +384,7 @@ window.lazySizesConfig = {
 			<div class="col-sm-12">
 				<div class="thumbnail">
 					<script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
-					<div data-ride="carousel" data-script="assets/js/bootstrap.min.js" data-link="assets/css/carousel.css" class="carousel lazyload slide no-src" data-interval="false" id="carousel-example-captions">
+					<div data-ride="carousel" data-script="assets/js/bootstrap.min.js" data-link="assets/css/carousel.css" class="carousel lazyload lazypreload slide no-src" data-interval="false" id="carousel-example-captions">
 						<ol class="carousel-indicators">
 							<li data-slide-to="0" data-target="#carousel-example-captions"></li>
 							<li data-slide-to="1" data-target="#carousel-example-captions"></li>

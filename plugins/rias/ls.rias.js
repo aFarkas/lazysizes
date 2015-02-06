@@ -11,26 +11,8 @@
 	var regWidth = /\s*\{\s*width\s*\}\s*/i;
 	var regPlaceholder = /\s*\{\s*([a-z0-9]+)\s*\}\s*/ig;
 	var regObj = /^\[.*\]|\{.*\}$/;
+	var regAllowedSizes = /^(?:auto|\d+(px)?)$/;
 	var anchor = document.createElement('a');
-
-	var partialFill = (function(){
-		var reduceNearest = function (prev, curr, initial, ar) {
-			return (Math.abs(curr.w - ar.w) < Math.abs(prev.w - ar.w) ? curr : prev);
-		};
-		return function(elem, srces){
-			var src, parent;
-			if(!window.HTMLPictureElement && !window.respimage && !window.picturefill && (parent = elem.parentNode)){
-				srces.w = lazySizes.gW(elem, parent) *
-				(lazySizes.getX ? lazySizes.getX(elem) : Math.min(window.devicePixelRatio || 1, 2));
-				src = srces.reduce(reduceNearest);
-
-				if(src && src.url){
-					elem.setAttribute(config.srcAttr, src.url);
-					elem.setAttribute('src', src.url);
-				}
-			}
-		};
-	})();
 
 	(function(){
 		var prop;
@@ -141,10 +123,13 @@
 		url = ((options.prefix || '') + url + (options.postfix || '')).replace(regPlaceholder, replaceFn);
 
 		options.widths.forEach(function(width){
-			var candidate = url.replace(regWidth, options.widthmap[width] || width);
+			var candidate = {
+				u: url.replace(regWidth, options.widthmap[width] || width),
+				w: width
+			};
 
-			candidates.push({url: candidate, w: width});
-			candidates.srcset.push(candidate +' '+width+'w');
+			candidates.push(candidate);
+			candidates.srcset.push( (candidate.c = candidate.u + ' ' + width + 'w') );
 		});
 		return candidates;
 	}
@@ -155,22 +140,21 @@
 
 		src = replaceUrlProps(src, opts);
 
+		src.isPicture = opts.isPicture;
 
 		elem.setAttribute(config.srcsetAttr, src.srcset.join(', '));
-		partialFill(elem, src);
+		Object.defineProperty(elem, '_lazyrias', {
+			value: src,
+			writable: true
+		});
 	}
 
 	function createAttrObject(elem, src){
-
 		var opts = getElementOptions(elem, src);
-		var event = document.createEvent('Event');
 
 		riasCfg.modifyOptions.call(elem, {target: elem, details: opts});
 
-		event.initEvent('lazyriasmodifyoptions', true, false);
-		event.details = opts;
-
-		elem.dispatchEvent(event);
+		lazySizes.fire(elem, 'lazyriasmodifyoptions', opts);
 		return opts;
 	}
 
@@ -179,11 +163,10 @@
 	}
 
 	addEventListener('lazybeforeunveil', function(e){
-		var elem, src, elemOpts, parent, sources, i, len, sourceSrc;
-
-		if(e.defaultPrevented || !(src = getSrc(e.target)) || riasCfg.disabled || !(e.target.getAttribute(config.sizesAttr) || e.getAttribute('sizes'))){return;}
-
+		var elem, src, elemOpts, parent, sources, i, len, sourceSrc, sizes;
 		elem = e.target;
+
+		if(e.defaultPrevented || !(src = getSrc(elem)) || riasCfg.disabled || !((sizes = elem.getAttribute(config.sizesAttr) || elem.getAttribute('sizes')) && regAllowedSizes.test(sizes))){return;}
 
 		elemOpts = createAttrObject(elem, src);
 
@@ -199,7 +182,98 @@
 			setSrc(src, elemOpts, elem);
 		}
 
+		if(sizes != 'auto'){
+			polyfill({
+				target: elem,
+				details: {
+					width: parseInt(sizes, 10)
+				}
+			});
+		}
 
-	}, false);
+	});
+
+	// partial polyfill
+	var polyfill = (function(){
+		var reduceNearest = function (prev, curr, initial, ar) {
+			return (Math.abs(curr.w - ar.w) < Math.abs(prev.w - ar.w) ? curr : prev);
+		};
+
+		var getWSet = function(elem, testPicture){
+			var src;
+			if(!elem._lazyrias && lazySizes.pWS && (src = lazySizes.pWS(elem.getAttribute(config.srcsetAttr || ''))).length){
+				Object.defineProperty(elem, '_lazyrias', {
+					value: src,
+					writable: true
+				});
+				if(testPicture && elem.parentNode){
+					src.isPicture = elem.parentNode.nodeName.toUpperCase() == 'PICTURE';
+				}
+			}
+			return elem._lazyrias;
+		};
+
+		var getX = function(elem){
+			var dpr = window.devicePixelRatio || 1;
+			var optimum = lazySizes.getX && lazySizes.getX(elem);
+			var x = Math.min(optimum || dpr, 2.2, dpr);
+
+			if(x < 1.2){
+				x *= 1.05;
+			} else if(x > 1.6 && !optimum){
+				x *= 0.95;
+			}
+
+			return x;
+		};
+
+		var getCandidate = function(elem, width){
+			var sources, i, len, media, srces;
+
+			width = Math.round(width * getX(elem));
+			srces = elem._lazyrias;
+
+			if(srces.isPicture && window.matchMedia){
+				for(i = 0, sources = elem.parentNode.getElementsByTagName('source'), len = sources.length; i < len; i++){
+					if(getWSet(sources[i]) && !sources[i].getAttribute('type') && ( !(media = sources[i].getAttribute('media')) || ((matchMedia(media) || {}).matches))){
+						srces = sources[i]._lazyrias;
+						break;
+					}
+				}
+			}
+
+			if(!srces.w || srces.w < width){
+				srces.w = width;
+			}
+			return srces.reduce(reduceNearest);
+		};
+
+		var polyfill = function(e){
+			var candidate;
+			var elem = e.target;
+
+			if(window.HTMLPictureElement || window.respimage || window.picturefill){
+				document.removeEventListener('lazybeforesizes', polyfill);
+				return;
+			}
+
+			if(!elem._lazyrias && (!e.details.dataAttr || !getWSet(elem, true))){
+				return;
+			}
+
+			candidate = getCandidate(elem, e.details.width);
+
+			if(candidate && candidate.u && elem._lazyrias.cur != candidate.u){
+				elem._lazyrias.cur = candidate.u;
+				elem.setAttribute(config.srcAttr, candidate.u);
+				elem.setAttribute('src', candidate.u);
+			}
+		};
+
+		document.addEventListener('lazybeforesizes', polyfill);
+
+		return polyfill;
+
+	})();
 
 })(window, document);

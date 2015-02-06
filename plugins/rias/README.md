@@ -10,12 +10,12 @@ The RiaS plugin also allows art direction by combining placeholder URLs with a `
 
 ##Basic/quick usage
 
-* Add the RiaS plugin right after the lazysizes scripts or concat those scripts into your script bundle:
+* Add the RiaS plugin right after the lazySizes script or concat those scripts into your script bundle:
 
 ```html
 <!-- include lazysizes + rias extension -->
-<script src="../lazysizes.js"></script>
 <script src="../plugins/rias/ls.rias.js"></script>
+<script src="../lazysizes.js"></script>
 ```
 
 
@@ -70,7 +70,7 @@ or element specific and functional using the ``lazyriasmodifyoptions`` event.
 document.addEventListener('lazyriasmodifyoptions', function(event){
     // event.details referes the placeholders/options and event.target the corresponding element
     event.details.quality = (window.devicePixelRatio || 1) > 1.4 ? 65 : 80;
-};
+});
 </script>
 <img
     data-src="image-w{width}-q{quality}.jpg"
@@ -79,7 +79,7 @@ document.addEventListener('lazyriasmodifyoptions', function(event){
     alt="" />
 ```
 
-All rias options can also be used as ``data-*`` attributes.
+All ``rias`` options can also be used as ``data-*`` attributes.
 
 ###URL generation and {placeholder}s
 
@@ -153,7 +153,7 @@ All RiAS options can also be used as a {placeholder} inside the url.
     ```
 * ``lazySizesConfig.rias.postfix`` (default: ``""`` ): A string, which is appended to the generated src.
 
-With lazysizes + RIaS extension you have a script to rule them all. You won't need to include a script provided by a third party image on demand service.
+With lazySizes + RIaS extension you have a script to rule them all. You won't need to include a script provided by a third party image on demand service.
 
 ##Advanced Examples
 
@@ -167,25 +167,9 @@ In case you want to use a CDN you can use jsDelivr's combohandler service:
 
 ###Using art direction
 
-In case you want to use art direction simply also use also placeholder urls inside of your ``source[data-srcset]`` or ``source[data-src]`` attributes. For full cross browser support a [responsive image polyfill](https://github.com/aFarkas/respimage) has to be used.
+In case you want to use art direction simply also use placeholder urls inside of your ``source[data-srcset]`` or ``source[data-src]`` attributes.
 
 ```html
-<!-- polyfill responsive images: https://github.com/aFarkas/respimage -->
-<script>
-function loadJS(u){var r=document.getElementsByTagName("script")[0],s=document.createElement("script");s.src=u;r.parentNode.insertBefore(s,r);}
-
-if(!window.HTMLPictureElement){
-    document.createElement('picture');
-    loadJS("http://cdn.jsdelivr.net/g/respimage(respimage.min.js)");
-}
-</script>
-
-<!--  your stylesheets -->
-
-<script src="http://cdn.jsdelivr.net/g/lazysizes(lazysizes.min.js+plugins/rias/ls.rias.min.js)" async=""></script>
-</body>
-
-
 <picture>
     <!--[if IE 9]><audio><![endif]-->
     <source
@@ -197,7 +181,6 @@ if(!window.HTMLPictureElement){
     <source
             data-srcset="http://placehold.it/{width}/7D26CD/fff"
             media="(min-width: 1224px)" />
-
     <!--[if IE 9]></audio><![endif]-->
     <img
         src="http://placehold.it/100"
