@@ -11,4 +11,4 @@ All browsers with native `srcset` support. Successfully tested on
 - Chrome for Android
 - Native Android Browser 4.4
 
-Would work great in Firefox too, but is disabled since Firefox shows an annoying broken image icon for a few seconds.
+Would work great in Firefox too, but is currently disabled since Firefox shows an annoying broken image icon for a few seconds. Maybe someone comes up with an idea how to fix this...
