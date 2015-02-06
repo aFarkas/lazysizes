@@ -211,7 +211,6 @@ window.lazySizesConfig.customMedia = {
 		alt="image with artdirection" />
 </picture>
 ```
-* ``lazySizesConfig.init`` (default: ``true``): By default lazySizes initializes itself as soon as possible, to load inview assets as soon as possible. In the unlikely case you need to setup/configure something with a later script you can set this option to ``false`` and call ``lazySizes.init();`` later explicitly.
 
 ####JS API - events
 **lazysizes** provides two events to modify or extend the behavior of **lazysizes**.
@@ -344,23 +343,6 @@ In case one or more image elements with the attribute ``data-sizes="auto"`` have
 
 ```js
 lazySizes.autoSizer.updateElems();
-```
-
-#####``lazySizes.init()``
-
-LazySizes initializes itself as soon as possible. In case you set ``lazySizesConfig.init`` to ``false`` you need to explicityl call ``lazySizes.init()``.
-
-```html
-<script>
-window.lazySizesConfig = window.lazySizesConfig || {};
-lazySizesConfig.init = false;
-</script>
-
-<script src="lazysizes.js"></script>
-<script src="other-script.js"></script>
-<script>
-lazySizes.init();
-</script>
 ```
 
 ##Browser Support
