@@ -1,6 +1,6 @@
 #lazysizes progressive extension
 
-This plugin improves perceived performance by rendering high quality images progressivly on top of the LQIP.
+This plugin optimizes perceived performance by adding better support for rendering progressive JPGs/PNGs in conjunction with the LQIP pattern.
 
 ##Demo
 - [Watch video](http://www.webpagetest.org/video/view.php?id=150207_0d904cee5186ebf124d4e3014aa5df39895618f0)
