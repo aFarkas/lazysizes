@@ -119,6 +119,8 @@
 		var regImg = /^img$/i;
 		var regIframe = /^iframe$/i;
 
+		var support = ('onscroll' in window); // || /jp/.test(document.createElement('canvas').toDataURL('image/jpeg'))
+
 		var shrinkExpand = -2;
 		var defaultExpand = shrinkExpand;
 		var preloadExpand = shrinkExpand;
@@ -182,6 +184,8 @@
 				for(; i < eLlen; i++, checkElementsIndex++){
 
 					if(!lazyloadElems[i]){break;}
+
+					if(!support){unveilElement(lazyloadElems[i]);continue;}
 
 					if(!(elemExpandVal = lazyloadElems[i].getAttribute('data-expand')) || !(elemExpand = elemExpandVal * 1)){
 						elemExpand = currentExpand;
@@ -409,7 +413,7 @@
 
 			addEventListener('hashchange', throttledCheckElements, true);
 
-			['transitionstart', 'transitionend', 'load', 'focus', 'mouseover', 'animationend', 'click'].forEach(function(evt){
+			['transitionstart', 'transitionend', 'load', 'focus', 'mouseover', 'animationend', 'click', 'touchmove'].forEach(function(evt){
 				document.addEventListener(evt, throttledCheckElements, true);
 			});
 

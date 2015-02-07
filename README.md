@@ -338,6 +338,8 @@ In case a developer wants to show an image even if it is not inside the viewport
 lazySizes.loader.unveil(imgElem);
 ```
 
+Note: As a more lazy alternative the ``lazypreload`` class can be set: ``$(imgElem).addClass('lazypreload');``.
+
 #####``lazySizes.autoSizer.updateElems()``
 
 In case one or more image elements with the attribute ``data-sizes="auto"`` have changed in size ``lazySizes.autoSizer.updateElems`` can be called (For example to implement element queries):
@@ -348,7 +350,7 @@ lazySizes.autoSizer.updateElems();
 
 #####``lazySizes.init()``
 
-LazySizes initializes itself as soon as possible. In case you set ``lazySizesConfig.init`` to ``false`` you need to explicityl call ``lazySizes.init()``.
+LazySizes initializes itself as soon as possible. In case you set ``lazySizesConfig.init`` to ``false`` you need to explicitly call ``lazySizes.init()``.
 
 ```html
 <script>
@@ -364,7 +366,7 @@ lazySizes.init();
 ```
 
 ##Browser Support
-**lazysizes** supports at least the following browsers: IE9+, Firefox 21+, Chrome 27+, Safari 6.1+, iOS Safari 7.0+, Android 4.0+
+**lazysizes** supports all browsers, that support [``document.getElementsByClassName``](http://caniuse.com/#feat=getelementsbyclassname). It is successfully tested with the following browsers: IE9+, Firefox 21+, Chrome 27+, Safari 6.1+, iOS Safari 7.0+, Android 4.0+
 
 ##Contributing
 Fixes, PRs and issues are always welcome, make sure to create a new branch from the **master** (not the gh-pages branch), validate against JShint and test in all browsers. In case of an API/documentation change make sure to also document it here in the readme.md.
