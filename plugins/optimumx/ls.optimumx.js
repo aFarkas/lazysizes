@@ -51,7 +51,7 @@
 			return a.w - b.w;
 		};
 
-		var parseSets =  function (elem, dataName, last){
+		var parseSets =  function (elem, dataName){
 			var lazyData = {srcset: elem.getAttribute(lazySizes.cfg.srcsetAttr)  || ''};
 			var cands = parseWsrcset(lazyData.srcset);
 			Object.defineProperty(elem, dataName, {
@@ -64,9 +64,6 @@
 			lazyData.index = 0;
 			lazyData.dirty = false;
 			if(cands[0] && cands[0].w){
-				if(last){
-					lazyData.index = cands.length - 1;
-				}
 
 				cands.sort( ascendingSort );
 				lazyData.cSrcset = [cands[ lazyData.index ].c];
@@ -80,17 +77,17 @@
 
 		return function parseImg(elem, dataName){
 			var sources, i, len, parent;
-			var last = dataName == '_lazyMinx';
+
 
 			if(!elem[dataName]){
 				parent = elem.parentNode || {};
-				elem[dataName] = parseSets(elem, dataName, last);
+				elem[dataName] = parseSets(elem, dataName);
 				elem[dataName].isImg = true;
 				if(regPicture.test(parent.nodeName || '')){
 					elem[dataName].picture = true;
 					sources = parent.getElementsByTagName('source');
 					for(i = 0, len = sources.length; i < len; i++){
-						parseSets(sources[i], dataName, last).isImg = false;
+						parseSets(sources[i], dataName).isImg = false;
 					}
 				}
 			}
@@ -128,22 +125,7 @@
 					}
 				}
 			};
-		})(),
-		_lazyMinx: function(data, width){
-			var can;
-			var i = data.index - 1;
-
-			while(i > -1){
-				can = data.cands[i];
-				if(can.w >= width){
-					data.cSrcset.push(can.c);
-					data.index = i;
-					i--;
-				} else {
-					break;
-				}
-			}
-		}
+		})()
 	};
 
 	var constrainSets = (function(){
@@ -250,35 +232,9 @@
 		}
 	});
 
-	addEventListener('lazybeforesizes', function(e){
-		var minx, lazyData, width, attr;
-
-		if(e.defaultPrevented ||
-			e.target._lazyOptimumx ||
-			!(minx = (e.target.getAttribute('data-minx') * 1)) ||
-			minx + 0.2 < devicePixelRatio){return;}
-
-		lazyData = parseImg(e.target, '_lazyMinx');
-
-		minx = Math.min(minx, devicePixelRatio);
-
-		width = e.details.width * minx;
-
-		if(width && (lazyData.width || 0) < width){
-			attr = e.details.dataAttr ? lazySizes.cfg.srcsetAttr : 'srcset';
-
-			constrainSets(e.target, width, attr, '_lazyMinx');
-
-			e.target.removeAttribute('data-minx');
-		}
-	});
-
 	addEventListener('lazybeforeunveil', function(e){
 		if(e.target._lazyOptimumx){
 			e.target._lazyOptimumx = null;
-		}
-		if(e.target._lazyMinx){
-			e.target._lazyMinx = null;
 		}
 	});
 

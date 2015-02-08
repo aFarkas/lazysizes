@@ -149,7 +149,7 @@
 		if(map){
 			url = RegExp.$1;
 			output = {
-				condition: config.include.conditions[RegExp.$3] || RegExp.$2 || null,
+				condition: config.include.conditions[RegExp.$3] || config.customMedia[RegExp.$3] || RegExp.$2 || null,
 				name: RegExp.$3
 			};
 		} else {

@@ -25,11 +25,10 @@ For background images, use data-bg attribute:
 (function(window, document){
 	/*jshint eqnull:true */
 	'use strict';
-	var config, bgLoad;
+	var bgLoad;
 	var uniqueUrls = {};
 
 	if(document.addEventListener && window.getComputedStyle){
-		config = (window.lazySizes && lazySizes.cfg) || window.lazySizesConfig || {};
 
 		bgLoad = function (url, cb){
 			var img = document.createElement('img');
@@ -82,7 +81,7 @@ For background images, use data-bg attribute:
 					load = function(){
 						e.target.style.backgroundImage = 'url(' + bg + ')';
 						e.details.firesLoad = false;
-						lazySizes.fire(e.target, '_lazyloaded');
+						lazySizes.fire(e.target, '_lazyloaded', {}, true, true);
 					};
 
 					bgLoad(bg, load);
@@ -95,7 +94,7 @@ For background images, use data-bg attribute:
 					load = function(){
 						e.target.poster = poster;
 						e.details.firesLoad = false;
-						lazySizes.fire(e.target, '_lazyloaded');
+						lazySizes.fire(e.target, '_lazyloaded', {}, true, true);
 					};
 
 					bgLoad(poster, load);

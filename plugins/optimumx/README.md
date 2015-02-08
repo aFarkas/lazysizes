@@ -174,7 +174,7 @@ But be aware each image has different characteristics: While some images look gr
 
 ##<a name="lying-sizes"></a>Background information: Lying sizes attribute
 
-There is also another much more lightweight way to get a similar effect. Instead of parsing and constraining the ``srcset`` to meet the ``data-optimumx`` and ``data-minx`` constraints, there is also the possibility to modify the ``sizes`` attribute instead.
+There is also another much more lightweight way to get a similar effect. Instead of parsing and constraining the ``srcset`` to meet the ``data-optimumx`` constraint, there is also the possibility to modify the ``sizes`` attribute instead.
 
 A ``data-optimumx`` implementation with the ``lazybeforesizes`` event could then look something like this:
 

@@ -75,7 +75,7 @@
 			}
 
 			if(!init){
-				lazySizes.fire(elem, '_lazyloaded');
+				lazySizes.fire(elem, '_lazyloaded', null, false, true);
 				if(e && e.details){
 					e.details.firesLoad = false;
 				}
@@ -91,9 +91,8 @@
 
 		createPicture(set, elem, image);
 
-		setTimeout(function(){
-			lazySizes.loader.unveil(image);
-		});
+		lazySizes.loader.unveil(image);
+		lazySizes.fire(image, '_lazyloaded', {}, true, true);
 	});
 
 	addEventListener('lazybeforesizes', function(e){

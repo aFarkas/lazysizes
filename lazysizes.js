@@ -44,10 +44,10 @@
 		});
 	};
 
-	var triggerEvent = function(elem, name, details){
+	var triggerEvent = function(elem, name, details, noBubbles, noCanceable){
 		var event = document.createEvent('Event');
 
-		event.initEvent(name, true, true);
+		event.initEvent(name, !noBubbles, !noCanceable);
 
 		event.details = details || {};
 
@@ -94,7 +94,7 @@
 			clearInterval(timer);
 			if(!document.hidden){
 				main();
-				timer = setInterval(main, 66);
+				timer = setInterval(main, 51);
 			}
 		};
 
@@ -110,7 +110,7 @@
 	};
 
 	var loader = (function(){
-		var lazyloadElems, preloadElems, isPreloadAllowed, isCompleted, resetPreloadingTimer, runThrough;
+		var lazyloadElems, preloadElems, isPreloadAllowed, isCompleted, resetPreloadingTimer;
 
 		var eLvW, elvH, eLtop, eLleft, eLright, eLbottom;
 
@@ -119,7 +119,7 @@
 		var regImg = /^img$/i;
 		var regIframe = /^iframe$/i;
 
-		var support = ('onscroll' in window); // || /jp/.test(document.createElement('canvas').toDataURL('image/jpeg'))
+		var supportScroll = ('onscroll' in window);
 
 		var shrinkExpand = -2;
 		var defaultExpand = shrinkExpand;
@@ -152,7 +152,7 @@
 			eLleft -= elemExpand;
 			eLright += elemExpand;
 
-			while(visible && (parent = parent.offsetParent) && parent != docElem){
+			while(visible && (parent = parent.offsetParent)){
 				visible = (isCompleted && isLoading < 4) || ((getCSS(parent, 'opacity') || 1) > 0);
 
 				if(visible && getCSS(parent, 'overflow') != 'visible'){
@@ -168,24 +168,24 @@
 		};
 
 		var checkElements = function() {
-			var rect, autoLoadElem, loadedSomething, elemExpand, elemNegativeExpand, elemExpandVal, beforeExpandVal;
+			var i, start, rect, autoLoadElem, loadedSomething, elemExpand, elemNegativeExpand, elemExpandVal, beforeExpandVal;
 
 			var eLlen = lazyloadElems.length;
 
-			var start = Date.now();
-			var i = checkElementsIndex;
-
-			if(!isExpandCalculated){
-				calcExpand();
-			}
-
 			if(eLlen){
+				start = Date.now();
+
+				if(!isExpandCalculated){
+					calcExpand();
+				}
+
+				i = checkElementsIndex;
 
 				for(; i < eLlen; i++, checkElementsIndex++){
 
 					if(!lazyloadElems[i]){break;}
 
-					if(!support){unveilElement(lazyloadElems[i]);continue;}
+					if(!supportScroll){unveilElement(lazyloadElems[i]);continue;}
 
 					if(!(elemExpandVal = lazyloadElems[i].getAttribute('data-expand')) || !(elemExpand = elemExpandVal * 1)){
 						elemExpand = currentExpand;
@@ -218,9 +218,8 @@
 						loadedSomething = true;
 					} else  {
 
-						if(!runThrough && Date.now() - start > 3){
+						if(Date.now() - start > 3){
 							checkElementsIndex++;
-							runThrough = true;
 							throttledCheckElements();
 							return;
 						}
@@ -231,12 +230,10 @@
 							(preloadElems[0] || (!elemExpandVal && ((eLbottom || eLright || eLleft || eLtop) || lazyloadElems[i].getAttribute(lazySizesConfig.sizesAttr) != 'auto')))){
 							autoLoadElem = preloadElems[0] || lazyloadElems[i];
 						}
-
 					}
 				}
 
 				checkElementsIndex = 0;
-				runThrough = false;
 
 				lowRuns++;
 
@@ -312,7 +309,7 @@
 				if(isPicture){
 					sources = parent.getElementsByTagName('source');
 					for(i = 0, len = sources.length; i < len; i++){
-						if( (customMedia = lazySizesConfig.customMedia[sources[i].getAttribute('media')]) ){
+						if( (customMedia = lazySizesConfig.customMedia[sources[i].getAttribute('data-media') || sources[i].getAttribute('media')]) ){
 							sources[i].setAttribute('media', customMedia);
 						}
 						sourceSrcset = sources[i].getAttribute(lazySizesConfig.srcsetAttr);
@@ -401,7 +398,7 @@
 			addEventListener('resize', function(){
 				isExpandCalculated = false;
 				throttledCheckElements();
-			});
+			}, true);
 
 
 			if(window.MutationObserver){
@@ -409,11 +406,12 @@
 			} else {
 				docElem.addEventListener('DOMNodeInserted', throttledCheckElements, true);
 				docElem.addEventListener('DOMAttrModified', throttledCheckElements, true);
+				setInterval(throttledCheckElements, 3000);
 			}
 
 			addEventListener('hashchange', throttledCheckElements, true);
 
-			['transitionstart', 'transitionend', 'load', 'focus', 'mouseover', 'animationend', 'click', 'touchmove'].forEach(function(evt){
+			['transitionstart', 'transitionend', 'load', 'focus', 'mouseover', 'animationend', 'click'].forEach(function(evt){
 				document.addEventListener(evt, throttledCheckElements, true);
 			});
 
