@@ -1,5 +1,5 @@
 /*
-This lazySizes extension adds better support for browser rendering of progressive jpgs/pngs.
+This lazysizes plugin optimizes perceived performance by adding better support for rendering progressive JPGs/PNGs in conjunction with the LQIP pattern.
 */
 (function(document){
 	/*jshint eqnull:true */
