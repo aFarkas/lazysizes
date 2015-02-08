@@ -405,7 +405,7 @@ The bgset plugin allows lazyload multiple background images with different resol
 The [print plugin](plugins/print) plugin enables lazySizes to unveil all elements as soon as the user starts to print. (Or set ``lazySizesConfig.preloadAfterLoad`` to ``true``).
 
 ###[progressive plugin](plugins/progressive)
-The [progressive plugin](plugins/progressive) plugin adds better support for rendering progressive jpgs/pngs.
+The [progressive plugin](plugins/progressive) plugin optimizes perceived performance by adding better support for rendering progressive JPGs/PNGs in conjunction with the LQIP pattern.
 
 ##Why lazysizes
 In the past I often struggled using lazy image loaders, because the "main check function" is called repeatedly and with a high frequency. Which makes it hard to fulfill two purposes runtime and memory efficiency. And looking into the source code of most so called lazy loaders often also unveils lazy developers...
@@ -455,7 +455,6 @@ For flexible responsive images the [CSS intrinsic ratio scaling technique](http:
     width: 100%;
     /* 16:9 = 56.25% = calc(9 / 16 * 100%) */
     padding-bottom: 42.86%;
-    content: "";
 }
 .ratio-container > * {
     position: absolute;
@@ -491,7 +490,6 @@ In case the exact ratio of your image is unknown you can also vary the intrinsic
     width: 100%;
     /* 16:9 = 56.25% = calc(9 / 16 * 100%) */
     padding-bottom: 56.25%;
-    content: "";
 }
 .ratio-container > * {
     position: absolute;
