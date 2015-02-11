@@ -20,7 +20,7 @@ $.extend(window.lazyTests, {
 			var $source = $picture.find('source');
 			var $image = $picture.find('img');
 			var initialTest = function(){
-				var haspolyfill = frameWindow.respimage || frameWindow.picturefill || (frameWindow.lazySizes.cfg.rias && frameWindow.lazySizes.pWS);
+				var haspolyfill = frameWindow.respimage || frameWindow.picturefill || (frameWindow.lazySizes.cfg.rias && frameWindow.lazySizes.pWS) || frameWindow.lazySizes.cfg.polyfill;
 				var nowSrc = window.HTMLPictureElement || !haspolyfill ?
 					'' : 'data:lazysource150';
 				assert.equal($source.attr('srcset'), 'data:lazysource100 100w, data:lazysource150 150w');
@@ -28,7 +28,7 @@ $.extend(window.lazyTests, {
 				assert.equal($image.prop('src'), nowSrc);
 			};
 			var endTest = function(){
-				var haspolyfill = frameWindow.respimage || frameWindow.picturefill || (frameWindow.lazySizes.cfg.rias && frameWindow.lazySizes.pWS);
+				var haspolyfill = frameWindow.respimage || frameWindow.picturefill || (frameWindow.lazySizes.cfg.rias && frameWindow.lazySizes.pWS) || frameWindow.lazySizes.cfg.polyfill;
 				var nowSrc = window.HTMLPictureElement || !haspolyfill ?
 					'' : 'data:lazysource280';
 				assert.equal($source.attr('srcset'), 'data:lazysource100 100w, data:lazysource150 150w, data:lazysource280 280w');
@@ -492,6 +492,16 @@ QUnit.test.apply(QUnit, lazyTests.optimumxPictureResize);
 QUnit.test.apply(QUnit, lazyTests.simplePicture);
 QUnit.test.apply(QUnit, lazyTests.optimumxReinit);
 
+QUnit.module( "optimumx + mini respimg polyfill", {
+	beforeEach: createBeforeEach(
+		{
+			plugins: ['optimumx', 'respimg']
+		}
+	)
+});
+QUnit.test.apply(QUnit, lazyTests.optimumxPictureResize);
+
+
 QUnit.module( "optimumx + respimage + respmutation", {
 	beforeEach: createBeforeEach(
 		{
@@ -568,3 +578,15 @@ QUnit.test.apply(QUnit, lazyTests.riasPictureResize);
 QUnit.test.apply(QUnit, lazyTests.riasReinit);
 QUnit.test.apply(QUnit, lazyTests.riasSimpleSizes);
 QUnit.test.apply(QUnit, lazyTests.riasAutoSizes);
+
+QUnit.module( "mini respimg polyfill", {
+	beforeEach: createBeforeEach(
+		{
+			plugins: ['respimg']
+		}
+	)
+});
+QUnit.test.apply(QUnit, lazyTests.simplePicture);
+QUnit.test.apply(QUnit, lazyTests.simpleAutoSizesPicture);
+QUnit.test.apply(QUnit, lazyTests.simpleSrcset);
+QUnit.test.apply(QUnit, lazyTests.simpleSrcsetSrc);

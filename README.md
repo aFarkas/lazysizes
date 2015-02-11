@@ -49,7 +49,7 @@
 Can be seen [here](http://afarkas.github.io/lazysizes/#examples).
 
 ##About responsive image support (``picture`` and/or ``srcset``)
-For full cross browser responsive image support you must either use a polyfill like [respimage](https://github.com/aFarkas/respimage) or [picturefill](https://github.com/scottjehl/picturefill) or use the [responsive image on demand plugin](plugins/rias).
+For full cross browser responsive image support you must either use a polyfill like [respimage](https://github.com/aFarkas/respimage) or [picturefill](https://github.com/scottjehl/picturefill) or use the extreme lightweight partial [respimg polyfill plugin](../plugins/respimg) or the [responsive image on demand plugin](plugins/rias).
 
 ##More about the API
 **lazysizes** comes with a simple markup and JS API. Normally you will only need to use the markup API.
@@ -106,7 +106,7 @@ For non crucial or below the fold images or in case you want to save more initia
     alt="my image" />
 ```
 
-Note: In case you are using the simple markup pattern, consider to set the ``preloadAfterLoad`` to ``true`` (for SEO) and to add unobtrusive unveil effects using the ``addClasses`` option ([demo](http://afarkas.github.io/lazysizes/no-src.html#examples)).
+Note: In case you are using the simple markup pattern, consider to set the ``preloadAfterLoad`` to ``true`` (for SEO) and to add unobtrusive unveil effects ([demo](http://afarkas.github.io/lazysizes/no-src.html#examples)).
 
 ###The noscript pattern
 
@@ -160,11 +160,13 @@ This becomes especially handy to add unveiling effects for teasers or other elem
 Options can be set by declaring a global configuration option object named ``lazySizesConfig``. This object must be defined before the lazysizes script. A basic example:
 
 ```js
-window.lazySizesConfig = {
-    lazyClass: 'postbone', // use .postbone instead of .lazyload
-    // preload all lazy elements in a lazy loading queue after onload, if on desktop
-    preloadAfterLoad: !(/mobi/i.test(navigator.userAgent))
-};
+window.lazySizesConfig = window.lazySizesConfig || {};
+
+// use .postbone instead of .lazyload
+window.lazySizesConfig.lazyClass = 'postbone';
+
+// preload all lazy elements in a lazy loading queue after onload, if on desktop
+window.lazySizesConfig.preloadAfterLoad = !(/mobi/i.test(navigator.userAgent));
 ```
 
 Here the list of options:
@@ -172,9 +174,8 @@ Here the list of options:
 * ``lazySizesConfig.lazyClass`` (default: ``"lazyload"``): Marker class for all elements which should be lazy loaded (There can be only one ``class``. In case you need to add some other element, without the defined class, simply add it per JS: ``$('.lazy-others').addClass('lazyload');``)
 * ``lazySizesConfig.preloadAfterLoad`` (default: ``false``): Whether lazysizes should load all elements after the window onload event. Note: lazySizes will then still download those not-in-view images inside of a lazy queue, so that other downloads after onload are not blocked.) In case this option is ``false`` and not providing a suitable low quality image placeholder will hide below the fold images from google.
 * ``lazySizesConfig.preloadClass`` (default: ``"lazypreload"``): Marker class for elements which should be lazy pre-loaded after onload. Those elements will be even preloaded, if the ``preloadAfterLoad`` option is set to ``false``. Note: This *class* can be also dynamically set (``$currentSlide.next().find('.lazyload').addClass('lazypreload');``).
-* ``lazySizesConfig.addClasses`` (default: ``true``): Whether lazysizes should add loading and loaded classes. This can be used to add unveil effects or to apply new styles (background-image).
-* ``lazySizesConfig.loadingClass`` (default: ``"lazyloading"``): If ``addClasses`` is set to ``true`` this ``class`` will be added to ``img`` element as soon as image loading starts. Can be used to add unveil effects.
-* ``lazySizesConfig.loadedClass`` (default: ``"lazyloaded"``): If ``addClasses`` is set to ``true`` this ``class`` will be added to any element as soon as the image is loaded or the image comes into view. Can be used to add unveil effects or to apply styles.
+* ``lazySizesConfig.loadingClass`` (default: ``"lazyloading"``): This ``class`` will be added to ``img`` element as soon as image loading starts. Can be used to add unveil effects.
+* ``lazySizesConfig.loadedClass`` (default: ``"lazyloaded"``): This ``class`` will be added to any element as soon as the image is loaded or the image comes into view. Can be used to add unveil effects or to apply styles.
 * ``lazySizesConfig.expand`` (default: ``120``): The ``expand`` option expands the calculated visual viewport area in all directions, so that elements can be loaded before they are becoming visible. (Note: Reasonable values are between ``20`` and ``200``.) In case you have a lot of small images or you are using the LQIP pattern you can lower the value, in case you have larger images set it to a higher value. Also note, that lazySizes will dynamically shrink this value to ``0``, if the browser is currently downloading and expand it (by multiplying the ``expand`` option with ``3.5``) if the browser network is currently idling. This option can be overridden with the ``[data-expand]`` attribute.
 * ``lazySizesConfig.minSize`` (default: ``50``): For ``data-sizes="auto"`` feature. The minimum size of an image that is used to calculate the ``sizes`` attribute. In case it is under ``minSize`` the script traverses up the DOM tree until it finds a parent that is over ``minSize``.
 * ``lazySizesConfig.srcAttr`` (default: ``"data-src"``): The attribute, which should be transformed to ``src``.
@@ -203,12 +204,13 @@ window.lazySizesConfig.customMedia = {
 	<source
 		data-srcset="http://placehold.it/1400x600/e8117f/fff"
 		media="--large" />
-	<!--[if IE 9]></audio><![endif]-->
-	<img
-		src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
-		class="lazyload"
-		data-srcset="http://placehold.it/1800x900/117fe8/fff"
-		alt="image with artdirection" />
+	<source
+        data-srcset="http://placehold.it/1800x900/117fe8/fff" />
+    <!--[if IE 9]></audio><![endif]-->
+    <img
+        src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+        class="lazyload"
+        alt="image with artdirection" />
 </picture>
 ```
 * ``lazySizesConfig.init`` (default: ``true``): By default lazySizes initializes itself as soon as possible, to load inview assets as soon as possible. In the unlikely case you need to setup/configure something with a later script you can set this option to ``false`` and call ``lazySizes.init();`` later explicitly.
@@ -238,9 +240,9 @@ img.lazyload {
 </style>
 
 <script>
-window.lazySizesConfig = {
-    expand: 40
-};
+window.lazySizesConfig = window.lazySizesConfig || {};
+window.lazySizesConfig.expand = 20;
+
 
 $(document).on('lazybeforeunveil', (function(){
 	var onLoad = function(e){
@@ -262,7 +264,7 @@ $(document).on('lazybeforeunveil', (function(){
 </script>
 ```
 
-For CSS transition/animations or progress bars / spinners use the ``addClasses`` option. See also the [animate.html](http://afarkas.github.io/lazysizes/animate.html) and the [no-src.html](http://afarkas.github.io/lazysizes/no-src.html) examples:
+For CSS transition/animations or progress bars / spinners use the ``.lazyloading`` /  ``.lazyloaded`` classes. See also the [animate.html](http://afarkas.github.io/lazysizes/animate.html) and the [no-src.html](http://afarkas.github.io/lazysizes/no-src.html) examples:
 
 ```html 
 <style>
@@ -285,12 +287,6 @@ For CSS transition/animations or progress bars / spinners use the ``addClasses``
 }
 */
 </style>
-
-<script>
-window.lazySizesConfig = {
-	//,expand: 80 //default is 120
-};
-</script>
 
 <img
     src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
@@ -355,7 +351,7 @@ LazySizes initializes itself as soon as possible. In case you set ``lazySizesCon
 ```html
 <script>
 window.lazySizesConfig = window.lazySizesConfig || {};
-lazySizesConfig.init = false;
+window.lazySizesConfig.init = false;
 </script>
 
 <script src="lazysizes.js"></script>
@@ -389,6 +385,10 @@ It enables lazySizes to generate the best suitable image source based on an URL 
 
 In general the [RIaS plugin](plugins/rias) plugin combines the simplicity of the famous Imager.js solution with the future power of native responsive images implementations and the webcomponent-like working of lazySizes' ``.lazyload`` elements (self-initialization, self-configuration and self-destroying).
 
+###[respimg polyfill plugin](plugins/respimg)
+
+The respimg polyfill plugin is an extreme lightweight alternate polyfill for the most important subsets of responsive images.
+
 ###[OPTIMUMX plugin](plugins/optimumx)
 The ``srcset`` attribute with the *w* descriptor and ``sizes`` attribute automatically also includes high DPI images. But each image has a different optimal pixel density, which might be lower (for example 1.5x) than the pixel density of your device (2x or 3x). This information is unknown to the browser and therefore can't be optimized for. The [lazySizes optimumx extension](plugins/optimumx) gives you more control to trade between perceived quality vs. perceived performance.
 
@@ -405,7 +405,7 @@ The bgset plugin allows lazyload multiple background images with different resol
 The [print plugin](plugins/print) plugin enables lazySizes to unveil all elements as soon as the user starts to print. (Or set ``lazySizesConfig.preloadAfterLoad`` to ``true``).
 
 ###[progressive plugin](plugins/progressive)
-The [progressive plugin](plugins/progressive) plugin optimizes perceived performance by adding better support for rendering progressive JPGs/PNGs in conjunction with the LQIP pattern.
+The [progressive plugin](plugins/progressive) plugin adds better support for rendering progressive jpgs/pngs.
 
 ##Why lazysizes
 In the past I often struggled using lazy image loaders, because the "main check function" is called repeatedly and with a high frequency. Which makes it hard to fulfill two purposes runtime and memory efficiency. And looking into the source code of most so called lazy loaders often also unveils lazy developers...
@@ -430,7 +430,7 @@ Due to the fact, that it is designed to be invoked with a high frequency and the
 ```
 
 ##<a name="specify-dimensions"></a>Tip: Specifying image dimensions (minimizing reflows and avoiding page jumps)
-To minimize reflows, content jumping or unpredictable behavior with some other JS widgets (isotope, masonry, some sliders/carousels...) the width **and** the height of an image should be calculable by the browser before the image source itself is loaded. For "static" images this can done using either CSS or using the content attributes:
+To minimize reflows, content jumping or unpredictable behavior with some other JS widgets (isotope, masonry, some sliders/carousels...) the width **and** the height of an image should be calculable by the browser before the image source itself is loaded. For "static" images this can be done using either CSS or using the content attributes:
 
 ```html
 <img
@@ -455,6 +455,7 @@ For flexible responsive images the [CSS intrinsic ratio scaling technique](http:
     width: 100%;
     /* 16:9 = 56.25% = calc(9 / 16 * 100%) */
     padding-bottom: 42.86%;
+    content: "";
 }
 .ratio-container > * {
     position: absolute;
@@ -490,6 +491,7 @@ In case the exact ratio of your image is unknown you can also vary the intrinsic
     width: 100%;
     /* 16:9 = 56.25% = calc(9 / 16 * 100%) */
     padding-bottom: 56.25%;
+    content: "";
 }
 .ratio-container > * {
     position: absolute;
@@ -516,7 +518,7 @@ In case the exact ratio of your image is unknown you can also vary the intrinsic
 </div>
 ```
 
-**Note**: In case you use the "unknown intrinsic ratio pattern" the ``data-sizes="auto"`` feature should not be used.
+**Note**: In case you use the "unknown intrinsic ratio pattern" and the width of the image will not approximately match the width of its container the ``data-sizes="auto"`` feature should not be used.
 
 ##Tip: Where/How to include lazySizes
 While lazy loading is a great feature, it is important for users that crucial inview images are loaded as fast as possible. (Most users start to interact with a page after inview images are loaded.)

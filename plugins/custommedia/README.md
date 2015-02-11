@@ -44,4 +44,34 @@ window.lazySizesConfig.customMedia; // returns:
 */
 ```
 
+```scss
+/*
+ Simple Sass mixin to share a map of breakpoints between CSS and JS
+ Usage:
+ $breakpoints: (
+   --small: (max-width: 480px),
+   --medium: (max-width: 1024px),
+   --large: (min-width: 1280px)
+ );
+
+ html:after {
+ 	@include shareBreakpoints($breakpoints);
+ }
+*/
+@mixin shareBreakpoints($map , $cssprop: content){
+  $description: '';
+
+  @each $property, $value in $map
+   {
+    @if $description !=  '' {
+      $description: $description + ' | ';
+    }
+    $description: $description + $property +': '+ inspect($value);
+  }
+
+  display: none;
+  #{$cssprop}:  $description;
+}
+```
+
 

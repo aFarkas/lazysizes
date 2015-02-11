@@ -50,7 +50,7 @@
 
 			lazySizes.autoSizer.checkElems();
 
-			//elems = docElem.querySelector('picture > source[media][data-media][srcset] ~ img');
+			//elems = docElem.querySelector('source[media][data-media][srcset] ~ img');
 			//for(i = 0, len = elems.length; i < len; i++){
 			//
 			//}

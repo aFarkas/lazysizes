@@ -58,12 +58,11 @@
 	var updatePolyfill = function (el, full){
 		var polyfill;
 		if(!window.HTMLPictureElement){
-			if( ( polyfill = (window.picturefill || window.respimage) ) ){
+			if( ( polyfill = (window.picturefill || window.respimage || lazySizesConfig.polyfill) ) ){
 				polyfill({reevaluate: true, reparse: true, elements: [el]});
 			} else if(full && full.src){
 				el.src = full.src;
 			}
-
 		}
 	};
 
@@ -74,7 +73,7 @@
 	var getWidth = function(elem, parent){
 		var width = elem.offsetWidth;
 
-		while(width < lazySizesConfig.minSize && parent && parent != document.body && !elem._lazysizesWidth){
+		while(width < lazySizesConfig.minSize && parent && !elem._lazysizesWidth){
 			width =  parent.offsetWidth;
 			parent = parent.parentNode;
 		}
@@ -167,6 +166,8 @@
 			return visible;
 		};
 
+		var runs = 0;
+
 		var checkElements = function() {
 			var i, start, rect, autoLoadElem, loadedSomething, elemExpand, elemNegativeExpand, elemExpandVal, beforeExpandVal;
 
@@ -181,9 +182,11 @@
 
 				i = checkElementsIndex;
 
+				runs++;
+
 				for(; i < eLlen; i++, checkElementsIndex++){
 
-					if(!lazyloadElems[i]){break;}
+					if(!lazyloadElems[i] || lazyloadElems[i]._lazyHandle){continue;}
 
 					if(!supportScroll){unveilElement(lazyloadElems[i]);continue;}
 
@@ -279,6 +282,7 @@
 
 			if( (isAuto || !isCompleted) && isImg && curSrc && !elem.complete && !hasClass(elem, lazySizesConfig.errorClass)){return;}
 
+			elem._lazyHandle = true;
 			if(!(event = triggerEvent(elem, 'lazybeforeunveil', {force: !!force})).defaultPrevented){
 
 				if(sizes){
@@ -334,19 +338,21 @@
 					}
 				}
 
-				if(lazySizesConfig.addClasses){
-					addClass(elem, lazySizesConfig.loadingClass);
-					addRemoveLoadEvents(elem, switchLoadingClass, true);
-				}
+				addClass(elem, lazySizesConfig.loadingClass);
+				addRemoveLoadEvents(elem, switchLoadingClass, true);
 			}
 
 			setTimeout(function(){
+				if(elem._lazyHandle){
+					delete elem._lazyHandle;
+				}
+
 				if(sizes == 'auto'){
 					addClass(elem, lazySizesConfig.autosizesClass);
 				}
 
 				if(srcset || isPicture){
-					updatePolyfill(elem, {srcset: srcset, src: src});
+					updatePolyfill(elem, {src: src});
 				}
 
 				removeClass(elem, lazySizesConfig.lazyClass);
@@ -356,9 +362,7 @@
 					if(firesLoad){
 						resetPreloading(event);
 					}
-					if(lazySizesConfig.addClasses){
-						switchLoadingClass(event);
-					}
+					switchLoadingClass(event);
 				}
 				elem = null;
 			});
@@ -386,47 +390,44 @@
 			throttledCheckElements(true);
 		};
 
-		var init = function(){
-
-			lazyloadElems = document.getElementsByClassName(lazySizesConfig.lazyClass);
-			preloadElems = document.getElementsByClassName(lazySizesConfig.lazyClass+' '+lazySizesConfig.preloadClass);
-
-			if(lazySizesConfig.scroll) {
-				addEventListener('scroll', throttledCheckElements, true);
-			}
-
-			addEventListener('resize', function(){
-				isExpandCalculated = false;
-				throttledCheckElements();
-			}, true);
-
-
-			if(window.MutationObserver){
-				new MutationObserver( throttledCheckElements ).observe( docElem, {childList: true, subtree: true, attributes: true} );
-			} else {
-				docElem.addEventListener('DOMNodeInserted', throttledCheckElements, true);
-				docElem.addEventListener('DOMAttrModified', throttledCheckElements, true);
-				setInterval(throttledCheckElements, 3000);
-			}
-
-			addEventListener('hashchange', throttledCheckElements, true);
-
-			['transitionstart', 'transitionend', 'load', 'focus', 'mouseover', 'animationend', 'click'].forEach(function(evt){
-				document.addEventListener(evt, throttledCheckElements, true);
-			});
-
-			if(!(isCompleted = /d$|^c/.test(document.readyState))){
-				addEventListener('load', onload);
-				document.addEventListener('DOMContentLoaded', throttledCheckElements);
-			}
-
-			setTimeout(allowPreload, 666);
-			throttledCheckElements(true);
-			throttledCheckElements();
-		};
-
 		return {
-			_i: init,
+			_i: function(){
+
+				lazyloadElems = document.getElementsByClassName(lazySizesConfig.lazyClass);
+				preloadElems = document.getElementsByClassName(lazySizesConfig.lazyClass+' '+lazySizesConfig.preloadClass);
+
+				if(lazySizesConfig.scroll) {
+					addEventListener('scroll', throttledCheckElements, true);
+				}
+
+				addEventListener('resize', function(){
+					isExpandCalculated = false;
+					throttledCheckElements();
+				}, true);
+
+
+				if(window.MutationObserver){
+					new MutationObserver( throttledCheckElements ).observe( docElem, {childList: true, subtree: true, attributes: true} );
+				} else {
+					docElem.addEventListener('DOMNodeInserted', throttledCheckElements, true);
+					docElem.addEventListener('DOMAttrModified', throttledCheckElements, true);
+					setInterval(throttledCheckElements, 3000);
+				}
+
+				addEventListener('hashchange', throttledCheckElements, true);
+
+				['transitionstart', 'transitionend', 'load', 'focus', 'mouseover', 'animationend', 'click'].forEach(function(evt){
+					document.addEventListener(evt, throttledCheckElements, true);
+				});
+
+				if(!(isCompleted = /d$|^c/.test(document.readyState))){
+					addEventListener('load', onload);
+					document.addEventListener('DOMContentLoaded', throttledCheckElements);
+				}
+
+				setTimeout(allowPreload, 666);
+				throttledCheckElements(lazyloadElems.length > 0);
+			},
 			checkElems: throttledCheckElements,
 			unveil: unveilElement
 		};
@@ -481,13 +482,11 @@
 
 		var throttledUpdateElementsSizes = throttle(updateElementsSizes);
 
-		var init = function(){
-			autosizesElems = document.getElementsByClassName(lazySizesConfig.autosizesClass);
-			addEventListener('resize', throttledUpdateElementsSizes);
-		};
-
 		return {
-			_i: init,
+			_i: function(){
+				autosizesElems = document.getElementsByClassName(lazySizesConfig.autosizesClass);
+				addEventListener('resize', throttledUpdateElementsSizes);
+			},
 			checkElems: throttledUpdateElementsSizes,
 			updateElem: sizeElement
 		};
@@ -508,12 +507,12 @@
 			loadedClass: 'lazyloaded',
 			loadingClass: 'lazyloading',
 			preloadClass: 'lazypreload',
+			errorClass: 'lazyerror',
 			scroll: true,
 			autosizesClass: 'lazyautosizes',
 			srcAttr: 'data-src',
 			srcsetAttr: 'data-srcset',
 			sizesAttr: 'data-sizes',
-			addClasses: true,
 			//preloadAfterLoad: false,
 			minSize: 50,
 			customMedia: {},

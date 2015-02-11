@@ -33,6 +33,12 @@
 			window.lazySizesConfig = config;
 		}
 
+		if(!config.supportsType){
+			config.supportsType = function(type/*, elem*/){
+				return !type;
+			};
+		}
+
 		if(!config.rias){
 			config.rias = {};
 		}
@@ -252,7 +258,7 @@
 			var candidate;
 			var elem = e.target;
 
-			if(window.HTMLPictureElement || window.respimage || window.picturefill){
+			if(window.HTMLPictureElement || window.respimage || window.picturefill || lazySizesConfig.polyfill){
 				document.removeEventListener('lazybeforesizes', polyfill);
 				return;
 			}
