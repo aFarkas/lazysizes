@@ -31,6 +31,8 @@
 			return (Math.abs(curr.w - ar.w) < Math.abs(prev.w - ar.w) ? curr : prev);
 		};
 
+
+
 		var parseWsrcset = (function(){
 			var candidates;
 			var regWCandidates = /(([^,\s].[^\s]+)\s+(\d+)w)/g;
@@ -64,20 +66,47 @@
 			};
 		})();
 
-		var createSrcset = function(elem, testPicture){
+		var runMatchMedia = function(){
+			if(runMatchMedia.init){return;}
+
+			runMatchMedia.init = true;
+			addEventListener('resize', (function(){
+				var timer;
+				var matchMediaElems = document.getElementsByClassName('lazymatchmedia');
+				var run = function(){
+					var i, len;
+					for(i = 0, len = matchMediaElems.length; i < len; i++){
+						polyfill(matchMediaElems[i]);
+					}
+				};
+
+				return function(){
+					clearTimeout(timer);
+					timer = setTimeout(run, 66);
+				};
+			})());
+		};
+
+		var createSrcset = function(elem, isImage){
 			var parsedSet;
 			var srcSet = elem.getAttribute('srcset') || elem.getAttribute(config.srcsetAttr);
 
-			if(!srcSet && testPicture){
+			if(!srcSet && isImage){
 				srcSet = elem.getAttribute('src') || elem.getAttribute(config.srcAttr);
 			}
 			if(!elem._lazypolyfill || elem._lazypolyfill._set != srcSet){
 
-
 				parsedSet = parseWsrcset( srcSet || '' );
-				if(testPicture && elem.parentNode){
+				if(isImage && elem.parentNode){
 					parsedSet.isPicture = elem.parentNode.nodeName.toUpperCase() == 'PICTURE';
+
+					if(parsedSet.isPicture && isImage && !lazySizes.hC(elem, lazySizes.cfg.autosizesClass) && window.matchMedia){
+						lazySizes.aC(elem, 'lazymatchmedia');
+						runMatchMedia();
+					}
 				}
+
+
 				parsedSet._set = srcSet;
 				Object.defineProperty(elem, '_lazypolyfill', {
 					value: parsedSet,
@@ -101,23 +130,25 @@
 		};
 
 		var getCandidate = function(elem){
-			var sources, i, len, media, srces, src, width;
+			var sources, i, len, media, source, srces, src, width;
 
-			createSrcset(elem, true);
-			srces = elem._lazypolyfill;
+			source = elem;
+			createSrcset(source, true);
+			srces = source._lazypolyfill;
 
 			if(srces.isPicture){
 				for(i = 0, sources = elem.parentNode.getElementsByTagName('source'), len = sources.length; i < len; i++){
 					if(config.supportsType(sources[i].getAttribute('type'), elem) && ( !(media = sources[i].getAttribute('media')) || (window.matchMedia && ((matchMedia(media) || {}).matches)))){
-						createSrcset(sources[i]);
-						srces = sources[i]._lazypolyfill;
+						source = sources[i];
+						createSrcset(source);
+						srces = source._lazypolyfill;
 						break;
 					}
 				}
 			}
 
 			if(srces.length > 1){
-				width = Math.round( parseInt(elem.getAttribute('sizes'), 10) * getX(elem)) || lazySizes.getWidth(elem, elem.parentNode);
+				width = Math.round( parseInt(source.getAttribute('sizes'), 10) * getX(elem)) || lazySizes.getWidth(elem, elem.parentNode);
 				if(!srces.w || srces.w < width){
 					srces.w = width;
 				}
