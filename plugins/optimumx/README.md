@@ -47,7 +47,7 @@ In case you want to use a CDN you can use the combohandler service provided by j
 <script src="http://cdn.jsdelivr.net/g/lazysizes(lazysizes.min.js+plugins/optimumx/ls.optimumx.min.js)" async=""></script>
 ```
 
-**Note**: For full cross-browser support either a [responsive images polyfill like respimage or picturefill](https://github.com/aFarkas/respimage) or the [neat Responsive Images as a Service extension (RIaS)](../rias) needs to be used.
+**Note**: For full cross-browser support either a [responsive images polyfill like respimage or picturefill](https://github.com/aFarkas/respimage) or the [neat Responsive Images as a Service extension (RIaS)](../rias) or the [extreme lightweight alternate mini respimg polyfill extension](../respimg) needs to be used.
 
 ```html
 <!--  RIaS example: -->
