@@ -92,17 +92,23 @@
 			var srcSet = elem.getAttribute('srcset') || elem.getAttribute(config.srcsetAttr);
 
 			if(!srcSet && isImage){
-				srcSet = elem.getAttribute('src') || elem.getAttribute(config.srcAttr);
+				srcSet = !elem._lazypolyfill ?
+					(elem.getAttribute('src') || elem.getAttribute(config.srcAttr)) :
+					elem._lazypolyfill._set
+				;
 			}
+
 			if(!elem._lazypolyfill || elem._lazypolyfill._set != srcSet){
 
 				parsedSet = parseWsrcset( srcSet || '' );
 				if(isImage && elem.parentNode){
 					parsedSet.isPicture = elem.parentNode.nodeName.toUpperCase() == 'PICTURE';
 
-					if(parsedSet.isPicture && isImage && !lazySizes.hC(elem, lazySizes.cfg.autosizesClass) && window.matchMedia){
+					if(parsedSet.isPicture && !lazySizes.hC(elem, config.autosizesClass)){
 						lazySizes.aC(elem, 'lazymatchmedia');
-						runMatchMedia();
+						if(window.matchMedia){
+							runMatchMedia();
+						}
 					}
 				}
 

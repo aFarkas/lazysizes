@@ -109,7 +109,7 @@
 	};
 
 	var loader = (function(){
-		var lazyloadElems, preloadElems, isPreloadAllowed, isCompleted, resetPreloadingTimer;
+		var lazyloadElems, preloadElems, isCompleted, resetPreloadingTimer;
 
 		var eLvW, elvH, eLtop, eLleft, eLright, eLbottom;
 
@@ -166,14 +166,12 @@
 			return visible;
 		};
 
-		var runs = 0;
-
 		var checkElements = function() {
 			var i, start, rect, autoLoadElem, loadedSomething, elemExpand, elemNegativeExpand, elemExpandVal, beforeExpandVal;
 
 			var eLlen = lazyloadElems.length;
 
-			if(eLlen){
+			if(eLlen && loader.m){
 				start = Date.now();
 
 				if(!isExpandCalculated){
@@ -182,11 +180,9 @@
 
 				i = checkElementsIndex;
 
-				runs++;
-
 				for(; i < eLlen; i++, checkElementsIndex++){
 
-					if(!lazyloadElems[i] || lazyloadElems[i]._lazyHandle){continue;}
+					if(!lazyloadElems[i] || lazyloadElems[i]._lazyRace){continue;}
 
 					if(!supportScroll){unveilElement(lazyloadElems[i]);continue;}
 
@@ -196,7 +192,7 @@
 
 					if(isLoading > 6 && (!elemExpandVal || ('src' in lazyloadElems[i]))){continue;}
 
-					if(isLoading > 3 && elemExpand > shrinkExpand){
+					if(elemExpand > shrinkExpand && (loader.m < 2 || isLoading > 3)){
 						elemExpand = shrinkExpand;
 					}
 
@@ -240,11 +236,11 @@
 
 				lowRuns++;
 
-				if(currentExpand < preloadExpand && isLoading < 2 && lowRuns > 4){
+				if(currentExpand < preloadExpand && isLoading < 2 && lowRuns > 4 && loader.m > 2){
 					currentExpand = preloadExpand;
 					lowRuns = 0;
 					throttledCheckElements();
-				} else if(currentExpand != defaultExpand){
+				} else if(currentExpand != defaultExpand && loader.m > 1){
 					currentExpand = defaultExpand;
 				}
 
@@ -282,7 +278,7 @@
 
 			if( (isAuto || !isCompleted) && isImg && curSrc && !elem.complete && !hasClass(elem, lazySizesConfig.errorClass)){return;}
 
-			elem._lazyHandle = true;
+			elem._lazyRace = true;
 			if(!(event = triggerEvent(elem, 'lazybeforeunveil', {force: !!force})).defaultPrevented){
 
 				if(sizes){
@@ -343,8 +339,8 @@
 			}
 
 			setTimeout(function(){
-				if(elem._lazyHandle){
-					delete elem._lazyHandle;
+				if(elem._lazyRace){
+					delete elem._lazyRace;
 				}
 
 				if(sizes == 'auto'){
@@ -370,7 +366,7 @@
 
 		var calcExpand = function(){
 
-			if(isPreloadAllowed && !isExpandCalculated){
+			if(!isExpandCalculated){
 				defaultExpand = Math.max( Math.min(lazySizesConfig.expand || lazySizesConfig.threshold || 120, 300), 9 );
 				preloadExpand = defaultExpand * 4;
 			}
@@ -379,7 +375,7 @@
 		};
 
 		var allowPreload = function(){
-			isPreloadAllowed = true;
+			loader.m = 3;
 			isExpandCalculated = false;
 		};
 
@@ -428,6 +424,7 @@
 				setTimeout(allowPreload, 666);
 				throttledCheckElements(lazyloadElems.length > 0);
 			},
+			m: 1,
 			checkElems: throttledCheckElements,
 			unveil: unveilElement
 		};
