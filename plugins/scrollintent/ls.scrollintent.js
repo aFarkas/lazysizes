@@ -31,11 +31,11 @@
 				var nLeft = Math.abs(left - (checkElem.scrollLeft || checkElem.pageXOffset || 0));
 				checkElem = null;
 
-				if(nTop < 300 && nLeft < 300){
+				if(nTop < 400 && nLeft < 400){
 					if(lazySizes.loader.m < 2){
 						lazySizes.loader.m = 2;
 					}
-					if(nTop < 150 && nLeft < 150){
+					if(nTop < 180 && nLeft < 180){
 						update();
 					}
 				}

@@ -109,7 +109,7 @@
 	};
 
 	var loader = (function(){
-		var lazyloadElems, preloadElems, isCompleted, resetPreloadingTimer;
+		var isExpandCalculated, lazyloadElems, preloadElems, isCompleted, resetPreloadingTimer;
 
 		var eLvW, elvH, eLtop, eLleft, eLright, eLbottom;
 
@@ -124,7 +124,6 @@
 		var defaultExpand = shrinkExpand;
 		var preloadExpand = shrinkExpand;
 		var currentExpand = shrinkExpand;
-		var isExpandCalculated = true;
 		var lowRuns = 0;
 
 		var isLoading = 0;
@@ -210,7 +209,7 @@
 						(eLright = rect.right) >= elemNegativeExpand &&
 						(eLleft = rect.left) <= eLvW &&
 						(eLbottom || eLright || eLleft || eLtop) &&
-						((isCompleted && currentExpand == defaultExpand && isLoading < 3 && lowRuns < 4 && !elemExpandVal) || isNestedVisible(lazyloadElems[i], elemExpand))){
+						((isCompleted && currentExpand < preloadExpand && isLoading < 3 && lowRuns < 4 && !elemExpandVal) || isNestedVisible(lazyloadElems[i], elemExpand))){
 						checkElementsIndex--;
 						start += 2;
 						unveilElement(lazyloadElems[i]);
@@ -236,12 +235,14 @@
 
 				lowRuns++;
 
-				if(currentExpand < preloadExpand && isLoading < 2 && lowRuns > 4 && loader.m > 2){
+				if(currentExpand < preloadExpand && isLoading < 2 && lowRuns > 5 && loader.m > 2){
 					currentExpand = preloadExpand;
 					lowRuns = 0;
 					throttledCheckElements();
-				} else if(currentExpand != defaultExpand && loader.m > 1){
+				} else if(currentExpand != defaultExpand && loader.m > 1 && lowRuns > 4){
 					currentExpand = defaultExpand;
+				} else {
+					currentExpand = shrinkExpand;
 				}
 
 				if(autoLoadElem && !loadedSomething){
@@ -376,7 +377,6 @@
 
 		var allowPreload = function(){
 			loader.m = 3;
-			isExpandCalculated = false;
 		};
 
 		var onload = function(){

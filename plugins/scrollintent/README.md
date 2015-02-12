@@ -6,5 +6,5 @@ It is recommended to set the ``expand`` option to a higher value to improve the 
 
 This extension solves mainly two problems:
 
-- While lazySizes JS function already does work jank-free, decoding and painting images is a performance heavy task, which is mostly noticeable, while the user scrolls.
+- While lazySizes functions already do work jank-free, decoding and painting images is a performance heavy task, which is mostly noticeable, while the user scrolls.
 - If the user scrolls fast from top to bottom, it is not useful to load the assets in the middle (In case this is an important issue to you, you can also set the ``scrollLoadMode`` option to ``0``)
