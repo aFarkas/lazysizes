@@ -401,6 +401,9 @@ The [include plugin](plugins/include) plugin enables lazySizes to lazyload conte
 ###[bgset plugin](plugins/bgset)
 The bgset plugin allows lazyload multiple background images with different resolutions/sizes (responsive background images). In case you only need one image use the unveilhooks extension.
 
+###[scrollintent plugin](plugins/scrollintent)
+Normally lazySizes uses a throttled scroll event to check for ``.lazyload`` elements. The scrollintent plugin changes this behavior to only check for ``.lazyload`` resources if either the user scrolling is slow or the user has stopped scrolling.
+
 ###[print plugin](plugins/print)
 The [print plugin](plugins/print) plugin enables lazySizes to unveil all elements as soon as the user starts to print. (Or set ``lazySizesConfig.preloadAfterLoad`` to ``true``).
 
