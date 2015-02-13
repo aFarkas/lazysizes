@@ -4,9 +4,10 @@
 (function(window, document){
 	/*jshint eqnull:true */
 	'use strict';
-	var config;
+	var config, index;
 	if(window.addEventListener){
 		config = (window.lazySizes && lazySizes.cfg) || window.lazySizesConfig;
+		index = 0;
 		if(!config){
 			config = {};
 			window.lazySizesConfig = config;
@@ -42,6 +43,7 @@
 			};
 			var afterScroll = function(){
 				lazySizes.loader.m = 3;
+				index = 0;
 				update();
 				clearTimeout(afterScrollTimer);
 			};
@@ -58,6 +60,14 @@
 				clearTimeout(afterScrollTimer);
 				afterScrollTimer = setTimeout(afterScroll, 99);
 				lazySizes.loader.m = config.scrollLoadMode;
+
+				if(index === 0){
+					lazySizes.loader.checkElems();
+				} else if(index > 40){
+					index = -1;
+				}
+
+				index++;
 
 				if(!checkElem){
 					checkElem = elem;
