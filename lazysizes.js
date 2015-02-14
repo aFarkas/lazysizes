@@ -23,7 +23,7 @@
 
 	var addClass = function(ele, cls) {
 		if (!hasClass(ele, cls)){
-			ele.className += " "+cls;
+			ele.className += ' '+cls;
 		}
 	};
 
@@ -151,7 +151,7 @@
 			eLright += elemExpand;
 
 			while(visible && (parent = parent.offsetParent)){
-				visible = (isCompleted && isLoading < 4) || ((getCSS(parent, 'opacity') || 1) > 0);
+				visible = (isCompleted && isLoading < 2) || ((getCSS(parent, 'opacity') || 1) > 0);
 
 				if(visible && getCSS(parent, 'overflow') != 'visible'){
 					outerRect = parent.getBoundingClientRect();
@@ -368,7 +368,7 @@
 		var calcExpand = function(){
 
 			if(!isExpandCalculated){
-				defaultExpand = Math.max( Math.min(lazySizesConfig.expand || lazySizesConfig.threshold || 120, 300), 9 );
+				defaultExpand = Math.max( Math.min(lazySizesConfig.expand || 130, 300), 9 );
 				preloadExpand = defaultExpand * 4;
 			}
 
@@ -421,7 +421,7 @@
 					document.addEventListener('DOMContentLoaded', throttledCheckElements);
 				}
 
-				setTimeout(allowPreload, 666);
+				setTimeout(allowPreload, 777);
 				throttledCheckElements(lazyloadElems.length > 0);
 			},
 			m: 1,
@@ -532,8 +532,6 @@
 			}
 		});
 	})();
-
-
 
 	return {
 		cfg: lazySizesConfig,

@@ -15,7 +15,7 @@
 		};
 	}
 
-	if(window.picturefill || window.respimage || config.polyfill || window.HTMLPictureElement){return;}
+	if(window.picturefill || window.respimage || config.polyfill){return;}
 
 	config.polyfill = function(options){
 		var i, len;
@@ -30,8 +30,6 @@
 		var reduceNearest = function (prev, curr, initial, ar) {
 			return (Math.abs(curr.w - ar.w) < Math.abs(prev.w - ar.w) ? curr : prev);
 		};
-
-
 
 		var parseWsrcset = (function(){
 			var candidates;
@@ -112,7 +110,6 @@
 					}
 				}
 
-
 				parsedSet._set = srcSet;
 				Object.defineProperty(elem, '_lazypolyfill', {
 					value: parsedSet,
@@ -167,7 +164,7 @@
 			return src;
 		};
 
-		return function(elem){
+		var p = function(elem){
 			var candidate = getCandidate(elem);
 
 			if(candidate && candidate.u && elem._lazypolyfill.cur != candidate.u){
@@ -176,7 +173,13 @@
 				elem.setAttribute('src', candidate.u);
 			}
 		};
+
+		p.parse = parseWsrcset;
+
+		return p;
 	})();
+
+	if(window.HTMLPictureElement){return;}
 
 	if(config.loadedClass && config.loadingClass){
 		(function(){
