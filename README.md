@@ -398,7 +398,7 @@ The [unveilhooks plugin](plugins/unveilhooks) plugin enables lazySizes to lazylo
 ###[include plugin](plugins/include)
 The [include plugin](plugins/include) plugin enables lazySizes to lazyload content, styles or AMD modules either simply postboned or conditionally (for example matching certain media queries). This extension also heavily simplifies architecture of conditional, dynamically changing responsive behavior and has an extreme great scalability.
 
-###[bgset plugin](plugins/bgset)
+###[bgset plugin - lazy responsive background-image](plugins/bgset)
 The bgset plugin allows lazyload multiple background images with different resolutions/sizes (responsive background images). In case you only need one image use the unveilhooks extension.
 
 ###[scrollintent plugin](plugins/scrollintent)

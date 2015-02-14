@@ -1,6 +1,6 @@
-#lazysizes bgset extension
+#lazysizes bgset extension - responsive background images
 
-This simple and small plugin allows you to define multiple background images with a width descriptor, similar to how ``img[srcset]`` works as also art directed images using media queries.
+This simple and small plugin allows you to define multiple background images with a width descriptor, similar to how ``img[srcset]`` works as also art directed images using media queries, similar to how ``picture`` works.
 
 The extension will then load the best image size for the current viewport and device. In case the browser does not support responsive images natively either picturefill, respimage or the [respimg polyfill plugin](../respimg) has to be used:
 
@@ -37,6 +37,8 @@ window.lazySizesConfig.customMedia = {
 </script>
 
 <div class="lazyload" data-bgset="image-200.jpg [--small] | image-300.jpg [--medium] | image-400.jpg"></div>
+<!-- or without customMedia options: -->
+<div class="lazyload" data-bgset="image-200.jpg [(max-width: 480px)] | image-300.jpg [(max-width: 700px)] | image-400.jpg"></div>
 ```
 
 Of course also resolution switching and art direction can be combined:
