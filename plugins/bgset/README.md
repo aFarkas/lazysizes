@@ -2,7 +2,7 @@
 
 This simple and small plugin allows you to define multiple background images with a width descriptor, similar to how ``img[srcset]`` works as also art directed images using media queries.
 
-The extension will then load the best image size for the current viewport and device. In case the browser does not support responsive images natively either picturefill, respimage or the [respimg polyfill plugin](../plugins/respimg) has to be used:
+The extension will then load the best image size for the current viewport and device. In case the browser does not support responsive images natively either picturefill, respimage or the [respimg polyfill plugin](../respimg) has to be used:
 
 ```html
 <script>
