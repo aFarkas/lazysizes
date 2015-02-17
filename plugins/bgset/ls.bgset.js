@@ -16,6 +16,20 @@
 	var createPicture = function(sets, elem, img){
 		var picture = document.createElement('picture');
 		var sizes = elem.getAttribute(lazySizesConfig.sizesAttr);
+		var optimumx = elem.getAttribute('data-optimumx');
+
+		if(elem._lazybgset && elem._lazybgset.parentNode == elem){
+			elem.removeChild(elem._lazybgset);
+		}
+
+		Object.defineProperty(img, '_lazybgset', {
+			value: elem,
+			writable: true
+		});
+		Object.defineProperty(elem, '_lazybgset', {
+			value: picture,
+			writable: true
+		});
 
 		sets = sets.split(regSplitSet);
 
@@ -44,56 +58,50 @@
 
 		if(sizes){
 			img.setAttribute(lazySizesConfig.sizesAttr, sizes);
-			if(sizes == 'auto'){
-				Object.defineProperty(img, '_lazybgset', {
-					value: elem,
-					writable: true
-				});
-			}
+			elem.removeAttribute(lazySizesConfig.sizesAttr);
+		}
+		if(optimumx){
+			img.setAttribute('data-optimumx', optimumx);
 		}
 
 		picture.appendChild(img);
 
 		elem.appendChild(picture);
-
-		elem.removeAttribute(lazySizesConfig.sizesAttr);
-
 	};
 
 	addEventListener('lazybeforeunveil', function(e){
-		var set, image, load, init, elem;
+		var set, image, elem;
 
 		if(e.defaultPrevented || !(set = e.target.getAttribute('data-bgset'))){return;}
 
 		elem = e.target;
 		image = document.createElement('img');
 
-		load = function(evt){
-			var bg = evt.type == 'load' ? image.currentSrc || image.src : false;
-			if(bg){
-				elem.style.backgroundImage = 'url('+ bg +')';
-			}
-
-			if(!init){
-				lazySizes.fire(elem, '_lazyloaded', null, false, true);
-				if(e && e.details){
-					e.details.firesLoad = false;
-				}
-				init = true;
-				e = null;
-			}
-		};
-
+		image._lazybgsetLoading = true;
 		e.details.firesLoad = true;
-
-		image.addEventListener('load', load);
-		image.addEventListener('error', load);
 
 		createPicture(set, elem, image);
 
 		lazySizes.loader.unveil(image);
 		lazySizes.fire(image, '_lazyloaded', {}, true, true);
 	});
+
+	document.addEventListener('load', function(e){
+		if(!e.target._lazybgset){return;}
+
+		var image = e.target;
+		var elem = image._lazybgset;
+		var bg = image.currentSrc || image.src;
+
+		if(bg){
+			elem.style.backgroundImage = 'url('+ bg +')';
+		}
+
+		if(image._lazybgsetLoading){
+			lazySizes.fire(elem, '_lazyloaded', {}, false, true);
+			delete image._lazybgsetLoading;
+		}
+	}, true);
 
 	addEventListener('lazybeforesizes', function(e){
 		if(e.defaultPrevented || !e.target._lazybgset){return;}
