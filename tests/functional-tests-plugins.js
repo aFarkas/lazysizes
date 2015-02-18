@@ -442,8 +442,6 @@ $.extend(window.lazyTests, {
 		this.promise.always(function($){
 			var $image;
 
-
-
 			$image = $('<img data-sizes="auto" style="width: 100%;" data-widths="[900, 1200]" class="lazyload" />')
 				.attr('data-src', 'data:image-{width}')
 				.appendTo('body')

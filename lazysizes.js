@@ -368,7 +368,7 @@
 		var calcExpand = function(){
 
 			if(!isExpandCalculated){
-				defaultExpand = Math.max( Math.min(lazySizesConfig.expand || 130, 300), 9 );
+				defaultExpand = Math.max( Math.min(lazySizesConfig.expand || 140, 300), 9 );
 				preloadExpand = defaultExpand * 4;
 			}
 
