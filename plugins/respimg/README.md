@@ -14,7 +14,7 @@ This plugin supports both art directed responsive images using the ``picture`` e
 - If the ``sizes`` attribute is used either the ``data-sizes="auto"`` feature has to be used or the ``sizes`` value consists of just one source size value with the CSS *px* unit.
 - If picture is used the ``img`` element should not have a ``srcset``/``data-srcset`` attribute, instead the last ``source`` element should/can be used without a ``media`` and ``type`` attribute.
 - The use of the ``source[type]`` attribute is not automatically supported, but can be manually added by overriding the ``lazySizesConfig.supportsType`` option callback function.
-- The use of the ``source[media]`` is supported for all browsers, which [do support ``matchMedia``](http://caniuse.com/#search=matchMedia). To add full support for IE9 and other legacy browsers a [``window.matchMedia`` polyfill](https://github.com/paulirish/matchMedia.js/) can be used.
+- The use of the ``source[media]`` is supported for all browsers, which [do support ``matchMedia``](http://caniuse.com/#search=matchMedia). To add full support for IE9 and other legacy browsers a [``window.matchMedia`` polyfill](https://github.com/paulirish/matchMedia.js/) or ``Modernizr.mq`` (Modernizr Media Queries) can be used.
 
 
 ###What is *fully* supported

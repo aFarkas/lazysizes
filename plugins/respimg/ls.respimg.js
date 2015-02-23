@@ -104,7 +104,7 @@
 
 					if(parsedSet.isPicture){
 						lazySizes.aC(elem, 'lazymatchmedia');
-						if(window.matchMedia){
+						if(window.matchMedia || (window.Modernizr && Modernizr.mq)){
 							runMatchMedia();
 						}
 					}
@@ -132,6 +132,20 @@
 			return x;
 		};
 
+		var matchesMedia = function(media){
+			if(window.matchMedia){
+				matchesMedia = function(media){
+					return !media || (matchMedia(media) || {}).matches;
+				};
+			} else if(window.Modernizr && Modernizr.mq){
+				return !media || Modernizr.mq(media);
+			} else {
+				return !media;
+			}
+
+			return matchesMedia(media);
+		};
+
 		var getCandidate = function(elem){
 			var sources, i, len, media, source, srces, src, width;
 
@@ -141,7 +155,7 @@
 
 			if(srces.isPicture){
 				for(i = 0, sources = elem.parentNode.getElementsByTagName('source'), len = sources.length; i < len; i++){
-					if(config.supportsType(sources[i].getAttribute('type'), elem) && ( !(media = sources[i].getAttribute('media')) || (window.matchMedia && ((matchMedia(media) || {}).matches)))){
+					if( config.supportsType(sources[i].getAttribute('type'), elem) && matchesMedia( sources[i].getAttribute('media')) ){
 						source = sources[i];
 						createSrcset(source);
 						srces = source._lazypolyfill;

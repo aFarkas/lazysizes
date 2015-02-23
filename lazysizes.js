@@ -381,6 +381,7 @@
 
 		var onload = function(){
 			isCompleted = true;
+			lowRuns += 6;
 
 			allowPreload();
 			throttledCheckElements(true);
