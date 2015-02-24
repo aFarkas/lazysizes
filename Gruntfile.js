@@ -53,6 +53,9 @@
 					}
 				}
 			},
+			qunit: {
+				all: ['tests/*.html']
+			},
 			watch: {
 				gruntfile: {
 					files: [ "Gruntfile.js", "lazysizes.js" ],
@@ -92,6 +95,7 @@
 		grunt.loadNpmTasks('grunt-bytesize');
 		grunt.loadNpmTasks('grunt-max-filesize');
 		grunt.loadNpmTasks('grunt-plato');
+		grunt.loadNpmTasks('grunt-contrib-qunit');
 
 
 		// Default task.

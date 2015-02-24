@@ -42,7 +42,7 @@
 3. **Separation of concerns**: For responsive image support it adds an automatic ``sizes`` calculation as also alias names for media queries feature. There is also no JS change needed if you add a scrollable container with CSS (overflow: auto) or create a mega menu containing images.
 4. **Performance**: It's based on high efficient and best practice code (runtime **and** memory) to work jank-free at 60fps. Can be used with thousands of images/iframes on CSS and JS heavy pages/webapps.
 5. **Extendable**: It provides JS and CSS hooks to extend lazySizes with any kind of lazy loading, lazy instantiation, inview callbacks or effects (see also the [available plugins/snippets](#plugins)).
-6. **Intelligent prefetch**: lazySizes prefetches near the view assets, only while the browser network is idling. (see also ``expand`` option)
+6. **Intelligent prefetch**: lazySizes prefetches/preloads near the view assets to improve user experience, but only while the browser network is idling and does not download inview assets already. (see also ``expand`` option)
 7. **Lightweight, but mature solution**: lazySizes has the right balance between a lightweight and a reliable and fast solution
 
 ##[Demo with code examples](http://afarkas.github.io/lazysizes/#examples)
@@ -387,7 +387,7 @@ In general the [RIaS plugin](plugins/rias) plugin combines the simplicity of the
 
 ###[respimg polyfill plugin](plugins/respimg)
 
-The respimg polyfill plugin is an extreme lightweight alternate polyfill for the most important subsets of responsive images.
+The respimg polyfill plugin is an extreme lightweight alternate polyfill for the most important subsets of responsive images (srcset and picture).
 
 ###[OPTIMUMX plugin](plugins/optimumx)
 The ``srcset`` attribute with the *w* descriptor and ``sizes`` attribute automatically also includes high DPI images. But each image has a different optimal pixel density, which might be lower (for example 1.5x) than the pixel density of your device (2x or 3x). This information is unknown to the browser and therefore can't be optimized for. The [lazySizes optimumx extension](plugins/optimumx) gives you more control to trade between perceived quality vs. perceived performance.
@@ -402,7 +402,7 @@ The [include plugin](plugins/include) plugin enables lazySizes to lazyload conte
 The bgset plugin allows lazyload multiple background images with different resolutions/sizes (responsive background images). In case you only need one image use the unveilhooks extension.
 
 ###[scrollintent plugin](plugins/scrollintent)
-Normally lazySizes uses a throttled scroll event to check for ``.lazyload`` elements. The scrollintent plugin changes this behavior to only check for ``.lazyload`` resources if either the user scrolling is slow or the user has stopped scrolling.
+The [scrollintent plugin](plugins/scrollintent) heavily improves runtime performance, while the user is scrolling. Normally lazySizes uses a throttled scroll event to check for ``.lazyload`` elements. The scrollintent plugin changes this behavior to only check for ``.lazyload`` resources if either the user scrolling is slow or the user has stopped scrolling.
 
 ###[print plugin](plugins/print)
 The [print plugin](plugins/print) plugin enables lazySizes to unveil all elements as soon as the user starts to print. (Or set ``lazySizesConfig.preloadAfterLoad`` to ``true``).
