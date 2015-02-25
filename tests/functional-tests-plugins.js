@@ -24,7 +24,9 @@ $.extend(window.lazyTests, {
 				var nowSrc = window.HTMLPictureElement || !haspolyfill ?
 					'' : 'data:lazysource150';
 				assert.equal($source.attr('srcset'), 'data:lazysource100 100w, data:lazysource150 150w');
-				assert.equal($image.attr('srcset') || $image.attr('data-risrcset') || $image.attr('data-pfsrcset'), 'data:lazyimg100 100w, data:lazyimg150 150w');
+				if(!window.bustedSrcset || !frameWindow.lazySizes.cfg.polyfill){
+					assert.equal($image.attr('srcset') || $image.attr('data-risrcset') || $image.attr('data-pfsrcset'), 'data:lazyimg100 100w, data:lazyimg150 150w');
+				}
 				assert.equal($image.prop('src'), nowSrc);
 			};
 			var endTest = function(){
@@ -32,7 +34,9 @@ $.extend(window.lazyTests, {
 				var nowSrc = window.HTMLPictureElement || !haspolyfill ?
 					'' : 'data:lazysource280';
 				assert.equal($source.attr('srcset'), 'data:lazysource100 100w, data:lazysource150 150w, data:lazysource280 280w');
-				assert.equal($image.attr('srcset') || $image.attr('data-risrcset') || $image.attr('data-pfsrcset'), 'data:lazyimg100 100w, data:lazyimg150 150w, data:lazyimg200 200w');
+				if(!window.bustedSrcset || !frameWindow.lazySizes.cfg.polyfill){
+					assert.equal($image.attr('srcset') || $image.attr('data-risrcset') || $image.attr('data-pfsrcset'), 'data:lazyimg100 100w, data:lazyimg150 150w, data:lazyimg200 200w');
+				}
 				assert.equal($image.prop('src'), nowSrc);
 			};
 			var viewportTests = [
@@ -40,10 +44,15 @@ $.extend(window.lazyTests, {
 				['200', initialTest],
 				['500', endTest]
 			];
+
 			var run = function(){
 				if(viewportTests.length){
 					viewport = viewportTests.shift();
 					$iframe.css('width', viewport[0]);
+
+					if(viewport[0] == '500'){
+						window.stopTest = true;
+					}
 				} else {
 					done();
 				}

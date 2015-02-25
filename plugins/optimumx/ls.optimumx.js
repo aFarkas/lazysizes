@@ -143,11 +143,6 @@
 				lazyData.cSrcset.join(', ');
 				elem.setAttribute(attr, lazyData.cSrcset.join(', '));
 				lazyData.dirty = true;
-
-				if(lazyData.cSrcset.length >= lazyData.cands.length){
-					elem.removeAttribute('data-optimumx');
-					elem.removeAttribute('data-maxdpr');
-				}
 			}
 		};
 

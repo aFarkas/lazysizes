@@ -73,7 +73,7 @@ Add the ``class`` ``lazyload`` to all ``img`` and ``iframe`` elements, which sho
     responsive-image3.jpg 900w" class="lazyload" />
 ```
 
-**Important: How ``sizes`` is calculated**: The automatic sizes calculation takes the width of the image. If it is below ``50`` (can be configured through the ``minSize`` option), lazySizes traverses up the DOM tree until it finds a parent which is over ``50`` and uses this number. Often the following general CSS rule might help: ``img[data-sizes="auto"] { display: block; }``. (see also [specifying image/iframe dimensions](#specify-dimensions)
+**Important: How ``sizes`` is calculated**: The automatic sizes calculation takes the width of the image. If it is below ``50`` (can be configured through the ``minSize`` option), lazySizes traverses up the DOM tree until it finds a parent which is over ``50`` and uses this number. Often the following general CSS rule might help: ``img[data-sizes="auto"] { display: block; }``. (see also [specifying image/iframe dimensions](#specify-dimensions))
 
 ##Recommended markup patterns
 For some image bots (search engines and social networks), legacy browsers (IE8) or JS disabled browsers, it is important to serve a usable ``src`` attribute:

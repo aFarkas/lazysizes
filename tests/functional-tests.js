@@ -1,4 +1,3 @@
-window.isTrident = /rident/.test(navigator.userAgent);
 window.lazyTests = {
 	simpleView: ['lazyloads simple image in view', function(assert){
 		var done = assert.async();
@@ -289,7 +288,8 @@ window.lazyTests = {
 					.attr({
 						src: initialSrc,
 						'data-srcset': lazySrcset,
-						'class': 'lazyload'
+						'class': 'lazyload',
+						sizes: '100vw'
 					}).appendTo('body')
 				;
 
@@ -322,7 +322,8 @@ window.lazyTests = {
 						src: initialSrc,
 						'data-srcset': lazySrcset,
 						'data-src': lazySrc,
-						'class': 'lazyload'
+						'class': 'lazyload',
+						sizes: '100vw'
 					}).appendTo('body')
 				;
 

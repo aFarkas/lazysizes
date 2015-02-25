@@ -31,3 +31,5 @@ var createPicture = function($, srces){
 	});
 	return $picture;
 };
+window.isTrident = /rident/.test(navigator.userAgent);
+window.bustedSrcset = (('srcset' in document.createElement('img')) && !('sizes' in document.createElement('img')));

@@ -21,10 +21,9 @@
 
 	if(('srcset' in img) && !('sizes' in img)){
 		regPicture = /^picture$/i;
-		addEventListener('lazybeforeunveil', function(e){
+		document.addEventListener('lazybeforeunveil', function(e){
 			var elem, parent, srcset, sizes, isPicture;
 			var picture, source;
-
 			if(e.defaultPrevented ||
 				lazySizesConfig.noIOSFix ||
 				!(elem = e.target) ||
@@ -37,22 +36,28 @@
 			){return;}
 
 			picture = isPicture ? parent : document.createElement('picture');
-			source = document.createElement('source');
+
+			if(!elem._lazyImgSrc){
+				Object.defineProperty(elem, '_lazyImgSrc', {
+					value: document.createElement('source'),
+					writable: true
+				});
+			}
+			source = elem._lazyImgSrc;
 
 			if(sizes){
 				source.setAttribute('sizes', sizes);
 			}
 
 			source.setAttribute(lazySizesConfig.srcsetAttr, srcset);
+			elem.setAttribute('data-pfsrcset', srcset);
 			elem.removeAttribute(lazySizesConfig.srcsetAttr);
 
-			if(isPicture){
-				parent.insertBefore(source, elem);
-			} else {
-				picture.appendChild(source);
+			if(!isPicture){
 				parent.insertBefore(picture, elem);
 				picture.appendChild(elem);
 			}
+			picture.insertBefore(source, elem);
 		});
 	}
 })(document);
