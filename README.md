@@ -100,7 +100,7 @@ The LQIP pattern (low quality image placeholder). Simply add a low quality image
 For non crucial or below the fold images or in case you want to save more initial image data the LQIP pattern can't be used (an extreme fuzzy image does neither work as a good enough first impression nor as a fallback), you do use client side rendering (no preload parser advantage) or you can't even generate a LQIP src, simply omit the ``src`` attribute  or add a data uri as fallback ``src``.
 
 ```html
-<img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+<img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
 	class="lazyload"
 	data-srcset="image.jpg 1x, image2.jpg 2x"
     alt="my image" />
@@ -208,7 +208,7 @@ window.lazySizesConfig.customMedia = {
         data-srcset="http://placehold.it/1800x900/117fe8/fff" />
     <!--[if IE 9]></audio><![endif]-->
     <img
-        src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+        src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
         class="lazyload"
         alt="image with artdirection" />
 </picture>
@@ -289,7 +289,7 @@ For CSS transition/animations or progress bars / spinners use the ``.lazyloading
 </style>
 
 <img
-    src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+    src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
     data-src="image.jpg"
     class="lazyload" />
 
@@ -421,13 +421,13 @@ Due to the fact, that it is designed to be invoked with a high frequency and the
 <!-- responsive example: -->
 <img
 	data-sizes="auto"
-    src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+    src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
 	data-srcset="image2.jpg 300w,
     image3.jpg 600w,
     image4.jpg 900w" class="lazyload" />
     
 <!-- or non-responsive: -->
-<img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+<img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
     data-src="image.jpg"
     class="lazyload" />
 ```
@@ -437,7 +437,7 @@ To minimize reflows, content jumping or unpredictable behavior with some other J
 
 ```html
 <img
-	src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+	src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
     width="350"
     height="150"
 	data-srcset="http://placehold.it/350x150 1x,
@@ -471,7 +471,7 @@ For flexible responsive images the [CSS intrinsic ratio scaling technique](http:
 
 <div class="ratio-container">
     <img
-        src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+        src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
         data-sizes="auto"
         data-srcset="http://placehold.it/175x75 175w,
         http://placehold.it/350x150 350w,
@@ -515,7 +515,7 @@ In case the exact ratio of your image is unknown you can also vary the intrinsic
 
 <div class="ratio-container unknown-ratio-container">
     <img
-        src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+        src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
         data-src="http://placehold.it/350x150"
         class="lazyload" />
 </div>
