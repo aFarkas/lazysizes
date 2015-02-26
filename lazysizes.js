@@ -1,5 +1,5 @@
 (function (window, factory) {
-	window.lazySizes = factory(window, window.document);
+	window.lazySizes = (window.lazysizes = factory(window, window.document));
 	if (typeof define === 'function' && define.amd) {
 		define(window.lazySizes);
 	}
@@ -388,7 +388,7 @@
 		};
 
 		return {
-			_i: function(){
+			_: function(){
 
 				lazyloadElems = document.getElementsByClassName(lazySizesConfig.lazyClass);
 				preloadElems = document.getElementsByClassName(lazySizesConfig.lazyClass+' '+lazySizesConfig.preloadClass);
@@ -481,7 +481,7 @@
 		var throttledUpdateElementsSizes = throttle(updateElementsSizes);
 
 		return {
-			_i: function(){
+			_: function(){
 				autosizesElems = document.getElementsByClassName(lazySizesConfig.autosizesClass);
 				addEventListener('resize', throttledUpdateElementsSizes);
 			},
@@ -493,8 +493,8 @@
 	var init = function(){
 		if(!init.i){
 			init.i = true;
-			autoSizer._i();
-			loader._i();
+			autoSizer._();
+			loader._();
 		}
 	};
 
