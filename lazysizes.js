@@ -1,9 +1,12 @@
-(function (window, factory) {
-	window.lazySizes = (window.lazysizes = factory(window, window.document));
-	if (typeof define === 'function' && define.amd) {
-		define(window.lazySizes);
+(function(window, factory) {
+	var lazySizes = factory(window, window.document);
+	window.lazySizes = lazySizes;
+	if(typeof module == 'object' && module.exports){
+		module.exports = lazySizes;
+	} else if (typeof define == 'function' && define.amd) {
+		define(lazySizes);
 	}
-}(window, function (window, document) {
+}(window, function(window, document) {
 	'use strict';
 	/*jshint eqnull:true */
 	if(!document.getElementsByClassName){return;}
@@ -16,7 +19,7 @@
 
 	var loadEvents = ['load', 'error', 'lazyincluded', '_lazyloaded'];
 
-	var hasClass = function(ele,cls) {
+	var hasClass = function(ele, cls) {
 		var reg = new RegExp('(\\s|^)'+cls+'(\\s|$)');
 		return ele.className.match(reg) && reg;
 	};
@@ -124,7 +127,7 @@
 		var defaultExpand = shrinkExpand;
 		var preloadExpand = shrinkExpand;
 		var currentExpand = shrinkExpand;
-		var lowRuns = 0;
+		var lowRuns = -3;
 
 		var isLoading = 0;
 
@@ -209,7 +212,7 @@
 						(eLright = rect.right) >= elemNegativeExpand &&
 						(eLleft = rect.left) <= eLvW &&
 						(eLbottom || eLright || eLleft || eLtop) &&
-						((isCompleted && currentExpand < preloadExpand && isLoading < 3 && lowRuns < 4 && !elemExpandVal) || isNestedVisible(lazyloadElems[i], elemExpand))){
+						((isCompleted && currentExpand < preloadExpand && isLoading < 3 && lowRuns < 4 && !elemExpandVal && loader.m > 2) || isNestedVisible(lazyloadElems[i], elemExpand))){
 						checkElementsIndex--;
 						start += 2;
 						unveilElement(lazyloadElems[i]);
@@ -235,7 +238,7 @@
 
 				lowRuns++;
 
-				if(currentExpand < preloadExpand && isLoading < 2 && lowRuns > 5 && loader.m > 2){
+				if(currentExpand < preloadExpand && isLoading < 1 && lowRuns > 5 && loader.m > 2){
 					currentExpand = preloadExpand;
 					lowRuns = 0;
 					throttledCheckElements();
@@ -368,22 +371,18 @@
 		var calcExpand = function(){
 
 			if(!isExpandCalculated){
-				defaultExpand = Math.max( Math.min(lazySizesConfig.expand || 140, 300), 9 );
-				preloadExpand = defaultExpand * 4;
+				defaultExpand = Math.max( Math.min(lazySizesConfig.expand || 120, 300), 9 );
+				preloadExpand = defaultExpand * 5;
 			}
 
 			isExpandCalculated = true;
 		};
 
-		var allowPreload = function(){
-			loader.m = 3;
-		};
-
 		var onload = function(){
 			isCompleted = true;
-			lowRuns += 6;
+			lowRuns += 8;
 
-			allowPreload();
+			loader.m = 3;
 			throttledCheckElements(true);
 		};
 
@@ -420,12 +419,13 @@
 				if(!(isCompleted = /d$|^c/.test(document.readyState))){
 					addEventListener('load', onload);
 					document.addEventListener('DOMContentLoaded', throttledCheckElements);
+				} else {
+					onload();
 				}
 
-				setTimeout(allowPreload, 777);
 				throttledCheckElements(lazyloadElems.length > 0);
 			},
-			m: 1,
+			m: 2,
 			checkElems: throttledCheckElements,
 			unveil: unveilElement
 		};
