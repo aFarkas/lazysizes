@@ -336,12 +336,12 @@ lazySizes.loader.unveil(imgElem);
 
 Note: As a more lazy alternative the ``lazypreload`` class can be set: ``$(imgElem).addClass('lazypreload');``.
 
-#####``lazySizes.autoSizer.updateElems()``
+#####``lazySizes.autoSizer.checkElems()``
 
 In case one or more image elements with the attribute ``data-sizes="auto"`` have changed in size ``lazySizes.autoSizer.updateElems`` can be called (For example to implement element queries):
 
 ```js
-lazySizes.autoSizer.updateElems();
+lazySizes.autoSizer.checkElems();
 ```
 
 #####``lazySizes.init()``
