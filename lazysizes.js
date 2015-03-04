@@ -425,7 +425,7 @@
 
 				throttledCheckElements(lazyloadElems.length > 0);
 			},
-			m: 2,
+			m: 3,
 			checkElems: throttledCheckElements,
 			unveil: unveilElement
 		};

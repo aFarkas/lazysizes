@@ -45,7 +45,7 @@ Aside from above mentioned constraints everything else is fully supported. Here 
     	    data-srcset="http://placehold.it/1800x900/117fe8/fff" />
     <!--[if IE 9]></audio><![endif]-->
     <img
-        src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
+        src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
         class="lazyload"
         alt="image with artdirection" />
 </picture>
@@ -70,7 +70,7 @@ Aside from above mentioned constraints everything else is fully supported. Here 
 	    	http://placehold.it/2700x1350/117fe8/fff 2700w" />
 	<!--[if IE 9]></audio><![endif]-->
 	<img
-		src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
+		src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
 		class="lazyload"
 		data-sizes="auto"
 		alt="image with artdirection" />

@@ -23,7 +23,7 @@ html:after {
 		media="--large" />
 	<!--[if IE 9]></audio><![endif]-->
 	<img
-		src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
+		src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
 		class="lazyload"
 		data-srcset="http://placehold.it/1800x900/117fe8/fff"
 		alt="image with artdirection" />
