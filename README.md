@@ -44,6 +44,7 @@
 5. **Extendable**: It provides JS and CSS hooks to extend lazySizes with any kind of lazy loading, lazy instantiation, inview callbacks or effects (see also the [available plugins/snippets](#plugins)).
 6. **Intelligent prefetch**: lazySizes prefetches/preloads near the view assets to improve user experience, but only while the browser network is idling and does not download inview assets already. (see also ``expand`` option)
 7. **Lightweight, but mature solution**: lazySizes has the right balance between a lightweight and a reliable and fast solution
+8. **SEO improved**: lazySizes does not hide images/assets from google.
 
 ##[Demo with code examples](http://afarkas.github.io/lazysizes/#examples)
 Can be seen [here](http://afarkas.github.io/lazysizes/#examples).
@@ -529,4 +530,4 @@ In case you normally combine all your scripts into one large script and add this
 
 One small package, which includes all scripts which have heavy influence on the content or the UI and another larger one which includes the normal behavior of the page.
 
-This smaller script, which includes lazySizes can than be placed before the other script (even in the head) to load the crucial content as fast possible.
+This smaller script, which should include lazySizes must than be placed before the other script(s) (even in the head) to load the crucial content as fast possible.
