@@ -230,7 +230,7 @@ window.lazyTests = {
 
 			$image.on('lazybeforeunveil', function(){
 				setTimeout(function(){
-					var hasPolyfill = frameWindow.respimage || frameWindow.picturefill || frameWindow.lazySizes.cfg.polyfill;
+					var hasPolyfill = frameWindow.respimage || frameWindow.picturefill || frameWindow.lazySizes.cfg.pf;
 
 					assert.equal($source.attr('srcset'), 'data:,lazysource 200w');
 					assert.equal($image.attr('srcset') || $image.attr('data-risrcset') || $image.attr('data-pfsrcset'), 'data:,lazyimg 200w');
@@ -265,7 +265,7 @@ window.lazyTests = {
 
 			$image.on('lazybeforeunveil', function(){
 				setTimeout(function(){
-					var haspolyfill = frameWindow.respimage || frameWindow.picturefill || (frameWindow.lazySizes.cfg.rias && frameWindow.lazySizes.pWS) || frameWindow.lazySizes.cfg.polyfill;
+					var haspolyfill = frameWindow.respimage || frameWindow.picturefill || (frameWindow.lazySizes.cfg.rias && frameWindow.lazySizes.pWS) || frameWindow.lazySizes.cfg.pf;
 
 					assert.equal($source.attr('srcset'), 'data:,lazysource 200w');
 					assert.equal($source.attr('sizes'), $image.attr('sizes'));
@@ -297,7 +297,7 @@ window.lazyTests = {
 
 			$topImage.on('lazybeforeunveil', function(){
 				setTimeout(function(){
-					var haspolyfill = frameWindow.respimage || frameWindow.picturefill || (frameWindow.lazySizes.cfg.rias && frameWindow.lazySizes.pWS) || frameWindow.lazySizes.cfg.polyfill;
+					var haspolyfill = frameWindow.respimage || frameWindow.picturefill || (frameWindow.lazySizes.cfg.rias && frameWindow.lazySizes.pWS) || frameWindow.lazySizes.cfg.pf;
 					var nowSrc =  window.HTMLPictureElement || !haspolyfill ?
 						initialSrc :
 						'data:,lazysrcset';
@@ -331,7 +331,7 @@ window.lazyTests = {
 
 			$topImage.on('lazybeforeunveil', function(){
 				setTimeout(function(){
-					var haspolyfill = frameWindow.respimage || frameWindow.picturefill || (frameWindow.lazySizes.cfg.rias && frameWindow.lazySizes.pWS) || frameWindow.lazySizes.cfg.polyfill;
+					var haspolyfill = frameWindow.respimage || frameWindow.picturefill || (frameWindow.lazySizes.cfg.rias && frameWindow.lazySizes.pWS) || frameWindow.lazySizes.cfg.pf;
 					var nowSrc =  window.HTMLPictureElement ?
 						initialSrc :
 						(haspolyfill) ?

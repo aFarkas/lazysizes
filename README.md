@@ -176,7 +176,7 @@ Here the list of options:
 * ``lazySizesConfig.preloadClass`` (default: ``"lazypreload"``): Marker class for elements which should be lazy pre-loaded after onload. Those elements will be even preloaded, if the ``preloadAfterLoad`` option is set to ``false``. Note: This *class* can be also dynamically set (``$currentSlide.next().find('.lazyload').addClass('lazypreload');``).
 * ``lazySizesConfig.loadingClass`` (default: ``"lazyloading"``): This ``class`` will be added to ``img`` element as soon as image loading starts. Can be used to add unveil effects.
 * ``lazySizesConfig.loadedClass`` (default: ``"lazyloaded"``): This ``class`` will be added to any element as soon as the image is loaded or the image comes into view. Can be used to add unveil effects or to apply styles.
-* ``lazySizesConfig.expand`` (default: ``120``): The ``expand`` option expands the calculated visual viewport area in all directions, so that elements can be loaded before they are becoming visible. (Note: Reasonable values are between ``20`` and ``200``.) In case you have a lot of small images or you are using the LQIP pattern you can lower the value, in case you have larger images set it to a higher value. Also note, that lazySizes will dynamically shrink this value to ``0``, if the browser is currently downloading and expand it (by multiplying the ``expand`` option with ``3.5``) if the browser network is currently idling. This option can be overridden with the ``[data-expand]`` attribute.
+* ``lazySizesConfig.expand`` (default: ``300``): The ``expand`` option expands the calculated visual viewport area in all directions, so that elements can be loaded before they are becoming visible. (Note: Reasonable values are between ``40`` and ``400`` (depending on the ``exFactor`` option.) In case you have a lot of small images or you are using the LQIP pattern you can lower the value, in case you have larger images set it to a higher value. Also note, that lazySizes will dynamically shrink this value to ``0``, if the browser is currently downloading and expand it if the browser network is currently idling and the user not scrolling  (by multiplying the ``expand`` option with ``2`` (``expFactor``)). This option can be overridden with the ``[data-expand]`` attribute.
 * ``lazySizesConfig.minSize`` (default: ``50``): For ``data-sizes="auto"`` feature. The minimum size of an image that is used to calculate the ``sizes`` attribute. In case it is under ``minSize`` the script traverses up the DOM tree until it finds a parent that is over ``minSize``.
 * ``lazySizesConfig.srcAttr`` (default: ``"data-src"``): The attribute, which should be transformed to ``src``.
 * ``lazySizesConfig.srcset`` (default: ``"data-srcset"``): The attribute, which should be transformed to ``srcset``.
@@ -213,6 +213,7 @@ window.lazySizesConfig.customMedia = {
         alt="image with artdirection" />
 </picture>
 ```
+* ``lazySizesConfig.expFactor`` (default: ``2``): The ``expFactor`` is used to calculate the preload expand, by multiplying the normal ``expand`` with the ``expFactor``, which is used to preload assets while the browser is idling (no more important network traffic and no scrolling).
 * ``lazySizesConfig.init`` (default: ``true``): By default lazySizes initializes itself as soon as possible, to load inview assets as soon as possible. In the unlikely case you need to setup/configure something with a later script you can set this option to ``false`` and call ``lazySizes.init();`` later explicitly.
 
 ####JS API - events
@@ -400,9 +401,6 @@ The [include plugin](plugins/include) plugin enables lazySizes to lazyload conte
 
 ###[bgset plugin - lazy responsive background-image](plugins/bgset)
 The bgset plugin allows lazyload multiple background images with different resolutions/sizes (responsive background images). In case you only need one image use the unveilhooks extension.
-
-###[scrollintent plugin](plugins/scrollintent)
-The [scrollintent plugin](plugins/scrollintent) heavily improves runtime performance, while the user is scrolling. Normally lazySizes uses a throttled scroll event to check for ``.lazyload`` elements. The scrollintent plugin changes this behavior to only check for ``.lazyload`` resources if either the user scrolling is slow or the user has stopped scrolling.
 
 ###[print plugin](plugins/print)
 The [print plugin](plugins/print) plugin enables lazySizes to unveil all elements as soon as the user starts to print. (Or set ``lazySizesConfig.preloadAfterLoad`` to ``true``).

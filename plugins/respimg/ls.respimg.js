@@ -15,9 +15,9 @@
 		};
 	}
 
-	if(window.picturefill || window.respimage || config.polyfill){return;}
+	if(window.picturefill || window.respimage || config.pf){return;}
 
-	config.polyfill = function(options){
+	config.pf = function(options){
 		var i, len;
 		if(window.picturefill || window.respimage){return;}
 		for(i = 0, len = options.elements.length; i < len; i++){
@@ -202,7 +202,7 @@
 				sels.push(sel + config.loadedClass);
 				sels.push(sel + config.loadingClass);
 			});
-			config.polyfill({
+			config.pf({
 				elements: document.querySelectorAll(sels.join(', '))
 			});
 		})();

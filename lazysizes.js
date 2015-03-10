@@ -15,6 +15,8 @@
 
 	var docElem = document.documentElement;
 
+	var addEventListener = window.addEventListener;
+
 	var regPicture = /^picture$/i;
 
 	var loadEvents = ['load', 'error', 'lazyincluded', '_lazyloaded'];
@@ -61,7 +63,7 @@
 	var updatePolyfill = function (el, full){
 		var polyfill;
 		if(!window.HTMLPictureElement){
-			if( ( polyfill = (window.picturefill || window.respimage || lazySizesConfig.polyfill) ) ){
+			if( ( polyfill = (window.picturefill || window.respimage || lazySizesConfig.pf) ) ){
 				polyfill({reevaluate: true, reparse: true, elements: [el]});
 			} else if(full && full.src){
 				el.src = full.src;
@@ -112,32 +114,33 @@
 	};
 
 	var loader = (function(){
-		var isExpandCalculated, lazyloadElems, preloadElems, isCompleted, resetPreloadingTimer;
+		var lazyloadElems, preloadElems, isCompleted, resetPreloadingTimer;
 
 		var eLvW, elvH, eLtop, eLleft, eLright, eLbottom;
 
-		var fixChrome = window.HTMLPictureElement && navigator.userAgent.match(/hrome\/(\d+)/) && (RegExp.$1 == 40);
+		var defaultExpand, preloadExpand;
 
 		var regImg = /^img$/i;
 		var regIframe = /^iframe$/i;
 
-		var supportScroll = ('onscroll' in window);
+		var supportScroll = ('onscroll' in window) && !(/glebot/.test(navigator.userAgent));
 
 		var shrinkExpand = -2;
-		var defaultExpand = shrinkExpand;
-		var preloadExpand = shrinkExpand;
 		var currentExpand = shrinkExpand;
-		var lowRuns = -3;
+		var lowRuns = 0;
 
 		var isLoading = 0;
 
 		var checkElementsIndex = 0;
+
+		var loadMode = 2;
 
 		var resetPreloading = function(e){
 			isLoading--;
 			if(e && e.target){
 				addRemoveLoadEvents(e.target, resetPreloading);
 			}
+
 			if(!e || isLoading < 0 || !e.target){
 				isLoading = 0;
 			}
@@ -173,14 +176,21 @@
 
 			var eLlen = lazyloadElems.length;
 
-			if(eLlen && loader.m){
+			if(eLlen){
 				start = Date.now();
 
-				if(!isExpandCalculated){
-					calcExpand();
-				}
-
 				i = checkElementsIndex;
+
+				lowRuns++;
+
+				if(currentExpand < preloadExpand && isLoading < 1 && lowRuns > 5 && loadMode > 2){
+					currentExpand = preloadExpand;
+					lowRuns = 0;
+				} else if(currentExpand != defaultExpand && loadMode > 1 && lowRuns > 4){
+					currentExpand = defaultExpand;
+				} else {
+					currentExpand = shrinkExpand;
+				}
 
 				for(; i < eLlen; i++, checkElementsIndex++){
 
@@ -194,7 +204,7 @@
 
 					if(isLoading > 6 && (!elemExpandVal || ('src' in lazyloadElems[i]))){continue;}
 
-					if(elemExpand > shrinkExpand && (loader.m < 2 || isLoading > 3)){
+					if(elemExpand > defaultExpand && (loadMode < 2 || isLoading > 3)){
 						elemExpand = shrinkExpand;
 					}
 
@@ -212,7 +222,7 @@
 						(eLright = rect.right) >= elemNegativeExpand &&
 						(eLleft = rect.left) <= eLvW &&
 						(eLbottom || eLright || eLleft || eLtop) &&
-						((isCompleted && currentExpand < preloadExpand && isLoading < 3 && lowRuns < 4 && !elemExpandVal && loader.m > 2) || isNestedVisible(lazyloadElems[i], elemExpand))){
+						((isCompleted && currentExpand < preloadExpand && isLoading < 3 && lowRuns < 4 && !elemExpandVal && loadMode > 2) || isNestedVisible(lazyloadElems[i], elemExpand))){
 						checkElementsIndex--;
 						start += 2;
 						unveilElement(lazyloadElems[i]);
@@ -235,18 +245,6 @@
 				}
 
 				checkElementsIndex = 0;
-
-				lowRuns++;
-
-				if(currentExpand < preloadExpand && isLoading < 1 && lowRuns > 5 && loader.m > 2){
-					currentExpand = preloadExpand;
-					lowRuns = 0;
-					throttledCheckElements();
-				} else if(currentExpand != defaultExpand && loader.m > 1 && lowRuns > 4){
-					currentExpand = defaultExpand;
-				} else {
-					currentExpand = shrinkExpand;
-				}
 
 				if(autoLoadElem && !loadedSomething){
 					unveilElement(autoLoadElem);
@@ -325,11 +323,6 @@
 
 				if(srcset){
 					elem.setAttribute('srcset', srcset);
-
-					if(fixChrome && sizes){
-						elem.removeAttribute('src');
-					}
-
 				} else if(src){
 					if(regIframe.test(elem.nodeName)){
 						changeIframeSrc(elem, src);
@@ -368,39 +361,67 @@
 			});
 		};
 
-		var calcExpand = function(){
-
-			if(!isExpandCalculated){
-				defaultExpand = Math.max( Math.min(lazySizesConfig.expand || 120, 300), 9 );
-				preloadExpand = defaultExpand * 5;
-			}
-
-			isExpandCalculated = true;
-		};
-
 		var onload = function(){
+			var scrollTimer;
+			var afterScroll = function(){
+				loadMode = 3;
+				throttledCheckElements();
+			};
+
 			isCompleted = true;
 			lowRuns += 8;
 
-			loader.m = 3;
+			loadMode = 3;
 			throttledCheckElements(true);
+
+			addEventListener('scroll', function(){
+				if(loadMode == 3){
+					loadMode = 2;
+				}
+				clearTimeout(scrollTimer);
+				scrollTimer = setTimeout(afterScroll, 66);
+			}, true);
 		};
 
 		return {
 			_: function(){
+				var scrolled = 0;
+				var activateEvents = ['scroll', 'touchstart', 'click', 'mousedown'];
+
+				var addEvents = function(obj, evts, fn){
+					evts.forEach(function(name){
+						obj.addEventListener(name, fn, true);
+					});
+				};
+
+				var onActivate = function(e){
+					scrolled++;
+
+					if(e.type != 'scroll'){
+						scrolled = 9;
+					}
+
+					if(scrolled > 8 && loadMode < 2){
+						loadMode = 2;
+					}
+
+					if(loadMode > 1){
+						activateEvents.forEach(function(name){
+							removeEventListener(name, onActivate, true);
+						});
+					}
+				};
+				addEvents(window, activateEvents, onActivate);
 
 				lazyloadElems = document.getElementsByClassName(lazySizesConfig.lazyClass);
-				preloadElems = document.getElementsByClassName(lazySizesConfig.lazyClass+' '+lazySizesConfig.preloadClass);
+				preloadElems = document.getElementsByClassName(lazySizesConfig.lazyClass + ' ' + lazySizesConfig.preloadClass);
 
-				if(lazySizesConfig.scroll) {
-					addEventListener('scroll', throttledCheckElements, true);
-				}
+				defaultExpand = lazySizesConfig.expand;
+				preloadExpand = defaultExpand * lazySizesConfig.expFactor;
 
-				addEventListener('resize', function(){
-					isExpandCalculated = false;
-					throttledCheckElements();
-				}, true);
+				addEventListener('scroll', throttledCheckElements, true);
 
+				addEventListener('resize', throttledCheckElements, true);
 
 				if(window.MutationObserver){
 					new MutationObserver( throttledCheckElements ).observe( docElem, {childList: true, subtree: true, attributes: true} );
@@ -412,9 +433,7 @@
 
 				addEventListener('hashchange', throttledCheckElements, true);
 
-				['transitionstart', 'transitionend', 'load', 'focus', 'mouseover', 'animationend', 'click'].forEach(function(evt){
-					document.addEventListener(evt, throttledCheckElements, true);
-				});
+				addEvents(document, ['transitionstart', 'transitionend', 'load', 'focus', 'mouseover', 'animationend', 'click'], throttledCheckElements);
 
 				if(!(isCompleted = /d$|^c/.test(document.readyState))){
 					addEventListener('load', onload);
@@ -425,7 +444,6 @@
 
 				throttledCheckElements(lazyloadElems.length > 0);
 			},
-			m: 3,
 			checkElems: throttledCheckElements,
 			unveil: unveilElement
 		};
@@ -506,7 +524,6 @@
 			loadingClass: 'lazyloading',
 			preloadClass: 'lazypreload',
 			errorClass: 'lazyerror',
-			scroll: true,
 			autosizesClass: 'lazyautosizes',
 			srcAttr: 'data-src',
 			srcsetAttr: 'data-srcset',
@@ -514,7 +531,9 @@
 			//preloadAfterLoad: false,
 			minSize: 50,
 			customMedia: {},
-			init: true
+			init: true,
+			expFactor: 2,//is the factor that is used to multiply the `expand` option to calc the preload expand
+			expand: 300
 		};
 
 		lazySizesConfig = window.lazySizesConfig || {};
