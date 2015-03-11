@@ -125,7 +125,7 @@
 
 		var supportScroll = ('onscroll' in window) && !(/glebot/.test(navigator.userAgent));
 
-		var shrinkExpand = -2;
+		var shrinkExpand = 1;
 		var currentExpand = shrinkExpand;
 		var lowRuns = 0;
 
