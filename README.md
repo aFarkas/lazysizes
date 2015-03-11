@@ -107,7 +107,7 @@ For non crucial or below the fold images or in case you want to save more initia
     alt="my image" />
 ```
 
-Note: In case you are using the simple markup pattern, consider to set the ``preloadAfterLoad`` to ``true`` (for SEO) and to add unobtrusive unveil effects ([demo](http://afarkas.github.io/lazysizes/no-src.html#examples)).
+Note: In case you are using the simple markup pattern, consider to add unobtrusive unveil effects ([demo](http://afarkas.github.io/lazysizes/no-src.html#examples)).
 
 ###The noscript pattern
 

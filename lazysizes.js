@@ -204,7 +204,7 @@
 
 					if(isLoading > 6 && (!elemExpandVal || ('src' in lazyloadElems[i]))){continue;}
 
-					if(elemExpand > defaultExpand && (loadMode < 2 || isLoading > 3)){
+					if(elemExpand > shrinkExpand && (loadMode < 2 || isLoading > 3)){
 						elemExpand = shrinkExpand;
 					}
 
@@ -228,7 +228,6 @@
 						unveilElement(lazyloadElems[i]);
 						loadedSomething = true;
 					} else  {
-
 						if(Date.now() - start > 3){
 							checkElementsIndex++;
 							throttledCheckElements();
@@ -532,7 +531,7 @@
 			minSize: 50,
 			customMedia: {},
 			init: true,
-			expFactor: 2,//is the factor that is used to multiply the `expand` option to calc the preload expand
+			expFactor: 2,
 			expand: 300
 		};
 
