@@ -11,7 +11,7 @@ html:after {
 
 ```html
 <picture>
-	<!--[if IE 9]><audio><![endif]-->
+	<!--[if IE 9]><video style="display: none;"><![endif]-->
 	<source
 		data-srcset="http://placehold.it/500x600/11e87f/fff"
 		media="--small" />
@@ -21,7 +21,7 @@ html:after {
 	<source
 		data-srcset="http://placehold.it/1400x600/e8117f/fff"
 		media="--large" />
-	<!--[if IE 9]></audio><![endif]-->
+	<!--[if IE 9]></video><![endif]-->
 	<img
 		src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
 		class="lazyload"

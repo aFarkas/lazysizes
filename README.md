@@ -195,7 +195,7 @@ window.lazySizesConfig.customMedia = {
 
 
 <picture>
-	<!--[if IE 9]><audio><![endif]-->
+	<!--[if IE 9]><video style="display: none;><![endif]-->
 	<source
 		data-srcset="http://placehold.it/500x600/11e87f/fff"
 		media="--small" />
@@ -207,14 +207,15 @@ window.lazySizesConfig.customMedia = {
 		media="--large" />
 	<source
         data-srcset="http://placehold.it/1800x900/117fe8/fff" />
-    <!--[if IE 9]></audio><![endif]-->
+    <!--[if IE 9]></video><![endif]-->
     <img
         src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
         class="lazyload"
         alt="image with artdirection" />
 </picture>
 ```
-* ``lazySizesConfig.expFactor`` (default: ``2``): The ``expFactor`` is used to calculate the preload expand, by multiplying the normal ``expand`` with the ``expFactor``, which is used to preload assets while the browser is idling (no more important network traffic and no scrolling).
+* ``lazySizesConfig.expFactor`` (default: ``2``): The ``expFactor`` is used to calculate the "preload expand", by multiplying the normal ``expand`` with the ``expFactor``, which is used to preload assets while the browser is idling (no important network traffic and no scrolling).
+* ``lazySizesConfig.loadMode`` (default: ``2``): The ``loadMode`` can be used to constrain the allowed loading mode. Possible values are 1 = only load visible elements, 2 = load also very near view elements (``expand`` option) and 3 = load also not so near elements (``expand`` * ``expFactor`` option). This value is automatically set to ``3`` after onload. Change this value to ``1`` if you (also) optimize for the onload event or change it to ``3`` if your onload event is already heavily delayed.
 * ``lazySizesConfig.init`` (default: ``true``): By default lazySizes initializes itself as soon as possible, to load inview assets as soon as possible. In the unlikely case you need to setup/configure something with a later script you can set this option to ``false`` and call ``lazySizes.init();`` later explicitly.
 
 ####JS API - events
@@ -526,7 +527,7 @@ In case the exact ratio of your image is unknown you can also vary the intrinsic
 ##Tip: Where/How to include lazySizes
 While lazy loading is a great feature, it is important for users that crucial inview images are loaded as fast as possible. (Most users start to interact with a page after inview images are loaded.)
 
-In case you normally combine all your scripts into one large script and add this to the bottom of your page. It can be better for perceived performance to generate two or sometimes three script packages.
+In case you normally combine all your scripts into one large script and add this to the bottom of your page. It can be better for perceived performance to generate two or sometimes more script packages.
 
 One small package, which includes all scripts which have heavy influence on the content or the UI and another larger one which includes the normal behavior of the page.
 

@@ -37,6 +37,9 @@
 					module.removeAspectRatio(elem, true);
 				}
 			};
+			var onload = function(){
+				module.processImages();
+			};
 
 			document.addEventListener('load', function(e){
 				if(e.target.getAttribute && e.target.getAttribute(aspectRatioAttr)){
@@ -53,15 +56,15 @@
 					}
 				};
 
-				return function(e){
+				return function(){
 					clearTimeout(timer);
 					timer = setTimeout(resize, 33);
 				};
 			})());
 
-			document.addEventListener('DOMContentLoaded', function(){
-				module.processImages();
-			});
+			document.addEventListener('DOMContentLoaded', onload);
+
+			addEventListener('load', onload);
 		},
 		processImages: function(context){
 			var elements, i;
@@ -147,8 +150,8 @@
 	};
 
 	extend$ = function(){
-		var $ = window.jQuery || window.Zepto || window.shoestring;
-		if($ && $.fn && !$.fn.imageRatio){
+		var $ = window.jQuery || window.Zepto || window.shoestring || window.$;
+		if($ && $.fn && !$.fn.imageRatio && $.fn.filter && $.fn.add && $.fn.find){
 			$.fn.imageRatio = function(){
 				imageRatio.processImages(this.find(aspectRatioSel).add(this.filter(aspectRatioSel)));
 				return this;

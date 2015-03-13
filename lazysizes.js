@@ -114,7 +114,7 @@
 	};
 
 	var loader = (function(){
-		var lazyloadElems, preloadElems, isCompleted, resetPreloadingTimer;
+		var lazyloadElems, preloadElems, isCompleted, resetPreloadingTimer, loadMode;
 
 		var eLvW, elvH, eLtop, eLleft, eLright, eLbottom;
 
@@ -125,15 +125,13 @@
 
 		var supportScroll = ('onscroll' in window) && !(/glebot/.test(navigator.userAgent));
 
-		var shrinkExpand = 1;
-		var currentExpand = shrinkExpand;
+		var shrinkExpand = 0;
+		var currentExpand = 0;
 		var lowRuns = 0;
 
 		var isLoading = 0;
 
 		var checkElementsIndex = 0;
-
-		var loadMode = 2;
 
 		var resetPreloading = function(e){
 			isLoading--;
@@ -161,8 +159,8 @@
 
 				if(visible && getCSS(parent, 'overflow') != 'visible'){
 					outerRect = parent.getBoundingClientRect();
-					visible = eLright > outerRect.left - 1 &&
-					eLleft < outerRect.right + 1 &&
+					visible = eLright > outerRect.left &&
+					eLleft < outerRect.right &&
 					eLbottom > outerRect.top - 1 &&
 					eLtop < outerRect.bottom + 1
 					;
@@ -176,7 +174,7 @@
 
 			var eLlen = lazyloadElems.length;
 
-			if(eLlen){
+			if(eLlen && (loadMode = lazySizesConfig.loadMode)){
 				start = Date.now();
 
 				i = checkElementsIndex;
@@ -235,7 +233,7 @@
 						}
 
 						if(!loadedSomething && isCompleted && !autoLoadElem &&
-							isLoading < 3 && lowRuns < 4 &&
+							isLoading < 3 && lowRuns < 4 && loadMode > 2 &&
 							(preloadElems[0] || lazySizesConfig.preloadAfterLoad) &&
 							(preloadElems[0] || (!elemExpandVal && ((eLbottom || eLright || eLleft || eLtop) || lazyloadElems[i].getAttribute(lazySizesConfig.sizesAttr) != 'auto')))){
 							autoLoadElem = preloadElems[0] || lazyloadElems[i];
@@ -280,6 +278,7 @@
 			if( (isAuto || !isCompleted) && isImg && curSrc && !elem.complete && !hasClass(elem, lazySizesConfig.errorClass)){return;}
 
 			elem._lazyRace = true;
+
 			if(!(event = triggerEvent(elem, 'lazybeforeunveil', {force: !!force})).defaultPrevented){
 
 				if(sizes){
@@ -363,19 +362,19 @@
 		var onload = function(){
 			var scrollTimer;
 			var afterScroll = function(){
-				loadMode = 3;
+				lazySizesConfig.loadMode = 3;
 				throttledCheckElements();
 			};
 
 			isCompleted = true;
 			lowRuns += 8;
 
-			loadMode = 3;
+			lazySizesConfig.loadMode = 3;
 			throttledCheckElements(true);
 
 			addEventListener('scroll', function(){
-				if(loadMode == 3){
-					loadMode = 2;
+				if(lazySizesConfig.loadMode == 3){
+					lazySizesConfig.loadMode = 2;
 				}
 				clearTimeout(scrollTimer);
 				scrollTimer = setTimeout(afterScroll, 66);
@@ -384,33 +383,6 @@
 
 		return {
 			_: function(){
-				var scrolled = 0;
-				var activateEvents = ['scroll', 'touchstart', 'click', 'mousedown'];
-
-				var addEvents = function(obj, evts, fn){
-					evts.forEach(function(name){
-						obj.addEventListener(name, fn, true);
-					});
-				};
-
-				var onActivate = function(e){
-					scrolled++;
-
-					if(e.type != 'scroll'){
-						scrolled = 9;
-					}
-
-					if(scrolled > 8 && loadMode < 2){
-						loadMode = 2;
-					}
-
-					if(loadMode > 1){
-						activateEvents.forEach(function(name){
-							removeEventListener(name, onActivate, true);
-						});
-					}
-				};
-				addEvents(window, activateEvents, onActivate);
 
 				lazyloadElems = document.getElementsByClassName(lazySizesConfig.lazyClass);
 				preloadElems = document.getElementsByClassName(lazySizesConfig.lazyClass + ' ' + lazySizesConfig.preloadClass);
@@ -432,7 +404,9 @@
 
 				addEventListener('hashchange', throttledCheckElements, true);
 
-				addEvents(document, ['transitionstart', 'transitionend', 'load', 'focus', 'mouseover', 'animationend', 'click'], throttledCheckElements);
+				['transitionstart', 'transitionend', 'load', 'focus', 'mouseover', 'animationend', 'click'].forEach(function(name){
+					document.addEventListener(name, throttledCheckElements, true);
+				});
 
 				if(!(isCompleted = /d$|^c/.test(document.readyState))){
 					addEventListener('load', onload);
@@ -532,7 +506,8 @@
 			customMedia: {},
 			init: true,
 			expFactor: 2,
-			expand: 300
+			expand: 300,
+			loadMode: 2
 		};
 
 		lazySizesConfig = window.lazySizesConfig || {};
