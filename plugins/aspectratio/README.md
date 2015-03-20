@@ -1,6 +1,8 @@
 #lazysizes aspectratio extension
 
-This plugin helps to pre-occupy the space needed for an image by calculating the height from the image width. This can serve as an alternative to different CSS intrinsic ratio patterns.
+This plugin helps to pre-occupy the space needed for an image by calculating the height from the image width. This can serve as an alternative to the different CSS intrinsic ratio patterns.
+
+Note: The CSS patterns are recommended, but especially in case of different ratio's for one image not so convenient.
 
 ##Markup API:
 

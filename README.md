@@ -404,6 +404,14 @@ The [include plugin](plugins/include) plugin enables lazySizes to lazyload conte
 ###[bgset plugin - lazy responsive background-image](plugins/bgset)
 The bgset plugin allows lazyload multiple background images with different resolutions/sizes (responsive background images). In case you only need one image use the unveilhooks extension.
 
+###[lazysizes custommedia extension](plugins/custommedia)
+
+[lazySizes custommedia extension](plugins/custommedia) allows you to automatically sync and manage your breakpoints between your CSS and the ``media`` attributes of your ``"picture > source"`` elements using the ``customMedia`` option of lazySizes.
+
+###[aspectratio extension](plugins/aspectratio)
+
+The [aspectratio extension](plugins/aspectratio) allows you to control the aspectratio of your images using markup instead of CSS. It is an alternative for the [CSS intrinsic ratio technique](#specify-dimensions).
+
 ###[print plugin](plugins/print)
 The [print plugin](plugins/print) plugin enables lazySizes to unveil all elements as soon as the user starts to print. (Or set ``lazySizesConfig.preloadAfterLoad`` to ``true``).
 
@@ -522,7 +530,10 @@ In case the exact ratio of your image is unknown you can also vary the intrinsic
 </div>
 ```
 
-**Note**: In case you use the "unknown intrinsic ratio pattern" and the width of the image will not approximately match the width of its container the ``data-sizes="auto"`` feature should not be used.
+**Note**:
+
+* In case you use the "unknown intrinsic ratio pattern" and the width of the image will not approximately match the width of its container the ``data-sizes="auto"`` feature should not be used.
+* see also the [aspectratio extension](plugins/aspectratio) for an alternative way to add aspectratio.
 
 ##Tip: Where/How to include lazySizes
 While lazy loading is a great feature, it is important for users that crucial inview images are loaded as fast as possible. (Most users start to interact with a page after inview images are loaded.)
