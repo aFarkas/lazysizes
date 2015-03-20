@@ -22,6 +22,17 @@ This plugin supports both art directed responsive images using the ``picture`` e
 Aside from above mentioned constraints everything else is fully supported. Here are some practical examples of fully supported responsive images:
 
 ```html
+<script>
+window.lazySizesConfig = window.lazySizesConfig || {};
+//in case you want to use custom media query aliases in your markup, instead of full media queries
+window.lazySizesConfig.customMedia = {
+    '--small': '(max-width: 480px)',
+    '--medium': '(max-width: 700px)',
+    '--large': '(max-width: 1400px)'
+};
+</script>
+
+
 <!-- use of width descriptor + data-sizes="auto" -->
 <img
     data-sizes="auto"

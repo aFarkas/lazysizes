@@ -37,9 +37,10 @@
 			};
 		})();
 
-		lazySizes.reassignCustomMedia = function(){
+		lazySizes.updateCustomMedia = function(){
 			var i, len, customMedia;
 			var elems = docElem.querySelectorAll('source[media][data-media][srcset]');
+
 			lazySizes.getCustomMedias();
 
 			for(i = 0, len = elems.length; i < len; i++){
