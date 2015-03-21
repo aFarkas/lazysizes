@@ -370,7 +370,6 @@
 			lowRuns += 8;
 
 			lazySizesConfig.loadMode = 3;
-			throttledCheckElements(true);
 
 			addEventListener('scroll', function(){
 				if(lazySizesConfig.loadMode == 3){
@@ -399,7 +398,7 @@
 				} else {
 					docElem.addEventListener('DOMNodeInserted', throttledCheckElements, true);
 					docElem.addEventListener('DOMAttrModified', throttledCheckElements, true);
-					setInterval(throttledCheckElements, 3000);
+					setInterval(throttledCheckElements, 999);
 				}
 
 				addEventListener('hashchange', throttledCheckElements, true);
@@ -506,7 +505,7 @@
 			customMedia: {},
 			init: true,
 			expFactor: 2,
-			expand: 300,
+			expand: 319,
 			loadMode: 2
 		};
 
