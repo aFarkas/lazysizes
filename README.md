@@ -77,7 +77,6 @@ Add the ``class`` ``lazyload`` to all ``img`` and ``iframe`` elements, which sho
 **Important: How ``sizes`` is calculated**: The automatic sizes calculation takes the width of the image. If it is below ``50`` (can be configured through the ``minSize`` option), lazySizes traverses up the DOM tree until it finds a parent which is over ``50`` and uses this number. Often the following general CSS rule might help: ``img[data-sizes="auto"] { display: block; }``. (see also [specifying image/iframe dimensions](#specify-dimensions))
 
 ##Recommended markup patterns
-For some image bots (search engines and social networks), legacy browsers (IE8) or JS disabled browsers, it is important to serve a usable ``src`` attribute:
 
 ###LQIP
 The LQIP pattern (low quality image placeholder). Simply add a low quality image as the ``src``:
@@ -98,7 +97,7 @@ The LQIP pattern (low quality image placeholder). Simply add a low quality image
 
 ###Simple pattern
 
-For non crucial or below the fold images or in case you want to save more initial image data the LQIP pattern can't be used (an extreme fuzzy image does neither work as a good enough first impression nor as a fallback), you do use client side rendering (no preload parser advantage) or you can't even generate a LQIP src, simply omit the ``src`` attribute  or add a data uri as fallback ``src``.
+For non crucial or below the fold images or in case you want to save more initial image data/requests the LQIP pattern can't be used (an extreme fuzzy image does neither work as a good enough first impression nor as a fallback), you do use client side rendering (no preload parser advantage) or you can't even generate a LQIP src, simply omit the ``src`` attribute  or add a data uri as fallback ``src``.
 
 ```html
 <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
@@ -126,6 +125,8 @@ In case disabled javascript is a concern you can combine the simple pattern with
 </noscript>
 <img src="grey.jpg" data-src="image.jpg" class="lazyload" />
 ```
+
+Note: As an alternative to the noscript pattern also checkout the [noscript extension](plugins/noscript).
 
 ###[data-expand] attribute
 Normally lazySizes will expand the viewport area to lazy preload images/iframes which might become visible soon. This value can be adjusted using the ``expand`` option.
@@ -177,7 +178,7 @@ Here the list of options:
 * ``lazySizesConfig.preloadClass`` (default: ``"lazypreload"``): Marker class for elements which should be lazy pre-loaded after onload. Those elements will be even preloaded, if the ``preloadAfterLoad`` option is set to ``false``. Note: This *class* can be also dynamically set (``$currentSlide.next().find('.lazyload').addClass('lazypreload');``).
 * ``lazySizesConfig.loadingClass`` (default: ``"lazyloading"``): This ``class`` will be added to ``img`` element as soon as image loading starts. Can be used to add unveil effects.
 * ``lazySizesConfig.loadedClass`` (default: ``"lazyloaded"``): This ``class`` will be added to any element as soon as the image is loaded or the image comes into view. Can be used to add unveil effects or to apply styles.
-* ``lazySizesConfig.expand`` (default: ``300``): The ``expand`` option expands the calculated visual viewport area in all directions, so that elements can be loaded before they are becoming visible. (Note: Reasonable values are between ``40`` and ``400`` (depending on the ``exFactor`` option.) In case you have a lot of small images or you are using the LQIP pattern you can lower the value, in case you have larger images set it to a higher value. Also note, that lazySizes will dynamically shrink this value to ``0``, if the browser is currently downloading and expand it if the browser network is currently idling and the user not scrolling  (by multiplying the ``expand`` option with ``2`` (``expFactor``)). This option can be overridden with the ``[data-expand]`` attribute.
+* ``lazySizesConfig.expand`` (default: ``300``): The ``expand`` option expands the calculated visual viewport area in all directions, so that elements can be loaded before they are becoming visible. (Note: Reasonable values are between ``60`` and ``1000`` (depending on the ``expFactor`` option.) In case you have a lot of small images or you are using the LQIP pattern you can lower the value, in case you have larger images set it to a higher value. Also note, that lazySizes will dynamically shrink this value to ``0``, if the browser is currently downloading and expand it if the browser network is currently idling and the user not scrolling  (by multiplying the ``expand`` option with ``2`` (``expFactor``)). This option can be overridden with the ``[data-expand]`` attribute.
 * ``lazySizesConfig.minSize`` (default: ``50``): For ``data-sizes="auto"`` feature. The minimum size of an image that is used to calculate the ``sizes`` attribute. In case it is under ``minSize`` the script traverses up the DOM tree until it finds a parent that is over ``minSize``.
 * ``lazySizesConfig.srcAttr`` (default: ``"data-src"``): The attribute, which should be transformed to ``src``.
 * ``lazySizesConfig.srcset`` (default: ``"data-srcset"``): The attribute, which should be transformed to ``srcset``.
@@ -214,7 +215,7 @@ window.lazySizesConfig.customMedia = {
         alt="image with artdirection" />
 </picture>
 ```
-* ``lazySizesConfig.expFactor`` (default: ``2``): The ``expFactor`` is used to calculate the "preload expand", by multiplying the normal ``expand`` with the ``expFactor``, which is used to preload assets while the browser is idling (no important network traffic and no scrolling).
+* ``lazySizesConfig.expFactor`` (default: ``2``): The ``expFactor`` is used to calculate the "preload expand", by multiplying the normal ``expand`` with the ``expFactor``, which is used to preload assets while the browser is idling (no important network traffic and no scrolling). (Reasonable values are between ``1.5`` and ``10`` depending on the ``expand`` option).
 * ``lazySizesConfig.loadMode`` (default: ``2``): The ``loadMode`` can be used to constrain the allowed loading mode. Possible values are 1 = only load visible elements, 2 = load also very near view elements (``expand`` option) and 3 = load also not so near elements (``expand`` * ``expFactor`` option). This value is automatically set to ``3`` after onload. Change this value to ``1`` if you (also) optimize for the onload event or change it to ``3`` if your onload event is already heavily delayed.
 * ``lazySizesConfig.init`` (default: ``true``): By default lazySizes initializes itself as soon as possible, to load inview assets as soon as possible. In the unlikely case you need to setup/configure something with a later script you can set this option to ``false`` and call ``lazySizes.init();`` later explicitly.
 
@@ -365,7 +366,7 @@ lazySizes.init();
 ```
 
 ##Browser Support
-**lazysizes** supports all browsers, that support [``document.getElementsByClassName``](http://caniuse.com/#feat=getelementsbyclassname) (== all browsers but not IE8-).
+**lazysizes** supports all browsers, that support [``document.getElementsByClassName``](http://caniuse.com/#feat=getelementsbyclassname) (== all browsers but not IE8-). In case you need to support IE8, see also the [noscript extension](plugins/noscript/readme.md#ie8) (or use a modified noscript pattern or the LQIP pattern).
 
 ##Contributing
 Fixes, PRs and issues are always welcome, make sure to create a new branch from the **master** (not the gh-pages branch), validate against JShint and test in all browsers. In case of an API/documentation change make sure to also document it here in the readme.md.
@@ -412,11 +413,15 @@ The bgset plugin allows lazyload multiple background images with different resol
 
 The [aspectratio extension](plugins/aspectratio) allows you to control the aspectratio of your images using markup instead of CSS. It is an alternative for the [CSS intrinsic ratio technique](#specify-dimensions).
 
+###[noscript extension](plugins/noscript)
+
+The [noscript extension](plugins/noscript) allows you to transform any HTML inside a ``noscript`` element as soon as it becomes visible.
+
 ###[print plugin](plugins/print)
 The [print plugin](plugins/print) plugin enables lazySizes to unveil all elements as soon as the user starts to print. (Or set ``lazySizesConfig.preloadAfterLoad`` to ``true``).
 
 ###[progressive plugin](plugins/progressive)
-The [progressive plugin](plugins/progressive) plugin adds better support for rendering progressive jpgs/pngs.
+The [progressive plugin](plugins/progressive) adds better support for rendering progressive jpgs/pngs.
 
 ##Why lazysizes
 In the past I often struggled using lazy image loaders, because the "main check function" is called repeatedly and with a high frequency. Which makes it hard to fulfill two purposes runtime and memory efficiency. And looking into the source code of most so called lazy loaders often also unveils lazy developers...
