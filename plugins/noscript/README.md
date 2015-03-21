@@ -1,0 +1,59 @@
+#lazysizes noscript extension
+
+The lazySizes noscript extension allows you to transform any HTML content inside a ``noscript`` element as soon as it becomes visible.
+
+##Markup
+
+The ``lazyload`` class has to be added to the parent element of the ``noscript`` element and this element has to also have a ``data-noscript`` attribute. As soon as it is near the viewport the content of the ``noscript`` element will replace the content of the ``.lazyload`  element.
+
+```html
+<div class="lazyload" data-noscript="">
+    <noscript>
+        <p>any kind of content you want to be unveiled</p>
+    </noscript>
+</div>
+
+<!-- or -->
+
+<div class="lazyload" data-noscript="">
+    <noscript>
+        <picture>
+            <!--[if IE 9]><video style="display: none;><![endif]-->
+            <source
+                srcset="http://placehold.it/500x600/11e87f/fff"
+                media="(max-width: 480px)" />
+            <source
+                srcset="http://placehold.it/700x300"
+                media="(max-width: 700px)" />
+            <source
+                srcset="http://placehold.it/1400x600/e8117f/fff"
+                media="(max-width: 1400px)" />
+            <source
+                srcset="http://placehold.it/1800x900/117fe8/fff" />
+            <!--[if IE 9]></video><![endif]-->
+            <img
+                src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                alt="image with artdirection" />
+        </picture>
+
+
+         <iframe frameborder="0"
+                allowfullscreen=""
+                src="//www.youtube.com/embed/ZfV-aYdU4uE">
+            </iframe>
+    </noscript>
+</div>
+```
+
+**Important note**: While you can also transform responsive images with this plugin, neither the ``data-sizes`` nor the ``customMedia`` features do work with the noscript extension.
+
+##<a name="ie8"></a>Add IE8- support with conditional comments
+The noscript extension can also be used in conjunction with conditional comments to add full support for IE8-:
+
+```html
+<div class="lazyload" data-noscript="">
+    <!--[if lte IE 8]><noscript><![endif]-->
+        <p>any kind of content you want to be unveiled</p>
+    <!--[if lte IE 8]></noscript><![endif]-->
+</div>
+```
