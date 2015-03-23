@@ -7,31 +7,28 @@
 		var supportPicture = !!window.HTMLPictureElement;
 
 		var handleLoadingElements = function(e){
-			var i, srcset, hasTriggered, onload, loading;
-
+			var i, isResponsive, hasTriggered, onload, loading;
 
 			var loadElements = e.target.querySelectorAll('img, iframe');
 
-
 			for(i = 0; i < loadElements.length; i++){
-				srcset = loadElements[i].getAttribute('srcset');
+				isResponsive = loadElements[i].getAttribute('srcset') || (loadElements[i].parentNode || dummyParent).toLowerCase() == 'picture';
 
-				if(!supportPicture &&
-					(srcset || (loadElements[i].parentNode || dummyParent).toLowerCase() == 'picture')){
+				if(!supportPicture && isResponsive){
 					lazySizes.uP(loadElements[i]);
 				}
 
-				if(!loadElements[i].complete && (srcset || loadElements[i].src)){
-					e.details.firesLoad = true;
+				if(!loadElements[i].complete && (isResponsive || loadElements[i].src)){
+					e.detail.firesLoad = true;
 
 					if(!onload || !loading){
 						loading = 0;
 						/*jshint loopfunc:true */
 						onload = function(evt){
 							loading--;
-							if(loading < 1 && !hasTriggered){
+							if((!evt || loading < 1) && !hasTriggered){
 								hasTriggered = true;
-								e.details.firesLoad = false;
+								e.detail.firesLoad = false;
 								lazySizes.fire(e.target, '_lazyloaded', {}, false, true);
 							}
 
@@ -41,10 +38,11 @@
 							}
 						};
 
-						setTimeout(onload, 3000);
+						setTimeout(onload, 2500);
 					}
 
 					loading++;
+
 					loadElements[i].addEventListener('load', onload);
 					loadElements[i].addEventListener('error', onload);
 				}

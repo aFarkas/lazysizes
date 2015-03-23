@@ -158,7 +158,7 @@
 	function createAttrObject(elem, src){
 		var opts = getElementOptions(elem, src);
 
-		riasCfg.modifyOptions.call(elem, {target: elem, details: opts});
+		riasCfg.modifyOptions.call(elem, {target: elem, details: opts, detail: opts});
 
 		lazySizes.fire(elem, 'lazyriasmodifyoptions', opts);
 		return opts;
@@ -169,7 +169,7 @@
 	}
 
 	addEventListener('lazybeforeunveil', function(e){
-		var elem, src, elemOpts, parent, sources, i, len, sourceSrc, sizes;
+		var elem, src, elemOpts, parent, sources, i, len, sourceSrc, sizes, detail;
 		elem = e.target;
 
 		if(e.defaultPrevented || !(src = getSrc(elem)) || riasCfg.disabled || !((sizes = elem.getAttribute(config.sizesAttr) || elem.getAttribute('sizes')) && regAllowedSizes.test(sizes))){return;}
@@ -189,11 +189,13 @@
 		}
 
 		if(sizes != 'auto'){
+			detail = {
+				width: parseInt(sizes, 10)
+			};
 			polyfill({
 				target: elem,
-				details: {
-					width: parseInt(sizes, 10)
-				}
+				detail: detail,
+				details: detail
 			});
 		}
 
@@ -263,11 +265,11 @@
 				return;
 			}
 
-			if(!elem._lazyrias && (!e.details.dataAttr || !getWSet(elem, true))){
+			if(!elem._lazyrias && (!e.detail.dataAttr || !getWSet(elem, true))){
 				return;
 			}
 
-			candidate = getCandidate(elem, e.details.width);
+			candidate = getCandidate(elem, e.detail.width);
 
 			if(candidate && candidate.u && elem._lazyrias.cur != candidate.u){
 				elem._lazyrias.cur = candidate.u;

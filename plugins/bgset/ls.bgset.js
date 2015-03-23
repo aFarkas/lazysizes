@@ -78,7 +78,7 @@
 		image = document.createElement('img');
 
 		image._lazybgsetLoading = true;
-		e.details.firesLoad = true;
+		e.detail.firesLoad = true;
 
 		createPicture(set, elem, image);
 
@@ -105,6 +105,6 @@
 
 	addEventListener('lazybeforesizes', function(e){
 		if(e.defaultPrevented || !e.target._lazybgset){return;}
-		e.details.width = proxyWidth(e.target._lazybgset);
+		e.detail.width = proxyWidth(e.target._lazybgset);
 	});
 })();

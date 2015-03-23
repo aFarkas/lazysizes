@@ -1,6 +1,8 @@
 (function(window, document){
 	'use strict';
 
+	if(!window.addEventListener){return;}
+
 	var imageRatio, extend$;
 
 	var regPicture = /^picture$/i;

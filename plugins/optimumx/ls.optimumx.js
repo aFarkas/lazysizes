@@ -18,6 +18,8 @@
 (function(window, document, undefined){
 	/*jshint eqnull:true */
 	'use strict';
+	if(!window.addEventListener){return;}
+
 	var config;
 
 	var regPicture = /^picture$/i;
@@ -218,10 +220,10 @@
 
 		lazyData = parseImg(e.target, '_lazyOptimumx');
 
-		width = e.details.width * optimumx;
+		width = e.detail.width * optimumx;
 
 		if(width && (lazyData.width || 0) < width){
-			attr = e.details.dataAttr ? lazySizes.cfg.srcsetAttr : 'srcset';
+			attr = e.detail.dataAttr ? lazySizes.cfg.srcsetAttr : 'srcset';
 
 			constrainSets(e.target, width, attr, '_lazyOptimumx');
 		}

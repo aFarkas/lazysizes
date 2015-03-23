@@ -189,13 +189,13 @@ $.extend(window.lazyTests, {
 
 			frameWindow.document.addEventListener('lazyriasmodifyoptions', function(e){
 				// change available widths and widthmap for .special-widths elements
-				e.details.widthmap = {
+				e.detail.widthmap = {
 					500: 'small',
 					1200: 'large'
 				};
 
 				//add new custom property with value 'foo'
-				e.details.foo = 'yo';
+				e.detail.foo = 'yo';
 			});
 
 			$image = $('<div style="width: 100%;">' +

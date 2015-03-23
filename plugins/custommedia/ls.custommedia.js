@@ -65,8 +65,8 @@
 
 	if(window.addEventListener){
 		docElem.addEventListener('lazybeforeunveil', create);
+		create();
+		setTimeout(create);
 	}
-	create();
-	setTimeout(create);
 
 })(window);

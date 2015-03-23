@@ -131,7 +131,7 @@ window.lazyTests = {
 				.find('img');
 
 			$topImage.on('lazybeforesizes', function(e){
-				e.originalEvent.details.width = 12;
+				e.originalEvent.detail.width = 12;
 				setTimeout(function(){
 					assert.equal($topImage.attr('sizes'), '12px');
 					done();

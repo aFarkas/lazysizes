@@ -68,7 +68,7 @@ or element specific and functional using the ``lazyriasmodifyoptions`` event.
 ```html
 <script>
 document.addEventListener('lazyriasmodifyoptions', function(event){
-    // event.details referes the placeholders/options and event.target the corresponding element
+    // event.details referes the placeholders/options and event.target the corresponding element  (Note: With version 1.1.0 the ``details`` property will be renamed to ``detail``.)
     event.details.quality = (window.devicePixelRatio || 1) > 1.4 ? 65 : 80;
 });
 </script>
@@ -226,7 +226,7 @@ document.addEventListener('lazyriasmodifyoptions', (function(){
     return function(e){
        var format = e.target.getAttribute('data-format');
        if(formats[format]){
-           e.details.widths = formats[format];
+           e.details.widths = formats[format]; // (Note: With version 1.1.0 the ``details`` property will be renamed to ``detail``.)
        }
    };
 })());
@@ -299,6 +299,7 @@ window.lazySizesConfig.rias = {
 document.addEventListener('lazyriasmodifyoptions', function(e){
     // change available widths and widthmap for .special-widths elements
     if($(e.target).is('.special-widths')){
+        // (Note: With version 1.1.0 the ``details`` property will be renamed to ``detail``.)
         e.details.widths = [320, 480, 600];
         e.details.widthmap = {
               320: 'small',

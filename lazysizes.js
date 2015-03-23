@@ -49,12 +49,12 @@
 		});
 	};
 
-	var triggerEvent = function(elem, name, details, noBubbles, noCanceable){
-		var event = document.createEvent('Event');
+	var triggerEvent = function(elem, name, detail, noBubbles, noCancelable){
+		var event = document.createEvent('CustomEvent');
 
-		event.initEvent(name, !noBubbles, !noCanceable);
+		event.initCustomEvent(name, !noBubbles, !noCancelable, detail);
 
-		event.details = details || {};
+		event.details =  event.detail;
 
 		elem.dispatchEvent(event);
 		return event;
@@ -297,13 +297,13 @@
 					isPicture = regPicture.test(parent.nodeName || '');
 				}
 
-				firesLoad = event.details.firesLoad || (('src' in elem) && (srcset || src || isPicture));
+				firesLoad = event.detail.firesLoad || (('src' in elem) && (srcset || src || isPicture));
 
 				if(firesLoad){
 					isLoading++;
 					addRemoveLoadEvents(elem, resetPreloading, true);
 					clearTimeout(resetPreloadingTimer);
-					resetPreloadingTimer = setTimeout(resetPreloading, 3000);
+					resetPreloadingTimer = setTimeout(resetPreloading, 2500);
 				}
 
 				if(isPicture){
@@ -434,7 +434,7 @@
 				event = triggerEvent(elem, 'lazybeforesizes', {width: width, dataAttr: !!dataAttr});
 
 				if(!event.defaultPrevented){
-					width = event.details.width;
+					width = event.detail.width;
 
 					if(width && width !== elem._lazysizesWidth){
 						elem._lazysizesWidth = width;
@@ -448,8 +448,8 @@
 							}
 						}
 
-						if(!event.details.dataAttr){
-							updatePolyfill(elem, event.details);
+						if(!event.detail.dataAttr){
+							updatePolyfill(elem, event.detail);
 						}
 					}
 				}

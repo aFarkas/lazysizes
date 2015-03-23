@@ -275,7 +275,7 @@
 		return candidate;
 	}
 
-	function loadInclude(details, includeCallback){
+	function loadInclude(detail, includeCallback){
 		var request = new XMLHttpRequest();
 
 		request.addEventListener('readystatechange', function () {
@@ -287,12 +287,12 @@
 			}
 		}, false);
 
-		request.open.apply(request, details.openArgs);
+		request.open.apply(request, detail.openArgs);
 		request.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-		if(details.xhrModifier){
-			details.xhrModifier(request, elem, candidate);
+		if(detail.xhrModifier){
+			detail.xhrModifier(request, elem, candidate);
 		}
-		request.send(details.sendData);
+		request.send(detail.sendData);
 	}
 
 	function loadRequire(urls, callback){
@@ -344,7 +344,7 @@
 	function loadCandidate(elem, candidate){
 		var include, xhrObj, modules;
 		var old = elem.lazyInclude.current || null;
-		var details = {
+		var detail = {
 			candidate: candidate,
 			openArgs: ['GET', candidate.urls.include, true],
 			sendData: null,
@@ -352,7 +352,7 @@
 			content: candidate.content && candidate.content.content || candidate.content,
 			oldCandidate: old
 		};
-		var event = lazySizes.fire(elem, 'lazyincludeload', details);
+		var event = lazySizes.fire(elem, 'lazyincludeload', detail);
 
 		if(event.defaultPrevented){
 			queue.d();
@@ -364,7 +364,7 @@
 			var status = xhrObj.status;
 			var content = xhrObj.content || xhrObj.responseText;
 			var reset = !!(content == null && old && old.urls.include);
-			var details = {
+			var detail = {
 				candidate: candidate,
 				content: content,
 				text: xhrObj.responseText || xhrObj.content,
@@ -375,7 +375,7 @@
 				insert: true,
 				resetHTML: reset
 			};
-			var moduleObj = {target: elem, details: details};
+			var moduleObj = {target: elem, details: detail, detail: detail};
 
 			candidate.modules = modules;
 
@@ -383,21 +383,21 @@
 				old.modules.forEach(unloadModule, moduleObj);
 				old.modules = null;
 
-				if(details.resetHTML && details.content == null && candidate.initial && candidate.initial.saved){
-					details.content = candidate.initial.content;
+				if(detail.resetHTML && detail.content == null && candidate.initial && candidate.initial.saved){
+					detail.content = candidate.initial.content;
 				}
 			}
 
 
 			modules.forEach(transformInclude, moduleObj);
 
-			event = lazySizes.fire(elem, 'lazyincludeloaded', details);
+			event = lazySizes.fire(elem, 'lazyincludeloaded', detail);
 
-			if(details.insert && details.isSuccess && !event.defaultPrevented && details.content != null && details.content != elem.innerHTML){
+			if(detail.insert && detail.isSuccess && !event.defaultPrevented && detail.content != null && detail.content != elem.innerHTML){
 				if(window.jQuery){
-					jQuery(elem).html(details.content);
+					jQuery(elem).html(detail.content);
 				} else {
-					elem.innerHTML = details.content;
+					elem.innerHTML = detail.content;
 				}
 			}
 
@@ -406,7 +406,7 @@
 			modules.forEach(loadModule, moduleObj);
 
 			setTimeout(function(){
-				lazySizes.fire(elem, 'lazyincluded', details);
+				lazySizes.fire(elem, 'lazyincluded', detail);
 			});
 
 			xhrObj = null;
@@ -419,15 +419,15 @@
 		if(candidate.urls.css){
 			loadStyles(candidate.urls.css);
 		}
-		if(details.content == null && candidate.urls.include){
-			loadInclude(details, function(data){
+		if(detail.content == null && candidate.urls.include){
+			loadInclude(detail, function(data){
 				xhrObj = data;
 				if(modules){
 					include();
 				}
 			});
 		} else {
-			xhrObj = details;
+			xhrObj = detail;
 		}
 
 		if(candidate.urls.amd){
@@ -460,7 +460,7 @@
 	function beforeUnveil(e){
 		if(e.defaultPrevented || !e.target.getAttribute('data-include')){return;}
 		queue.q(e.target);
-		e.details.firesLoad = true;
+		e.detail.firesLoad = true;
 	}
 
 	addEventListener('lazybeforeunveil', beforeUnveil, false);

@@ -77,10 +77,10 @@ For background images, use data-bg attribute:
 				// handle data-bg
 				bg = e.target.getAttribute('data-bg');
 				if (bg) {
-					e.details.firesLoad = true;
+					e.detail.firesLoad = true;
 					load = function(){
 						e.target.style.backgroundImage = 'url(' + bg + ')';
-						e.details.firesLoad = false;
+						e.detail.firesLoad = false;
 						lazySizes.fire(e.target, '_lazyloaded', {}, true, true);
 					};
 
@@ -90,10 +90,10 @@ For background images, use data-bg attribute:
 				// handle data-poster
 				poster = e.target.getAttribute('data-poster');
 				if(poster){
-					e.details.firesLoad = true;
+					e.detail.firesLoad = true;
 					load = function(){
 						e.target.poster = poster;
-						e.details.firesLoad = false;
+						e.detail.firesLoad = false;
 						lazySizes.fire(e.target, '_lazyloaded', {}, true, true);
 					};
 

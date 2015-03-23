@@ -327,7 +327,7 @@ document.addEventListener('lazybeforeunveil', function(e){
 <div class="chart lazyload" data-expand="-10"></div>
 ```
 
-* ``lazybeforesizes``: This event will be fired on each element with the ``data-sizes="auto"`` attribute right before the calculated ``sizes`` attribute will be set. The ``event.details.width`` property is set to the calculated width of the element and can be changed to any number. In case the event is ``defaultPrevented`` the ``sizes`` attribute won't be set.
+* ``lazybeforesizes``: This event will be fired on each element with the ``data-sizes="auto"`` attribute right before the calculated ``sizes`` attribute will be set. The ``event.details.width`` property is set to the calculated width of the element and can be changed to any number. In case the event is ``defaultPrevented`` the ``sizes`` attribute won't be set. (Note: With version 1.1.0 the ``details`` property will be renamed to ``detail``.)
 
 ####JS API - methods
 #####``lazySizes.loader.unveil(DOMNode)``
