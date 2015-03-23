@@ -505,7 +505,7 @@
 			customMedia: {},
 			init: true,
 			expFactor: 2,
-			expand: 319,
+			expand: 349,
 			loadMode: 2
 		};
 
