@@ -348,7 +348,7 @@
 
 				removeClass(elem, lazySizesConfig.lazyClass);
 
-				//remove curSrc == (elem.currentSrc || elem.src) it's a workaround for FF. see: https://bugzilla.mozilla.org/show_bug.cgi?id=608261
+				//remove curSrc == (elem.currentSrc || elem.src) in July/August 2015 it's a workaround for FF. see: https://bugzilla.mozilla.org/show_bug.cgi?id=608261
 				if( !firesLoad || (elem.complete && curSrc == (elem.currentSrc || elem.src)) ){
 					if(firesLoad){
 						resetPreloading(event);
@@ -387,7 +387,7 @@
 				preloadElems = document.getElementsByClassName(lazySizesConfig.lazyClass + ' ' + lazySizesConfig.preloadClass);
 
 				defaultExpand = lazySizesConfig.expand;
-				preloadExpand = defaultExpand * lazySizesConfig.expFactor;
+				preloadExpand = Math.round(defaultExpand * lazySizesConfig.expFactor);
 
 				addEventListener('scroll', throttledCheckElements, true);
 
@@ -504,8 +504,8 @@
 			minSize: 50,
 			customMedia: {},
 			init: true,
-			expFactor: 2,
-			expand: 349,
+			expFactor: 2.2,
+			expand: 319,
 			loadMode: 2
 		};
 

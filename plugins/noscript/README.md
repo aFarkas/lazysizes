@@ -48,7 +48,7 @@ The ``lazyload`` class has to be added to the parent element of the ``noscript``
 **Important note**: While you also can transform responsive images with this plugin, neither the ``data-sizes`` nor the ``customMedia`` features do work with the ``noscript`` extension. Also note: Android 2.x is not supported with this plugin.
 
 ##<a name="ie8"></a>Add IE8- support with conditional comments
-The noscript extension can also be used in conjunction with conditional comments to add full support for IE8-:
+The noscript extension can also be used in conjunction with conditional comments to add progressive enhancement support for IE8-:
 
 ```html
 <div class="lazyload" data-noscript="">
