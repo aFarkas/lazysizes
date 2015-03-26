@@ -3,11 +3,12 @@
 
 ##How to
 
-1. Download the [lazysizes.min.js script](lazysizes.min.js) and include **lazysizes** in your webpage.
+1. Download the [lazysizes.min.js script](lazysizes.min.js) and include **lazysizes** in your webpage. (Or install via npm: ``npm install lazysizes --save`` or bower ``bower install lazysizes --save``
 
     ```html
     <script src="lazysizes.min.js" async=""></script>
     ```
+    Note: While you can put the lazysizes script where you want with or without an ``async`` attribute. It is recommended to put it in the head (For more information see [here](#include-early)).
 
 2. lazysizes does not need any JS configuration: Add the ``class`` ``"lazyload"`` to your images/iframes in conjunction with a ``data-src`` or ``data-srcset`` attribute. Optionally you can also add a ``src`` attribute with a low quality image:
 
@@ -74,7 +75,7 @@ Add the ``class`` ``lazyload`` to all ``img`` and ``iframe`` elements, which sho
     responsive-image3.jpg 900w" class="lazyload" />
 ```
 
-**Important: How ``sizes`` is calculated**: The automatic sizes calculation takes the width of the image. If it is below ``50`` (can be configured through the ``minSize`` option), lazySizes traverses up the DOM tree until it finds a parent which is over ``50`` and uses this number. Often the following general CSS rule might help: ``img[data-sizes="auto"] { display: block; }``. (see also [specifying image/iframe dimensions](#specify-dimensions))
+**Important: How ``sizes`` is calculated**: The automatic sizes calculation takes the width of the image. If it is below ``40`` (can be configured through the ``minSize`` option), lazySizes traverses up the DOM tree until it finds a parent which is over ``40`` and uses this number. Often the following general CSS rule might help: ``img[data-sizes="auto"] { display: block; width: 100%; }``. (see also [specifying image/iframe dimensions](#specify-dimensions))
 
 ##Recommended markup patterns
 
@@ -179,7 +180,7 @@ Here the list of options:
 * ``lazySizesConfig.loadingClass`` (default: ``"lazyloading"``): This ``class`` will be added to ``img`` element as soon as image loading starts. Can be used to add unveil effects.
 * ``lazySizesConfig.loadedClass`` (default: ``"lazyloaded"``): This ``class`` will be added to any element as soon as the image is loaded or the image comes into view. Can be used to add unveil effects or to apply styles.
 * ``lazySizesConfig.expand`` (default: ``315``): The ``expand`` option expands the calculated visual viewport area in all directions, so that elements can be loaded before they are becoming visible. (Note: Reasonable values are between ``60`` and ``1000`` (depending on the ``expFactor`` option.) In case you have a lot of small images or you are using the LQIP pattern you can lower the value, in case you have larger images set it to a higher value. Also note, that lazySizes will dynamically shrink this value to ``0``, if the browser is currently downloading and expand it if the browser network is currently idling and the user not scrolling  (by multiplying the ``expand`` option with ``2`` (``expFactor``)). This option can be overridden with the ``[data-expand]`` attribute.
-* ``lazySizesConfig.minSize`` (default: ``50``): For ``data-sizes="auto"`` feature. The minimum size of an image that is used to calculate the ``sizes`` attribute. In case it is under ``minSize`` the script traverses up the DOM tree until it finds a parent that is over ``minSize``.
+* ``lazySizesConfig.minSize`` (default: ``40``): For ``data-sizes="auto"`` feature. The minimum size of an image that is used to calculate the ``sizes`` attribute. In case it is under ``minSize`` the script traverses up the DOM tree until it finds a parent that is over ``minSize``.
 * ``lazySizesConfig.srcAttr`` (default: ``"data-src"``): The attribute, which should be transformed to ``src``.
 * ``lazySizesConfig.srcset`` (default: ``"data-srcset"``): The attribute, which should be transformed to ``srcset``.
 * ``lazySizesConfig.sizesAttr`` (default: ``"data-sizes"``): The attribute, which should be transformed to ``sizes``. Makes almost only sense with the value ``"auto"``. Otherwise the ``sizes`` attribute should be used directly.
@@ -420,28 +421,6 @@ The [print plugin](plugins/print) plugin enables lazySizes to unveil all element
 ###[progressive plugin](plugins/progressive)
 The [progressive plugin](plugins/progressive) adds better support for rendering progressive jpgs/pngs.
 
-##Why lazysizes
-In the past I often struggled using lazy image loaders, because the "main check function" is called repeatedly and with a high frequency. Which makes it hard to fulfill two purposes runtime and memory efficiency. And looking into the source code of most so called lazy loaders often also unveils lazy developers...
-
-But in a world of responsive retina optimized images on the one hand and JS widgets like carousels or tabs (a lot of initially hidden images) on the other hand lazy loading images becomes more and more important. And therefore I created this project. And in fact **lazysizes** is different.
-
-Due to the fact, that it is designed to be invoked with a high frequency and therefore works highly efficient, it was possible to hook into all kind of events as also add a mutationobserver and therefore this lazyloader works as a simple drop in solution, you simply write/render your markup and no matter whether it was added by AJAX or revealed by a JS or CSS animation it will be picked up by **layzsizes**.
-
-```html
-<!-- responsive example: -->
-<img
-	data-sizes="auto"
-    src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
-	data-srcset="image2.jpg 300w,
-    image3.jpg 600w,
-    image4.jpg 900w" class="lazyload" />
-    
-<!-- or non-responsive: -->
-<img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
-    data-src="image.jpg"
-    class="lazyload" />
-```
-
 ##<a name="specify-dimensions"></a>Tip: Specifying image dimensions (minimizing reflows and avoiding page jumps)
 To minimize reflows, content jumping or unpredictable behavior with some other JS widgets (isotope, masonry, some sliders/carousels...) the width **and** the height of an image should be calculable by the browser before the image source itself is loaded. For "static" images this can be done using either CSS or using the content attributes:
 
@@ -537,7 +516,7 @@ In case the exact ratio of your image is unknown you can also vary the intrinsic
 * In case you use the "unknown intrinsic ratio pattern" and the width of the image will not approximately match the width of its container the ``data-sizes="auto"`` feature should not be used.
 * see also the [aspectratio extension](plugins/aspectratio) for an alternative way to add aspectratio.
 
-##Tip: Where/How to include lazySizes
+##<a href="include-early"></a>Tip: Where/How to include lazySizes
 While lazy loading is a great feature, it is important for users that crucial inview images are loaded as fast as possible. (Most users start to interact with a page after inview images are loaded.)
 
 In case you normally combine all your scripts into one large script and add this to the bottom of your page. It can be better for perceived performance to generate two or sometimes more script packages.
@@ -545,3 +524,25 @@ In case you normally combine all your scripts into one large script and add this
 One small package, which includes all scripts which have heavy influence on the content or the UI and another larger one which includes the normal behavior of the page.
 
 This smaller script, which should include lazySizes must than be placed before the other script(s) (even in the head) to load the crucial content as fast possible.
+
+##Why lazysizes
+In the past I often struggled using lazy image loaders, because the "main check function" is called repeatedly and with a high frequency. Which makes it hard to fulfill two purposes runtime and memory efficiency. And looking into the source code of most so called lazy loaders often also unveils lazy developers...
+
+But in a world of responsive retina optimized images on the one hand and JS widgets like carousels or tabs (a lot of initially hidden images) on the other hand lazy loading images becomes more and more important. And therefore I created this project. And in fact **lazysizes** is different.
+
+Due to the fact, that it is designed to be invoked with a high frequency and therefore works highly efficient, it was possible to hook into all kind of events as also add a mutationobserver and therefore this lazyloader works as a simple drop in solution, you simply write/render your markup and no matter whether it was added by AJAX or revealed by a JS or CSS animation it will be picked up by **layzsizes**.
+
+```html
+<!-- responsive example: -->
+<img
+	data-sizes="auto"
+    src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+	data-srcset="image2.jpg 300w,
+    image3.jpg 600w,
+    image4.jpg 900w" class="lazyload" />
+
+<!-- or non-responsive: -->
+<img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+    data-src="image.jpg"
+    class="lazyload" />
+```

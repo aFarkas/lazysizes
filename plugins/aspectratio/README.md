@@ -1,12 +1,12 @@
 #lazysizes aspectratio extension
 
-This plugin helps to pre-occupy the space needed for an image by calculating the height from the image width. This can serve as an alternative to the different CSS intrinsic ratio patterns.
+This plugin helps to pre-occupy the space needed for an image by calculating the height from the image width (This means the width has to be  calculable before the image is loaded). This can serve as an alternative to the different CSS intrinsic ratio patterns.
 
-Note: The CSS patterns are recommended, but especially in case of different ratio's for one image not so convenient.
+Note: The CSS patterns are recommended, but especially in case of different ratio's for art directed images not so convenient.
 
 ##Markup API:
 
-The value of the ``data-aspectratio`` can be defined as the *width* devided by the *height*  of the image.
+The value of the ``data-aspectratio`` has to be defined as the *width* devided by the *height*  of the image.
 
 Example values for an image width a width of 400 and a height of 200 (all mean the same): ``"400/200"``, ``"4/2"``, ``"2/1"``, ``"2"``
 
@@ -23,7 +23,7 @@ Example values for an image width a width of 400 and a height of 200 (all mean t
 	<!--[if IE 9]><video style="display: none;"><![endif]-->
 	<source
 		data-srcset="http://placehold.it/500x600/11e87f/fff"
-		data-aspectratio="500/600"
+		data-aspectratio="5/6"
 		media="--small" />
 	<source
 		data-srcset="http://placehold.it/700x300"
@@ -31,12 +31,13 @@ Example values for an image width a width of 400 and a height of 200 (all mean t
 		media="--medium" />
 	<source
 		data-srcset="http://placehold.it/1400x600/e8117f/fff"
-		data-aspectratio="1400/600"
+		data-aspectratio="14/6"
 		media="--large" />
 	<source
         data-srcset="http://placehold.it/1800x900/117fe8/fff"
-		data-aspectratio="1800/900" />
+		data-aspectratio="2" />
     <!--[if IE 9]></video><![endif]-->
+    <!-- note: the img element always has to have data-apsectratio attribute, even if it is using a dummy/placeholder image -->
     <img
         src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
         class="lazyload"
@@ -61,3 +62,5 @@ In case jQuery, ZEPTO, shoestring or another jQuery-like library is used the ``i
 $('.dynamic-wrapper').imageRatio();
 $('.dynamic-wrapper img[data-aspectratio]').imageRatio();
 ```
+
+Note: This plugin can also be used without lazySizes core script.

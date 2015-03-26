@@ -9,6 +9,19 @@
 	if(window.HTMLPictureElement && ((/ecko/).test(ua) && ua.match(/rv\:(\d+)/) && RegExp.$1 < 40)){
 		addEventListener('resize', (function(){
 			var timer;
+			var cloneNode = function(elem){
+				var $ = window.jQuery || window.Zepto || window.shoestring || window.$;
+				if($ && $.fn && $.fn.clone){
+					cloneNode = function(elem){
+						return $(elem).clone(true)[0];
+					};
+				} else {
+					cloneNode = function(elem){
+						return elem.cloneNode();
+					};
+				}
+				return cloneNode(elem);
+			};
 
 			var props = ['_lazybgset', '_lazyOptimumx', '_lazyrias'];
 			var switchImg = function(img){
@@ -21,7 +34,7 @@
 				img.removeAttribute('src');
 				img.removeAttribute('srcset');
 
-				clone = img.cloneNode();
+				clone = cloneNode(img);
 
 				parent.removeChild(img);
 

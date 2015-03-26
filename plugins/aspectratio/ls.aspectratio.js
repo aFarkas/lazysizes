@@ -3,7 +3,7 @@
 
 	if(!window.addEventListener){return;}
 
-	var imageRatio, extend$;
+	var imageRatio, extend$, $;
 
 	var regPicture = /^picture$/i;
 	var aspectRatioAttr = 'data-aspectratio';
@@ -22,6 +22,26 @@
 		return matchesMedia(media);
 	};
 
+	var addClass = function(elem, className){
+		if($){
+			$(elem).addClass(className);
+		} else if(window.lazySizes){
+			lazySizes.aC(elem, className);
+		} else {
+			elem.classList.add(className);
+		}
+	};
+
+	var removeClass = function(elem, className){
+		if($){
+			$(elem).removeClass(className);
+		} else if(window.lazySizes){
+			lazySizes.rC(elem, className);
+		} else {
+			elem.classList.remove(className);
+		}
+	};
+
 	function AspectRatio(){
 		this.ratioElems = document.getElementsByClassName('lazyaspectratio');
 		this._setupEvents();
@@ -33,7 +53,7 @@
 			var module = this;
 
 			var addRemoveAspectRatio = function(elem){
-				if(elem.naturalWidth < 50){
+				if(elem.naturalWidth < 36){
 					module.addAspectRatio(elem, true);
 				} else {
 					module.removeAspectRatio(elem, true);
@@ -82,7 +102,7 @@
 			}
 
 			for(i = 0; i < elements.length; i++){
-				if(elements[i].naturalWidth > 50){
+				if(elements[i].naturalWidth > 36){
 					this.removeAspectRatio(elements[i]);
 					continue;
 				}
@@ -98,7 +118,7 @@
 				for(i = 0, len = sources.length; i < len; i++){
 					customMedia = sources[i].getAttribute('data-media') || sources[i].getAttribute('media');
 
-					if(lazySizesConfig.customMedia[customMedia]){
+					if(window.lazySizesConfig && lazySizesConfig.customMedia[customMedia]){
 						customMedia = lazySizesConfig.customMedia[customMedia];
 					}
 
@@ -132,10 +152,15 @@
 			var width = img.offsetWidth;
 
 			if(!notNew){
-				lazySizes.aC(img, 'lazyaspectratio');
+				addClass(img, 'lazyaspectratio');
 			}
 
-			if(!width){return;}
+			if(width < 36){
+				if(width && window.console){
+					console.log('Define width of image, so we can calculate the height');
+				}
+				return;
+			}
 
 			ratio = this.getSelectedRatio(img);
 			ratio = this.parseRatio(ratio);
@@ -145,19 +170,21 @@
 			}
 		},
 		removeAspectRatio: function(img){
-			lazySizes.rC(img, 'lazyaspectratio');
+			removeClass(img, 'lazyaspectratio');
 			img.style.height = '';
 			img.removeAttribute(aspectRatioAttr);
 		}
 	};
 
 	extend$ = function(){
-		var $ = window.jQuery || window.Zepto || window.shoestring || window.$;
+		$ = window.jQuery || window.Zepto || window.shoestring || window.$;
 		if($ && $.fn && !$.fn.imageRatio && $.fn.filter && $.fn.add && $.fn.find){
 			$.fn.imageRatio = function(){
 				imageRatio.processImages(this.find(aspectRatioSel).add(this.filter(aspectRatioSel)));
 				return this;
 			};
+		} else {
+			$ = false;
 		}
 	};
 

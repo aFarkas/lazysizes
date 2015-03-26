@@ -131,8 +131,6 @@
 
 		var isLoading = 0;
 
-		var checkElementsIndex = 0;
-
 		var resetPreloading = function(e){
 			isLoading--;
 			if(e && e.target){
@@ -177,7 +175,7 @@
 			if(eLlen && (loadMode = lazySizesConfig.loadMode)){
 				start = Date.now();
 
-				i = checkElementsIndex;
+				i = 0;
 
 				lowRuns++;
 
@@ -190,7 +188,7 @@
 					currentExpand = shrinkExpand;
 				}
 
-				for(; i < eLlen; i++, checkElementsIndex++){
+				for(; i < eLlen; i++){
 
 					if(!lazyloadElems[i] || lazyloadElems[i]._lazyRace){continue;}
 
@@ -220,18 +218,11 @@
 						(eLright = rect.right) >= elemNegativeExpand &&
 						(eLleft = rect.left) <= eLvW &&
 						(eLbottom || eLright || eLleft || eLtop) &&
-						((isCompleted && currentExpand < preloadExpand && isLoading < 3 && lowRuns < 4 && !elemExpandVal && loadMode > 2) || isNestedVisible(lazyloadElems[i], elemExpand))){
-						checkElementsIndex--;
+						((isCompleted && isLoading < 3 && lowRuns < 4 && !elemExpandVal && loadMode > 2) || isNestedVisible(lazyloadElems[i], elemExpand))){
 						start += 2;
 						unveilElement(lazyloadElems[i]);
 						loadedSomething = true;
 					} else  {
-						if(Date.now() - start > 3){
-							checkElementsIndex++;
-							throttledCheckElements();
-							return;
-						}
-
 						if(!loadedSomething && isCompleted && !autoLoadElem &&
 							isLoading < 3 && lowRuns < 4 && loadMode > 2 &&
 							(preloadElems[0] || lazySizesConfig.preloadAfterLoad) &&
@@ -240,8 +231,6 @@
 						}
 					}
 				}
-
-				checkElementsIndex = 0;
 
 				if(autoLoadElem && !loadedSomething){
 					unveilElement(autoLoadElem);
@@ -501,7 +490,7 @@
 			srcsetAttr: 'data-srcset',
 			sizesAttr: 'data-sizes',
 			//preloadAfterLoad: false,
-			minSize: 50,
+			minSize: 40,
 			customMedia: {},
 			init: true,
 			expFactor: 2.2,
