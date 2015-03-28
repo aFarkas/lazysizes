@@ -3,7 +3,7 @@
 
 ##How to
 
-1. Download the [lazysizes.min.js script](lazysizes.min.js) and include **lazysizes** in your webpage. (Or install via npm: ``npm install lazysizes --save`` or bower ``bower install lazysizes --save``
+1. Download the [lazysizes.min.js script](https://cdn.rawgit.com/aFarkas/lazysizes/gh-pages/lazysizes.min.js) and include **lazysizes** in your webpage. (Or install via npm: ``npm install lazysizes --save`` or bower ``bower install lazysizes --save``)
 
     ```html
     <script src="lazysizes.min.js" async=""></script>
@@ -42,10 +42,10 @@
 2. **Future-proof**: It directly includes standard responsive image support (``picture`` and ``srcset``)
 3. **Separation of concerns**: For responsive image support it adds an automatic ``sizes`` calculation as also alias names for media queries feature. There is also no JS change needed if you add a scrollable container with CSS (overflow: auto) or create a mega menu containing images.
 4. **Performance**: It's based on high efficient and best practice code (runtime **and** memory) to work jank-free at 60fps. Can be used with thousands of images/iframes on CSS and JS heavy pages/webapps.
-5. **Extendable**: It provides JS and CSS hooks to extend lazySizes with any kind of lazy loading, lazy instantiation, inview callbacks or effects (see also the [available plugins/snippets](#plugins)).
-6. **Intelligent prefetch**: lazySizes prefetches/preloads near the view assets to improve user experience, but only while the browser network is idling and does not download inview assets already. (see also ``expand`` option)
-7. **Lightweight, but mature solution**: lazySizes has the right balance between a lightweight and a reliable and fast solution
-8. **SEO improved**: lazySizes does not hide images/assets from google.
+5. **Extendable**: It provides JS and CSS hooks to extend lazysizes with any kind of lazy loading, lazy instantiation, inview callbacks or effects (see also the [available plugins/snippets](#plugins)).
+6. **Intelligent prefetch**: lazysizes prefetches/preloads near the view assets to improve user experience, but only while the browser network is idling and does not download inview assets already. (see also ``expand`` option)
+7. **Lightweight, but mature solution**: lazysizes has the right balance between a lightweight and a reliable and fast solution
+8. **SEO improved**: lazysizes does not hide images/assets from google.
 
 ##[Demo with code examples](http://afarkas.github.io/lazysizes/#examples)
 Can be seen [here](http://afarkas.github.io/lazysizes/#examples).
@@ -75,7 +75,7 @@ Add the ``class`` ``lazyload`` to all ``img`` and ``iframe`` elements, which sho
     responsive-image3.jpg 900w" class="lazyload" />
 ```
 
-**Important: How ``sizes`` is calculated**: The automatic sizes calculation takes the width of the image. If it is below ``40`` (can be configured through the ``minSize`` option), lazySizes traverses up the DOM tree until it finds a parent which is over ``40`` and uses this number. Often the following general CSS rule might help: ``img[data-sizes="auto"] { display: block; width: 100%; }``. (see also [specifying image/iframe dimensions](#specify-dimensions))
+**Important: How ``sizes`` is calculated**: The automatic sizes calculation takes the width of the image. If it is below ``40`` (can be configured through the ``minSize`` option), lazysizes traverses up the DOM tree until it finds a parent which is over ``40`` and uses this number. Often the following general CSS rule might help: ``img[data-sizes="auto"] { display: block; width: 100%; }``. (see also [specifying image/iframe dimensions](#specify-dimensions))
 
 ##Recommended markup patterns
 
@@ -130,7 +130,7 @@ In case disabled javascript is a concern you can combine the simple pattern with
 Note: As an alternative to the noscript pattern also checkout the [noscript extension](plugins/noscript).
 
 ###[data-expand] attribute
-Normally lazySizes will expand the viewport area to lazy preload images/iframes which might become visible soon. This value can be adjusted using the ``expand`` option.
+Normally lazysizes will expand the viewport area to lazy preload images/iframes which might become visible soon. This value can be adjusted using the ``expand`` option.
 
 Additionally this general option can be overridden with the ``data-expand`` attribute for each element. Different than the general ``expand`` option the ``data-expand`` attribute also accepts negative values (All numbers but ``0`` are accepted!).
 
@@ -218,7 +218,7 @@ window.lazySizesConfig.customMedia = {
 ```
 * ``lazySizesConfig.expFactor`` (default: ``2.2``): The ``expFactor`` is used to calculate the "preload expand", by multiplying the normal ``expand`` with the ``expFactor``, which is used to preload assets while the browser is idling (no important network traffic and no scrolling). (Reasonable values are between ``1.5`` and ``10`` depending on the ``expand`` option).
 * ``lazySizesConfig.loadMode`` (default: ``2``): The ``loadMode`` can be used to constrain the allowed loading mode. Possible values are 1 = only load visible elements, 2 = load also very near view elements (``expand`` option) and 3 = load also not so near elements (``expand`` * ``expFactor`` option). This value is automatically set to ``3`` after onload. Change this value to ``1`` if you (also) optimize for the onload event or change it to ``3`` if your onload event is already heavily delayed.
-* ``lazySizesConfig.init`` (default: ``true``): By default lazySizes initializes itself as soon as possible, to load inview assets as soon as possible. In the unlikely case you need to setup/configure something with a later script you can set this option to ``false`` and call ``lazySizes.init();`` later explicitly.
+* ``lazySizesConfig.init`` (default: ``true``): By default lazysizes initializes itself as soon as possible, to load inview assets as soon as possible. In the unlikely case you need to setup/configure something with a later script you can set this option to ``false`` and call ``lazySizes.init();`` later explicitly.
 
 ####JS API - events
 **lazysizes** provides two events to modify or extend the behavior of **lazysizes**.
@@ -300,7 +300,7 @@ For CSS transition/animations or progress bars / spinners use the ``.lazyloading
 
 ```
 
-The ``lazybeforeunveil`` can also be used for lazy initialization and due to the fact that lazySizes also detects new elements in the DOM automatically also for auto- and self-initialization of UI widgets:
+The ``lazybeforeunveil`` can also be used for lazy initialization and due to the fact that lazysizes also detects new elements in the DOM automatically also for auto- and self-initialization of UI widgets:
 
 ```html
 <script>

@@ -1,6 +1,6 @@
 #lazysizes noscript/progressive enhancement extension
 
-The lazySizes noscript extension allows you to transform any HTML content inside a ``noscript`` element as soon as it becomes visible.
+The noscript extension is the true ultimate progressive enhancement extension for lazySizes. It allows you to transform any HTML inside a ``noscript`` element as soon as it becomes visible.
 
 ##Markup
 

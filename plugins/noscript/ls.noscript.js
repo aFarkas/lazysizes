@@ -38,7 +38,7 @@
 							}
 						};
 
-						setTimeout(onload, 2500);
+						setTimeout(onload, 3500);
 					}
 
 					loading++;

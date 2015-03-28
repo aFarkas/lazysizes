@@ -168,12 +168,11 @@
 		};
 
 		var checkElements = function() {
-			var i, start, rect, autoLoadElem, loadedSomething, elemExpand, elemNegativeExpand, elemExpandVal, beforeExpandVal;
+			var i, rect, autoLoadElem, loadedSomething, elemExpand, elemNegativeExpand, elemExpandVal, beforeExpandVal;
 
 			var eLlen = lazyloadElems.length;
 
 			if(eLlen && (loadMode = lazySizesConfig.loadMode)){
-				start = Date.now();
 
 				i = 0;
 
@@ -219,7 +218,6 @@
 						(eLleft = rect.left) <= eLvW &&
 						(eLbottom || eLright || eLleft || eLtop) &&
 						((isCompleted && isLoading < 3 && lowRuns < 4 && !elemExpandVal && loadMode > 2) || isNestedVisible(lazyloadElems[i], elemExpand))){
-						start += 2;
 						unveilElement(lazyloadElems[i]);
 						loadedSomething = true;
 					} else  {
@@ -392,7 +390,7 @@
 
 				addEventListener('hashchange', throttledCheckElements, true);
 
-				['transitionstart', 'transitionend', 'load', 'focus', 'mouseover', 'animationend', 'click'].forEach(function(name){
+				['focus', 'mouseover', 'click', 'load', 'transitionend', 'animationend'].forEach(function(name){
 					document.addEventListener(name, throttledCheckElements, true);
 				});
 
@@ -498,7 +496,7 @@
 			loadMode: 2
 		};
 
-		lazySizesConfig = window.lazySizesConfig || {};
+		lazySizesConfig = window.lazySizesConfig || window.lazysizesConfig || {};
 
 		for(prop in lazySizesDefaults){
 			if(!(prop in lazySizesConfig)){
