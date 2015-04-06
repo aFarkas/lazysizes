@@ -390,7 +390,8 @@
 
 				addEventListener('hashchange', throttledCheckElements, true);
 
-				['focus', 'mouseover', 'click', 'load', 'transitionend', 'animationend'].forEach(function(name){
+				//, 'fullscreenchange'
+				['focus', 'mouseover', 'click', 'load', 'transitionend', 'animationend', 'webkitAnimationEnd'].forEach(function(name){
 					document.addEventListener(name, throttledCheckElements, true);
 				});
 
