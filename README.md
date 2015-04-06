@@ -180,6 +180,11 @@ Here the list of options:
 * ``lazySizesConfig.loadingClass`` (default: ``"lazyloading"``): This ``class`` will be added to ``img`` element as soon as image loading starts. Can be used to add unveil effects.
 * ``lazySizesConfig.loadedClass`` (default: ``"lazyloaded"``): This ``class`` will be added to any element as soon as the image is loaded or the image comes into view. Can be used to add unveil effects or to apply styles.
 * ``lazySizesConfig.expand`` (default: ``315``): The ``expand`` option expands the calculated visual viewport area in all directions, so that elements can be loaded before they are becoming visible. (Note: Reasonable values are between ``60`` and ``1000`` (depending on the ``expFactor`` option.) In case you have a lot of small images or you are using the LQIP pattern you can lower the value, in case you have larger images set it to a higher value. Also note, that lazySizes will dynamically shrink this value to ``0``, if the browser is currently downloading and expand it if the browser network is currently idling and the user not scrolling  (by multiplying the ``expand`` option with ``2`` (``expFactor``)). This option can be overridden with the ``[data-expand]`` attribute.
+```js
+window.lazySizesConfig = window.lazySizesConfig || {};
+//set expand to a higher value on bigger displays
+window.lazySizesConfig.expand = Math.min(Math.max(document.documentElement.clientWidth, innerWidth), Math.max(document.documentElement.clientHeight, innerHeight)) > 600 ? 500 : 319;
+```
 * ``lazySizesConfig.minSize`` (default: ``40``): For ``data-sizes="auto"`` feature. The minimum size of an image that is used to calculate the ``sizes`` attribute. In case it is under ``minSize`` the script traverses up the DOM tree until it finds a parent that is over ``minSize``.
 * ``lazySizesConfig.srcAttr`` (default: ``"data-src"``): The attribute, which should be transformed to ``src``.
 * ``lazySizesConfig.srcset`` (default: ``"data-srcset"``): The attribute, which should be transformed to ``srcset``.
