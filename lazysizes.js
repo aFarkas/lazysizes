@@ -100,14 +100,12 @@
 			if(running){
 				return;
 			}
-			var delay = Date.now() - lastTime;
+			var delay = throttledBy - (Date.now() - lastTime);
 
 			running =  true;
 
-			if(delay > throttledBy){
+			if(delay < 0){
 				delay = 0;
-			} else {
-				delay = throttledBy - delay;
 			}
 			setTimeout(run, delay);
 		};
