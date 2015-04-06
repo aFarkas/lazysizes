@@ -87,29 +87,29 @@
 	};
 
 	var throttle = function(fn){
-		var run, timer;
-		var main = function(){
-			if(run){
-				run = false;
-				fn();
-			}
-		};
-		var handleVisibility = function(){
-			clearInterval(timer);
-			if(!document.hidden){
-				main();
-				timer = setInterval(main, 51);
-			}
+		var running;
+		var throttledBy = 98;
+		var lastTime = 0;
+		var run = function(){
+			running = false;
+			lastTime = Date.now();
+			fn();
 		};
 
-		document.addEventListener('visibilitychange', handleVisibility);
-		handleVisibility();
-
-		return function(force){
-			run = true;
-			if(force === true){
-				main();
+		return function(){
+			if(running){
+				return;
 			}
+			var delay = Date.now() - lastTime;
+
+			running =  true;
+
+			if(delay > throttledBy){
+				delay = 0;
+			} else {
+				delay = throttledBy - delay;
+			}
+			setTimeout(run, delay);
 		};
 	};
 
@@ -363,7 +363,7 @@
 					lazySizesConfig.loadMode = 2;
 				}
 				clearTimeout(scrollTimer);
-				scrollTimer = setTimeout(afterScroll, 66);
+				scrollTimer = setTimeout(afterScroll, 99);
 			}, true);
 		};
 
