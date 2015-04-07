@@ -75,8 +75,8 @@
 		return getComputedStyle(elem, null)[style];
 	};
 
-	var getWidth = function(elem, parent){
-		var width = elem.offsetWidth;
+	var getWidth = function(elem, parent, width){
+		width = width || elem.offsetWidth;
 
 		while(width < lazySizesConfig.minSize && parent && !elem._lazysizesWidth){
 			width =  parent.offsetWidth;
@@ -86,14 +86,22 @@
 		return width;
 	};
 
+	var rAF = window.requestAnimationFrame || setTimeout;
+
 	var throttle = function(fn){
 		var running;
-		var throttledBy = 98;
+		var throttledBy = 120;
 		var lastTime = 0;
 		var run = function(){
 			running = false;
 			lastTime = Date.now();
 			fn();
+		};
+		var afterRAF = function(){
+			setTimeout(run);
+		};
+		var onRAF = function(){
+			rAF(afterRAF);
 		};
 
 		return function(){
@@ -104,10 +112,10 @@
 
 			running =  true;
 
-			if(delay < 0){
-				delay = 0;
+			if(delay < 9){
+				delay = 9;
 			}
-			setTimeout(run, delay);
+			setTimeout(onRAF, delay);
 		};
 	};
 
@@ -218,7 +226,7 @@
 						(eLleft = rect.left) <= eLvW &&
 						(eLbottom || eLright || eLleft || eLtop) &&
 						((isCompleted && isLoading < 3 && lowRuns < 4 && !elemExpandVal && loadMode > 2) || isNestedVisible(lazyloadElems[i], elemExpand))){
-						unveilElement(lazyloadElems[i]);
+						unveilElement(lazyloadElems[i], false, rect.width);
 						checkElementsIndex--;
 						start += 2;
 						loadedSomething = true;
@@ -241,6 +249,7 @@
 					unveilElement(autoLoadElem);
 				}
 			}
+			checkElementsIndex = 0;
 		};
 
 		var throttledCheckElements = throttle(checkElements);
@@ -259,7 +268,7 @@
 			}
 		};
 
-		var unveilElement = function (elem, force){
+		var unveilElement = function (elem, force, width){
 			var sources, i, len, sourceSrcset, src, srcset, parent, isPicture, event, firesLoad, customMedia;
 
 			var curSrc = elem.currentSrc || elem.src;
@@ -274,14 +283,6 @@
 			elem._lazyRace = true;
 
 			if(!(event = triggerEvent(elem, 'lazybeforeunveil', {force: !!force})).defaultPrevented){
-
-				if(sizes){
-					if(isAuto){
-						autoSizer.updateElem(elem, true);
-					} else {
-						elem.setAttribute('sizes', sizes);
-					}
-				}
 
 				srcset = elem.getAttribute(lazySizesConfig.srcsetAttr);
 				src = elem.getAttribute(lazySizesConfig.srcAttr);
@@ -298,6 +299,23 @@
 					addRemoveLoadEvents(elem, resetPreloading, true);
 					clearTimeout(resetPreloadingTimer);
 					resetPreloadingTimer = setTimeout(resetPreloading, 2500);
+				}
+			}
+
+			rAF(function(){
+				if(elem._lazyRace){
+					delete elem._lazyRace;
+				}
+
+				removeClass(elem, lazySizesConfig.lazyClass);
+
+				if(sizes){
+					if(isAuto){
+						autoSizer.updateElem(elem, true, width);
+						addClass(elem, lazySizesConfig.autosizesClass);
+					} else {
+						elem.setAttribute('sizes', sizes);
+					}
 				}
 
 				if(isPicture){
@@ -323,24 +341,9 @@
 					}
 				}
 
-				addClass(elem, lazySizesConfig.loadingClass);
-				addRemoveLoadEvents(elem, switchLoadingClass, true);
-			}
-
-			setTimeout(function(){
-				if(elem._lazyRace){
-					delete elem._lazyRace;
-				}
-
-				if(sizes == 'auto'){
-					addClass(elem, lazySizesConfig.autosizesClass);
-				}
-
 				if(srcset || isPicture){
 					updatePolyfill(elem, {src: src});
 				}
-
-				removeClass(elem, lazySizesConfig.lazyClass);
 
 				//remove curSrc == (elem.currentSrc || elem.src) in July/August 2015 it's a workaround for FF. see: https://bugzilla.mozilla.org/show_bug.cgi?id=608261
 				if( !firesLoad || (elem.complete && curSrc == (elem.currentSrc || elem.src)) ){
@@ -348,7 +351,10 @@
 						resetPreloading(event);
 					}
 					switchLoadingClass(event);
+				} else {
+					addClass(elem, lazySizesConfig.loadingClass);
 				}
+
 				elem = null;
 			});
 		};
@@ -420,12 +426,12 @@
 	var autoSizer = (function(){
 		var autosizesElems;
 
-		var sizeElement = function (elem, dataAttr){
-			var width, sources, i, len, event;
+		var sizeElement = function (elem, dataAttr, width){
+			var sources, i, len, event;
 			var parent = elem.parentNode;
 
 			if(parent){
-				width = getWidth(elem, parent);
+				width = getWidth(elem, parent, width);
 				event = triggerEvent(elem, 'lazybeforesizes', {width: width, dataAttr: !!dataAttr});
 
 				if(!event.defaultPrevented){
@@ -500,7 +506,7 @@
 			customMedia: {},
 			init: true,
 			expFactor: 2.2,
-			expand: 319,
+			expand: 360,
 			loadMode: 2
 		};
 
