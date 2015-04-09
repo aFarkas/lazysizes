@@ -71,12 +71,12 @@ $.extend(window.lazyTests, {
 			assert.equal($image.attr('srcset'), null);
 
 			$image.on('lazybeforesizes', function(e){
-				setTimeout(function(){
+				afterUnveil(function(){
 					assert.equal($source.attr('src'), null);
 					assert.equal($source.attr('data-src'), null);
 					viewport[1]();
 					run();
-				}, 9);
+				});
 			});
 
 		});
@@ -143,12 +143,12 @@ $.extend(window.lazyTests, {
 			assert.equal($image.attr('srcset'), null);
 
 			$image.on('lazybeforesizes', function(e){
-				setTimeout(function(){
+				afterUnveil(function(){
 					assert.equal($source.attr('src'), null);
 					assert.equal($source.attr('data-src'), null);
 					viewport[1]();
 					run();
-				}, 9);
+				});
 			});
 
 		});
@@ -205,10 +205,10 @@ $.extend(window.lazyTests, {
 				.find('img');
 
 			$image.on('lazybeforesizes', function(e){
-				setTimeout(function(){
+				afterUnveil(function(){
 					viewport[1]();
 					run();
-				}, 9);
+				});
 			});
 		});
 	}],
@@ -268,10 +268,10 @@ $.extend(window.lazyTests, {
 			$picture.appendTo('body');
 
 			$image.on('lazybeforesizes', function(e){
-				setTimeout(function(){
+				afterUnveil(function(){
 					viewport[1]();
 					run();
-				}, 9);
+				});
 			});
 		});
 	}],
@@ -345,10 +345,10 @@ $.extend(window.lazyTests, {
 			$image = $('<img data-sizes="auto" style="width: 90%;" data-widths="[1, 500, 1200]" class="lazyload" />');
 
 			$image.on('lazybeforeunveil', function(e){
-				setTimeout(function(){
+				afterUnveil(function(){
 					placeholderSrc[1]();
 					run();
-				}, 9);
+				});
 			});
 
 			$image.appendTo('body');
@@ -438,10 +438,10 @@ $.extend(window.lazyTests, {
 			run();
 
 			$image.on('lazybeforeunveil', function(e){
-				setTimeout(function(){
+				afterUnveil(function(){
 					placeholderSrc[1]();
 					run();
-				}, 9);
+				});
 			});
 		});
 	}],
@@ -457,10 +457,10 @@ $.extend(window.lazyTests, {
 			;
 
 			$image.on('lazybeforeunveil', function(e){
-				setTimeout(function(){
+				afterUnveil(function(){
 					assert.equal($image.prop('currentSrc') || $image.attr('src'), 'data:,image-900');
 					done();
-				}, 9);
+				});
 			});
 		});
 	}],
@@ -478,10 +478,10 @@ $.extend(window.lazyTests, {
 			;
 
 			$image.on('lazybeforeunveil', function(e){
-				setTimeout(function(){
+				afterUnveil(function(){
 					assert.equal($image.prop('currentSrc') || $image.attr('src'), 'data:,image-1200');
 					done();
-				}, 9);
+				});
 			});
 		});
 	}]

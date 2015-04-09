@@ -90,7 +90,7 @@
 
 	var throttle = function(fn){
 		var running;
-		var throttledBy = 120;
+		var throttledBy = 99;
 		var lastTime = 0;
 		var run = function(){
 			running = false;
@@ -112,8 +112,8 @@
 
 			running =  true;
 
-			if(delay < 9){
-				delay = 9;
+			if(delay < 0){
+				delay = 0;
 			}
 			setTimeout(onRAF, delay);
 		};
@@ -186,10 +186,10 @@
 
 				lowRuns++;
 
-				if(currentExpand < preloadExpand && isLoading < 1 && lowRuns > 5 && loadMode > 2){
+				if(currentExpand < preloadExpand && isLoading < 1 && lowRuns > 4 && loadMode > 2){
 					currentExpand = preloadExpand;
 					lowRuns = 0;
-				} else if(currentExpand != defaultExpand && loadMode > 1 && lowRuns > 4){
+				} else if(currentExpand != defaultExpand && loadMode > 1 && lowRuns > 3){
 					currentExpand = defaultExpand;
 				} else {
 					currentExpand = shrinkExpand;
@@ -228,7 +228,7 @@
 						((isCompleted && isLoading < 3 && lowRuns < 4 && !elemExpandVal && loadMode > 2) || isNestedVisible(lazyloadElems[i], elemExpand))){
 						unveilElement(lazyloadElems[i], false, rect.width);
 						checkElementsIndex--;
-						start += 2;
+						start++;
 						loadedSomething = true;
 					} else  {
 						if(Date.now() - start > 3){
@@ -297,8 +297,6 @@
 				if(firesLoad){
 					isLoading++;
 					addRemoveLoadEvents(elem, resetPreloading, true);
-					clearTimeout(resetPreloadingTimer);
-					resetPreloadingTimer = setTimeout(resetPreloading, 2500);
 				}
 			}
 
@@ -317,6 +315,9 @@
 						elem.setAttribute('sizes', sizes);
 					}
 				}
+
+				clearTimeout(resetPreloadingTimer);
+				resetPreloadingTimer = setTimeout(resetPreloading, 2500);
 
 				if(isPicture){
 					sources = parent.getElementsByTagName('source');
@@ -350,9 +351,9 @@
 					if(firesLoad){
 						resetPreloading(event);
 					}
-					switchLoadingClass(event);
 				} else {
 					addClass(elem, lazySizesConfig.loadingClass);
+					addRemoveLoadEvents(elem, switchLoadingClass, true);
 				}
 
 				elem = null;
@@ -505,8 +506,8 @@
 			minSize: 40,
 			customMedia: {},
 			init: true,
-			expFactor: 2.2,
-			expand: 360,
+			expFactor: 2,
+			expand: 374,
 			loadMode: 2
 		};
 
