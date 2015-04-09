@@ -311,6 +311,8 @@
 					if(isAuto){
 						autoSizer.updateElem(elem, true, width);
 						addClass(elem, lazySizesConfig.autosizesClass);
+						srcset = elem.getAttribute(lazySizesConfig.srcsetAttr);
+						src = elem.getAttribute(lazySizesConfig.srcAttr);
 					} else {
 						elem.setAttribute('sizes', sizes);
 					}

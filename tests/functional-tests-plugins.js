@@ -29,6 +29,7 @@ $.extend(window.lazyTests, {
 				}
 				assert.equal($image.prop('src'), nowSrc);
 			};
+
 			var endTest = function(){
 				var haspolyfill = frameWindow.respimage || frameWindow.picturefill || (frameWindow.lazySizes.cfg.rias && frameWindow.lazySizes.pWS) || frameWindow.lazySizes.cfg.pf;
 				var nowSrc = window.HTMLPictureElement || !haspolyfill ?
@@ -71,7 +72,7 @@ $.extend(window.lazyTests, {
 			assert.equal($image.attr('srcset'), null);
 
 			$image.on('lazybeforesizes', function(e){
-				afterUnveil(function(){
+				setTimeout(function(){
 					assert.equal($source.attr('src'), null);
 					assert.equal($source.attr('data-src'), null);
 					viewport[1]();

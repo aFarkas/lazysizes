@@ -15,10 +15,11 @@ window.lazyTests = {
 
 			assert.equal($topImage.attr('src'), initialSrc);
 
-			setTimeout(function(){
+
+			afterUnveil(function(){
 				assert.equal($topImage.attr('src'), lazySrc);
 				done();
-			}, 70);
+			}, 140);
 		});
 	}],
 	simpleScrollView: ['lazyloads simple image after it scrolls near to view', function(assert){
@@ -39,7 +40,7 @@ window.lazyTests = {
 					})
 					.css({
 						position: 'absolute',
-						top: 999
+						top: 1999
 					})
 					.appendTo('body')
 				;
@@ -51,13 +52,14 @@ window.lazyTests = {
 			}, 70);
 
 			setTimeout(function(){
-				$(frameWindow).scrollTop(900);
+				$(frameWindow).scrollTop(1900);
 			}, 70);
+
 			$topImage.on('lazybeforeunveil', function(){
 				afterUnveil(function(){
 					assert.equal($topImage.attr('src'), lazySrc);
 					done();
-				});
+				}, 140);
 			});
 		});
 	}],
@@ -79,7 +81,7 @@ window.lazyTests = {
 					})
 					.css({
 						position: 'absolute',
-						top: 999
+						top: 9999
 					})
 					.appendTo('body')
 				;
@@ -95,6 +97,7 @@ window.lazyTests = {
 			}, 70);
 
 			$topImage.on('lazybeforeunveil', function(){
+
 				afterUnveil(function(){
 					assert.equal($topImage.attr('src'), lazySrc);
 					done();
@@ -116,7 +119,7 @@ window.lazyTests = {
 				afterUnveil(function(){
 					assert.equal($topImage.attr('sizes'), '100px');
 					done();
-				});
+				}, 140);
 			});
 		});
 	}],
@@ -135,7 +138,7 @@ window.lazyTests = {
 				afterUnveil(function(){
 					assert.equal($topImage.attr('sizes'), '12px');
 					done();
-				});
+				}, 140);
 			});
 		});
 	}],
