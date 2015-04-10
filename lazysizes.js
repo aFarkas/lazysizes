@@ -160,7 +160,7 @@
 			eLright += elemExpand;
 
 			while(visible && (parent = parent.offsetParent)){
-				visible = (isCompleted && isLoading < 2) || ((getCSS(parent, 'opacity') || 1) > 0);
+				visible = ((getCSS(parent, 'opacity') || 1) > 0);
 
 				if(visible && getCSS(parent, 'overflow') != 'visible'){
 					outerRect = parent.getBoundingClientRect();
@@ -171,6 +171,7 @@
 					;
 				}
 			}
+
 			return visible;
 		};
 
@@ -231,7 +232,7 @@
 						start++;
 						loadedSomething = true;
 					} else  {
-						if(Date.now() - start > 3){
+						if(lowRuns && Date.now() - start > 3){
 							checkElementsIndex++;
 							throttledCheckElements();
 							return;
