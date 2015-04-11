@@ -208,10 +208,6 @@
 
 					if(isLoading > 6 && (!elemExpandVal || ('src' in lazyloadElems[i]))){continue;}
 
-					if(elemExpand > shrinkExpand && (loadMode < 2 || isLoading > 3)){
-						elemExpand = shrinkExpand;
-					}
-
 					if(beforeExpandVal !== elemExpand){
 						eLvW = innerWidth + elemExpand;
 						elvH = innerHeight + elemExpand;

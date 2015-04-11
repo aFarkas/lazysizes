@@ -222,7 +222,7 @@ window.lazySizesConfig.customMedia = {
 </picture>
 ```
 * ``lazySizesConfig.expFactor`` (default: ``2``): The ``expFactor`` is used to calculate the "preload expand", by multiplying the normal ``expand`` with the ``expFactor``, which is used to preload assets while the browser is idling (no important network traffic and no scrolling). (Reasonable values are between ``1.5`` and ``10`` depending on the ``expand`` option).
-* ``lazySizesConfig.loadMode`` (default: ``2``): The ``loadMode`` can be used to constrain the allowed loading mode. Possible values are 1 = only load visible elements, 2 = load also very near view elements (``expand`` option) and 3 = load also not so near elements (``expand`` * ``expFactor`` option). This value is automatically set to ``3`` after onload. Change this value to ``1`` if you (also) optimize for the onload event or change it to ``3`` if your onload event is already heavily delayed.
+* ``lazySizesConfig.loadMode`` (default: ``2``): The ``loadMode`` can be used to constrain the allowed loading mode. Possible values are 0 = don't load anything, 1 = only load visible elements, 2 = load also very near view elements (``expand`` option) and 3 = load also not so near elements (``expand`` * ``expFactor`` option). This value is automatically set to ``3`` after onload. Change this value to ``1`` if you (also) optimize for the onload event or change it to ``3`` if your onload event is already heavily delayed.
 * ``lazySizesConfig.init`` (default: ``true``): By default lazysizes initializes itself as soon as possible, to load inview assets as soon as possible. In the unlikely case you need to setup/configure something with a later script you can set this option to ``false`` and call ``lazySizes.init();`` later explicitly.
 
 ####JS API - events
@@ -353,6 +353,10 @@ In case one or more image elements with the attribute ``data-sizes="auto"`` have
 ```js
 lazySizes.autoSizer.checkElems();
 ```
+
+####``lazySizes.loader.checkElems()``
+
+Tests whether new elements has came into view. Normally this method only needs to be called, if ``lazySizesConfig.loadMode`` was set to ``0``.
 
 #####``lazySizes.init()``
 
