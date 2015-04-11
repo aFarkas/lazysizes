@@ -17,6 +17,10 @@
 
 	var addEventListener = window.addEventListener;
 
+	var setTimeout = window.setTimeout;
+
+	var rAF = window.requestAnimationFrame || setTimeout;
+
 	var regPicture = /^picture$/i;
 
 	var loadEvents = ['load', 'error', 'lazyincluded', '_lazyloaded'];
@@ -86,8 +90,6 @@
 		return width;
 	};
 
-	var rAF = window.requestAnimationFrame || setTimeout;
-
 	var throttle = function(fn){
 		var running;
 		var throttledBy = 99;
@@ -112,8 +114,8 @@
 
 			running =  true;
 
-			if(delay < 0){
-				delay = 0;
+			if(delay < 9){
+				delay = 9;
 			}
 			setTimeout(onRAF, delay);
 		};
