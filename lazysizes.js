@@ -92,7 +92,6 @@
 
 	var throttle = function(fn){
 		var running;
-		var throttledBy = 99;
 		var lastTime = 0;
 		var run = function(){
 			running = false;
@@ -110,7 +109,7 @@
 			if(running){
 				return;
 			}
-			var delay = throttledBy - (Date.now() - lastTime);
+			var delay = lazySizesConfig.throttle - (Date.now() - lastTime);
 
 			running =  true;
 
@@ -509,7 +508,8 @@
 			init: true,
 			expFactor: 2,
 			expand: 374,
-			loadMode: 2
+			loadMode: 2,
+			throttle: 99
 		};
 
 		lazySizesConfig = window.lazySizesConfig || window.lazysizesConfig || {};
