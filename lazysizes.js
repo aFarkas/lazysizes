@@ -101,7 +101,7 @@
 		var afterRAF = function(){
 			setTimeout(run);
 		};
-		var onRAF = function(){
+		var getRAF = function(){
 			rAF(afterRAF);
 		};
 
@@ -116,7 +116,7 @@
 			if(delay < 9){
 				delay = 9;
 			}
-			setTimeout(onRAF, delay);
+			setTimeout(getRAF, delay);
 		};
 	};
 
@@ -177,11 +177,9 @@
 		};
 
 		var checkElements = function() {
-			var i, start, rect, autoLoadElem, loadedSomething, elemExpand, elemNegativeExpand, elemExpandVal, beforeExpandVal;
+			var eLlen, i, start, rect, autoLoadElem, loadedSomething, elemExpand, elemNegativeExpand, elemExpandVal, beforeExpandVal;
 
-			var eLlen = lazyloadElems.length;
-
-			if(eLlen && (loadMode = lazySizesConfig.loadMode)){
+			if((loadMode = lazySizesConfig.loadMode) && (eLlen = lazyloadElems.length)){
 
 				start = Date.now();
 				i = checkElementsIndex;
@@ -295,6 +293,8 @@
 				if(firesLoad){
 					isLoading++;
 					addRemoveLoadEvents(elem, resetPreloading, true);
+					clearTimeout(resetPreloadingTimer);
+					resetPreloadingTimer = setTimeout(resetPreloading, 2500);
 				}
 			}
 
@@ -315,9 +315,6 @@
 						elem.setAttribute('sizes', sizes);
 					}
 				}
-
-				clearTimeout(resetPreloadingTimer);
-				resetPreloadingTimer = setTimeout(resetPreloading, 2500);
 
 				if(isPicture){
 					sources = parent.getElementsByTagName('source');
