@@ -179,7 +179,7 @@
 		var checkElements = function() {
 			var eLlen, i, start, rect, autoLoadElem, loadedSomething, elemExpand, elemNegativeExpand, elemExpandVal, beforeExpandVal;
 
-			if((loadMode = lazySizesConfig.loadMode) && (eLlen = lazyloadElems.length)){
+			if((loadMode = lazySizesConfig.loadMode) && isLoading < 8 && (eLlen = lazyloadElems.length)){
 
 				start = Date.now();
 				i = checkElementsIndex;
@@ -204,8 +204,6 @@
 					if(!(elemExpandVal = lazyloadElems[i].getAttribute('data-expand')) || !(elemExpand = elemExpandVal * 1)){
 						elemExpand = currentExpand;
 					}
-
-					if(isLoading > 6 && (!elemExpandVal || ('src' in lazyloadElems[i]))){continue;}
 
 					if(beforeExpandVal !== elemExpand){
 						eLvW = innerWidth + elemExpand;
@@ -278,7 +276,7 @@
 
 			elem._lazyRace = true;
 
-			rAF(function(){
+			rAF(function lazyUnveil(){
 
 				if(elem._lazyRace){
 					delete elem._lazyRace;
@@ -316,33 +314,33 @@
 						addClass(elem, lazySizesConfig.loadingClass);
 						addRemoveLoadEvents(elem, switchLoadingClass, true);
 					}
-				}
 
-				if(isPicture){
-					sources = parent.getElementsByTagName('source');
-					for(i = 0, len = sources.length; i < len; i++){
-						if( (customMedia = lazySizesConfig.customMedia[sources[i].getAttribute('data-media') || sources[i].getAttribute('media')]) ){
-							sources[i].setAttribute('media', customMedia);
-						}
-						sourceSrcset = sources[i].getAttribute(lazySizesConfig.srcsetAttr);
-						if(sourceSrcset){
-							sources[i].setAttribute('srcset', sourceSrcset);
+					if(isPicture){
+						sources = parent.getElementsByTagName('source');
+						for(i = 0, len = sources.length; i < len; i++){
+							if( (customMedia = lazySizesConfig.customMedia[sources[i].getAttribute('data-media') || sources[i].getAttribute('media')]) ){
+								sources[i].setAttribute('media', customMedia);
+							}
+							sourceSrcset = sources[i].getAttribute(lazySizesConfig.srcsetAttr);
+							if(sourceSrcset){
+								sources[i].setAttribute('srcset', sourceSrcset);
+							}
 						}
 					}
-				}
 
-				if(srcset){
-					elem.setAttribute('srcset', srcset);
-				} else if(src){
-					if(regIframe.test(elem.nodeName)){
-						changeIframeSrc(elem, src);
-					} else {
-						elem.setAttribute('src', src);
+					if(srcset){
+						elem.setAttribute('srcset', srcset);
+					} else if(src){
+						if(regIframe.test(elem.nodeName)){
+							changeIframeSrc(elem, src);
+						} else {
+							elem.setAttribute('src', src);
+						}
 					}
-				}
 
-				if(srcset || isPicture){
-					updatePolyfill(elem, {src: src});
+					if(srcset || isPicture){
+						updatePolyfill(elem, {src: src});
+					}
 				}
 
 				//remove curSrc == (elem.currentSrc || elem.src) in July/August 2015 it's a workaround for FF. see: https://bugzilla.mozilla.org/show_bug.cgi?id=608261
