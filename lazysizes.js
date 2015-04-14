@@ -98,11 +98,11 @@
 			lastTime = Date.now();
 			fn();
 		};
-		var afterRAF = function(){
+		var afterAF = function(){
 			setTimeout(run);
 		};
-		var getRAF = function(){
-			rAF(afterRAF);
+		var getAF = function(){
+			rAF(afterAF);
 		};
 
 		return function(){
@@ -116,7 +116,7 @@
 			if(delay < 9){
 				delay = 9;
 			}
-			setTimeout(getRAF, delay);
+			setTimeout(getAF, delay);
 		};
 	};
 
@@ -278,41 +278,43 @@
 
 			elem._lazyRace = true;
 
-			if(!(event = triggerEvent(elem, 'lazybeforeunveil', {force: !!force})).defaultPrevented){
-
-				srcset = elem.getAttribute(lazySizesConfig.srcsetAttr);
-				src = elem.getAttribute(lazySizesConfig.srcAttr);
-
-				if(isImg) {
-					parent = elem.parentNode;
-					isPicture = regPicture.test(parent.nodeName || '');
-				}
-
-				firesLoad = event.detail.firesLoad || (('src' in elem) && (srcset || src || isPicture));
-
-				if(firesLoad){
-					isLoading++;
-					addRemoveLoadEvents(elem, resetPreloading, true);
-					clearTimeout(resetPreloadingTimer);
-					resetPreloadingTimer = setTimeout(resetPreloading, 2500);
-				}
-			}
-
 			rAF(function(){
+
 				if(elem._lazyRace){
 					delete elem._lazyRace;
 				}
 
 				removeClass(elem, lazySizesConfig.lazyClass);
 
-				if(sizes){
-					if(isAuto){
-						autoSizer.updateElem(elem, true, width);
-						addClass(elem, lazySizesConfig.autosizesClass);
-						srcset = elem.getAttribute(lazySizesConfig.srcsetAttr);
-						src = elem.getAttribute(lazySizesConfig.srcAttr);
-					} else {
-						elem.setAttribute('sizes', sizes);
+				if(!(event = triggerEvent(elem, 'lazybeforeunveil', {force: !!force})).defaultPrevented){
+
+					if(sizes){
+						if(isAuto){
+							autoSizer.updateElem(elem, true, width);
+							addClass(elem, lazySizesConfig.autosizesClass);
+						} else {
+							elem.setAttribute('sizes', sizes);
+						}
+					}
+
+					srcset = elem.getAttribute(lazySizesConfig.srcsetAttr);
+					src = elem.getAttribute(lazySizesConfig.srcAttr);
+
+					if(isImg) {
+						parent = elem.parentNode;
+						isPicture = regPicture.test(parent.nodeName || '');
+					}
+
+					firesLoad = event.detail.firesLoad || (('src' in elem) && (srcset || src || isPicture));
+
+					if(firesLoad){
+						isLoading++;
+						addRemoveLoadEvents(elem, resetPreloading, true);
+						clearTimeout(resetPreloadingTimer);
+						resetPreloadingTimer = setTimeout(resetPreloading, 2500);
+
+						addClass(elem, lazySizesConfig.loadingClass);
+						addRemoveLoadEvents(elem, switchLoadingClass, true);
 					}
 				}
 
@@ -348,9 +350,7 @@
 					if(firesLoad){
 						resetPreloading(event);
 					}
-				} else {
-					addClass(elem, lazySizesConfig.loadingClass);
-					addRemoveLoadEvents(elem, switchLoadingClass, true);
+					switchLoadingClass(event);
 				}
 
 				elem = null;

@@ -34,12 +34,7 @@ var createPicture = function($, srces){
 window.isTrident = /rident/.test(navigator.userAgent);
 window.bustedSrcset = (('srcset' in document.createElement('img')) && !('sizes' in document.createElement('img')));
 window.afterUnveil = (function(){
-	var rAF = window.requestAnimationFrame || setTimeout;
 	return function(fn, delay){
-		setTimeout(function(){
-			rAF(function(){
-				setTimeout(fn, delay || 9);
-			});
-		}, 120);
+		setTimeout(fn, delay || 9);
 	};
 })();
