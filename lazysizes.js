@@ -502,7 +502,7 @@
 			customMedia: {},
 			init: true,
 			expFactor: 2,
-			expand: 374,
+			expand: 359,
 			loadMode: 2,
 			throttle: 99
 		};

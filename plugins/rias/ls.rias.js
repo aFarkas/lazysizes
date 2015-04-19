@@ -226,10 +226,10 @@
 			var optimum = lazySizes.getX && lazySizes.getX(elem);
 			var x = Math.min(optimum || dpr, 2.2, dpr);
 
-			if(x < 1.2){
-				x *= 1.05;
+			if(x < 1.25){
+				x *= 1.1;
 			} else if(x > 1.6 && !optimum){
-				x *= 0.95;
+				x *= 0.9;
 			}
 
 			return x;

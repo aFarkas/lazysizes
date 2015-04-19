@@ -104,16 +104,14 @@ The predefined (ugly) ``getOptimumX`` callback looks like this:
 
 ```js
 window.lazySizesConfig = window.lazySizesConfig || {};
-window.lazySizesConfig.getOptimumX = function(/*element*/){
+window.lazySizesConfig.config.getOptimumX = function(/*element*/){
     var dpr = window.devicePixelRatio || 1;
     if(dpr > 2.4){
-        dpr *= 0.63; // returns 1.9 for 3
+        dpr *= 0.7; // returns 2.1 for 3
     } else if(dpr > 1.9){
         dpr *= 0.8; // returns 1.6 for 2
-    } else if(dpr > 1.4){
-        dpr *= 0.9; // returns 1.35 for 1.5
     }
-    return Math.round(dpr * 100) / 100;
+    return Math.min(Math.round(dpr * 100) / 100, 2);
 };
 ```
 
