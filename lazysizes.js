@@ -105,7 +105,7 @@
 			rAF(afterAF);
 		};
 
-		return function(){
+		return function(force){
 			if(running){
 				return;
 			}
@@ -113,10 +113,15 @@
 
 			running =  true;
 
-			if(delay < 9){
-				delay = 9;
+			if(delay < 4){
+				delay = 4;
 			}
-			setTimeout(getAF, delay);
+
+			if(force === true){
+				getAF();
+			} else {
+				setTimeout(getAF, delay);
+			}
 		};
 	};
 
@@ -262,6 +267,24 @@
 			}
 		};
 
+		var rafBatch = (function(){
+			var isRunning;
+			var batch = [];
+			var runBatch = function(){
+				while(batch.length){
+					(batch.shift())();
+				}
+				isRunning = false;
+			};
+			return function(fn){
+				batch.push(fn);
+				if(!isRunning){
+					isRunning = true;
+					rAF(runBatch);
+				}
+			};
+		})();
+
 		var unveilElement = function (elem, force, width){
 			var sources, i, len, sourceSrcset, src, srcset, parent, isPicture, event, firesLoad, customMedia;
 
@@ -276,7 +299,7 @@
 
 			elem._lazyRace = true;
 
-			rAF(function lazyUnveil(){
+			rafBatch(function lazyUnveil(){
 
 				if(elem._lazyRace){
 					delete elem._lazyRace;
@@ -411,7 +434,7 @@
 					onload();
 				}
 
-				throttledCheckElements();
+				throttledCheckElements(lazyloadElems.length > 0);
 			},
 			checkElems: throttledCheckElements,
 			unveil: unveilElement
