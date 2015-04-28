@@ -68,7 +68,7 @@
 		var polyfill;
 		if(!window.HTMLPictureElement){
 			if( ( polyfill = (window.picturefill || window.respimage || lazySizesConfig.pf) ) ){
-				polyfill({reevaluate: true, reparse: true, elements: [el]});
+				polyfill({reevaluate: true, elements: [el]});
 			} else if(full && full.src){
 				el.src = full.src;
 			}
@@ -93,6 +93,7 @@
 	var throttle = function(fn){
 		var running;
 		var lastTime = 0;
+		var Date = window.Date;
 		var run = function(){
 			running = false;
 			lastTime = Date.now();
@@ -142,7 +143,6 @@
 		var lowRuns = 0;
 
 		var isLoading = 0;
-		var checkElementsIndex = 0;
 
 		var resetPreloading = function(e){
 			isLoading--;
@@ -182,12 +182,11 @@
 		};
 
 		var checkElements = function() {
-			var eLlen, i, start, rect, autoLoadElem, loadedSomething, elemExpand, elemNegativeExpand, elemExpandVal, beforeExpandVal;
+			var eLlen, i, rect, autoLoadElem, loadedSomething, elemExpand, elemNegativeExpand, elemExpandVal, beforeExpandVal;
 
 			if((loadMode = lazySizesConfig.loadMode) && isLoading < 8 && (eLlen = lazyloadElems.length)){
 
-				start = Date.now();
-				i = checkElementsIndex;
+				i = 0;
 
 				lowRuns++;
 
@@ -200,7 +199,7 @@
 					currentExpand = shrinkExpand;
 				}
 
-				for(; i < eLlen; i++, checkElementsIndex++){
+				for(; i < eLlen; i++){
 
 					if(!lazyloadElems[i] || lazyloadElems[i]._lazyRace){continue;}
 
@@ -226,21 +225,12 @@
 						(eLbottom || eLright || eLleft || eLtop) &&
 						((isCompleted && isLoading < 3 && lowRuns < 4 && !elemExpandVal && loadMode > 2) || isNestedVisible(lazyloadElems[i], elemExpand))){
 						unveilElement(lazyloadElems[i], false, rect.width);
-						checkElementsIndex--;
-						start++;
 						loadedSomething = true;
-					} else  {
-						if(lowRuns && Date.now() - start > 3){
-							checkElementsIndex++;
-							throttledCheckElements();
-							return;
-						}
-						if(!loadedSomething && isCompleted && !autoLoadElem &&
-							isLoading < 3 && lowRuns < 4 && loadMode > 2 &&
-							(preloadElems[0] || lazySizesConfig.preloadAfterLoad) &&
-							(preloadElems[0] || (!elemExpandVal && ((eLbottom || eLright || eLleft || eLtop) || lazyloadElems[i].getAttribute(lazySizesConfig.sizesAttr) != 'auto')))){
-							autoLoadElem = preloadElems[0] || lazyloadElems[i];
-						}
+					} else if(!loadedSomething && isCompleted && !autoLoadElem &&
+						isLoading < 3 && lowRuns < 4 && loadMode > 2 &&
+						(preloadElems[0] || lazySizesConfig.preloadAfterLoad) &&
+						(preloadElems[0] || (!elemExpandVal && ((eLbottom || eLright || eLleft || eLtop) || lazyloadElems[i].getAttribute(lazySizesConfig.sizesAttr) != 'auto')))){
+						autoLoadElem = preloadElems[0] || lazyloadElems[i];
 					}
 				}
 
@@ -248,7 +238,6 @@
 					unveilElement(autoLoadElem);
 				}
 			}
-			checkElementsIndex = 0;
 		};
 
 		var throttledCheckElements = throttle(checkElements);
@@ -373,8 +362,6 @@
 					}
 					switchLoadingClass(event);
 				}
-
-				elem = null;
 			});
 		};
 

@@ -155,7 +155,7 @@ Or in case you are using the [Responsive Images as a Service extension (RIaS)](.
 ```html
 <script>
 document.addEventListener('lazyriasmodifyoptions', function(data){
-    data.details.quality = (window.devicePixelRatio || 1) > 1.4 ? 60 : 80;
+    data.detail.quality = (window.devicePixelRatio || 1) > 1.4 ? 60 : 80;
 });
 </script>
 
@@ -182,7 +182,7 @@ document.addEventListener('lazybeforesizes', function(e){
     var maxx = parseFloat(e.target.getAttribute('data-optimumx') || '', 10);
     var dpr = (window.devicePixelRatio || 1);
     if(maxx && maxx < (window.devicePixelRatio || 1)){
-        e.details.width = e.details.width * (maxx / dpr); // (Note: With version 1.1.0 the ``details`` property will be renamed to ``detail``.)
+        e.detail.width = e.detail.width * (maxx / dpr);
     }
 });
 </script>
@@ -206,7 +206,7 @@ But this technique can be used to tell the browser some small lies. Normally the
 document.addEventListener('lazybeforesizes', function(e){
     var dpr = (window.devicePixelRatio || 1);
     if(dpr < 1.1){
-        e.details.width = e.details.width * 1.05; // (Note: With version 1.1.0 the ``details`` property will be renamed to ``detail``.)
+        e.detail.width = e.detail.width * 1.05;
     }
 });
 </script>

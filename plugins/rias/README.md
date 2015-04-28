@@ -68,8 +68,8 @@ or element specific and functional using the ``lazyriasmodifyoptions`` event.
 ```html
 <script>
 document.addEventListener('lazyriasmodifyoptions', function(event){
-    // event.details referes the placeholders/options and event.target the corresponding element  (Note: With version 1.1.0 the ``details`` property will be renamed to ``detail``.)
-    event.details.quality = (window.devicePixelRatio || 1) > 1.4 ? 65 : 80;
+    // event.detail referes the placeholders/options and event.target the corresponding element
+    event.detail.quality = (window.devicePixelRatio || 1) > 1.4 ? 65 : 80;
 });
 </script>
 <img
@@ -110,7 +110,7 @@ All RiAS options can also be used as a {placeholder} inside the url.
     window.lazySizesConfig.rias = window.lazySizesConfig.rias || {};
     window.lazySizesConfig.rias.modifyOptions = function(data){
         //create higher compressed images on HighDPI devices:
-        data.details.quality = (window.devicePixelRatio || 1) > 1.4 ? 65 : 80;
+        data.detail.quality = (window.devicePixelRatio || 1) > 1.4 ? 65 : 80;
     };
     </script>
     <img
@@ -226,7 +226,7 @@ document.addEventListener('lazyriasmodifyoptions', (function(){
     return function(e){
        var format = e.target.getAttribute('data-format');
        if(formats[format]){
-           e.details.widths = formats[format]; // (Note: With version 1.1.0 the ``details`` property will be renamed to ``detail``.)
+           e.detail.widths = formats[format];
        }
    };
 })());
@@ -300,8 +300,8 @@ document.addEventListener('lazyriasmodifyoptions', function(e){
     // change available widths and widthmap for .special-widths elements
     if($(e.target).is('.special-widths')){
         // (Note: With version 1.1.0 the ``details`` property will be renamed to ``detail``.)
-        e.details.widths = [320, 480, 600];
-        e.details.widthmap = {
+        e.detail.widths = [320, 480, 600];
+        e.detail.widthmap = {
               320: 'small',
               480: 'medium',
               600: 'large'
@@ -309,9 +309,9 @@ document.addEventListener('lazyriasmodifyoptions', function(e){
     }
 
     //add new custom property with value 'foo'
-    e.details.custom = 'foo';
+    e.detail.custom = 'foo';
 
-    e.details.quality = (window.devicePixelRatio || 1) > 1.3 ? 65 : 80;
+    e.detail.quality = (window.devicePixelRatio || 1) > 1.3 ? 65 : 80;
 });
 </script>
 <img

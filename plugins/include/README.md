@@ -151,7 +151,7 @@ define(function(){
 
 	// lazysizes include features:
 
-	// called with the DOM element (data.target) and some other useful data (data.details)  (Note: With version 1.1.0 the ``details`` property will be renamed to ``detail``.)
+	// called with the DOM element (data.target) and some other useful data (data.detail)
 	// useful to initialize with the DOM element
 	Slider.lazyload = function(data){
 		var	Slider = new Slider(data.target);
@@ -165,11 +165,11 @@ define(function(){
 		// data.target._slider.destroy();
 	};
 
-	// gets invoked with the a simplified XHR object (data.details)  (Note: With version 1.1.0 the ``details`` property will be renamed to ``detail``.)
+	// gets invoked with the a simplified XHR object (data.detail)
 	// and the dom element (data.target)
 	Slider.lazytransform = function(data){
-		// var json = JSON.parse(data.details.responseText);
-		// data.details.response = template(json);
+		// var json = JSON.parse(data.detail.responseText);
+		// data.detail.response = template(json);
 	};
 
 	return Slider;
@@ -254,8 +254,8 @@ The include feature will always use a download queue to make sure, that multiple
 
 ###Events
 
-* ``lazyincludeload`` is a cancelable event fired at the element before the request is started. The ``event.details`` object can be used to modify the XHR request.  (Note: With version 1.1.0 the ``details`` property will be renamed to ``detail``.)
-* ``lazyincludeloaded`` is a cancelable event fired at the element after the request is complete, but before the content is added. The ``event.details.content`` property can be used to modify the content (for example to transform JSON to HTML).  (Note: With version 1.1.0 the ``details`` property will be renamed to ``detail``.)
+* ``lazyincludeload`` is a cancelable event fired at the element before the request is started. The ``event.detail`` object can be used to modify the XHR request.
+* ``lazyincludeloaded`` is a cancelable event fired at the element after the request is complete, but before the content is added. The ``event.detail.content`` property can be used to modify the content (for example to transform JSON to HTML).
 * ``lazyincluded`` is an event fired at the element right after the HTML was injected.
 
 ###Options
