@@ -287,6 +287,7 @@
 			if( (isAuto || !isCompleted) && isImg && curSrc && !elem.complete && !hasClass(elem, lazySizesConfig.errorClass)){return;}
 
 			elem._lazyRace = true;
+			isLoading++;
 
 			rafBatch(function lazyUnveil(){
 
@@ -318,7 +319,6 @@
 					firesLoad = event.detail.firesLoad || (('src' in elem) && (srcset || src || isPicture));
 
 					if(firesLoad){
-						isLoading++;
 						addRemoveLoadEvents(elem, resetPreloading, true);
 						clearTimeout(resetPreloadingTimer);
 						resetPreloadingTimer = setTimeout(resetPreloading, 2500);
@@ -359,6 +359,8 @@
 				if( !firesLoad || (elem.complete && curSrc == (elem.currentSrc || elem.src)) ){
 					if(firesLoad){
 						resetPreloading(event);
+					} else {
+						isLoading--;
 					}
 					switchLoadingClass(event);
 				}
