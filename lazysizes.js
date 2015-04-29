@@ -318,6 +318,8 @@
 
 					firesLoad = event.detail.firesLoad || (('src' in elem) && (srcset || src || isPicture));
 
+					event = {target: elem};
+
 					if(firesLoad){
 						addRemoveLoadEvents(elem, resetPreloading, true);
 						clearTimeout(resetPreloadingTimer);
