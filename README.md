@@ -376,7 +376,7 @@ lazySizes.init();
 ```
 
 ##Browser Support
-**lazysizes** supports all browsers, that support [``document.getElementsByClassName``](http://caniuse.com/#feat=getelementsbyclassname) (== all browsers but not IE8-). In case you need to support IE8, see also the [noscript extension](plugins/noscript/readme.md#ie8) (or use a modified noscript pattern or the LQIP pattern).
+**lazysizes** supports all browsers, that support [``document.getElementsByClassName``](http://caniuse.com/#feat=getelementsbyclassname) (== all browsers but not IE8-). In case you need to support IE8, see also the [noscript extension](plugins/noscript/README.md#ie8) (or use a modified noscript pattern or the LQIP pattern).
 
 ##Contributing
 Fixes, PRs and issues are always welcome, make sure to create a new branch from the **master** (not the gh-pages branch), validate against JShint and test in all browsers. In case of an API/documentation change make sure to also document it here in the readme.md.
@@ -525,7 +525,7 @@ In case the exact ratio of your image is unknown you can also vary the intrinsic
 * In case you use the "unknown intrinsic ratio pattern" and the width of the image will not approximately match the width of its container the ``data-sizes="auto"`` feature should not be used.
 * see also the [aspectratio extension](plugins/aspectratio) for an alternative way to add aspectratio.
 
-##<a href="include-early"></a>Tip: Where/How to include lazySizes
+##<a id="include-early"></a>Tip: Where/How to include lazySizes
 While lazy loading is a great feature, it is important for users that crucial inview images are loaded as fast as possible. (Most users start to interact with a page after inview images are loaded.)
 
 In case you normally combine all your scripts into one large script and add this to the bottom of your page. It can be better for perceived performance to generate two or sometimes more script packages.
