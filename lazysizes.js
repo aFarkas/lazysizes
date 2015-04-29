@@ -313,7 +313,7 @@
 
 					if(isImg) {
 						parent = elem.parentNode;
-						isPicture = regPicture.test(parent.nodeName || '');
+						isPicture = parent && regPicture.test(parent.nodeName || '');
 					}
 
 					firesLoad = event.detail.firesLoad || (('src' in elem) && (srcset || src || isPicture));
