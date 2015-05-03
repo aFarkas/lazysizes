@@ -203,8 +203,34 @@
 
 	// partial polyfill
 	var polyfill = (function(){
-		var reduceNearest = function (prev, curr, initial, ar) {
-			return (Math.abs(curr.w - ar.w) < Math.abs(prev.w - ar.w) ? curr : prev);
+		var ascendingSort = function( a, b ) {
+			return a.w - b.w;
+		};
+
+		var reduceCandidate = function (srces) {
+			var lowerCandidate, upScaleThreshold;
+			var len = srces.length;
+			var candidate = srces[len -1];
+			var i = 0;
+
+			for(i; i < len;i++){
+				candidate = srces[i];
+				candidate.d = candidate.w / srces.w;
+				if(candidate.d >= srces.d){
+					lowerCandidate = srces[i - 1];
+
+					if( lowerCandidate ) {
+						upScaleThreshold = srces.d - (0.2 * Math.pow(srces.d, 1.8));
+
+						if(lowerCandidate.d > upScaleThreshold &&
+							lowerCandidate.d + ((candidate.d - srces.d) * Math.pow(lowerCandidate.d - 0.4, 1.3)) > srces.d){
+							candidate = lowerCandidate;
+						}
+					}
+					break;
+				}
+			}
+			return candidate;
 		};
 
 		var getWSet = function(elem, testPicture){
@@ -224,21 +250,12 @@
 		var getX = function(elem){
 			var dpr = window.devicePixelRatio || 1;
 			var optimum = lazySizes.getX && lazySizes.getX(elem);
-			var x = Math.min(optimum || dpr, 2.2, dpr);
-
-			if(x < 1.25){
-				x *= 1.1;
-			} else if(x > 1.6 && !optimum){
-				x *= 0.9;
-			}
-
-			return x;
+			return Math.min(optimum || dpr, 2.7, dpr);
 		};
 
 		var getCandidate = function(elem, width){
 			var sources, i, len, media, srces;
 
-			width = Math.round(width * getX(elem));
 			srces = elem._lazyrias;
 
 			if(srces.isPicture && window.matchMedia){
@@ -253,7 +270,8 @@
 			if(!srces.w || srces.w < width){
 				srces.w = width;
 			}
-			return srces.reduce(reduceNearest);
+			srces.d = getX(elem);
+			return reduceCandidate(srces.sort(ascendingSort));
 		};
 
 		var polyfill = function(e){

@@ -299,7 +299,7 @@ $.extend(window.lazyTests, {
 						c: 'data:,img1-1200 1200w'
 					}
 				];
-				assert.propEqual($image.prop('_lazyrias'), success);
+				assert.propEqual(cleanUpDensity($image.prop('_lazyrias')), success);
 				assert.equal($image.attr('srcset'), 'data:,img1-1 1w, data:,img1-500 500w, data:,img1-1200 1200w');
 			};
 			var reinitTest = function(){
@@ -320,7 +320,7 @@ $.extend(window.lazyTests, {
 						c: 'data:,img2-1200 1200w'
 					}
 				];
-				assert.propEqual($image.prop('_lazyrias'), success);
+				assert.propEqual(cleanUpDensity($image.prop('_lazyrias')), success);
 				assert.equal($image.attr('srcset'), 'data:,img2-1 1w, data:,img2-500 500w, data:,img2-1200 1200w');
 			};
 			var test = [
@@ -385,7 +385,7 @@ $.extend(window.lazyTests, {
 						c: 'data:,img1-500000 500000w'
 					}
 				];
-				assert.propEqual($image.prop('_lazyOptimumx').cands, success);
+				assert.propEqual(cleanUpDensity($image.prop('_lazyOptimumx').cands), success);
 				assert.equal($image.prop('_lazyOptimumx').cSrcset.length, 1);
 				assert.equal($image.prop('_lazyOptimumx').cSrcset[0], 'data:,img1-5000 5000w');
 				assert.equal($image.attr('srcset'), 'data:,img1-5000 5000w');
@@ -408,7 +408,7 @@ $.extend(window.lazyTests, {
 						c: 'data:,img2-500000 500000w'
 					}
 				];
-				assert.propEqual($image.prop('_lazyOptimumx').cands, success);
+				assert.propEqual(cleanUpDensity($image.prop('_lazyOptimumx').cands), success);
 				assert.equal($image.prop('_lazyOptimumx').cSrcset.length, 2);
 				assert.equal($image.prop('_lazyOptimumx').cSrcset[0], 'data:,img2-50 50w');
 				assert.equal($image.prop('_lazyOptimumx').cSrcset[1], 'data:,img2-100 100w');

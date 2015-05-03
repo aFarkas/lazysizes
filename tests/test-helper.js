@@ -31,6 +31,12 @@ var createPicture = function($, srces){
 	});
 	return $picture;
 };
+window.cleanUpDensity = function(ar){
+	(ar || []).forEach(function(obj){
+		delete obj.d;
+	});
+	return ar;
+};
 window.isTrident = /rident/.test(navigator.userAgent);
 window.bustedSrcset = (('srcset' in document.createElement('img')) && !('sizes' in document.createElement('img')));
 window.afterUnveil = (function(){
