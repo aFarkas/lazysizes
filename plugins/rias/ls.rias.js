@@ -208,7 +208,7 @@
 		};
 
 		var reduceCandidate = function (srces) {
-			var lowerCandidate, upScaleThreshold;
+			var lowerCandidate, bonusFactor;
 			var len = srces.length;
 			var candidate = srces[len -1];
 			var i = 0;
@@ -217,13 +217,15 @@
 				candidate = srces[i];
 				candidate.d = candidate.w / srces.w;
 				if(candidate.d >= srces.d){
-					lowerCandidate = srces[i - 1];
+					if(!candidate.cached && (lowerCandidate = srces[i - 1]) &&
+						lowerCandidate.d > srces.d - (0.2 * Math.pow(srces.d, 1.7))){
+						bonusFactor = Math.pow(lowerCandidate.d - 0.4, 1.3);
 
-					if( lowerCandidate ) {
-						upScaleThreshold = srces.d - (0.2 * Math.pow(srces.d, 1.8));
+						if(lowerCandidate.cached) {
+							lowerCandidate.d += 0.2 * bonusFactor;
+						}
 
-						if(lowerCandidate.d > upScaleThreshold &&
-							lowerCandidate.d + ((candidate.d - srces.d) * Math.pow(lowerCandidate.d - 0.4, 1.3)) > srces.d){
+						if(lowerCandidate.d + ((candidate.d - srces.d) * bonusFactor) > srces.d){
 							candidate = lowerCandidate;
 						}
 					}
@@ -254,7 +256,7 @@
 		};
 
 		var getCandidate = function(elem, width){
-			var sources, i, len, media, srces;
+			var sources, i, len, media, srces, src;
 
 			srces = elem._lazyrias;
 
@@ -269,9 +271,11 @@
 
 			if(!srces.w || srces.w < width){
 				srces.w = width;
+				srces.d = getX(elem);
+				src = reduceCandidate(srces.sort(ascendingSort));
 			}
-			srces.d = getX(elem);
-			return reduceCandidate(srces.sort(ascendingSort));
+
+			return src;
 		};
 
 		var polyfill = function(e){
@@ -291,6 +295,7 @@
 
 			if(candidate && candidate.u && elem._lazyrias.cur != candidate.u){
 				elem._lazyrias.cur = candidate.u;
+				candidate.cached = true;
 				elem.setAttribute(config.srcAttr, candidate.u);
 				elem.setAttribute('src', candidate.u);
 			}

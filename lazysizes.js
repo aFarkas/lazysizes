@@ -106,7 +106,7 @@
 			rAF(afterAF);
 		};
 
-		return function(force){
+		return function(){
 			if(running){
 				return;
 			}
@@ -114,11 +114,7 @@
 
 			running =  true;
 
-			if(delay < 4){
-				delay = 4;
-			}
-
-			if(force === true){
+			if(delay < 0){
 				getAF();
 			} else {
 				setTimeout(getAF, delay);
@@ -425,7 +421,7 @@
 					onload();
 				}
 
-				throttledCheckElements(lazyloadElems.length > 0);
+				throttledCheckElements();
 			},
 			checkElems: throttledCheckElements,
 			unveil: unveilElement

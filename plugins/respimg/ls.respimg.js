@@ -32,7 +32,7 @@
 		};
 
 		var reduceCandidate = function (srces) {
-			var lowerCandidate, upScaleThreshold;
+			var lowerCandidate, bonusFactor;
 			var len = srces.length;
 			var candidate = srces[len -1];
 			var i = 0;
@@ -40,14 +40,17 @@
 			for(i; i < len;i++){
 				candidate = srces[i];
 				candidate.d = candidate.w / srces.w;
+
 				if(candidate.d >= srces.d){
-					lowerCandidate = srces[i - 1];
+					if(!candidate.cached && (lowerCandidate = srces[i - 1]) &&
+						lowerCandidate.d > srces.d - (0.2 * Math.pow(srces.d, 1.7))){
+						bonusFactor = Math.pow(lowerCandidate.d - 0.4, 1.3);
 
-					if( lowerCandidate ) {
-						upScaleThreshold = srces.d - (0.2 * Math.pow(srces.d, 1.8));
-
-						if(lowerCandidate.d > upScaleThreshold &&
-							lowerCandidate.d + ((candidate.d - srces.d) * Math.pow(lowerCandidate.d - 0.4, 1.3)) > srces.d){
+						if(lowerCandidate.cached) {
+							lowerCandidate.d += 0.2 * bonusFactor;
+						}
+						
+						if(lowerCandidate.d + ((candidate.d - srces.d) * bonusFactor) > srces.d){
 							candidate = lowerCandidate;
 						}
 					}
@@ -128,9 +131,9 @@
 				if(isImage && elem.parentNode){
 					parsedSet.isPicture = elem.parentNode.nodeName.toUpperCase() == 'PICTURE';
 
-					if(parsedSet.isPicture){
-						lazySizes.aC(elem, 'lazymatchmedia');
+					if(parsedSet.isPicture && elem.getAttribute(config.sizesAttr) != 'auto'){
 						if(window.matchMedia || (window.Modernizr && Modernizr.mq)){
+							lazySizes.aC(elem, 'lazymatchmedia');
 							runMatchMedia();
 						}
 					}
@@ -187,8 +190,8 @@
 				srces.d = getX(elem);
 				if(!srces.w || srces.w < width){
 					srces.w = width;
+					src = reduceCandidate(srces.sort(ascendingSort));
 				}
-				src = reduceCandidate(srces.sort(ascendingSort));
 			} else {
 				src = srces[0];
 			}
@@ -202,6 +205,7 @@
 
 			if(candidate && candidate.u && elem._lazypolyfill.cur != candidate.u){
 				elem._lazypolyfill.cur = candidate.u;
+				candidate.cached = true;
 				elem.setAttribute(config.srcAttr, candidate.u);
 				elem.setAttribute('src', candidate.u);
 			}
