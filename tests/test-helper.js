@@ -33,7 +33,12 @@ var createPicture = function($, srces){
 };
 window.cleanUpDensity = function(ar){
 	(ar || []).forEach(function(obj){
-		delete obj.d;
+		if(obj.d){
+			delete obj.d;
+		}
+		if(obj.cached){
+			delete obj.cached;
+		}
 	});
 	return ar;
 };
