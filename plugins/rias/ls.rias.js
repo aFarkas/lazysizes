@@ -13,6 +13,8 @@
 	var regObj = /^\[.*\]|\{.*\}$/;
 	var regAllowedSizes = /^(?:auto|\d+(px)?)$/;
 	var anchor = document.createElement('a');
+	var img = document.createElement('img');
+	var buggySizes = ('srcset' in img) && !('sizes' in img);
 
 	(function(){
 		var prop;
@@ -148,7 +150,12 @@
 
 		src.isPicture = opts.isPicture;
 
-		elem.setAttribute(config.srcsetAttr, src.srcset.join(', '));
+		if(buggySizes && elem.nodeName.toUpperCase() == 'IMG'){
+			elem.removeAttribute(config.srcsetAttr);
+		} else {
+			elem.setAttribute(config.srcsetAttr, src.srcset.join(', '));
+		}
+
 		Object.defineProperty(elem, '_lazyrias', {
 			value: src,
 			writable: true
@@ -165,7 +172,7 @@
 	}
 
 	function getSrc(elem){
-		return elem.getAttribute( elem.getAttribute('data-srcattr') || riasCfg.srcAttr ) || elem.getAttribute(config.srcsetAttr) || elem.getAttribute(config.srcAttr) || '';
+		return elem.getAttribute( elem.getAttribute('data-srcattr') || riasCfg.srcAttr ) || elem.getAttribute(config.srcsetAttr) || elem.getAttribute(config.srcAttr) || elem.getAttribute('data-pfsrcset') || '';
 	}
 
 	addEventListener('lazybeforeunveil', function(e){
