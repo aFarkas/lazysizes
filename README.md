@@ -75,7 +75,7 @@ Add the ``class`` ``lazyload`` to all ``img`` and ``iframe`` elements, which sho
     responsive-image3.jpg 900w" class="lazyload" />
 ```
 
-**Important: How ``sizes`` is calculated**: The automatic sizes calculation takes the width of the image. If it is below ``40`` (can be configured through the ``minSize`` option), lazysizes traverses up the DOM tree until it finds a parent which is over ``40`` and uses this number. Often the following general CSS rule might help: ``img[data-sizes="auto"] { display: block; width: 100%; }``. (see also [specifying image/iframe dimensions](#specify-dimensions))
+**Important: How ``sizes`` is calculated**: The automatic sizes calculation takes the width of the image. If it is below ``40`` (can be configured through the ``minSize`` option), lazysizes traverses up the DOM tree until it finds a parent which is over ``40`` and uses this number. Often the following general CSS rule might help: ``img[data-sizes="auto"] { display: block; width: 100%; }``. (see also [specifying image/iframe dimensions](#specify-dimensions)) The ``data-sizes="auto"`` feature only makes sense if you use the ``srcset`` attribute with *width* descriptors.
 
 ##Recommended markup patterns
 
@@ -524,6 +524,24 @@ In case the exact ratio of your image is unknown you can also vary the intrinsic
 
 * In case you use the "unknown intrinsic ratio pattern" and the width of the image will not approximately match the width of its container the ``data-sizes="auto"`` feature should not be used.
 * see also the [aspectratio extension](plugins/aspectratio) for an alternative way to add aspectratio.
+
+###Updateing layout of JS widgets
+In case you can't specify the image dimensions using CSS or one of the above suggested methods. You can use the following pattern to update your JS widgets (sliders/masonry):
+
+```js
+$('.my-widget').each(function(){
+    var $module = $(this);
+    var update = function(){
+        $module.myWidget('updateLayout');
+    };
+    
+    // Note: Instead of waiting for all images until we initialize the widget
+    // we use event capturing to update the widget's layout progressively.
+    this.addEventListener('load', update, true);
+    
+    $module.myWidget();
+});
+```
 
 ##<a id="include-early"></a>Tip: Where/How to include lazySizes
 While lazy loading is a great feature, it is important for users that crucial inview images are loaded as fast as possible. (Most users start to interact with a page after inview images are loaded.)
