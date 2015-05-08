@@ -114,11 +114,10 @@
 
 			running =  true;
 
-			if(delay < 0){
-				getAF();
-			} else {
-				setTimeout(getAF, delay);
+			if(delay < 9){
+				delay = 9;
 			}
+			setTimeout(getAF, delay);
 		};
 	};
 
@@ -186,10 +185,10 @@
 
 				lowRuns++;
 
-				if(currentExpand < preloadExpand && isLoading < 1 && lowRuns > 4 && loadMode > 2){
+				if(currentExpand < preloadExpand && isLoading < 1 && lowRuns > 3 && loadMode > 2){
 					currentExpand = preloadExpand;
 					lowRuns = 0;
-				} else if(currentExpand != defaultExpand && loadMode > 1 && lowRuns > 3){
+				} else if(currentExpand != defaultExpand && loadMode > 1 && lowRuns > 2){
 					currentExpand = defaultExpand;
 				} else {
 					currentExpand = shrinkExpand;
