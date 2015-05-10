@@ -526,7 +526,7 @@ In case the exact ratio of your image is unknown you can also vary the intrinsic
 * see also the [aspectratio extension](plugins/aspectratio) for an alternative way to add aspectratio.
 
 ###Updateing layout of JS widgets
-In case you can't specify the image dimensions using CSS or one of the above suggested methods. You can use the following pattern to update your JS widgets (sliders/masonry):
+In case you can't specify the image dimensions using CSS or one of the above suggested methods and your JS widgets have problems to calculate the right dimensions. You can use the following pattern to update your JS widgets (sliders/masonry):
 
 ```js
 $('.my-widget').each(function(){

@@ -135,9 +135,9 @@
 
 		var shrinkExpand = 0;
 		var currentExpand = 0;
-		var lowRuns = 0;
 
 		var isLoading = 0;
+		var lowRuns = 1;
 
 		var resetPreloading = function(e){
 			isLoading--;
@@ -188,7 +188,7 @@
 				if(currentExpand < preloadExpand && isLoading < 1 && lowRuns > 3 && loadMode > 2){
 					currentExpand = preloadExpand;
 					lowRuns = 0;
-				} else if(currentExpand != defaultExpand && loadMode > 1 && lowRuns > 2){
+				} else if(currentExpand != defaultExpand && loadMode > 1 && lowRuns > 2 && isLoading < 6){
 					currentExpand = defaultExpand;
 				} else {
 					currentExpand = shrinkExpand;
@@ -513,7 +513,7 @@
 			expFactor: 2,
 			expand: 359,
 			loadMode: 2,
-			throttle: 99
+			throttle: 125
 		};
 
 		lazySizesConfig = window.lazySizesConfig || window.lazysizesConfig || {};
