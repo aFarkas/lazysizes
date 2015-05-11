@@ -12,7 +12,7 @@
 			var loadElements = e.target.querySelectorAll('img, iframe');
 
 			for(i = 0; i < loadElements.length; i++){
-				isResponsive = loadElements[i].getAttribute('srcset') || (loadElements[i].parentNode || dummyParent).toLowerCase() == 'picture';
+				isResponsive = loadElements[i].getAttribute('srcset') || (loadElements[i].parentNode || dummyParent).nodeName.toLowerCase() == 'picture';
 
 				if(!supportPicture && isResponsive){
 					lazySizes.uP(loadElements[i]);
