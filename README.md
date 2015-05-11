@@ -165,11 +165,13 @@ Options can be set by declaring a global configuration option object named ``laz
 ```js
 window.lazySizesConfig = window.lazySizesConfig || {};
 
-// use .postbone instead of .lazyload
-window.lazySizesConfig.lazyClass = 'postbone';
+// use .lazy instead of .lazyload
+window.lazySizesConfig.lazyClass = 'lazy';
 
-// preload all lazy elements in a lazy loading queue after onload, if on desktop
-window.lazySizesConfig.preloadAfterLoad = !(/mobi/i.test(navigator.userAgent));
+// use data-original instead of data-src
+lazySizesConfig.srcAttr = 'data-original';
+
+lazySizesConfig.loadMode = 1;
 ```
 
 Here the list of options:

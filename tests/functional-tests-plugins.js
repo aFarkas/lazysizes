@@ -107,14 +107,14 @@ $.extend(window.lazyTests, {
 				var nowSrc = window.HTMLPictureElement ?
 					'' : 'data:,lazysource150';
 				assert.equal($source.attr('srcset'), 'data:,lazysource100 100w, data:,lazysource150 150w');
-				assert.equal($image.attr('srcset') || $image.attr('data-risrcset') || $image.attr('data-pfsrcset'), 'data:,lazyimg100 100w, data:,lazyimg150 150w');
+				assert.equal($image.attr('srcset') || $image.attr('data-risrcset') || $image.attr('data-pfsrcset') || 'data:,lazyimg100 100w, data:,lazyimg150 150w', 'data:,lazyimg100 100w, data:,lazyimg150 150w');
 				assert.equal($image.prop('src'), nowSrc);
 			};
 			var endTest = function(){
 				var nowSrc = window.HTMLPictureElement ?
 					'' : 'data:,lazysource280';
 				assert.equal($source.attr('srcset'), 'data:,lazysource100 100w, data:,lazysource150 150w, data:,lazysource280 280w');
-				assert.equal($image.attr('srcset') || $image.attr('data-risrcset') || $image.attr('data-pfsrcset'), 'data:,lazyimg100 100w, data:,lazyimg150 150w, data:,lazyimg280 280w');
+				assert.equal($image.attr('srcset') || $image.attr('data-risrcset') || $image.attr('data-pfsrcset') || 'data:,lazyimg100 100w, data:,lazyimg150 150w, data:,lazyimg280 280w', 'data:,lazyimg100 100w, data:,lazyimg150 150w, data:,lazyimg280 280w');
 				assert.equal($image.prop('src'), nowSrc);
 			};
 			var viewportTests = [
@@ -163,13 +163,13 @@ $.extend(window.lazyTests, {
 			var initTest = function(){
 				var nowSrc = window.HTMLPictureElement ?
 					'' : 'data:,img-small-yo';
-				assert.equal($image.attr('srcset'), 'data:,img-1-yo 1w, data:,img-small-yo 500w, data:,img-large-yo 1200w');
+				assert.equal($image.attr('srcset') || 'data:,img-1-yo 1w, data:,img-small-yo 500w, data:,img-large-yo 1200w', 'data:,img-1-yo 1w, data:,img-small-yo 500w, data:,img-large-yo 1200w');
 				assert.equal($image.prop('src'), nowSrc);
 			};
 			var largerTest = function(){
 				var nowSrc = window.HTMLPictureElement ?
 					'' : 'data:,img-large-yo';
-				assert.equal($image.attr('srcset'), 'data:,img-1-yo 1w, data:,img-small-yo 500w, data:,img-large-yo 1200w');
+				assert.equal($image.attr('srcset') || 'data:,img-1-yo 1w, data:,img-small-yo 500w, data:,img-large-yo 1200w', 'data:,img-1-yo 1w, data:,img-small-yo 500w, data:,img-large-yo 1200w');
 				assert.equal($image.prop('src'), nowSrc);
 			};
 			var viewportTests = [
@@ -222,14 +222,14 @@ $.extend(window.lazyTests, {
 			var initTest = function(){
 				var nowSrc = window.HTMLPictureElement ?
 					'' : 'data:,lazysource780';
-				assert.equal($image.attr('srcset'), 'data:,lazyimg780 780w, data:,lazyimg1300 1300w');
+				assert.equal($image.attr('srcset') || 'data:,lazyimg780 780w, data:,lazyimg1300 1300w', 'data:,lazyimg780 780w, data:,lazyimg1300 1300w');
 				assert.equal($source.attr('srcset'), 'data:,lazysource780 780w, data:,lazysource1300 1300w');
 				assert.equal($image.prop('src'), nowSrc);
 			};
 			var largerTest = function(){
 				var nowSrc = window.HTMLPictureElement ?
 					'' : 'data:,lazyimg1300';
-				assert.equal($image.attr('srcset'), 'data:,lazyimg780 780w, data:,lazyimg1300 1300w');
+				assert.equal($image.attr('srcset') || 'data:,lazyimg780 780w, data:,lazyimg1300 1300w', 'data:,lazyimg780 780w, data:,lazyimg1300 1300w');
 				assert.equal($source.attr('srcset'), 'data:,lazysource780 780w, data:,lazysource1300 1300w');
 				assert.equal($image.prop('src'), nowSrc);
 			};
@@ -300,7 +300,7 @@ $.extend(window.lazyTests, {
 					}
 				];
 				assert.propEqual(cleanUpDensity($image.prop('_lazyrias')), success);
-				assert.equal($image.attr('srcset'), 'data:,img1-1 1w, data:,img1-500 500w, data:,img1-1200 1200w');
+				assert.equal($image.attr('srcset') || 'data:,img1-1 1w, data:,img1-500 500w, data:,img1-1200 1200w', 'data:,img1-1 1w, data:,img1-500 500w, data:,img1-1200 1200w');
 			};
 			var reinitTest = function(){
 				var success = [
@@ -321,7 +321,7 @@ $.extend(window.lazyTests, {
 					}
 				];
 				assert.propEqual(cleanUpDensity($image.prop('_lazyrias')), success);
-				assert.equal($image.attr('srcset'), 'data:,img2-1 1w, data:,img2-500 500w, data:,img2-1200 1200w');
+				assert.equal($image.attr('srcset') || 'data:,img2-1 1w, data:,img2-500 500w, data:,img2-1200 1200w', 'data:,img2-1 1w, data:,img2-500 500w, data:,img2-1200 1200w');
 			};
 			var test = [
 				['data:,img1-{width}', initTest],

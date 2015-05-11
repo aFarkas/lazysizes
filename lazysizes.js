@@ -100,6 +100,7 @@
 			fn();
 		};
 		var afterAF = function(){
+			//Todo: test setImmediate
 			setTimeout(run);
 		};
 		var getAF = function(){
