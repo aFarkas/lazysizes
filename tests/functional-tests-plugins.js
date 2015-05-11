@@ -485,6 +485,36 @@ $.extend(window.lazyTests, {
 				});
 			});
 		});
+	}],
+	noscriptImg: ['noscript img', function(assert){
+		var done = assert.async();
+
+		this.promise.always(function($, frameWindow){
+			var $noscript;
+
+			var errors = 0;
+			var onerror = function(){
+				errors++;
+			};
+
+			$noscript = $('<div class="lazyload" data-noscript=""><noscript>' +
+				'<img src="data:,img" />' +
+				'<img srcset="data:,img-w 300w" />' +
+				'</noscript></div>')
+				.appendTo('body')
+			;
+
+			frameWindow.addEventListener('error', onerror);
+
+			$noscript.on('lazybeforeunveil', function(e){
+				afterUnveil(function(){
+					assert.equal($noscript.find('img').attr('src'), 'data:,img');
+					assert.equal(errors, 0);
+					frameWindow.removeEventListener('error', onerror);
+					done();
+				});
+			});
+		});
 	}]
 });
 
@@ -598,3 +628,14 @@ QUnit.test.apply(QUnit, lazyTests.simplePicture);
 QUnit.test.apply(QUnit, lazyTests.simpleAutoSizesPicture);
 QUnit.test.apply(QUnit, lazyTests.simpleSrcset);
 QUnit.test.apply(QUnit, lazyTests.simpleSrcsetSrc);
+
+QUnit.module( "noscript", {
+	beforeEach: createBeforeEach(
+		{
+			plugins: ['noscript']
+		}
+	)
+});
+QUnit.test.apply(QUnit, lazyTests.noscriptImg);
+
+
