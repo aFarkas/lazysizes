@@ -39,7 +39,7 @@
 				timer = setTimeout(findPictureImgs, 99);
 			};
 
-			dummySrc.setAttribute('srcset', 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==');
+			dummySrc.srcset = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
 
 			return onResize;
 		})());
