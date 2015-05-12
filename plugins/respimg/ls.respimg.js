@@ -186,7 +186,7 @@
 			}
 
 			if(srces.length > 1){
-				width = parseInt(source.getAttribute('sizes'), 10) || lazySizes.getWidth(elem, elem.parentNode);
+				width = parseInt(source.getAttribute('sizes'), 10) || lazySizes.gW(elem, elem.parentNode);
 				srces.d = getX(elem);
 				if(!srces.w || srces.w < width){
 					srces.w = width;
