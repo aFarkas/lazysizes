@@ -1,6 +1,5 @@
 /**
  * FF's first picture implementation is static and does not react to viewport changes, this tiny script fixes this.
- * But be aware, it's a little bit obtrusive: It switches the img element inside of a picture element with a cloned img element, so event listeners and custom properties will be removed.
  */
 (function(){
 	/*jshint eqnull:true */
@@ -9,52 +8,16 @@
 	if(window.HTMLPictureElement && ((/ecko/).test(ua) && ua.match(/rv\:(\d+)/) && RegExp.$1 < 40)){
 		addEventListener('resize', (function(){
 			var timer;
-			var cloneNode = function(elem){
-				var $ = window.jQuery || window.Zepto || window.shoestring || window.$;
-				if($ && $.fn && $.fn.clone){
-					cloneNode = function(elem){
-						return $(elem).clone(true)[0];
-					};
-				} else {
-					cloneNode = function(elem){
-						return elem.cloneNode();
-					};
-				}
-				return cloneNode(elem);
-			};
 
-			var props = ['_lazybgset', '_lazyOptimumx', '_lazyrias'];
-			var switchImg = function(img){
-				var clone;
-				var i = 0;
-				var parent = img.parentNode;
-				var src = img.getAttribute('src');
-				var srcset = img.getAttribute('srcset');
+			var dummySrc = document.createElement('source');
 
-				img.removeAttribute('src');
-				img.removeAttribute('srcset');
-
-				clone = cloneNode(img);
-
-				parent.removeChild(img);
-
-				for(; i < 3; i++){
-					if(img[props[i]]){
-						Object.defineProperty(clone, props[i], {
-							value: img[props[i]],
-							writable: true
-						});
-					}
-				}
-
-				parent.appendChild(clone);
-
-				if(srcset != null){
-					clone.setAttribute('srcset', srcset);
-				}
-				if(src != null){
-					clone.setAttribute('src', src);
-				}
+			var fixPicture = function(img){
+				var picture = img.parentNode;
+				var source = dummySrc.cloneNode();
+				picture.insertBefore(source, picture.firstElementChild);
+				setTimeout(function(){
+					picture.removeChild(source);
+				});
 			};
 
 			var findPictureImgs = function(){
@@ -63,7 +26,7 @@
 				for(i = 0; i < imgs.length; i++){
 					if(imgs[i].complete){
 						if(imgs[i].currentSrc){
-							switchImg(imgs[i]);
+							fixPicture(imgs[i]);
 						}
 					} else if(imgs[i].currentSrc){
 						removeEventListener('resize', onResize);
@@ -73,8 +36,11 @@
 			};
 			var onResize = function(){
 				clearTimeout(timer);
-				timer = setTimeout(findPictureImgs, 66);
+				timer = setTimeout(findPictureImgs, 99);
 			};
+
+			dummySrc.setAttribute('srcset', 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==');
+
 			return onResize;
 		})());
 	}
