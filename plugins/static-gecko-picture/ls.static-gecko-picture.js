@@ -5,7 +5,7 @@
 	/*jshint eqnull:true */
 	var ua = navigator.userAgent;
 
-	if(window.HTMLPictureElement && ((/ecko/).test(ua) && ua.match(/rv\:(\d+)/) && RegExp.$1 < 40)){
+	if(window.HTMLPictureElement && ((/ecko/).test(ua) && ua.match(/rv\:(\d+)/) && RegExp.$1 < 41)){
 		addEventListener('resize', (function(){
 			var timer;
 
