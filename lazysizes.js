@@ -68,7 +68,7 @@
 		var polyfill;
 		if(!window.HTMLPictureElement){
 			if( ( polyfill = (window.picturefill || window.respimage || lazySizesConfig.pf) ) ){
-				polyfill({reevaluate: true, reparse: true, elements: [el]});
+				polyfill({reevaluate: true, elements: [el]});
 			} else if(full && full.src){
 				el.src = full.src;
 			}
@@ -219,7 +219,7 @@
 						(eLright = rect.right) >= elemNegativeExpand &&
 						(eLleft = rect.left) <= eLvW &&
 						(eLbottom || eLright || eLleft || eLtop) &&
-						((isCompleted && isLoading < 3 && lowRuns < 4 && !elemExpandVal && loadMode > 2) || isNestedVisible(lazyloadElems[i], elemExpand))){
+						((isCompleted && isLoading < 3 && !elemExpandVal && (loadMode < 3 || lowRuns < 4)) || isNestedVisible(lazyloadElems[i], elemExpand))){
 						unveilElement(lazyloadElems[i], false, rect.width);
 						loadedSomething = true;
 					} else if(!loadedSomething && isCompleted && !autoLoadElem &&
@@ -353,8 +353,7 @@
 					}
 				}
 
-				//remove curSrc == (elem.currentSrc || elem.src) in July/August 2015 it's a workaround for FF. see: https://bugzilla.mozilla.org/show_bug.cgi?id=608261
-				if( !firesLoad || (elem.complete && curSrc == (elem.currentSrc || elem.src)) ){
+				if( !firesLoad || elem.complete ){
 					if(firesLoad){
 						resetPreloading(event);
 					} else {
