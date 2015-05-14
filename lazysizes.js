@@ -220,7 +220,7 @@
 						(eLleft = rect.left) <= eLvW &&
 						(eLbottom || eLright || eLleft || eLtop) &&
 						((isCompleted && isLoading < 3 && !elemExpandVal && (loadMode > 2 || lowRuns < 4)) || isNestedVisible(lazyloadElems[i], elemExpand))){
-						unveilElement(lazyloadElems[i], false, rect.width);
+						unveilElement(lazyloadElems[i], rect.width);
 						loadedSomething = true;
 					} else if(!loadedSomething && isCompleted && !autoLoadElem &&
 						isLoading < 3 && lowRuns < 4 && loadMode > 2 &&
@@ -270,7 +270,7 @@
 			};
 		})();
 
-		var unveilElement = function (elem, force, width){
+		var unveilElement = function (elem, width){
 			var sources, i, len, sourceSrcset, src, srcset, parent, isPicture, event, firesLoad, customMedia;
 
 			var curSrc = elem.currentSrc || elem.src;
@@ -293,7 +293,7 @@
 
 				removeClass(elem, lazySizesConfig.lazyClass);
 
-				if(!(event = triggerEvent(elem, 'lazybeforeunveil', {force: !!force})).defaultPrevented){
+				if(!(event = triggerEvent(elem, 'lazybeforeunveil')).defaultPrevented){
 
 					if(sizes){
 						if(isAuto){
