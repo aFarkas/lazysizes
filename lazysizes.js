@@ -219,7 +219,7 @@
 						(eLright = rect.right) >= elemNegativeExpand &&
 						(eLleft = rect.left) <= eLvW &&
 						(eLbottom || eLright || eLleft || eLtop) &&
-						((isCompleted && isLoading < 3 && !elemExpandVal && (loadMode > 2 || lowRuns < 4)) || isNestedVisible(lazyloadElems[i], elemExpand))){
+						((isCompleted && isLoading < 3 && !elemExpandVal && (loadMode < 3 || lowRuns < 4)) || isNestedVisible(lazyloadElems[i], elemExpand))){
 						unveilElement(lazyloadElems[i], rect.width);
 						loadedSomething = true;
 					} else if(!loadedSomething && isCompleted && !autoLoadElem &&
