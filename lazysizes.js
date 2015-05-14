@@ -56,7 +56,7 @@
 	var triggerEvent = function(elem, name, detail, noBubbles, noCancelable){
 		var event = document.createEvent('CustomEvent');
 
-		event.initCustomEvent(name, !noBubbles, !noCancelable, detail);
+		event.initCustomEvent(name, !noBubbles, !noCancelable, detail || {});
 
 		event.details =  event.detail;
 
