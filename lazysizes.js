@@ -273,14 +273,13 @@
 		var unveilElement = function (elem, width){
 			var sources, i, len, sourceSrcset, src, srcset, parent, isPicture, event, firesLoad, customMedia;
 
-			var curSrc = elem.currentSrc || elem.src;
 			var isImg = regImg.test(elem.nodeName);
 
 			//allow using sizes="auto", but don't use. it's invalid. Use data-sizes="auto" or a valid value for sizes instead (i.e.: sizes="80vw")
 			var sizes = elem.getAttribute(lazySizesConfig.sizesAttr) || elem.getAttribute('sizes');
 			var isAuto = sizes == 'auto';
 
-			if( (isAuto || !isCompleted) && isImg && curSrc && !elem.complete && !hasClass(elem, lazySizesConfig.errorClass)){return;}
+			if( (isAuto || !isCompleted) && isImg && (elem.src || elem.srcset) && !elem.complete && !hasClass(elem, lazySizesConfig.errorClass)){return;}
 
 			elem._lazyRace = true;
 			isLoading++;
