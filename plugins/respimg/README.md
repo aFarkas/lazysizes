@@ -94,3 +94,14 @@ window.lazySizesConfig.customMedia = {
     sizes="300px"
     class="lazyload" />
 ```
+
+###Tip: Using/Generating more complex dynamic ``sizes``
+
+As explained above this partial polyfill only accepts one value for ``sizes`` using only the *px* length. Due to the fact, that also ``data-sizes="auto"`` is supported the ``lazybeforesizes`` event can be used to dynamically change/add different ``sizes``:
+
+```js
+document.addEventListener('lazybeforesizes', function(e){
+	//calculate the size as a number
+	e.detail.width =  yourCalculation(e.target) || e.detail.width;
+});
+```
