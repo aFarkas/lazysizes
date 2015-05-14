@@ -30,7 +30,7 @@
 		var ascendingSort = function( a, b ) {
 			return a.w - b.w;
 		};
-
+		var regPxLength = /^\s*\d+px\s*$/;
 		var reduceCandidate = function (srces) {
 			var lowerCandidate, bonusFactor;
 			var len = srces.length;
@@ -186,7 +186,8 @@
 			}
 
 			if(srces.length > 1){
-				width = parseInt(source.getAttribute('sizes'), 10) || lazySizes.gW(elem, elem.parentNode);
+				width = source.getAttribute('sizes') || '';
+				width = regPxLength.test(width) && parseInt(width, 10) || lazySizes.gW(elem, elem.parentNode);
 				srces.d = getX(elem);
 				if(!srces.w || srces.w < width){
 					srces.w = width;
