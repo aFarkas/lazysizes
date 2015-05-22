@@ -176,7 +176,7 @@
 	}
 
 	addEventListener('lazybeforeunveil', function(e){
-		var elem, src, elemOpts, parent, sources, i, len, sourceSrc, sizes, detail, hasPlaceholder;
+		var elem, src, elemOpts, parent, sources, i, len, sourceSrc, sizes, detail, hasPlaceholder, modified, emptyList;
 		elem = e.target;
 
 		if(e.defaultPrevented || riasCfg.disabled || !((sizes = elem.getAttribute(config.sizesAttr) || elem.getAttribute('sizes')) && regAllowedSizes.test(sizes))){return;}
@@ -190,14 +190,23 @@
 		if(elemOpts.isPicture && (parent = elem.parentNode)){
 			sources = parent.getElementsByTagName('source');
 			for(i = 0, len = sources.length; i < len; i++){
-				if ( regWidth.test(sourceSrc = getSrc(sources[i])) ){
+				if ( hasPlaceholder || regWidth.test(sourceSrc = getSrc(sources[i])) ){
 					setSrc(sourceSrc, elemOpts, sources[i]);
+					modified = true;
 				}
 			}
 		}
 
 		if ( hasPlaceholder || regWidth.test(src) ){
 			setSrc(src, elemOpts, elem);
+		} else if (modified) {
+			emptyList = [];
+			emptyList.srcset = [];
+			emptyList.isPicture = true;
+			Object.defineProperty(elem, '_lazyrias', {
+				value: emptyList,
+				writable: true
+			});
 		}
 
 		if(sizes != 'auto'){
@@ -300,7 +309,7 @@
 				return;
 			}
 
-			if(!elem._lazyrias && (!e.detail.dataAttr || !getWSet(elem, true))){
+			if(!('_lazyrias' in elem) && (!e.detail.dataAttr || !getWSet(elem, true))){
 				return;
 			}
 
