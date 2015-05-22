@@ -103,7 +103,7 @@
 		}
 	}, true);
 
-	addEventListener('lazybeforesizes', function(e){
+	document.documentElement.addEventListener('lazybeforesizes', function(e){
 		if(e.defaultPrevented || !e.target._lazybgset){return;}
 		e.detail.width = proxyWidth(e.target._lazybgset);
 	});
