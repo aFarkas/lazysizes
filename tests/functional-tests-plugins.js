@@ -174,7 +174,7 @@ $.extend(window.lazyTests, {
 			};
 			var viewportTests = [
 				['300', initTest],
-				['400', initTest],
+				['350', initTest],
 				['1200', largerTest],
 				['600', largerTest]
 			];
