@@ -176,22 +176,27 @@
 	}
 
 	addEventListener('lazybeforeunveil', function(e){
-		var elem, src, elemOpts, parent, sources, i, len, sourceSrc, sizes, detail;
+		var elem, src, elemOpts, parent, sources, i, len, sourceSrc, sizes, detail, hasPlaceholder;
 		elem = e.target;
 
-		if(e.defaultPrevented || !(src = getSrc(elem)) || riasCfg.disabled || !((sizes = elem.getAttribute(config.sizesAttr) || elem.getAttribute('sizes')) && regAllowedSizes.test(sizes))){return;}
+		if(e.defaultPrevented || riasCfg.disabled || !((sizes = elem.getAttribute(config.sizesAttr) || elem.getAttribute('sizes')) && regAllowedSizes.test(sizes))){return;}
+
+		src = getSrc(elem);
 
 		elemOpts = createAttrObject(elem, src);
 
-		if(regWidth.test(src) || regWidth.test(elemOpts.prefix) || regWidth.test(elemOpts.postfix)){
-			if(elemOpts.isPicture && (parent = elem.parentNode)){
-				sources = parent.getElementsByTagName('source');
-				for(i = 0, len = sources.length; i < len; i++){
-					sourceSrc = getSrc(sources[i]);
+		hasPlaceholder = regWidth.test(elemOpts.prefix) || regWidth.test(elemOpts.postfix);
+
+		if(elemOpts.isPicture && (parent = elem.parentNode)){
+			sources = parent.getElementsByTagName('source');
+			for(i = 0, len = sources.length; i < len; i++){
+				if ( regWidth.test(sourceSrc = getSrc(sources[i])) ){
 					setSrc(sourceSrc, elemOpts, sources[i]);
 				}
 			}
+		}
 
+		if ( hasPlaceholder || regWidth.test(src) ){
 			setSrc(src, elemOpts, elem);
 		}
 
