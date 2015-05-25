@@ -1,4 +1,6 @@
 #lazysizes
+
+[![Join the chat at https://gitter.im/aFarkas/lazysizes](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/aFarkas/lazysizes?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 **lazysizes** is a fast (jank-free) and self-initializing lazyloader for images (including responsive images ``picture``/``srcset``), iframes, scripts/widgets and much more. It may become also your number one tool to integrate responsive images. Due to the fact that it can also automatically calculate the ``sizes`` attribute for your responsive images based on your CSS as also allows to use custom labeled media queries for you ``media`` attributes, it helps to separate layout (CSS) from content/structure (HTML) and makes integrating responsive images into any environment simply simple.
 
 ##How to
