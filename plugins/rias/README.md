@@ -10,7 +10,7 @@ The RiaS plugin also allows art direction by combining placeholder URLs with a `
 
 ##Basic/quick usage
 
-* Add the RiaS plugin right after the lazySizes script or concat those scripts into your script bundle:
+* Add the RiaS plugin right before the lazySizes script or concat those scripts into your script bundle:
 
 ```html
 <!-- include lazysizes + rias extension -->
