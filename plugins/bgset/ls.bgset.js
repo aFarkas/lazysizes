@@ -69,6 +69,23 @@
 		elem.appendChild(picture);
 	};
 
+	var proxyLoad = function(e){
+		if(!e.target._lazybgset){return;}
+
+		var image = e.target;
+		var elem = image._lazybgset;
+		var bg = image.currentSrc || image.src;
+
+		if(bg){
+			elem.style.backgroundImage = 'url('+ bg +')';
+		}
+
+		if(image._lazybgsetLoading){
+			lazySizes.fire(elem, '_lazyloaded', {}, false, true);
+			delete image._lazybgsetLoading;
+		}
+	};
+
 	addEventListener('lazybeforeunveil', function(e){
 		var set, image, elem;
 
@@ -84,24 +101,17 @@
 
 		lazySizes.loader.unveil(image);
 		lazySizes.fire(image, '_lazyloaded', {}, true, true);
+
+
+		setTimeout(function(){
+			if(image.complete) {
+				proxyLoad({target: image});
+			}
+		});
+
 	});
 
-	document.addEventListener('load', function(e){
-		if(!e.target._lazybgset){return;}
-
-		var image = e.target;
-		var elem = image._lazybgset;
-		var bg = image.currentSrc || image.src;
-
-		if(bg){
-			elem.style.backgroundImage = 'url('+ bg +')';
-		}
-
-		if(image._lazybgsetLoading){
-			lazySizes.fire(elem, '_lazyloaded', {}, false, true);
-			delete image._lazybgsetLoading;
-		}
-	}, true);
+	document.addEventListener('load', proxyLoad, true);
 
 	document.documentElement.addEventListener('lazybeforesizes', function(e){
 		if(e.defaultPrevented || !e.target._lazybgset){return;}
