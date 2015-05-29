@@ -151,7 +151,7 @@
 		var getX = function(elem){
 			var dpr = window.devicePixelRatio || 1;
 			var optimum = lazySizes.getX && lazySizes.getX(elem);
-			return Math.min(optimum || dpr, 2.7, dpr);
+			return Math.min(optimum || dpr, 2.5, dpr);
 		};
 
 		var matchesMedia = function(media){

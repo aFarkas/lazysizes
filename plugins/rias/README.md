@@ -181,10 +181,12 @@ In case you want to use art direction simply also use placeholder urls inside of
     <source
             data-srcset="http://placehold.it/{width}/7D26CD/fff"
             media="(min-width: 1224px)" />
+    <source
+            data-srcset="http://placehold.it/{width}"
+             />
     <!--[if IE 9]></audio><![endif]-->
     <img
         src="http://placehold.it/100"
-        data-srcset="http://placehold.it/{width}"
         data-sizes="auto"
         class="lazyload"
         alt="" />

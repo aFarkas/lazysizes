@@ -199,6 +199,7 @@
 
 		if ( hasPlaceholder || regWidth.test(src) ){
 			setSrc(src, elemOpts, elem);
+			modified = true;
 		} else if (modified) {
 			emptyList = [];
 			emptyList.srcset = [];
@@ -209,7 +210,7 @@
 			});
 		}
 
-		if(sizes != 'auto'){
+		if(modified && sizes != 'auto'){
 			detail = {
 				width: parseInt(sizes, 10)
 			};
@@ -274,7 +275,7 @@
 		var getX = function(elem){
 			var dpr = window.devicePixelRatio || 1;
 			var optimum = lazySizes.getX && lazySizes.getX(elem);
-			return Math.min(optimum || dpr, 2.7, dpr);
+			return Math.min(optimum || dpr, 2.5, dpr);
 		};
 
 		var getCandidate = function(elem, width){
