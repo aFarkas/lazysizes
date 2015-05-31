@@ -43,9 +43,9 @@
 
 				if(candidate.d >= srces.d){
 					if(!candidate.cached && (lowerCandidate = srces[i - 1]) &&
-						lowerCandidate.d > srces.d - (0.13 * Math.pow(srces.d, 2))){
+						lowerCandidate.d > srces.d - (0.13 * Math.pow(srces.d, 2.2))){
 
-						bonusFactor = Math.pow(lowerCandidate.d - 0.6, 1.5);
+						bonusFactor = Math.pow(lowerCandidate.d - 0.6, 1.6);
 
 						if(lowerCandidate.cached) {
 							lowerCandidate.d += 0.15 * bonusFactor;

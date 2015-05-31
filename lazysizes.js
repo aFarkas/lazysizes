@@ -262,12 +262,10 @@
 				isRunning = false;
 			};
 			return function(fn){
+				batch.push(fn);
 				if(!isRunning){
-					batch.push(fn);
 					isRunning = true;
 					rAF(runBatch);
-				} else {
-					fn();
 				}
 			};
 		})();
