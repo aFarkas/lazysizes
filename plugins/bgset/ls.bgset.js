@@ -50,7 +50,7 @@
 			if(set.match(regSource)){
 				source.setAttribute(lazySizesConfig.srcsetAttr, RegExp.$1);
 				if(RegExp.$2){
-					source.setAttribute('media', RegExp.$2);
+					source.setAttribute('media', lazySizesConfig.customMedia[RegExp.$2] || RegExp.$2);
 				}
 			}
 			picture.appendChild(source);
