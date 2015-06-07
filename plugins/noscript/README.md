@@ -47,6 +47,19 @@ The ``lazyload`` class has to be added to the parent element of the ``noscript``
 
 **Important note**: While you also can transform responsive images with this plugin, neither the ``data-sizes`` nor the ``customMedia`` features do work with the ``noscript`` extension. Also note: Android 2.x is not supported with this plugin.
 
+##Troubleshooting: Escaped HTML entities
+Normally the content of a ``noscript`` must be retrieved as text. But in some cases for example, if the ``noscript`` element was created in a XML documented/context, it must be retrieved as HTML. This can't be automatically detected.
+
+In case this happens, you can fix this either by making sure that ``noscript`` elements are always created in a *text/html* context or by overriding the ``getNoscriptContent`` option callback:
+
+```js
+window.lazySizesConfig = window.lazySizesConfig || {};
+
+window.lazySizesConfig.getNoscriptContent =  function(noScript){
+    return (noScript.isXML) ? noScript.innerHTML : (noScript.textContent || noScript.innerText);
+};
+```
+
 ##<a name="ie8"></a>Add IE8- support with conditional comments
 The noscript extension can also be used in conjunction with conditional comments to add progressive enhancement support for IE8-:
 

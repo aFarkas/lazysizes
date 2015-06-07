@@ -203,7 +203,7 @@
 			} else if(dpr > 1.9){
 				dpr *= 0.8; // returns 1.6 for 2
 			}
-			return Math.min(Math.round(dpr * 100) / 100, 2);
+			return Math.min(Math.round(dpr * 100) / 100, 2.2);
 		};
 	}
 

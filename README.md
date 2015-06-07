@@ -417,11 +417,17 @@ The [include plugin](plugins/include) plugin enables lazySizes to lazyload conte
 ###[bgset plugin - lazy responsive background-image](plugins/bgset)
 The bgset plugin allows lazyload multiple background images with different resolutions/sizes (responsive background images). In case you only need one image use the unveilhooks extension.
 
-###[noscript extension](plugins/noscript)
-The [noscript extension](plugins/noscript) is the true ultimate progressive enhancement extension for lazySizes. It allows you to transform any HTML inside a ``noscript`` element as soon as it becomes visible.
-
 ###[lazysizes custommedia extension](plugins/custommedia)
 [lazySizes custommedia extension](plugins/custommedia) allows you to automatically sync and manage your breakpoints between your CSS and the ``media`` attributes of your ``"picture > source"`` elements using the ``customMedia`` option of lazySizes.
+
+
+###[lazysizes attrchange extension](plugins/attrchange)
+In case you are changing the ``data-src``/``data-srcset`` attributes of already transformed lazyload elements, you normally also must re-add the ``lazyload`` class to the element.
+
+This [attrchange extension](plugins/attrchange) automatically detects changes to your ``data-*`` attributes and adds the class for you.
+
+###[noscript extension](plugins/noscript)
+The [noscript extension](plugins/noscript) is the true ultimate progressive enhancement extension for lazySizes. It allows you to transform any HTML inside a ``noscript`` element as soon as it becomes visible.
 
 ###[aspectratio extension](plugins/aspectratio)
 The [aspectratio extension](plugins/aspectratio) allows you to control the aspectratio of your images using markup instead of CSS. It is an alternative for the [CSS intrinsic ratio technique](#specify-dimensions).

@@ -13,7 +13,7 @@
 	var regSplitCan = /\s*,+\s+/;
 	var uniqueUrls = {};
 	var regWhite = /\s+/;
-	var regTypes = /^(amd|css)\:(.+)/i;
+	var regTypes = /^(amd|css|module)\:(.+)/i;
 	var regUrlCan = /(.+)\s+(\(\s*(.+)\s*\))/;
 	var regCleanPseudos = /['"]/g;
 	var docElem = document.documentElement;
@@ -123,10 +123,6 @@
 
 	if(!includeConfig.map){
 		includeConfig.map = {};
-	}
-
-	if(!('preloadAfterLoad' in config)){
-		config.preloadAfterLoad = true;
 	}
 
 	function addUrl(url){
@@ -297,9 +293,7 @@
 
 	function loadRequire(urls, callback){
 		urls = urls.split('|,|');
-		require(urls, function(){
-			callback(Array.prototype.slice.call(arguments));
-		});
+		require(urls, callback);
 	}
 
 	function loadStyle(url){
@@ -360,7 +354,7 @@
 		}
 
 		include = function(){
-			var event;
+			var event, loadRequireImportCB;
 			var status = xhrObj.status;
 			var content = xhrObj.content || xhrObj.responseText;
 			var reset = !!(content == null && old && old.urls.include);
@@ -430,13 +424,18 @@
 			xhrObj = detail;
 		}
 
-		if(candidate.urls.amd){
-			loadRequire(candidate.urls.amd, function(mods){
-				modules = mods;
+		if(candidate.urls.amd || candidate.urls.module){
+			loadRequireImportCB = function(){
+				modules = Array.prototype.slice.call(arguments);
 				if(xhrObj){
 					include();
 				}
-			});
+			};
+			if(candidate.urls.module && window.System && System.import){
+				System.import(candidate.urls.module).then(loadRequireImportCB);
+			} else if(window.require) {
+				loadRequire(candidate.urls.amd, loadRequireImportCB);
+			}
 		} else {
 			modules = [];
 		}

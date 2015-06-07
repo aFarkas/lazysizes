@@ -5,6 +5,7 @@
 	if(window.addEventListener){
 		var dummyParent = {nodeName: ''};
 		var supportPicture = !!window.HTMLPictureElement;
+		var config = (window.lazySizes && lazySizes.cfg) || window.lazySizesConfig;
 
 		var handleLoadingElements = function(e){
 			var i, isResponsive, hasTriggered, onload, loading;
@@ -49,11 +50,20 @@
 			}
 		};
 
+		if(!config){
+			config = {};
+			window.lazySizesConfig = config;
+		}
+
+		config.getNoscriptContent =  function(noScript){
+			return noScript.textContent || noScript.innerText;
+		};
+
 		addEventListener('lazybeforeunveil', function(e){
 			if(e.defaultPrevented || e.target.getAttribute('data-noscript') == null){return;}
 
 			var noScript = e.target.querySelector('noscript, script[type*="html"]') || {};
-			var content = noScript.textContent || noScript.innerText;
+			var content = config.getNoscriptContent(noScript);
 
 			if(content){
 				e.target.innerHTML = content;

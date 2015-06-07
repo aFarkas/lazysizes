@@ -104,9 +104,9 @@ document.addEventListener('lazyincluded', function(e){
 </div>
 ```
 
-###Loading Styles or AMD Modules
+###Loading Styles or (AMD) Modules
 
-The include feature can also load CSS or AMD modules. To mark an URL as CSS put a ``css:`` in front of the URL or to load an AMD module put a ``amd:`` identifier in front of it:
+The include feature can also load CSS, AMD or ES6 modules. To mark an URL as CSS put a ``css:``, to load an AMD module put a ``amd:`` or to load an ES6 module put a ``module:`` identifier in front of the URL:
 
 ```html
 <div class="dynamic-content lazyload" data-include="css:my-style.css (large)">
@@ -121,15 +121,15 @@ Content, Style and AMD includes can also be mixed and used with or without condi
 ```html
 <div class="slider lazyload"
 	data-include="slider.html amd:path/slider-module css:slider.css (large),
-		amd:path/mobile-slider, css:mobile-slider.css">
+		module:path/mobile-slider, css:mobile-slider.css">
 </div>
 ```
 
 In case content and a behavior include is used together lazySizes will load them in parallel but makes sure to first include the content and then initialize the behavior. 
 
-####AMD features
+####AMD/ES6 module features
 
-While you can write your AMD module how you want lazysizes include extension will check wether your module provides the following methods:
+While you can write your AMD/ES6 module how you want lazysizes include extension will check wether your module provides the following methods:
 
 * ``yourmodule.lazytransform``: Will be invoked before the content is inserted. Especially to transform the AJAX response. (For example JSON to HTML)
 * ``yourmodule.lazyload``: Callback function to initialize the module. Will be invoked after the content was inserted.
@@ -315,7 +315,7 @@ window.lazySizesConfig = {
 
 This option becomes useful to separate content from behavior.
 
-The include feature works together with all normal lazySizes options (i.e.: ``addClasses`` for load indicators), events and methods. In case ``preloadAfterLoad`` is not set explicitly to ``false`` the include extension will automatically change it to ``true``.
+The include feature works together with all normal lazySizes options (i.e.: ``addClasses`` for load indicators), events and methods.
 
 ##Reacting to user interaction
 
