@@ -72,10 +72,7 @@
 			addEventListener('resize', (function(){
 				var timer;
 				var resize = function(){
-					var i, len;
-					for(i = 0, len = module.ratioElems.length; i < len; i++){
-						addRemoveAspectRatio(module.ratioElems[i]);
-					}
+          Array.prototype.forEach.call(module.ratioElems, addRemoveAspectRatio);
 				};
 
 				return function(){
