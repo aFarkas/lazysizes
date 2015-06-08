@@ -3,7 +3,7 @@
 
 	if(!window.addEventListener){return;}
 
-  var forEach = Array.prototype.forEach;
+	var forEach = Array.prototype.forEach;
 
 	var imageRatio, extend$, $;
 
@@ -74,7 +74,7 @@
 			addEventListener('resize', (function(){
 				var timer;
 				var resize = function(){
-          forEach.call(module.ratioElems, addRemoveAspectRatio);
+					forEach.call(module.ratioElems, addRemoveAspectRatio);
 				};
 
 				return function(){
