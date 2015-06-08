@@ -471,8 +471,6 @@ $.extend(window.lazyTests, {
 		this.promise.always(function($){
 			var $image;
 
-
-
 			$image = $('<img data-sizes="1200px" style="width: 100%;" data-widths="[300, 500, 1200]" class="lazyload" />')
 				.attr('data-src', 'data:,image-{width}')
 				.appendTo('body')
@@ -482,6 +480,32 @@ $.extend(window.lazyTests, {
 				afterUnveil(function(){
 					assert.equal($image.prop('currentSrc') || $image.attr('src'), 'data:,image-1200');
 					done();
+				});
+			});
+		});
+	}],
+	attrchangeRiasSimpleSizes: ['lazysizes rias works with simple sizes and attrchange', function(assert){
+		var done = assert.async();
+
+		this.promise.always(function($){
+			var $image;
+
+			$image = $('<img data-sizes="1200px" style="width: 100%;" data-widths="[300, 500, 1200]" class="lazyload" />')
+				.attr('data-src', 'data:,image-{width}')
+				.appendTo('body')
+			;
+
+			$image.one('lazybeforeunveil', function(e){
+				afterUnveil(function(){
+					assert.equal($image.prop('currentSrc') || $image.attr('src'), 'data:,image-1200');
+					$image.attr('data-src', 'data:,image2-{width}');
+
+					$image.one('lazybeforeunveil', function(e){
+						afterUnveil(function(){
+							assert.equal($image.prop('currentSrc') || $image.attr('src'), 'data:,image2-1200');
+							done();
+						});
+					});
 				});
 			});
 		});
@@ -637,5 +661,18 @@ QUnit.module( "noscript", {
 	)
 });
 QUnit.test.apply(QUnit, lazyTests.noscriptImg);
+
+QUnit.module( "attrchange mix", {
+	beforeEach: createBeforeEach(
+		{
+			plugins: ['attrchange', 'rias']
+		}
+	)
+});
+QUnit.test.apply(QUnit, lazyTests.riasResize);
+QUnit.test.apply(QUnit, lazyTests.riasPictureResize);
+QUnit.test.apply(QUnit, lazyTests.simpleAutoSizesPicture);
+QUnit.test.apply(QUnit, lazyTests.riasReinit);
+QUnit.test.apply(QUnit, lazyTests.attrchangeRiasSimpleSizes);
 
 
