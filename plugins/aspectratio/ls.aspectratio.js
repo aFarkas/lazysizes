@@ -79,7 +79,7 @@
 
 				return function(){
 					clearTimeout(timer);
-					timer = setTimeout(resize, 33);
+					timer = setTimeout(resize, 99);
 				};
 			})());
 
