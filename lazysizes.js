@@ -21,6 +21,8 @@
 
 	var rAF = window.requestAnimationFrame || setTimeout;
 
+	var setImmediate = window.setImmediate || setTimeout;
+
 	var regPicture = /^picture$/i;
 
 	var loadEvents = ['load', 'error', 'lazyincluded', '_lazyloaded'];
@@ -57,8 +59,6 @@
 		var event = document.createEvent('CustomEvent');
 
 		event.initCustomEvent(name, !noBubbles, !noCancelable, detail || {});
-
-		event.details =  event.detail;
 
 		elem.dispatchEvent(event);
 		return event;
@@ -100,8 +100,7 @@
 			fn();
 		};
 		var afterAF = function(){
-			//Todo: test setImmediate
-			setTimeout(run);
+			setImmediate(run);
 		};
 		var getAF = function(){
 			rAF(afterAF);

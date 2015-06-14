@@ -38,12 +38,12 @@
 ##What makes lazysizes so awesome:
 **lazysizes** is different than other lazy image loaders.
 
-1. **Works without any configuration or JS callbacks in any web enviroment**: The script works as an universal, self-initializing, self-configuring and self-destroying component and detects any changes to the visibility of any current and future image/iframe elements automatically no matter whether it becomes visible through a user scroll, a CSS animation triggered through ``:hover`` or through any kind of JS behavior (carousel, slider, infinite scroll, masonry, isotope/filtering/sorting, AJAX, SPAs...). Also works automatically in conjunction with any kind of JS-/CSS-/Frontend-Framework (jQuery mobile, Bootstrap, Backbone, Angular, React, ember).
+1. **Works without any configuration or JS callbacks in any web enviroment**: The script works as an universal, self-initializing, self-configuring and self-destroying component and detects any changes to the visibility of any current and future image/iframe elements automatically no matter whether it becomes visible through a user scroll, a CSS animation triggered through ``:hover`` or through any kind of JS behavior (carousel, slider, infinite scroll, masonry, isotope/filtering/sorting, AJAX, SPAs...). Also works automatically in conjunction with any kind of JS-/CSS-/Frontend-Framework (jQuery mobile, Bootstrap, Backbone, Angular, React, ember (see also the [attrchange/re-initialization extension](plugins/attrchange))).
 2. **Future-proof**: It directly includes standard responsive image support (``picture`` and ``srcset``)
 3. **Separation of concerns**: For responsive image support it adds an automatic ``sizes`` calculation as also alias names for media queries feature. There is also no JS change needed if you add a scrollable container with CSS (overflow: auto) or create a mega menu containing images.
 4. **Performance**: It's based on high efficient and best practice code (runtime **and** memory) to work jank-free at 60fps. Can be used with thousands of images/iframes on CSS and JS heavy pages/webapps.
 5. **Extendable**: It provides JS and CSS hooks to extend lazysizes with any kind of lazy loading, lazy instantiation, inview callbacks or effects (see also the [available plugins/snippets](#plugins)).
-6. **Intelligent prefetch**: lazysizes prefetches/preloads near the view assets to improve user experience, but only while the browser network is idling and does not download inview assets already. (see also ``expand`` option)
+6. **Intelligent prefetch**: lazysizes prefetches/preloads near the view assets to improve user experience, but only while the browser network is idling. (see also ``expand``, ``expFactor`` and ``loadMode`` options)
 7. **Lightweight, but mature solution**: lazysizes has the right balance between a lightweight and a reliable and fast solution
 8. **SEO improved**: lazysizes does not hide images/assets from google.
 
@@ -197,7 +197,7 @@ window.lazySizesConfig.expand = Math.min(Math.max(document.documentElement.clien
 window.lazySizesConfig = window.lazySizesConfig || {};
 window.lazySizesConfig.customMedia = {
     '--small': '(max-width: 480px)',
-    '--medium': '(max-width: 700px)',
+    '--medium': '(max-width: 900px)',
     '--large': '(max-width: 1400px)'
 };
 </script>
@@ -421,10 +421,10 @@ The bgset plugin allows lazyload multiple background images with different resol
 [lazySizes custommedia extension](plugins/custommedia) allows you to automatically sync and manage your breakpoints between your CSS and the ``media`` attributes of your ``"picture > source"`` elements using the ``customMedia`` option of lazySizes.
 
 
-###[lazysizes attrchange extension](plugins/attrchange)
+###[attrchange / re-initialization extension](plugins/attrchange)
 In case you are changing the ``data-src``/``data-srcset`` attributes of already transformed lazyload elements, you normally also must re-add the ``lazyload`` class to the element.
 
-This [attrchange extension](plugins/attrchange) automatically detects changes to your ``data-*`` attributes and adds the class for you.
+This [attrchange / re-initialization extension](plugins/attrchange) automatically detects changes to your ``data-*`` attributes and adds the class for you.
 
 ###[noscript extension](plugins/noscript)
 The [noscript extension](plugins/noscript) is the true ultimate progressive enhancement extension for lazySizes. It allows you to transform any HTML inside a ``noscript`` element as soon as it becomes visible.

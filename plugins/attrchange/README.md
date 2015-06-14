@@ -1,4 +1,4 @@
-#lazysizes attribute change extension
+#lazysizes attribute change / re-initialization extension
 
 In case you are changing the ``data-src``/``data-srcset`` attributes of already transformed lazyload elements dynamically, you normally also must re-add the ``lazyload`` class to the element.
 
