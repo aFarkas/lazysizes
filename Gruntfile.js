@@ -9,9 +9,8 @@
 		// Project configuration.
 		grunt.initConfig({
 			// Metadata.
-			pkg: pkg = grunt.file.readJSON("bower.json"),
-			banner: "/*! <%= pkg.name %> - v<%= pkg.version %> - " +
-				" Licensed <%= pkg.license %> */\n",
+			pkg: pkg = grunt.file.readJSON("package.json"),
+			banner: "/*! <%= pkg.name %> - v<%= pkg.version %> */\n",
 			// Task configuration.
 			uglify: {
 				options: {
