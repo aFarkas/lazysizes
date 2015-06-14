@@ -3,7 +3,7 @@
 	if(!window.addEventListener){return;}
 
 	var addObserver = function(){
-
+		var connect, disconnect, observer, observe;
 		var lazySizes = window.lazySizes;
 		var lsCfg = lazySizes.cfg;
 		var attributes = {'data-bgset': 1, 'data-include': 1, 'data-poster': 1, 'data-bg': 1, 'data-script': 1};
@@ -33,7 +33,20 @@
 		attributes[lsCfg.srcsetAttr] = 1;
 
 		if(window.MutationObserver){
-			new MutationObserver(onMutation).observe( docElem, { subtree: true, attributes: true, attributeFilter: Object.keys(attributes)} );
+			observer = new MutationObserver(onMutation);
+
+			connect = function(){
+				if(!observe){
+					observe = true;
+					observer.observe( docElem, { subtree: true, attributes: true, attributeFilter: Object.keys(attributes)} );
+				}
+			};
+			disconnect = function(){
+				if(observe){
+					observe = false;
+					observer.disconnect();
+				}
+			};
 		} else {
 			docElem.addEventListener('DOMAttrModified', (function(){
 				var runs;
@@ -44,7 +57,7 @@
 					runs = false;
 				};
 				return function(e){
-					if(e.newValue && attributes[e.attrName]){
+					if(observe && e.newValue && attributes[e.attrName]){
 						modifications.push({target: e.target, attributeName: e.attrName});
 						if(!runs){
 							setTimeout(callMutations);
@@ -53,7 +66,21 @@
 					}
 				};
 			})(), true);
+
+			connect = function(){
+				observe = true;
+			};
+			disconnect = function(){
+				observe = false;
+			};
 		}
+
+		addEventListener('lazybeforeunveil', disconnect, true);
+		addEventListener('lazybeforeunveil', connect);
+
+		addEventListener('lazybeforesizes', disconnect, true);
+		addEventListener('lazybeforesizes', connect);
+		connect();
 
 		removeEventListener('lazybeforeunveil', addObserver);
 	};
