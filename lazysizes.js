@@ -383,6 +383,41 @@
 			}, true);
 		};
 
+		/*
+		var onload = function(){
+			var scrollTimer, timestamp;
+			var wait = 99;
+			var afterScroll = function(){
+				var last = (Date.now()) - timestamp;
+
+				// if the latest call was less that the wait period ago
+				// then we reset the timeout to wait for the difference
+				if (last < wait) {
+					scrollTimer = setTimeout(afterScroll, wait - last);
+
+					// or if not we can null out the timer and run the latest
+				} else {
+					scrollTimer = null;
+					lazySizesConfig.loadMode = 3;
+					throttledCheckElements();
+				}
+			};
+
+			isCompleted = true;
+			lowRuns += 8;
+
+			lazySizesConfig.loadMode = 3;
+
+			addEventListener('scroll', function(){
+				timestamp = Date.now();
+				if(!scrollTimer){
+					lazySizesConfig.loadMode = 2;
+					scrollTimer = setTimeout(afterScroll, wait);
+				}
+			}, true);
+		};
+		*/
+
 		return {
 			_: function(){
 

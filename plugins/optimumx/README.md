@@ -127,14 +127,22 @@ For native images support the ``picture`` element can be used to achieve the res
 <picture>
 <!--[if IE 9]><video style="display: none;"><![endif]-->
 <source
+    data-srcset="image-w1600-q40.jpg 1600w,
+        image-w1440-q40.jpg 1440w,
+        image-w1200-q40.jpg 1200w,
+        image-w800-q40.jpg 800w,
+        image-w600-q40.jpg 600w,
+        image-w400-q40.jpg 400w"
+    media="(-webkit-min-device-pixel-ratio: 2.9),
+        (min-resolution: 2.9dppx)"
     data-srcset="image-w1600-q60.jpg 1600w,
-        image-w1440-q60.jpg 1440w,
-        image-w1200-q60.jpg 1200w,
-        image-w800-q60.jpg 800w,
-        image-w600-q60.jpg 600w,
-        image-w400-q60.jpg 400w"
-    media="(-webkit-min-device-pixel-ratio: 1.5),
-        (min-resolution: 144dpi)"
+        image-w1440-q50.jpg 1440w,
+        image-w1200-q50.jpg 1200w,
+        image-w800-q50.jpg 800w,
+        image-w600-q50.jpg 600w,
+        image-w400-q50.jpg 400w"
+    media="(-webkit-min-device-pixel-ratio: 1.9),
+        (min-resolution: 1.9dppx)"
      />
 <!--[if IE 9]></video><![endif]-->
 <img
@@ -155,7 +163,11 @@ Or in case you are using the [Responsive Images as a Service extension (RIaS)](.
 ```html
 <script>
 document.addEventListener('lazyriasmodifyoptions', function(data){
-    data.detail.quality = (window.devicePixelRatio || 1) > 1.4 ? 60 : 80;
+    data.detail.quality = (window.devicePixelRatio || 1) > 1.9 ? 
+    (window.devicePixelRatio > 2.9) ?
+        35 :
+        50 : 
+        80;
 });
 </script>
 
@@ -166,7 +178,7 @@ document.addEventListener('lazyriasmodifyoptions', function(data){
     alt="" />
 ```
 
-Unfortunately these techniques also double the amount of generated image candidates. In case you don't have so much resources the optimumx extension in conjunction with proper image compression is the best thing you can do.
+Unfortunately these techniques also double, triple or even quadruple (think 1x: 60-85q, 2x: 40-50q, 3x 30-40q, 4x: 10-30q) the amount of generated image candidates. In case you don't have so much resources the optimumx extension in conjunction with proper image compression is the best thing you can do.
 
 But be aware each image has different characteristics: While some images look great on a HIGH DPI device even with a ``data-optimumx="1.2"`` other will need a much higher density for a good perceived quality.
 

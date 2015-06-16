@@ -3,7 +3,7 @@
 	if(!window.addEventListener){return;}
 
 	var addObserver = function(){
-		var connect, disconnect, observer, observe;
+		var connect, disconnect, observer, connected;
 		var lazySizes = window.lazySizes;
 		var lsCfg = lazySizes.cfg;
 		var attributes = {'data-bgset': 1, 'data-include': 1, 'data-poster': 1, 'data-bg': 1, 'data-script': 1};
@@ -18,7 +18,7 @@
 
 				if(!target.getAttribute(mutation.attributeName)){continue;}
 
-				if(target.nodeName.toLowerCase() == 'source' && target.parentNode){
+				if(target.localName == 'source' && target.parentNode){
 					target = target.parentNode.querySelector('img');
 				}
 
@@ -36,14 +36,14 @@
 			observer = new MutationObserver(onMutation);
 
 			connect = function(){
-				if(!observe){
-					observe = true;
+				if(!connected){
+					connected = true;
 					observer.observe( docElem, { subtree: true, attributes: true, attributeFilter: Object.keys(attributes)} );
 				}
 			};
 			disconnect = function(){
-				if(observe){
-					observe = false;
+				if(connected){
+					connected = false;
 					observer.disconnect();
 				}
 			};
@@ -57,7 +57,7 @@
 					runs = false;
 				};
 				return function(e){
-					if(observe && e.newValue && attributes[e.attrName]){
+					if(connected && attributes[e.attrName] && e.newValue){
 						modifications.push({target: e.target, attributeName: e.attrName});
 						if(!runs){
 							setTimeout(callMutations);
@@ -68,10 +68,10 @@
 			})(), true);
 
 			connect = function(){
-				observe = true;
+				connected = true;
 			};
 			disconnect = function(){
-				observe = false;
+				connected = false;
 			};
 		}
 
