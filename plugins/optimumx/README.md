@@ -127,14 +127,6 @@ For native images support the ``picture`` element can be used to achieve the res
 <picture>
 <!--[if IE 9]><video style="display: none;"><![endif]-->
 <source
-    data-srcset="image-w1600-q40.jpg 1600w,
-        image-w1440-q40.jpg 1440w,
-        image-w1200-q40.jpg 1200w,
-        image-w800-q40.jpg 800w,
-        image-w600-q40.jpg 600w,
-        image-w400-q40.jpg 400w"
-    media="(-webkit-min-device-pixel-ratio: 2.9),
-        (min-resolution: 2.9dppx)"
     data-srcset="image-w1600-q60.jpg 1600w,
         image-w1440-q50.jpg 1440w,
         image-w1200-q50.jpg 1200w,
@@ -142,8 +134,7 @@ For native images support the ``picture`` element can be used to achieve the res
         image-w600-q50.jpg 600w,
         image-w400-q50.jpg 400w"
     media="(-webkit-min-device-pixel-ratio: 1.9),
-        (min-resolution: 1.9dppx)"
-     />
+        (min-resolution: 1.9dppx)" />
 <!--[if IE 9]></video><![endif]-->
 <img
     data-srcset="w1600-q80.jpg 1600w,
@@ -163,10 +154,10 @@ Or in case you are using the [Responsive Images as a Service extension (RIaS)](.
 ```html
 <script>
 document.addEventListener('lazyriasmodifyoptions', function(data){
-    data.detail.quality = (window.devicePixelRatio || 1) > 1.9 ? 
+    data.detail.quality = (window.devicePixelRatio || 1) > 1.9 ?
     (window.devicePixelRatio > 2.9) ?
         35 :
-        50 : 
+        50 :
         80;
 });
 </script>

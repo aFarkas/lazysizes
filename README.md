@@ -28,9 +28,9 @@
     ```
     ```html
     <!-- iframe example -->
-    <iframe frameborder="0" 
-    	class="lazyload" 
-        allowfullscreen="" 
+    <iframe frameborder="0"
+    	class="lazyload"
+        allowfullscreen=""
         data-src="//www.youtube.com/embed/ZfV-aYdU4uE">
     </iframe>
     ```
@@ -41,7 +41,7 @@
 1. **Works without any configuration or JS callbacks in any web enviroment**: The script works as an universal, self-initializing, self-configuring and self-destroying component and detects any changes to the visibility of any current and future image/iframe elements automatically no matter whether it becomes visible through a user scroll, a CSS animation triggered through ``:hover`` or through any kind of JS behavior (carousel, slider, infinite scroll, masonry, isotope/filtering/sorting, AJAX, SPAs...). Also works automatically in conjunction with any kind of JS-/CSS-/Frontend-Framework (jQuery mobile, Bootstrap, Backbone, Angular, React, ember (see also the [attrchange/re-initialization extension](plugins/attrchange))).
 2. **Future-proof**: It directly includes standard responsive image support (``picture`` and ``srcset``)
 3. **Separation of concerns**: For responsive image support it adds an automatic ``sizes`` calculation as also alias names for media queries feature. There is also no JS change needed if you add a scrollable container with CSS (overflow: auto) or create a mega menu containing images.
-4. **Performance**: It's based on high efficient and best practice code (runtime **and** memory) to work jank-free at 60fps. Can be used with thousands of images/iframes on CSS and JS heavy pages/webapps.
+4. **Performance**: It's based on high efficient and best practice code (runtime **and** memory) to work jank-free at 60fps. Can be used with hundreds of images/iframes on CSS and JS heavy pages/webapps.
 5. **Extendable**: It provides JS and CSS hooks to extend lazysizes with any kind of lazy loading, lazy instantiation, inview callbacks or effects (see also the [available plugins/snippets](#plugins)).
 6. **Intelligent prefetch**: lazysizes prefetches/preloads near the view assets to improve user experience, but only while the browser network is idling. (see also ``expand``, ``expFactor`` and ``loadMode`` options)
 7. **Lightweight, but mature solution**: lazysizes has the right balance between a lightweight and a reliable and fast solution
@@ -91,7 +91,7 @@ The LQIP pattern (low quality image placeholder). Simply add a low quality image
     image2.jpg 300w,
     image3.jpg 600w,
     image4.jpg 900w" class="lazyload" />
-    
+
 <!-- or non-responsive: -->
 <img src="lqip-src.jpg" data-src="image.jpg" class="lazyload" />
 ```
@@ -244,7 +244,7 @@ document.addEventListener('lazybeforeunveil', function(e){
 
 The ``lazybeforeunveil`` event can also be used to add unveil effects using JS:
 
-```html 
+```html
 <style>
 img.lazyload {
     opacity: 0;
@@ -278,7 +278,7 @@ $(document).on('lazybeforeunveil', (function(){
 
 For CSS transition/animations or progress bars / spinners use the ``.lazyloading`` /  ``.lazyloaded`` classes. See also the [animate.html](http://afarkas.github.io/lazysizes/animate.html) and the [no-src.html](http://afarkas.github.io/lazysizes/no-src.html) examples:
 
-```html 
+```html
 <style>
 .lazyload,
 .lazyloading {
@@ -542,11 +542,11 @@ $('.my-widget').each(function(){
     var update = function(){
         $module.myWidget('updateLayout');
     };
-    
+
     // Note: Instead of waiting for all images until we initialize the widget
     // we use event capturing to update the widget's layout progressively.
     this.addEventListener('load', update, true);
-    
+
     $module.myWidget();
 });
 ```
