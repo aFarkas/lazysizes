@@ -517,7 +517,7 @@ In case you want to dynamically calculate your intrinsic ratios for many differe
         http://placehold.it/700x300 700w,
         http://placehold.it/1400x600 1400w" class="lazyload" />
 </div>
-``
+```
 
 In case the exact ratio of your image is unknown you can also vary the intrinsic ratio like this:
 
