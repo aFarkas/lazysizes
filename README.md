@@ -415,11 +415,10 @@ The [unveilhooks plugin](plugins/unveilhooks) plugin enables lazySizes to lazylo
 The [include plugin](plugins/include) plugin enables lazySizes to lazyload content, styles or AMD modules either simply postboned or conditionally (for example matching certain media queries). This extension also heavily simplifies architecture of conditional, dynamically changing responsive behavior and has an extreme great scalability.
 
 ###[bgset plugin - lazy responsive background-image](plugins/bgset)
-The bgset plugin allows lazyload multiple background images with different resolutions/sizes (responsive background images). In case you only need one image use the unveilhooks extension.
+The bgset plugin allows lazyload multiple background images with different resolutions/sizes and/or media queries (responsive background images). In case you only need one image use the unveilhooks extension.
 
 ###[lazysizes custommedia extension](plugins/custommedia)
 [lazySizes custommedia extension](plugins/custommedia) allows you to automatically sync and manage your breakpoints between your CSS and the ``media`` attributes of your ``"picture > source"`` elements using the ``customMedia`` option of lazySizes.
-
 
 ###[attrchange / re-initialization extension](plugins/attrchange)
 In case you are changing the ``data-src``/``data-srcset`` attributes of already transformed lazyload elements, you normally also must re-add the ``lazyload`` class to the element.
@@ -487,6 +486,39 @@ For flexible responsive images the [CSS intrinsic ratio scaling technique](http:
 </div>
 ```
 
+In case you want to dynamically calculate your intrinsic ratios for many different formats you can vary the pattern to something like this:
+
+```html
+<style>
+.ratio-box {
+	position: relative;
+	height: 0;
+	display: block;
+	width: 100%;
+	/* padding-bottom is calculated and rendered in to HTML */
+}
+
+.ratio-box > * {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	display: block;
+}
+</style>
+
+<div class="ratio-box" style="padding-bottom: 42.85% /* calc(75 / 175 * 100%)*/;">
+    <img
+        src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+        data-sizes="auto"
+        data-srcset="http://placehold.it/175x75 175w,
+        http://placehold.it/350x150 350w,
+        http://placehold.it/700x300 700w,
+        http://placehold.it/1400x600 1400w" class="lazyload" />
+</div>
+``
+
 In case the exact ratio of your image is unknown you can also vary the intrinsic ratio like this:
 
 ```html
@@ -528,9 +560,18 @@ In case the exact ratio of your image is unknown you can also vary the intrinsic
 </div>
 ```
 
+or at least add a ``min-height`` (and ``min-width``) to minimize content jumps:
+
+```css
+.lazyload,
+.lazyloading {
+	min-height: 200px;
+}
+```
+
 **Note**:
 
-* In case you use the "unknown intrinsic ratio pattern" and the width of the image will not approximately match the width of its container the ``data-sizes="auto"`` feature should not be used.
+* In case you use the "unknown intrinsic ratio pattern" and the width of the loaded image will not approximately match the width of its container the ``data-sizes="auto"`` feature should not be used.
 * see also the [aspectratio extension](plugins/aspectratio) for an alternative way to add aspectratio.
 
 ###Updateing layout of JS widgets
@@ -551,6 +592,8 @@ $('.my-widget').each(function(){
 });
 ```
 
+For this update pattern you may want to combine this at least with the ``min-height`` pattern explained above.
+
 ##<a id="include-early"></a>Tip: Where/How to include lazySizes
 While lazy loading is a great feature, it is important for users that crucial inview images are loaded as fast as possible. (Most users start to interact with a page after inview images are loaded.)
 
@@ -563,9 +606,9 @@ This smaller script, which should include lazySizes must than be placed before t
 ##Why lazysizes
 In the past I often struggled using lazy image loaders, because the "main check function" is called repeatedly and with a high frequency. Which makes it hard to fulfill two purposes runtime and memory efficiency. And looking into the source code of most so called lazy loaders often also unveils lazy developers...
 
-But in a world of responsive retina optimized images on the one hand and JS widgets like carousels or tabs (a lot of initially hidden images) on the other hand lazy loading images becomes more and more important. And therefore I created this project. And in fact **lazysizes** is different.
+But in a world of responsive retina optimized images on the one hand and JS widgets like carousels or tabs (a lot of initially hidden images) on the other hand lazy loading images becomes more and more important. And therefore I created this project. And in fact **lazysizes** is different:
 
-Due to the fact, that it is designed to be invoked with a high frequency and therefore works highly efficient, it was possible to hook into all kind of events as also add a mutationobserver and therefore this lazyloader works as a simple drop in solution, you simply write/render your markup and no matter whether it was added by AJAX or revealed by a JS or CSS animation it will be picked up by **layzsizes**.
+Due to the fact, that it is designed to be invoked with a high frequency and therefore works highly efficient, it was possible to hook into all kind of events as also add a mutationobserver and therefore this lazyloader works as a simple drop in solution, you simply write/render your markup and no matter whether the ``.lazyload`` element was added by AJAX or revealed by a JS or CSS animation it will be picked up by **layzsizes**.
 
 ```html
 <!-- responsive example: -->

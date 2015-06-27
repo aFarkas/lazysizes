@@ -155,8 +155,6 @@ Or in case you are using the [Responsive Images as a Service extension (RIaS)](.
 <script>
 document.addEventListener('lazyriasmodifyoptions', function(data){
     data.detail.quality = (window.devicePixelRatio || 1) > 1.9 ?
-    (window.devicePixelRatio > 2.9) ?
-        35 :
         50 :
         80;
 });
@@ -169,7 +167,7 @@ document.addEventListener('lazyriasmodifyoptions', function(data){
     alt="" />
 ```
 
-Unfortunately these techniques also double, triple or even quadruple (think 1x: 60-85q, 2x: 40-50q, 3x 30-40q, 4x: 10-30q) the amount of generated image candidates. In case you don't have so much resources the optimumx extension in conjunction with proper image compression is the best thing you can do.
+Unfortunately these techniques also double or even triple (think 1x: 65-85q, 2x: 30-50q, 3x/4x 15-40q) the amount of generated image candidates. In case you don't have so much resources the optimumx extension in conjunction with proper image compression is the best thing you can do.
 
 But be aware each image has different characteristics: While some images look great on a HIGH DPI device even with a ``data-optimumx="1.2"`` other will need a much higher density for a good perceived quality.
 
