@@ -4,6 +4,7 @@
 
 	var regSplitSet = /\s*\|\s+|\s+\|\s*/g;
 	var regSource = /^(.+?)(?:\s+\[\s*(.+?)\s*\])?$/;
+	var allowedBackgroundSize = {contain: 1, cover: 1};
 
 	var proxyWidth = function(elem){
 		var width = lazySizes.gW(elem, elem.parentNode);
@@ -14,6 +15,7 @@
 	};
 
 	var createPicture = function(sets, elem, img){
+		var bgSize;
 		var picture = document.createElement('picture');
 		var sizes = elem.getAttribute(lazySizesConfig.sizesAttr);
 		var optimumx = elem.getAttribute('data-optimumx');
@@ -59,6 +61,12 @@
 		if(sizes){
 			img.setAttribute(lazySizesConfig.sizesAttr, sizes);
 			elem.removeAttribute(lazySizesConfig.sizesAttr);
+			elem.removeAttribute('sizes');
+
+			bgSize = getComputedStyle(elem).getPropertyValue('background-size');
+			if(lazySizes.parentFit && sizes == 'auto' && allowedBackgroundSize[bgSize]){
+				img.setAttribute('data-parent-fit', bgSize);
+			}
 		}
 		if(optimumx){
 			img.setAttribute('data-optimumx', optimumx);
