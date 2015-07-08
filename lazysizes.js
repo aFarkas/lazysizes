@@ -114,8 +114,8 @@
 
 			running =  true;
 
-			if(delay < 9){
-				delay = 9;
+			if(delay < 6){
+				delay = 6;
 			}
 			setTimeout(getAF, delay);
 		};
@@ -137,7 +137,7 @@
 		var currentExpand = 0;
 
 		var isLoading = 0;
-		var lowRuns = 1;
+		var lowRuns = 0;
 
 		var resetPreloading = function(e){
 			isLoading--;
@@ -221,6 +221,7 @@
 						((isCompleted && isLoading < 3 && !elemExpandVal && (loadMode < 3 || lowRuns < 4)) || isNestedVisible(lazyloadElems[i], elemExpand))){
 						unveilElement(lazyloadElems[i], rect.width);
 						loadedSomething = true;
+						if(isLoading > 9){break;}
 					} else if(!loadedSomething && isCompleted && !autoLoadElem &&
 						isLoading < 3 && lowRuns < 4 && loadMode > 2 &&
 						(preloadElems[0] || lazySizesConfig.preloadAfterLoad) &&
@@ -446,11 +447,11 @@
 					document.addEventListener(name, throttledCheckElements, true);
 				});
 
-				if(!(isCompleted = /d$|^c/.test(document.readyState))){
+				if((/d$|^c/.test(document.readyState))){
+					onload();
+				} else {
 					addEventListener('load', onload);
 					document.addEventListener('DOMContentLoaded', throttledCheckElements);
-				} else {
-					onload();
 				}
 
 				throttledCheckElements();

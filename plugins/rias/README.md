@@ -90,7 +90,7 @@ All RiAS options can also be used as a {placeholder} inside the url.
 ###List of Options
 
 * ``lazySizesConfig.rias.srcAttr`` (default: ``"data-src"``): The attribute, which should be transformed to ``src``/``srcset``. (The extension will also automatically check the ``lazySizesConfig.srcsetAttr`` and ``lazySizesConfig.srcAttr``)
-* ``lazySizesConfig.rias.widths`` (``array of numbers``): The widths option reduces the calculated ``width`` to the allowed widths. The numeric width can also be simply mapped to a string (i.e.: small, medium, large) using the ``widthmap`` option. The default value is the following array: ``[96, 160, 320, 480, 640, 800, 960, 1280, 1600, 1920, 2240, 2560, 2880]``.
+* ``lazySizesConfig.rias.widths`` (``array of numbers``): The widths option reduces the calculated ``width`` to the allowed widths. The numeric width can also be simply mapped to a string (i.e.: small, medium, large) using the ``widthmap`` option. The default value is the following array: ``[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 1944, 2160, 2376, 2592, 2808, 3024]``.
 * ``lazySizesConfig.rias.widthmap`` (``{}``): The widthmap option allows you to simply transform a numeric width to a string.
     ```js
     window.lazySizesConfig = window.lazySizesConfig || {};

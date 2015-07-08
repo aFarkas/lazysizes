@@ -126,23 +126,23 @@ For native images support the ``picture`` element can be used to achieve the res
 ```html
 <picture>
 <!--[if IE 9]><video style="display: none;"><![endif]-->
-<source
-    data-srcset="image-w1600-q60.jpg 1600w,
-        image-w1440-q50.jpg 1440w,
-        image-w1200-q50.jpg 1200w,
-        image-w800-q50.jpg 800w,
-        image-w600-q50.jpg 600w,
-        image-w400-q50.jpg 400w"
-    media="(-webkit-min-device-pixel-ratio: 1.9),
-        (min-resolution: 1.9dppx)" />
+	<source
+	    data-srcset="image-w1600-q50.jpg 1600w,
+	        image-w1440-q50.jpg 1440w,
+	        image-w1200-q50.jpg 1200w,
+	        image-w800-q50.jpg 800w,
+	        image-w600-q50.jpg 600w"
+	    media="(-webkit-min-device-pixel-ratio: 1.9),
+	        (min-resolution: 1.9dppx)" />
+	<source
+    	data-srcset="image-w1440-q80.jpg 1440w,
+                image-w1200-q80.jpg 1200w,
+                image-w800-q80.jpg 800w,
+                image-w600-q80.jpg 600w,
+                image-w400-q80.jpg 400w" />
 <!--[if IE 9]></video><![endif]-->
 <img
-    data-srcset="w1600-q80.jpg 1600w,
-        image-w1440-q80.jpg 1440w,
-        image-w1200-q80.jpg 1200w,
-        image-w800-q80.jpg 800w,
-        image-w600-q80.jpg 600w,
-        image-w400-q80.jpg 400w"
+    src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
     data-sizes="auto"
     class="lazyload"
     alt="picture but without artdirection" />

@@ -51,13 +51,12 @@
 			(function (widths){
 				var width;
 				var i = 0;
-				widths.push(96);
-				while(!width || width < 2800){
-					i += 10;
-					if(i > 60){
-						i += 10;
+				while(!width || width < 3000){
+					i += 5;
+					if(i > 30){
+						i += 1;
 					}
-					width = (16 * i);
+					width = (36 * i);
 					widths.push(width);
 				}
 			})(riasCfg.widths);
