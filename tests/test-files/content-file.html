@@ -29,14 +29,16 @@
             respimage: '../../node_modules/respimage/respimage.js',
             picturefill: '../../node_modules/picturefill/dist/picturefill.js',
             respmutation: '../../node_modules/respimage/plugins/mutation/ri.mutation.js',
-            respintrinsic: '../../node_modules/respimage/plugins/intrinsic-dimension/ri.intrinsic.js'
+            respintrinsic: '../../node_modules/respimage/plugins/intrinsic-dimension/ri.intrinsic.js',
         };
         var pluginlist = {
             optimumx: '../../plugins/optimumx/ls.optimumx.js',
             rias: '../../plugins/rias/ls.rias.js',
             noscript: '../../plugins/noscript/ls.noscript.js',
             respimg: '../../plugins/respimg/ls.respimg.js',
-            attrchange: '../../plugins/attrchange/ls.attrchange.js'
+            attrchange: '../../plugins/attrchange/ls.attrchange.js',
+            bgset: '../../plugins/bgset/ls.bgset.js',
+            parentFit: '../../plugins/parent-fit/ls.parent-fit.js',
         };
         var params = deparam(location.search.replace(/^\?/, ''));
         window.lazySizesConfig = params.cfg || {};

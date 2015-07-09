@@ -33,7 +33,7 @@
 
 			for(i = 0; i < elements.length; i++){
 				element = elements[i];
-				srcset = element.getAttribute(lazySizesConfig.srcsetAttr) || element.getAttribute('srcset') || element.getAttribute('data-pfsrcset') || '';
+				srcset = element.getAttribute(lazySizesConfig.srcsetAttr) || element.getAttribute('srcset') || element.getAttribute('data-pfsrcset') || element.getAttribute('data-risrcset') || '';
 				media = element.getAttribute('media');
 				media = lazySizesConfig.customMedia[element.getAttribute('data-media') || media] || media;
 

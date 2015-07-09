@@ -102,6 +102,63 @@ function _optimumxReinit(addClass){
 }
 
 $.extend(window.lazyTests, {
+	bgsetParentFit: ['lazyloads bgsetParentFit', function(assert){
+		var done = assert.async();
+		var $iframe = this.$iframe;
+
+		this.promise.always(function($, frameWindow){
+			var viewport;
+			var $div = $('<div />')
+				.attr({
+					'data-bgset': 'data:,jo2 400w 800h, data:,jo3 800w 1600h, data:,jo4 1200w 2400h [(max-width: 300px)] | ' +
+					'data:,jo5 800h 500w',
+					'data-sizes': 'auto',
+					'class': 'lazyload',
+					'data-optimumx': '0.6'
+				})
+				.css({
+					display: 'block',
+					width: 400,
+					height: 400,
+					backgroundSize: 'contain'
+				})
+				.appendTo('body')
+			;
+			var initialTest = function(){
+
+				assert.equal($('source').eq(0).attr('sizes'), '200px');
+			};
+
+			var endTest = function(){
+				assert.equal($('source').eq(1).attr('sizes'), '250px');
+			};
+			var viewportTests = [
+				['300', initialTest],
+				['200', initialTest],
+				['500', endTest]
+			];
+
+			var run = function(){
+				if(viewportTests.length){
+					viewport = viewportTests.shift();
+					$iframe.css('width', viewport[0]);
+				} else {
+					done();
+				}
+			};
+			run();
+
+
+
+			$div.on('lazybeforesizes', function(e){
+				setTimeout(function(){
+					viewport[1]();
+					run();
+				});
+			});
+
+		});
+	}],
 	optimumxPictureResize: ['lazyloads constraints srcset on picture', function(assert){
 		var done = assert.async();
 		var $iframe = this.$iframe;
@@ -702,6 +759,28 @@ QUnit.module( "attrchange + optimumx mix", {
 QUnit.test.apply(QUnit, lazyTests.optimumxReinit);
 QUnit.test.apply(QUnit, lazyTests.optimumxAttrchangeReinit);
 QUnit.test.apply(QUnit, lazyTests.optimumxPictureResize);
+
+QUnit.module( "parentFit + bgset + optimumx", {
+	beforeEach: createBeforeEach(
+		{
+			plugins: ['optimumx', 'parentFit', 'bgset']
+		},
+		{
+			libs: ['respimage']
+		}
+	)
+});
+QUnit.test.apply(QUnit, lazyTests.bgsetParentFit);
+
+QUnit.module( "parentFit + bgset + respimg", {
+	beforeEach: createBeforeEach(
+		{
+			plugins: ['parentFit', 'bgset', 'respimg']
+		}
+	)
+});
+QUnit.test.apply(QUnit, lazyTests.bgsetParentFit);
+
 
 
 
