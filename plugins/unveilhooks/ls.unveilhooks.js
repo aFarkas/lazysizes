@@ -28,7 +28,7 @@ For background images, use data-bg attribute:
 	var bgLoad;
 	var uniqueUrls = {};
 
-	if(document.addEventListener && window.getComputedStyle){
+	if(document.addEventListener){
 
 		bgLoad = function (url, cb){
 			var img = document.createElement('img');

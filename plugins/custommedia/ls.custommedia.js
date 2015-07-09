@@ -19,7 +19,7 @@
 			var regNamedQueries = /^([a-z0-9_-]+)\s*:\s*(.+)$/i;
 
 			var getStyle = function(elem, pseudo){
-				return (getComputedStyle(elem, pseudo).getPropertyValue('content') || 'none').replace(regCleanPseudos, '').trim();
+				return ((getComputedStyle(elem, pseudo) || {getPropertyValue: function(){}}).getPropertyValue('content') || 'none').replace(regCleanPseudos, '').trim();
 			};
 			var parse = function(string, object){
 				string.split(regSplit).forEach(function(query){

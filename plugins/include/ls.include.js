@@ -19,6 +19,10 @@
 	var docElem = document.documentElement;
 	var conditionalIncludes = document.getElementsByClassName('lazyconditionalinclude');
 
+	var getComputedStyle = function(){
+		return window.getComputedStyle.apply(window.getComputedStyle, arguments) || {getPropertyValue: function(){}};
+	};
+
 	var queue = (function(){
 		var lowTreshold = 2;
 		var highTreshold = 3;

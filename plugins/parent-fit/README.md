@@ -13,7 +13,7 @@ Simply include this plugin, combine your width descriptors with height descripto
 ```html
 <img data-srcset="http://lorempixel.com/400/800/people/6/ 400w 800h,
 	http://lorempixel.com/300/600/people/6/ 300w 600h,
-	http://lorempixel.com/200/400/people61/ 200w 400h"
+	http://lorempixel.com/200/400/people/6/ 200w 400h"
 	 data-sizes="auto"
 	 class="lazyload"
 	 style="width: 400px; height: 400px; object-fit: contain;" />
@@ -36,7 +36,7 @@ To do so include this plugin, combine your width descriptors with height descrip
 <div style="width: 400px; height: 400px; display: flex; align-items: center; justify-content: center;">
 	<img data-srcset="http://lorempixel.com/400/800/people/6/ 400w 800h,
 		http://lorempixel.com/300/600/people/6/ 300w 600h,
-		http://lorempixel.com/200/400/people61/ 200w 400h"
+		http://lorempixel.com/200/400/people/6/ 200w 400h"
 		 data-sizes="auto"
 		 class="lazyload"
 		 data-parent-fit="contain"

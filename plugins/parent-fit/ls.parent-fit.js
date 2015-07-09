@@ -17,7 +17,7 @@
 					obj.parent = obj.parent.parentNode;
 				}
 			} else {
-				obj.fit = getComputedStyle(element).getPropertyValue("object-fit");
+				obj.fit = (getComputedStyle(element) || {getPropertyValue: function(){}}).getPropertyValue("object-fit");
 			}
 
 			return obj;

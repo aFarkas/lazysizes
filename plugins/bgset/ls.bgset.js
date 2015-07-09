@@ -63,7 +63,7 @@
 			elem.removeAttribute(lazySizesConfig.sizesAttr);
 			elem.removeAttribute('sizes');
 
-			bgSize = getComputedStyle(elem).getPropertyValue('background-size');
+			bgSize = (getComputedStyle(elem) || {getPropertyValue: function(){}}).getPropertyValue('background-size');
 			if(lazySizes.parentFit && sizes == 'auto' && allowedBackgroundSize[bgSize]){
 				img.setAttribute('data-parent-fit', bgSize);
 			}
