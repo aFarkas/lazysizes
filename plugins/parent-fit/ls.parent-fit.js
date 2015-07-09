@@ -28,7 +28,7 @@
 			var parent = element.parentNode;
 			var elements = parent && regPicture.test(parent.nodeName || '') ?
 					parent.querySelectorAll('source, img') :
-					[elements]
+					[element]
 				;
 
 			for(i = 0; i < elements.length; i++){

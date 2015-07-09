@@ -75,7 +75,7 @@ Add the ``class`` ``lazyload`` to all ``img`` and ``iframe`` elements, which sho
     responsive-image3.jpg 900w" class="lazyload" />
 ```
 
-**Important: How ``sizes`` is calculated**: The automatic sizes calculation takes the width of the image. If it is below ``40`` (can be configured through the ``minSize`` option), lazysizes traverses up the DOM tree until it finds a parent which is over ``40`` and uses this number. Often the following general CSS rule might help: ``img[data-sizes="auto"] { display: block; width: 100%; }``. (see also [specifying image/iframe dimensions](#specify-dimensions)) The ``data-sizes="auto"`` feature only makes sense if you use the ``srcset`` attribute with *width* descriptors.
+**Important: How ``sizes`` is calculated**: The automatic sizes calculation takes the width of the image. If it is below ``40`` (can be configured through the ``minSize`` option), lazysizes traverses up the DOM tree until it finds a parent which is over ``40`` and uses this number. Often the following general CSS rule might help: ``img[data-sizes="auto"] { display: block; width: 100%; }``. (see also [specifying image/iframe dimensions](#specify-dimensions)) The ``data-sizes="auto"`` feature only makes sense if you use the ``srcset`` attribute with *width* descriptors. The calculated width can be modified using the ``lazybeforesizes`` event.
 
 ##Recommended markup patterns
 
@@ -335,7 +335,7 @@ document.addEventListener('lazybeforeunveil', function(e){
 <div class="chart lazyload" data-expand="-10"></div>
 ```
 
-* ``lazybeforesizes``: This event will be fired on each element with the ``data-sizes="auto"`` attribute right before the calculated ``sizes`` attribute will be set. The ``event.detail.width`` property is set to the calculated width of the element and can be changed to any number. In case the event is ``defaultPrevented`` the ``sizes`` attribute won't be set.
+* ``lazybeforesizes``: This event will be fired on each element with the ``data-sizes="auto"`` attribute right before the calculated ``sizes`` attribute will be set. The ``event.detail.width`` property is set to the calculated width of the element and can be changed to any number. In case the event is ``defaultPrevented`` the ``sizes`` attribute won't be set. See also the [parent-fit extension](plugins/parent-fit).
 
 ####JS API - methods
 #####``lazySizes.loader.unveil(DOMNode)``
@@ -424,6 +424,10 @@ The bgset plugin allows lazyload multiple background images with different resol
 In case you are changing the ``data-src``/``data-srcset`` attributes of already transformed lazyload elements, you normally also must re-add the ``lazyload`` class to the element.
 
 This [attrchange / re-initialization extension](plugins/attrchange) automatically detects changes to your ``data-*`` attributes and adds the class for you.
+
+###[parent-fit extension](plugins/parent-fit)
+
+The [parent fit plugin](plugins/parent-fit) extends the ``data-sizes="auto"`` feature to also calculate the right ``sizes`` for ``object-fit: contain|cover`` image elements as also **height** ( and width) constrained image elements in general.
 
 ###[noscript extension](plugins/noscript)
 The [noscript extension](plugins/noscript) is the true ultimate progressive enhancement extension for lazySizes. It allows you to transform any HTML inside a ``noscript`` element as soon as it becomes visible.
