@@ -27,22 +27,18 @@
 
 	var parseWsrcset = (function(){
 		var candidates;
-		var reg = /(([^,\s].[^\s]+)\s+(\d+)w)/g;
-		var regHDesc = /\s+\d+h/g;
-		var addCandidate = function(match, candidate, url, wDescriptor){
+		var reg = /(([^,\s].[^\s]+)\s+(\d+)(w|h)(\s+(\d+)(w|h))?)/g;
+		var addCandidate = function(match, candidate, url, descNumber1, descType1, fullDesc, descNumber2, descType2){
 			candidates.push({
 				c: candidate,
 				u: url,
-				w: wDescriptor * 1
+				w: (descType2 == 'w' ? descNumber2 : descNumber1)  * 1
 			});
 		};
 
 		return function(input){
 			candidates = [];
-			input
-				.replace(regHDesc, '')
-				.replace(reg, addCandidate)
-			;
+			input.replace(reg, addCandidate);
 			return candidates;
 		};
 	})();
