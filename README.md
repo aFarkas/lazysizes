@@ -75,7 +75,7 @@ Add the ``class`` ``lazyload`` to all ``img`` and ``iframe`` elements, which sho
     responsive-image3.jpg 900w" class="lazyload" />
 ```
 
-**Important: How ``sizes`` is calculated**: The automatic sizes calculation takes the width of the image. If it is below ``40`` (can be configured through the ``minSize`` option), lazysizes traverses up the DOM tree until it finds a parent which is over ``40`` and uses this number. Often the following general CSS rule might help: ``img[data-sizes="auto"] { display: block; width: 100%; }``. (see also [specifying image/iframe dimensions](#specify-dimensions)) The ``data-sizes="auto"`` feature only makes sense if you use the ``srcset`` attribute with *width* descriptors. The calculated width can be modified using the ``lazybeforesizes`` event.
+**Important: How ``sizes`` is calculated**: The automatic sizes calculation takes the width of the image. If it is below ``40`` (can be configured through the ``minSize`` option), lazysizes traverses up the DOM tree until it finds a parent which is over ``40`` and uses this number. Often the following general CSS rule might help: ``img[data-sizes="auto"] { display: block; width: 100%; }`` (see also [specifying image/iframe dimensions](#specify-dimensions)). The ``data-sizes="auto"`` feature only makes sense if you use the ``srcset`` attribute with *width* descriptors. The calculated width can be modified using the ``lazybeforesizes`` event (See also the [parent fit plugin](plugins/parent-fit) for a modified ``sizes`` calculation.).
 
 ##Recommended markup patterns
 
@@ -575,7 +575,7 @@ or at least add a ``min-height`` (and ``min-width``) to minimize content jumps:
 
 **Note**:
 
-* In case you use the "unknown intrinsic ratio pattern" and the width of the loaded image will not approximately match the width of its container the ``data-sizes="auto"`` feature should not be used.
+* In case you use the "unknown intrinsic ratio pattern" and the width of the loaded image will not approximately match the width of its container the ``data-sizes="auto"`` feature should not be used (see also the [parent fit plugin](plugins/parent-fit)).
 * see also the [aspectratio extension](plugins/aspectratio) for an alternative way to add aspectratio.
 
 ###Updateing layout of JS widgets
