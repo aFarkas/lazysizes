@@ -58,6 +58,7 @@
 			var fitObj = this.getFit(element);
 			var fit = fitObj.fit;
 			var fitElem = fitObj.parent;
+			var retWidth = width;
 
 			if((fit != 'contain' && fit != 'cover') || !(imageRatio = this.getImageRatio(element))){return width;}
 
@@ -68,14 +69,12 @@
 			}
 
 			height = fitElem.offsetHeight;
-			displayRatio =  width / height;
 
-
-			if(height > 40 && ((fit == 'cover' && displayRatio < imageRatio) || (fit == 'contain' && displayRatio > imageRatio))){
-				width = width * (imageRatio / displayRatio);
+			if(height > 40 && (displayRatio =  width / height) && ((fit == 'cover' && displayRatio < imageRatio) || (fit == 'contain' && displayRatio > imageRatio))){
+				retWidth = width * (imageRatio / displayRatio);
 			}
 
-			return width;
+			return retWidth;
 		}
 	};
 	var extend = function(){
