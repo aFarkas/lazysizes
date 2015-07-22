@@ -6,7 +6,6 @@
 	<title>lazysizes - the ultimate lazyloader for responsive images, iframes and widget</title>
 	<link rel="canonical" href="http://afarkas.github.io/lazysizes/index.html" />
 
-	<!-- polyfill responsive images: https://github.com/aFarkas/respimage -->
 	<script>
 		function loadJS(u){var r=document.getElementsByTagName("script")[ 0 ],s=document.createElement("script");s.src=u;r.parentNode.insertBefore(s,r);}
 
@@ -390,7 +389,6 @@ window.lazySizesConfig = {
 						<ol class="carousel-indicators">
 							<li data-slide-to="0" data-target="#carousel-example-captions"></li>
 							<li data-slide-to="1" data-target="#carousel-example-captions"></li>
-							<li data-slide-to="2" data-target="#carousel-example-captions" class="active"></li>
 						</ol>
 						<div class="carousel-inner">
 
@@ -409,22 +407,7 @@ https://farm1.staticflickr.com/113/284651694_69e63b374d_o.jpg 800w"
 									<p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
 								</div>
 							</div>
-							<div class="item">
-								<div class="intrinsic">
-									<img alt="100%x200"
-										 src="https://farm3.staticflickr.com/2377/1657712955_131576bcd8_m.jpg"
-										 data-srcset="https://farm3.staticflickr.com/2377/1657712955_131576bcd8_m.jpg 240w,
-https://farm3.staticflickr.com/2377/1657712955_131576bcd8.jpg 500w,
-https://farm3.staticflickr.com/2377/1657712955_131576bcd8_z.jpg?zz=1 640w,
-https://farm3.staticflickr.com/2377/1657712955_1b941645fd_o.jpg 800w"
-										 data-sizes="auto"
-										 class="lazyload" />
-								</div>
-								<div class="carousel-caption">
-									<h3>Second slide label</h3>
-									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-								</div>
-							</div>
+
 							<div class="item active">
 								<div class="intrinsic">
 									<img alt="100%x200"
@@ -562,17 +545,7 @@ https://farm6.staticflickr.com/5139/5546134597_0b19627066.jpg 500w"
 									alt="Goldie Dawn" />
 						</div>
 					</div>
-					<div class="scroll-item">
-						<div class="thumbnail">
-							<img
-									data-sizes="auto"
-									class="lazyload no-src"
-									src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
-									data-srcset="https://farm3.staticflickr.com/2377/1657712955_131576bcd8_m.jpg 240w,
-https://farm3.staticflickr.com/2377/1657712955_131576bcd8.jpg 500w"
-									alt="Sant Miquel del Fai" />
-						</div>
-					</div>
+
 					<div class="scroll-item">
 						<div class="thumbnail">
 							<img
