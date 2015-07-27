@@ -296,8 +296,8 @@
 
 					if(sizes){
 						if(isAuto){
-							autoSizer.updateElem(elem, true, width);
 							addClass(elem, lazySizesConfig.autosizesClass);
+							autoSizer.updateElem(elem, true, width);
 						} else {
 							elem.setAttribute('sizes', sizes);
 						}
@@ -371,9 +371,10 @@
 			};
 
 			isCompleted = true;
-			lowRuns += 8;
 
 			lazySizesConfig.loadMode = 3;
+
+			lowRuns++;
 
 			addEventListener('scroll', function(){
 				if(lazySizesConfig.loadMode == 3){

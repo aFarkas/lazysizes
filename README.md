@@ -43,7 +43,7 @@
 3. **Separation of concerns**: For responsive image support it adds an automatic ``sizes`` calculation as also alias names for media queries feature. There is also no JS change needed if you add a scrollable container with CSS (overflow: auto) or create a mega menu containing images.
 4. **Performance**: It's based on high efficient and best practice code (runtime **and** memory) to work jank-free at 60fps. Can be used with hundreds of images/iframes on CSS and JS heavy pages/webapps.
 5. **Extendable**: It provides JS and CSS hooks to extend lazysizes with any kind of lazy loading, lazy instantiation, inview callbacks or effects (see also the [available plugins/snippets](#plugins)).
-6. **Intelligent prefetch**: lazysizes prefetches/preloads near the view assets to improve user experience, but only while the browser network is idling. (see also ``expand``, ``expFactor`` and ``loadMode`` options)
+6. **Intelligent prefetch/Intelligent resource prioritization**: lazysizes prefetches/preloads near the view assets to improve user experience, but only while the browser network is idling. (see also ``expand``, ``expFactor`` and ``loadMode`` options)
 7. **Lightweight, but mature solution**: lazysizes has the right balance between a lightweight and a reliable and fast solution
 8. **SEO improved**: lazysizes does not hide images/assets from google.
 
@@ -337,6 +337,12 @@ document.addEventListener('lazybeforeunveil', function(e){
 ```
 
 * ``lazybeforesizes``: This event will be fired on each element with the ``data-sizes="auto"`` attribute right before the calculated ``sizes`` attribute will be set. The ``event.detail.width`` property is set to the calculated width of the element and can be changed to any number. In case the event is ``defaultPrevented`` the ``sizes`` attribute won't be set. See also the [parent-fit extension](plugins/parent-fit).
+```js
+$(document).on('lazybeforesizes', function(e){
+    //use width of parent node instead of the image width itself
+    e.detail.width = $(e.target).closest(':not(picture)').innerWidth() || e.detail.width;
+});
+```
 
 ####JS API - methods
 #####``lazySizes.loader.unveil(DOMNode)``

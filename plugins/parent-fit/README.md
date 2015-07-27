@@ -26,7 +26,7 @@ Simply include this plugin, combine your width descriptors with height descripto
 	 style="width: 400px; height: 400px; object-fit: cover;" />
 ```
 
-###[data-parent-fit="contain|cover"] usage
+###[data-parent-fit="contain|cover|width"] usage
 
 Due to the fact, that object-fit isn't supported in IE11. This plugin also supports calculating height and width constrained images based on the parent element.
 
@@ -43,5 +43,7 @@ To do so include this plugin, combine your width descriptors with height descrip
 		 style="max-width: 100%; max-height: 100%;" />
 </div>
 ```
+
+In case the *width* keyword is used, lazySizes simply takes the width of the parent container instead of the ``img`` element itself. In this case a **h** descriptor isn't necessary.
 
 Note: This plugin should be also added, if you use the [bgset plugin](../bgset/) in combination with ``data-sizes="auto"`` and ``background-size: cover|contain``.
