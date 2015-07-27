@@ -188,7 +188,7 @@
 				if(currentExpand < preloadExpand && isLoading < 1 && lowRuns > 3 && loadMode > 2){
 					currentExpand = preloadExpand;
 					lowRuns = 0;
-				} else if(currentExpand != defaultExpand && loadMode > 1 && lowRuns > 2 && isLoading < 6){
+				} else if(loadMode > 1 && lowRuns > 2 && isLoading < 6){
 					currentExpand = defaultExpand;
 				} else {
 					currentExpand = shrinkExpand;
