@@ -57,7 +57,7 @@ For full cross browser responsive image support you must either use a polyfill l
 **lazysizes** comes with a simple markup and JS API. Normally you will only need to use the markup API.
 
 ###Markup API
-Add the ``class`` ``lazyload`` to all ``img`` and ``iframe`` elements, which should be loaded lazy. Instead of a ``src`` or ``srcset`` attribute, use a ``data-src`` or ``data-srcset`` attribute:
+Add the ``class`` ``lazyload`` to all ``img`` and ``iframe`` elements, which should be loaded lazy. Instead of a ``src`` or ``srcset`` attribute use a ``data-src`` or ``data-srcset`` attribute:
 
 ```html
 <img data-src="image.jpg" class="lazyload" />
@@ -79,6 +79,23 @@ Add the ``class`` ``lazyload`` to all ``img`` and ``iframe`` elements, which sho
 
 ##Recommended markup patterns
 
+###Simple pattern
+
+Add the class ``lazyload`` and simply omit the ``src`` attribute  or add a data uri as fallback ``src``.
+
+```html
+<img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+	class="lazyload"
+	data-srcset="image.jpg 1x, image2.jpg 2x"
+    alt="my image" />
+
+<imgclass="lazyload"
+	data-srcset="progressive-image.jpg 1x, progressive-image2.jpg 2x"
+    alt="my image" />
+```
+
+Note: In case you are using progressive JPEG omit the ``src`` attribute completely. In case you are using the simple markup pattern, consider to add unobtrusive unveil effects ([demo](http://afarkas.github.io/lazysizes/no-src.html#examples)).
+
 ###LQIP
 The LQIP pattern (low quality image placeholder). Simply add a low quality image as the ``src``:
 
@@ -95,19 +112,6 @@ The LQIP pattern (low quality image placeholder). Simply add a low quality image
 <!-- or non-responsive: -->
 <img src="lqip-src.jpg" data-src="image.jpg" class="lazyload" />
 ```
-
-###Simple pattern
-
-For non crucial or below the fold images or in case you want to save more initial image data/requests the LQIP pattern can't be used (an extreme fuzzy image does neither work as a good enough first impression nor as a fallback), you do use client side rendering (no preload parser advantage) or you can't even generate a LQIP src, simply omit the ``src`` attribute  or add a data uri as fallback ``src``.
-
-```html
-<img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
-	class="lazyload"
-	data-srcset="image.jpg 1x, image2.jpg 2x"
-    alt="my image" />
-```
-
-Note: In case you are using the simple markup pattern, consider to add unobtrusive unveil effects ([demo](http://afarkas.github.io/lazysizes/no-src.html#examples)).
 
 ###The noscript pattern
 
@@ -290,7 +294,7 @@ For CSS transition/animations or progress bars / spinners use the ``.lazyloading
 	transition: opacity 300ms;
 }
 
-/* or add a progress loader gif instead || Note: you need to add a transparent gif/data uri */
+/* or add a progress loader gif instead || (Note: you need to add a transparent gif/data uri) */
 
 /*
 .lazyloading {
@@ -363,7 +367,7 @@ In case one or more image elements with the attribute ``data-sizes="auto"`` have
 lazySizes.autoSizer.checkElems();
 ```
 
-####``lazySizes.loader.checkElems()``
+#####``lazySizes.loader.checkElems()``
 
 Tests whether new elements has came into view. Normally this method only needs to be called, if ``lazySizesConfig.loadMode`` was set to ``0``.
 
