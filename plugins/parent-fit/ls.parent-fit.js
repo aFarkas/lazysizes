@@ -1,4 +1,4 @@
-(function(window){
+(function(window, document){
 	'use strict';
 
 	if(!window.addEventListener){return;}
@@ -92,10 +92,18 @@
 	};
 
 	window.addEventListener('lazybeforeunveil', extend, true);
+
+	document.addEventListener('lazybeforeunveil', function(e){
+		var element = e.target;
+		if(element.getAttribute('data-parent-fit') && !element.getAttribute(lazySizesConfig.sizesAttr) && !element.getAttribute('sizes')){
+			element.setAttribute(lazySizesConfig.sizesAttr, 'auto');
+		}
+	});
+
 	document.addEventListener('lazybeforesizes', function(e){
 		if(e.defaultPrevented){return;}
 
 		e.detail.width = parentFit.calculateSize(e.target, e.detail.width);
 	});
 	setTimeout(extend);
-})(window);
+})(window, document);
