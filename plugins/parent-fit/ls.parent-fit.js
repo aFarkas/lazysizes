@@ -54,11 +54,10 @@
 			return dims.w / dims.h;
 		},
 		calculateSize: function(element, width){
-			var displayRatio, height, imageRatio;
+			var displayRatio, height, imageRatio, retWidth;
 			var fitObj = this.getFit(element);
 			var fit = fitObj.fit;
 			var fitElem = fitObj.parent;
-			var retWidth = width;
 
 			if(fit != 'width' && ((fit != 'contain' && fit != 'cover') || !(imageRatio = this.getImageRatio(element)))){return width;}
 
@@ -67,6 +66,8 @@
 			} else {
 				fitElem = element;
 			}
+
+			retWidth = width;
 
 			if(fit == 'width'){
 				retWidth = width;
