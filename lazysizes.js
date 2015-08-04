@@ -281,6 +281,10 @@
 
 			if( (isAuto || !isCompleted) && isImg && (elem.src || elem.srcset) && !elem.complete && !hasClass(elem, lazySizesConfig.errorClass)){return;}
 
+			if(isAuto){
+				width = Math.max(width || 0, elem.offsetWidth);
+			}
+
 			elem._lazyRace = true;
 			isLoading++;
 
