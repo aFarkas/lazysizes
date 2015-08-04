@@ -93,13 +93,6 @@
 
 	window.addEventListener('lazybeforeunveil', extend, true);
 
-	document.addEventListener('lazybeforeunveil', function(e){
-		var element = e.target;
-		if(element.getAttribute('data-parent-fit') && !element.getAttribute(lazySizesConfig.sizesAttr) && !element.getAttribute('sizes')){
-			element.setAttribute(lazySizesConfig.sizesAttr, 'auto');
-		}
-	});
-
 	document.addEventListener('lazybeforesizes', function(e){
 		if(e.defaultPrevented){return;}
 
