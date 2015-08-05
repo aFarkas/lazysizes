@@ -28,21 +28,21 @@ Lazysizes is built upon the Responsive image spec and extends it with additional
 
 ### When to use:
 
-1. **Just lazysites** 
+1. **Just lazysizes** 
 	
-	If you don't have responsive images or if you don't want to polyfill responsive images, you can simply combine the `data-srcset` attribute for supporting browsers with an additional `data-src` attribute for non-supporting browsers.
+	If you don't use responsive images or if you don't want to polyfill responsive images, you can simply combine the `data-srcset` attribute for supporting browsers with an additional `data-src` attribute for non-supporting browsers.
 
 2. **lazysizes with the respimage plugin**
 
-	If all your responsive images are lazyloaded or autosized by lazySizes.
+	If all your responsive images are *lazyloaded* or *lazysized* by lazysizes.
 
 3. **lazysizes in combination with picturefill/respimage** 
 
-	If you want to lazyloaded or lazysize some of your responsive images and not others. 
+	If you want to *lazyload* or *lazysize* some of your responsive images and not others. 
 
 4. **Picturefill / respimage without lazysizes**
 
-	If you want responsive images without lazyloading or autosizing.
+	If you want responsive images without *lazyloading* or *lazysizing*.
 
 
 ##How to
