@@ -2,7 +2,13 @@
 
 **lazysizes** is a fast (jank-free) and self-initializing lazyloader for images (including responsive images ``picture``/``srcset``), iframes, scripts/widgets and much more. It may become also your number one tool to integrate responsive images.
 
-Lazysizes recognises a set of data attributes that work similarly to then new responsive image html spec, but adds powerful additional functionality. It can automatically calculate the ``sizes`` attribute for your responsive images, it allows you to share media queries for your ``media`` attributes with your CSS, helping to separate layout (CSS) from content/structure (HTML) and it makes integrating responsive images into any environment really simple.
+It can automatically calculate the ``sizes`` attribute for your responsive images, it allows you to share media queries for your ``media`` attributes with your CSS, helping to separate layout (CSS) from content/structure (HTML) and it makes integrating responsive images into any environment really simple. It also includes a set of optional plugins to further extend its functionality.
+
+##Responisve image support (``picture`` and/or ``srcset``)
+
+
+Lazysizes is built upon the Responsive image spec and extends it with additional functionality. In cases where the browser supports srcset, it simply transforms the `data-*` attribute to `srcset` and in case the browser doesn't support it a polyfill can be used. For full cross browser responsive image support you must use either a polyfill like [respimage](https://github.com/aFarkas/respimage) or [picturefill](https://github.com/scottjehl/picturefill) instead, or use the extreme lightweight partial [respimg polyfill plugin](plugins/respimg) or the [responsive image on demand plugin](plugins/rias). Alternatively you can simply define a fallback src via the ``data-src`` attribute.
+
 
 ##How to
 
@@ -53,9 +59,6 @@ Lazysizes recognises a set of data attributes that work similarly to then new re
 ##[Demo with code examples](http://afarkas.github.io/lazysizes/#examples)
 Can be seen [here](http://afarkas.github.io/lazysizes/#examples).
 
-##About responsive image support (``picture`` and/or ``srcset``)
-For full cross browser responsive image support you must either use a polyfill like [respimage](https://github.com/aFarkas/respimage) or [picturefill](https://github.com/scottjehl/picturefill) or use the extreme lightweight partial [respimg polyfill plugin](plugins/respimg) or the [responsive image on demand plugin](plugins/rias). Alternatively you can simply define a fallback src via the ``data-src`` attribute.
-
 ##More about the API
 **lazysizes** comes with a simple markup and JS API. Normally you will only need to use the markup API.
 
@@ -80,7 +83,7 @@ Add the ``class`` ``lazyload`` to all ``img`` and ``iframe`` elements, which sho
 
 **Important: How ``sizes`` is calculated**: The automatic sizes calculation uses the width of the image. If it is below ``40`` (can be configured through the ``minSize`` option), lazysizes traverses up the DOM tree until it finds a parent which is over ``40`` and uses this number. Often the following general CSS rule might help: ``img[data-sizes="auto"] { display: block; width: 100%; }`` (see also [specifying image/iframe dimensions](#specify-dimensions)). 
 
-The ``data-sizes="auto"`` feature only makes sense if you use the ``data-srcset`` attribute with *width* descriptors and give the image a percentage width. The calculated width can be modified using the ``lazybeforesizes`` event. Alternativly, the [parent fit plugin](plugins/parent-fit) can be used as an alternative for sizing images to fit a parent / container.
+The ``data-sizes="auto"`` feature only makes sense if you use the ``data-srcset`` attribute with *width* descriptors which allows the most appropriate image can be selected. The width auto-calculated by lazysizes can be modified using the ``lazybeforesizes`` event. Alternativly, the [parent fit plugin](plugins/parent-fit) can be used for sizing images to fit a parent / container, and is the only solution when an image's height needs to be taken into account when fitting it to its container.
 
 ##Recommended markup patterns
 
@@ -483,7 +486,6 @@ For flexible responsive images the [CSS intrinsic ratio scaling technique](http:
     width: 100%;
     /* 16:9 = 56.25% = calc(9 / 16 * 100%) */
     padding-bottom: 42.86%;
-    content: "";
 }
 .ratio-container > * {
     position: absolute;
@@ -591,7 +593,7 @@ or at least add a ``min-height`` (and ``min-width``) to minimize content jumps:
 
 **Note**:
 
-* If you use the "unknown intrinsic ratio pattern" and the width of the loaded image will not approximately match the width of its container, the ``data-sizes="auto"`` feature should not be used. In this situation the most appropriate size for the image to fit in the available space can be calculated automatically using the [parent fit plugin](plugins/parent-fit).
+* If you use the "unknown intrinsic ratio pattern" and the width of the loaded image will not (approximately) match the width of its container, the ``data-sizes="auto"`` feature will not be effective when used on its own. In this situation the most appropriate size for the image to fit in the available space can be calculated automatically using the [parent fit plugin](plugins/parent-fit).
 * see also the [aspectratio extension](plugins/aspectratio) for an alternative way to add aspectratio.
 
 ###Updateing layout of JS widgets
