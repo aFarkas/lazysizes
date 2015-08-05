@@ -4,10 +4,45 @@
 
 It can automatically calculate the ``sizes`` attribute for your responsive images, it allows you to share media queries for your ``media`` attributes with your CSS, helping to separate layout (CSS) from content/structure (HTML) and it makes integrating responsive images into any environment really simple. It also includes a set of optional plugins to further extend its functionality.
 
-##Responisve image support (``picture`` and/or ``srcset``)
+##What makes lazysizes so awesome:
+**lazysizes** is different than other lazy image loaders.
+
+1. **Works without any configuration or JS callbacks in any web enviroment**: The script works as an universal, self-initializing, self-configuring and self-destroying component and detects any changes to the visibility of any current and future image/iframe elements automatically no matter whether it becomes visible through a user scroll, a CSS animation triggered through ``:hover`` or through any kind of JS behavior (carousel, slider, infinite scroll, masonry, isotope/filtering/sorting, AJAX, SPAs...). It also works automatically in conjunction with any kind of JS-/CSS-/Frontend-Framework (jQuery mobile, Bootstrap, Backbone, Angular, React, Ember (see also the [attrchange/re-initialization extension](plugins/attrchange))).
+2. **Future-proof**: It directly includes standard responsive image support (``picture`` and ``srcset``)
+3. **Separation of concerns**: For responsive image support it adds an automatic ``sizes`` calculation as also alias names for media queries feature. There is also no JS change needed if you add a scrollable container with CSS (overflow: auto) or create a mega menu containing images.
+4. **Performance**: It's based on highly efficient, best practice code (runtime **and** memory) to work jank-free at 60fps and can be used with hundreds of images/iframes on CSS and JS-heavy pages or webapps.
+5. **Extendable**: It provides JS and CSS hooks to extend lazysizes with any kind of lazy loading, lazy instantiation, inview callbacks or effects (see also the [available plugins/snippets](#plugins)).
+6. **Intelligent prefetch/Intelligent resource prioritization**: lazysizes prefetches/preloads near the view assets to improve user experience, but only while the browser network is idling. (see also ``expand``, ``expFactor`` and ``loadMode`` options)
+7. **Lightweight, but mature solution**: lazysizes has the right balance between a lightweight and a fast, reliable solution
+8. **SEO improved**: lazysizes does not hide images/assets from google.
+
+##[Demo with code examples](http://afarkas.github.io/lazysizes/#examples)
+Can be seen [here](http://afarkas.github.io/lazysizes/#examples)
+
+
+
+##Responisve image support (picture and/or srcset)
 
 
 Lazysizes is built upon the Responsive image spec and extends it with additional functionality. In cases where the browser supports srcset, it simply transforms the `data-*` attribute to `srcset` and in case the browser doesn't support it a polyfill can be used. For full cross browser responsive image support you must use either a polyfill like [respimage](https://github.com/aFarkas/respimage) or [picturefill](https://github.com/scottjehl/picturefill) instead, or use the extreme lightweight partial [respimg polyfill plugin](plugins/respimg) or the [responsive image on demand plugin](plugins/rias). Alternatively you can simply define a fallback src via the ``data-src`` attribute.
+
+### When to use:
+
+1. **Just lazysites** 
+	
+	If you don't have responsive images or if you don't want to polyfill responsive images, you can simply combine the `data-srcset` attribute for supporting browsers with an additional `data-src` attribute for non-supporting browsers.
+
+2. **lazysizes with the respimage plugin**
+
+	If all your responsive images are lazyloaded or autosized by lazySizes.
+
+3. **lazysizes in combination with picturefill/respimage** 
+
+	If you want to lazyloaded or lazysize some of your responsive images and not others. 
+
+4. **Picturefill / respimage without lazysizes**
+
+	If you want responsive images without lazyloading or autosizing.
 
 
 ##How to
@@ -44,20 +79,6 @@ Lazysizes is built upon the Responsive image spec and extends it with additional
     </iframe>
     ```
 
-##What makes lazysizes so awesome:
-**lazysizes** is different than other lazy image loaders.
-
-1. **Works without any configuration or JS callbacks in any web enviroment**: The script works as an universal, self-initializing, self-configuring and self-destroying component and detects any changes to the visibility of any current and future image/iframe elements automatically no matter whether it becomes visible through a user scroll, a CSS animation triggered through ``:hover`` or through any kind of JS behavior (carousel, slider, infinite scroll, masonry, isotope/filtering/sorting, AJAX, SPAs...). It also works automatically in conjunction with any kind of JS-/CSS-/Frontend-Framework (jQuery mobile, Bootstrap, Backbone, Angular, React, Ember (see also the [attrchange/re-initialization extension](plugins/attrchange))).
-2. **Future-proof**: It directly includes standard responsive image support (``picture`` and ``srcset``)
-3. **Separation of concerns**: For responsive image support it adds an automatic ``sizes`` calculation as also alias names for media queries feature. There is also no JS change needed if you add a scrollable container with CSS (overflow: auto) or create a mega menu containing images.
-4. **Performance**: It's based on highly efficient, best practice code (runtime **and** memory) to work jank-free at 60fps and can be used with hundreds of images/iframes on CSS and JS-heavy pages or webapps.
-5. **Extendable**: It provides JS and CSS hooks to extend lazysizes with any kind of lazy loading, lazy instantiation, inview callbacks or effects (see also the [available plugins/snippets](#plugins)).
-6. **Intelligent prefetch/Intelligent resource prioritization**: lazysizes prefetches/preloads near the view assets to improve user experience, but only while the browser network is idling. (see also ``expand``, ``expFactor`` and ``loadMode`` options)
-7. **Lightweight, but mature solution**: lazysizes has the right balance between a lightweight and a fast, reliable solution
-8. **SEO improved**: lazysizes does not hide images/assets from google.
-
-##[Demo with code examples](http://afarkas.github.io/lazysizes/#examples)
-Can be seen [here](http://afarkas.github.io/lazysizes/#examples).
 
 ##More about the API
 **lazysizes** comes with a simple markup and JS API. Normally you will only need to use the markup API.
