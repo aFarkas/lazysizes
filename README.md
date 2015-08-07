@@ -89,7 +89,7 @@ Add the class ``lazyload`` and simply omit the ``src`` attribute  or add a data 
 	data-srcset="image.jpg 1x, image2.jpg 2x"
     alt="my image" />
 
-<imgclass="lazyload"
+<img class="lazyload"
 	data-srcset="progressive-image.jpg 1x, progressive-image2.jpg 2x"
     alt="my image" />
 ```
@@ -115,7 +115,7 @@ The LQIP pattern (low quality image placeholder). Simply add a low quality image
 
 ###The noscript pattern
 
-In case disabled javascript is a concern you can combine the simple pattern with an image inside a ``noscript`` element.
+In case disabled JavaScript is a concern you can combine the simple pattern with an image inside a ``noscript`` element.
 
 ```html
 <style>
