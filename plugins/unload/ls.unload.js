@@ -89,7 +89,7 @@
 
 		lazySizes.unloader = unloader;
 
-		expand = (config.expand * Math.max(config.expFactor, 1.1) * 1.1) + 100;
+		expand = (config.expand * config.expFactor) + 99;
 		checkElements = document.getElementsByClassName([config.unloadClass, config.loadedClass].join(' '));
 
 		setInterval(unloader.checkElements, 9999);
@@ -109,7 +109,7 @@
 		})());
 	}
 
-	setTimeout(init, 0);
+	requestAnimationFrame(init);
 
 	addEventListener('lazybeforeunveil', init);
 })(window, document);
