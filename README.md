@@ -23,27 +23,7 @@ Can be seen [here](http://afarkas.github.io/lazysizes/#examples)
 
 ##Responisve image support (picture and/or srcset)
 
-
-Lazysizes is built upon the Responsive image spec and extends it with additional functionality. In cases where the browser supports srcset, it simply transforms the `data-*` attribute to `srcset` and in case the browser doesn't support it a polyfill can be used. For full cross browser responsive image support you must use either a polyfill like [respimage](https://github.com/aFarkas/respimage) or [picturefill](https://github.com/scottjehl/picturefill) instead, or use the extreme lightweight partial [respimg polyfill plugin](plugins/respimg) or the [responsive image on demand plugin](plugins/rias). Alternatively you can simply define a fallback src via the ``data-src`` attribute.
-
-### When to use:
-
-1. **Just lazysizes** 
-	
-	If you don't use responsive images or if you don't want to polyfill responsive images, you can simply combine the `data-srcset` attribute for supporting browsers with an additional `data-src` attribute for non-supporting browsers.
-
-2. **lazysizes with the respimage plugin**
-
-	If all your responsive images are *lazyloaded* or *lazysized* by lazysizes.
-
-3. **lazysizes in combination with picturefill/respimage** 
-
-	If you want to *lazyload* or *lazysize* some of your responsive images and not others. 
-
-4. **Picturefill / respimage without lazysizes**
-
-	If you want responsive images without *lazyloading* or *lazysizing*.
-
+Lazysizes is built upon the Responsive image spec and extends it with additional functionality. For full cross browser responsive image support you must use either a polyfill like [respimage](https://github.com/aFarkas/respimage) or [picturefill](https://github.com/scottjehl/picturefill) instead, or use the extreme lightweight partial [respimg polyfill plugin](plugins/respimg) or the [responsive image on demand plugin](plugins/rias). Alternatively you can simply define a fallback src via the ``data-src`` attribute.
 
 ##How to
 
@@ -102,7 +82,7 @@ Add the ``class`` ``lazyload`` to all ``img`` and ``iframe`` elements, which sho
     responsive-image3.jpg 900w" class="lazyload" />
 ```
 
-**Important: How ``sizes`` is calculated**: The automatic sizes calculation uses the width of the image. If it is below ``40`` (can be configured through the ``minSize`` option), lazysizes traverses up the DOM tree until it finds a parent which is over ``40`` and uses this number. Often the following general CSS rule might help: ``img[data-sizes="auto"] { display: block; width: 100%; }`` (see also [specifying image/iframe dimensions](#specify-dimensions)). 
+**Important: How ``sizes`` is calculated**: The automatic sizes calculation uses the width of the image. If it is below ``40`` (can be configured through the ``minSize`` option), lazysizes traverses up the DOM tree until it finds a parent which is over ``40`` and uses this number. Often the following general CSS rule might help: ``img[data-sizes="auto"] { display: block; width: 100%; }`` (see also [specifying image/iframe dimensions](#specify-dimensions)).
 
 The ``data-sizes="auto"`` feature only makes sense if you use the ``data-srcset`` attribute with *width* descriptors which allows the most appropriate image can be selected. The width auto-calculated by lazysizes can be modified using the ``lazybeforesizes`` event. Alternativly, the [parent fit plugin](plugins/parent-fit) can be used for sizing images to fit a parent / container, and is the only solution when an image's height needs to be taken into account when fitting it to its container.
 
@@ -647,7 +627,7 @@ This smaller script, which should include lazySizes, must than be placed before 
 ##Why lazysizes
 In the past I often struggled using lazy image loaders, because the "main check function" is called repeatedly and with a high frequency. Which makes it hard to fulfill two purposes runtime and memory efficiency. And looking into the source code of most so called lazy loaders often also unveils lazy developers...
 
-But in a world of responsive retina optimized images on the one hand and JS widgets like carousels or tabs (a lot of initially hidden images) on the other hand lazy loading images becomes more and more important, so I created this project. 
+But in a world of responsive retina optimized images on the one hand and JS widgets like carousels or tabs (a lot of initially hidden images) on the other hand lazy loading images becomes more and more important, so I created this project.
 
 **lazysizes** is different:
 
