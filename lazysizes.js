@@ -34,7 +34,7 @@
 
 	var addClass = function(ele, cls) {
 		if (!hasClass(ele, cls)){
-			ele.className += ' '+cls;
+			ele.className = ele.className.trim() + ' '+cls;
 		}
 	};
 
@@ -379,8 +379,6 @@
 			isCompleted = true;
 
 			lazySizesConfig.loadMode = 3;
-
-			lowRuns++;
 
 			addEventListener('scroll', function(){
 				if(lazySizesConfig.loadMode == 3){

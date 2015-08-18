@@ -224,7 +224,7 @@
 	});
 
 	addEventListener('lazybeforeunveil', function(e){
-		if(e.target._lazyOptimumx){
+		if(e.target._lazyOptimumx && !e.detail.reloaded){
 			e.target._lazyOptimumx = null;
 		}
 	});

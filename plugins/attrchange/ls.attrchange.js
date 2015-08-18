@@ -24,6 +24,7 @@
 
 				if(target && lazySizes.hC(target, classTest)){
 					lazySizes.rC(target, lsCfg.loadedClass);
+					lazySizes.rC(target, 'lazyunloaded');
 					lazySizes.aC(target, lsCfg.lazyClass);
 				}
 			}
