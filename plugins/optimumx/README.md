@@ -199,22 +199,4 @@ In case the ``sizes`` attribute is faked to a lower value and the browser alread
 
 In case the ``sizes`` attribute is faked to a higher value and the browser already wants to select a higher candidate, (because the user has zoomed into this particular image) the browser might be tricked to download a much heavier image candidate than the device actually needs.
 
-But this technique can be used to tell the browser some small lies. Normally the browser runs a simple get the nearest candidate algorithm. This can in some cases cause a poor quality on 1x devices. In case our lie is small and limited we can workaround this problem without causing unpredictable consequences:
-
-```html
-<script>
-//make the image sizes only 5% larger, if seen on a low DPI device
-document.addEventListener('lazybeforesizes', function(e){
-    var dpr = (window.devicePixelRatio || 1);
-    if(dpr < 1.1){
-        e.detail.width = e.detail.width * 1.05;
-    }
-});
-</script>
-
-<img class="lazyload"
-    data-sizes="auto"
-    data-srcset="image-480.jpg 480w, image-768.jpg"
-    style="width: 600px;"
-     />
-```
+But still this technique can be sometimes used to tell the browser **small** lies.

@@ -2,6 +2,7 @@
 	'use strict';
 	if(!document.addEventListener){return;}
 	var config, checkElements, expand;
+
 	var unloadElements = [];
 	var requestAnimationFrame = window.requestAnimationFrame || setTimeout;
 	var unloader = {
@@ -37,8 +38,9 @@
 				sources = picture.getElementsByTagName('source');
 
 				for(i = 0, len = sources.length; i < len; i++){
-					sources.setAttribute('srcset', config.emptySrc);
+					sources[i].setAttribute('srcset', config.emptySrc);
 				}
+
 				isResponsive = true;
 			}
 
