@@ -138,6 +138,7 @@
 
 		var isLoading = 0;
 		var lowRuns = 0;
+		var started = Date.now();
 
 		var resetPreloading = function(e){
 			isLoading--;
@@ -222,7 +223,7 @@
 						unveilElement(lazyloadElems[i]);
 						loadedSomething = true;
 						if(isLoading > 12){break;}
-						if(isLoading > 7){currentExpand = shrinkExpand;}
+						if(isLoading > 6){currentExpand = shrinkExpand;}
 					} else if(!loadedSomething && isCompleted && !autoLoadElem &&
 						isLoading < 3 && lowRuns < 4 && loadMode > 2 &&
 						(preloadElems[0] || lazySizesConfig.preloadAfterLoad) &&
@@ -370,6 +371,10 @@
 
 		var onload = function(){
 			if(isCompleted){return;}
+			if(Date.now() - started < 999){
+				setTimeout(onload, 999);
+				return;
+			}
 			var scrollTimer;
 			var afterScroll = function(){
 				lazySizesConfig.loadMode = 3;
@@ -379,6 +384,9 @@
 			isCompleted = true;
 
 			lazySizesConfig.loadMode = 3;
+			if(!isLoading){
+				throttledCheckElements();
+			}
 
 			addEventListener('scroll', function(){
 				if(lazySizesConfig.loadMode == 3){
@@ -457,7 +465,7 @@
 				} else {
 					addEventListener('load', onload);
 					document.addEventListener('DOMContentLoaded', throttledCheckElements);
-					setTimeout(onload, 25000);
+					setTimeout(onload, 20000);
 				}
 
 				throttledCheckElements();
