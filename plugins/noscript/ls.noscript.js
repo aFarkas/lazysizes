@@ -4,7 +4,7 @@
 
 	if(window.addEventListener){
 		var dummyParent = {nodeName: ''};
-		var supportPicture = !!window.HTMLPictureElement;
+		var supportPicture = !!window.HTMLPictureElement && ('sizes' in document.createElement('img'));
 		var config = (window.lazySizes && lazySizes.cfg) || window.lazySizesConfig;
 
 		var handleLoadingElements = function(e){

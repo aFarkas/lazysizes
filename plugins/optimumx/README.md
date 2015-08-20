@@ -66,7 +66,7 @@ In case you want to use a CDN you can use the combohandler service provided by j
 <script>
     function loadJS(u){var r=document.getElementsByTagName("script")[0],s=document.createElement("script");s.src=u;r.parentNode.insertBefore(s,r);}
 
-    if(!window.HTMLPictureElement){
+    if(!window.HTMLPictureElement || !('sizes' in document.createElement('img'))){
         loadJS("http://cdn.jsdelivr.net/g/respimage(respimage.min.js)");
     }
 </script>

@@ -16,6 +16,10 @@
 	}
 
 	if(window.picturefill || window.respimage || config.pf){return;}
+	if(window.HTMLPictureElement && ('sizes' in document.createElement('img'))){
+		config.pf = function(){};
+		return;
+	}
 
 	config.pf = function(options){
 		var i, len;
@@ -50,7 +54,7 @@
 						if(lowerCandidate.cached) {
 							lowerCandidate.d += 0.15 * bonusFactor;
 						}
-						
+
 						if(lowerCandidate.d + ((candidate.d - srces.d) * bonusFactor) > srces.d){
 							candidate = lowerCandidate;
 						}
@@ -217,8 +221,6 @@
 		return p;
 	})();
 
-	if(window.HTMLPictureElement){return;}
-
 	if(config.loadedClass && config.loadingClass){
 		(function(){
 			var sels = [];
@@ -255,7 +257,7 @@
 	var regPicture;
 	var img = document.createElement('img');
 
-	if(('srcset' in img) && !('sizes' in img)){
+	if(('srcset' in img) && !('sizes' in img) && !window.HTMLPictureElement){
 		regPicture = /^picture$/i;
 		document.addEventListener('lazybeforeunveil', function(e){
 			var elem, parent, srcset, sizes, isPicture;

@@ -19,7 +19,7 @@
 	var regPicture;
 	var img = document.createElement('img');
 
-	if(('srcset' in img) && !('sizes' in img)){
+	if(('srcset' in img) && !('sizes' in img) && !window.HTMLPictureElement){
 		regPicture = /^picture$/i;
 		document.addEventListener('lazybeforeunveil', function(e){
 			var elem, parent, srcset, sizes, isPicture;

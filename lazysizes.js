@@ -66,12 +66,10 @@
 
 	var updatePolyfill = function (el, full){
 		var polyfill;
-		if(!window.HTMLPictureElement){
-			if( ( polyfill = (window.picturefill || window.respimage || lazySizesConfig.pf) ) ){
-				polyfill({reevaluate: true, elements: [el]});
-			} else if(full && full.src){
-				el.src = full.src;
-			}
+		if( ( polyfill = (window.picturefill || window.respimage || lazySizesConfig.pf) ) ){
+			polyfill({reevaluate: true, elements: [el]});
+		} else if(full && full.src){
+			el.src = full.src;
 		}
 	};
 

@@ -49,11 +49,9 @@
 				}
 			}
 
-			if(!window.HTMLPictureElement){
-				elems = docElem.querySelector('source[media][data-media][srcset] ~ img');
-				for(i = 0, len = elems.length; i < len; i++){
-					lazySizes.uP(elems[i]);
-				}
+			elems = docElem.querySelector('source[media][data-media][srcset] ~ img');
+			for(i = 0, len = elems.length; i < len; i++){
+				lazySizes.uP(elems[i]);
 			}
 
 			lazySizes.autoSizer.checkElems();

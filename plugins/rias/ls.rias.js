@@ -299,12 +299,12 @@
 
 			return src;
 		};
-
+		var supportPicture = !!window.HTMLPictureElement && ('sizes' in document.createElement('img'));
 		var polyfill = function(e){
 			var candidate;
 			var elem = e.target;
 
-			if(window.HTMLPictureElement || window.respimage || window.picturefill || lazySizesConfig.pf){
+			if(supportPicture || window.respimage || window.picturefill || lazySizesConfig.pf){
 				document.removeEventListener('lazybeforesizes', polyfill);
 				return;
 			}
