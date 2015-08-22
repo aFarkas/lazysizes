@@ -1,6 +1,6 @@
 #lazysizes
 
-**lazysizes** is a fast (jank-free) and self-initializing lazyloader for images (including responsive images ``picture``/``srcset``), iframes, scripts/widgets and much more. It may become also your number one tool to integrate responsive images.
+**lazysizes** is a fast (jank-free), SEO-friendly and self-initializing lazyloader for images (including responsive images ``picture``/``srcset``), iframes, scripts/widgets and much more. It may become also your number one tool to integrate responsive images.
 
 It can automatically calculate the ``sizes`` attribute for your responsive images, it allows you to share media queries for your ``media`` attributes with your CSS, helping to separate layout (CSS) from content/structure (HTML) and it makes integrating responsive images into any environment really simple. It also includes a set of optional plugins to further extend its functionality.
 
@@ -56,7 +56,7 @@ Lazysizes is built upon the Responsive image standard and extends it with additi
 5. **Extendable**: It provides JS and CSS hooks to extend lazysizes with any kind of lazy loading, lazy instantiation, inview callbacks or effects (see also the [available plugins/snippets](#plugins)).
 6. **Intelligent prefetch/Intelligent resource prioritization**: lazysizes prefetches/preloads near the view assets to improve user experience, but only while the browser network is idling. (see also ``expand``, ``expFactor`` and ``loadMode`` options)
 7. **Lightweight, but mature solution**: lazysizes has the right balance between a lightweight and a fast, reliable solution
-8. **SEO improved**: lazysizes does not hide images/assets from google.
+8. **SEO improved**: lazysizes does not hide images/assets from google. No matter what markup pattern you use!
 
 ##More about the API
 **lazysizes** comes with a simple markup and JS API. Normally you will only need to use the markup API.
@@ -82,23 +82,33 @@ Add the ``class`` ``lazyload`` to all ``img`` and ``iframe`` elements, which sho
 
 **Important: How ``sizes`` is calculated**: The automatic sizes calculation uses the width of the image. If it is below ``40`` (can be configured through the ``minSize`` option), lazysizes traverses up the DOM tree until it finds a parent which is over ``40`` and uses this number. Often the following general CSS rule might help: ``img[data-sizes="auto"] { display: block; width: 100%; }`` (see also [specifying image/iframe dimensions](#specify-dimensions)).
 
-The ``data-sizes="auto"`` feature only makes sense if you use the ``data-srcset`` attribute with *width* descriptors which allows the most appropriate image can be selected. The width auto-calculated by lazysizes can be modified using the ``lazybeforesizes`` event. Alternativly, the [parent fit plugin](plugins/parent-fit) can be used for sizing images to fit a parent / container, and is the only solution when an image's height needs to be taken into account when fitting it to its container.
+The ``data-sizes="auto"`` feature only makes sense if you use the ``data-srcset`` attribute with *width* descriptors which allows the most appropriate image can be selected (It does not make sense if you use the x descriptor or only ``src``.). The width auto-calculated by lazysizes can be modified using the ``lazybeforesizes`` event. Alternatively, the [parent fit plugin](plugins/parent-fit) can be used for sizing images to fit a parent / container, and is the only solution when an image's height needs to be taken into account when fitting it to its container.
 
-##Recommended markup patterns
+##Recommended/possible markup patterns
+
+lazySizes allows you to write multiple different markup patterns. Find your own/best pattern or choose one of the following.
 
 ###Simple pattern
 
 Add the class ``lazyload`` and simply omit the ``src`` attribute  or add a data uri as fallback ``src``.
 
 ```html
+
+<!--  retina optimized examples -->
+
 <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
 	class="lazyload"
 	data-srcset="image.jpg 1x, image2.jpg 2x"
     alt="my image" />
 
-<imgclass="lazyload"
+<img class="lazyload"
 	data-srcset="progressive-image.jpg 1x, progressive-image2.jpg 2x"
     alt="my image" />
+
+<!-- or non-responsive: -->
+<img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+	data-src="image.jpg"
+	class="lazyload" />
 ```
 
 Note: In case you are using a progressive JPEG omit the ``src`` attribute completely. In case you are using the simple markup pattern, consider adding unobtrusive unveil effects ([demo](http://afarkas.github.io/lazysizes/no-src.html#examples)).
@@ -120,6 +130,21 @@ If you are using the LQIP (Low Quality Image Placeholder) pattern, simply add a 
 <img src="lqip-src.jpg" data-src="image.jpg" class="lazyload" />
 ```
 
+###``data-srcset`` with ``data-src`` (i.e.: without a polyfill)
+
+In case you want to use responsive images for supporting browsers, but don't want to include a polyfill, simply combine your ``data-srcset`` with a ``data-src`` attribute.
+
+```html
+<!-- responsive example: -->
+<img
+	data-sizes="auto"
+    data-src="image3.jpg"
+	data-srcset="lqip-src.jpg 220w,
+    image2.jpg 300w,
+    image3.jpg 600w,
+    image4.jpg 900w" class="lazyload" />
+```
+
 ###The noscript pattern
 
 In case disabled JavaScript is a concern you can combine this simple pattern with an image inside a ``noscript`` element.
@@ -135,7 +160,7 @@ In case disabled JavaScript is a concern you can combine this simple pattern wit
 <noscript>
 	<img src="image.jpg" />
 </noscript>
-<img src="grey.jpg" data-src="image.jpg" class="lazyload" />
+<img src="transparent.jpg" data-src="image.jpg" class="lazyload" />
 ```
 
 Note: As an alternative to the noscript pattern also checkout the [noscript extension](plugins/noscript).
