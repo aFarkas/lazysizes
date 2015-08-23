@@ -120,11 +120,11 @@
 	};
 
 	var loader = (function(){
-		var lazyloadElems, preloadElems, isCompleted, resetPreloadingTimer, loadMode;
+		var lazyloadElems, preloadElems, isCompleted, resetPreloadingTimer, loadMode, started;
 
 		var eLvW, elvH, eLtop, eLleft, eLright, eLbottom;
 
-		var defaultExpand, preloadExpand;
+		var _defaultExpand, scrollingExpand, defaultExpand, preloadExpand;
 
 		var regImg = /^img$/i;
 		var regIframe = /^iframe$/i;
@@ -136,7 +136,6 @@
 
 		var isLoading = 0;
 		var lowRuns = 0;
-		var started = Date.now();
 
 		var resetPreloading = function(e){
 			isLoading--;
@@ -376,18 +375,21 @@
 			var scrollTimer;
 			var afterScroll = function(){
 				lazySizesConfig.loadMode = 3;
+				defaultExpand = _defaultExpand;
 				throttledCheckElements();
 			};
 
 			isCompleted = true;
 
 			lazySizesConfig.loadMode = 3;
+
 			if(!isLoading){
 				throttledCheckElements();
 			}
 
 			addEventListener('scroll', function(){
 				if(lazySizesConfig.loadMode == 3){
+					defaultExpand = scrollingExpand;
 					lazySizesConfig.loadMode = 2;
 				}
 				clearTimeout(scrollTimer);
@@ -432,12 +434,15 @@
 
 		return {
 			_: function(){
+				started = Date.now();
 
 				lazyloadElems = document.getElementsByClassName(lazySizesConfig.lazyClass);
 				preloadElems = document.getElementsByClassName(lazySizesConfig.lazyClass + ' ' + lazySizesConfig.preloadClass);
 
 				defaultExpand = lazySizesConfig.expand;
-				preloadExpand = Math.round(defaultExpand * lazySizesConfig.expFactor);
+				_defaultExpand = defaultExpand;
+				scrollingExpand = defaultExpand * ((lazySizesConfig.expFactor + 1) / 2);
+				preloadExpand = defaultExpand * lazySizesConfig.expFactor;
 
 				addEventListener('scroll', throttledCheckElements, true);
 

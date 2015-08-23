@@ -15,11 +15,12 @@ window.lazyTests = {
 
 			assert.equal($topImage.attr('src'), initialSrc);
 
-
-			afterUnveil(function(){
-				assert.equal($topImage.attr('src'), lazySrc);
-				done();
-			}, 140);
+			$topImage.on('lazybeforeunveil', function(){
+				afterUnveil(function(){
+					assert.equal($topImage.attr('src'), lazySrc);
+					done();
+				}, 140);
+			});
 		});
 	}],
 	simpleScrollView: ['lazyloads simple image after it scrolls near to view', function(assert){
@@ -150,8 +151,7 @@ window.lazyTests = {
 			var viewport;
 			var $topImage;
 			var respimgCalls = 0;
-			var repimgExpectedCalls = window.HTMLPictureElement ?
-				0 : 3;
+			var repimgExpectedCalls = 3;
 
 			var viewportTests = [
 				['300', 150],
@@ -334,12 +334,14 @@ window.lazyTests = {
 
 			$topImage.on('lazybeforeunveil', function(){
 				afterUnveil(function(){
+					var nowSrc;
 					var haspolyfill = frameWindow.respimage || frameWindow.picturefill || (frameWindow.lazySizes.cfg.rias && frameWindow.lazySizes.pWS) || frameWindow.lazySizes.cfg.pf;
-					var nowSrc =  window.HTMLPictureElement ?
-						initialSrc :
-						(haspolyfill) ?
-							'data:,lazysrcset' :
-							lazySrc;
+
+					if(window.HTMLPictureElement){
+						nowSrc = haspolyfill ? initialSrc : lazySrc;
+					} else {
+						nowSrc = haspolyfill ? 'data:,lazysrcset' : lazySrc;
+					}
 
 					assert.equal($topImage.attr('srcset') || $topImage.attr('data-risrcset') || $topImage.attr('data-pfsrcset'), lazySrcset);
 					assert.equal($topImage.prop('src'), nowSrc);

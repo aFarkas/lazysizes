@@ -53,8 +53,8 @@ Lazysizes is built upon the Responsive image standard and extends it with additi
 2. **Future-proof**: It directly includes standard responsive image support (``picture`` and ``srcset``)
 3. **Separation of concerns**: For responsive image support it adds an automatic ``sizes`` calculation as also alias names for media queries feature. There is also no JS change needed if you add a scrollable container with CSS (overflow: auto) or create a mega menu containing images.
 4. **Performance**: It's based on highly efficient, best practice code (runtime **and** memory) to work jank-free at 60fps and can be used with hundreds of images/iframes on CSS and JS-heavy pages or webapps.
-5. **Extendable**: It provides JS and CSS hooks to extend lazysizes with any kind of lazy loading, lazy instantiation, inview callbacks or effects (see also the [available plugins/snippets](#plugins)).
-6. **Intelligent prefetch/Intelligent resource prioritization**: lazysizes prefetches/preloads near the view assets to improve user experience, but only while the browser network is idling. (see also ``expand``, ``expFactor`` and ``loadMode`` options)
+5. **Extendable**: It provides JS and CSS hooks to extend lazysizes with any kind of lazy loading, lazy instantiation, in view callbacks or effects (see also the [available plugins/snippets](#plugins)).
+6. **Intelligent prefetch/Intelligent resource prioritization**: lazysizes prefetches/preloads near the view assets to improve user experience, but only while the browser network is idling (see also ``expand``, ``expFactor`` and ``loadMode`` options). This way in view elements are loaded faster and near of view images are preloaded lazily before they come into view.
 7. **Lightweight, but mature solution**: lazysizes has the right balance between a lightweight and a fast, reliable solution
 8. **SEO improved**: lazysizes does not hide images/assets from google. No matter what markup pattern you use!
 
@@ -76,8 +76,9 @@ Add the ``class`` ``lazyload`` to all ``img`` and ``iframe`` elements, which sho
 <img
 	data-sizes="auto"
 	data-srcset="responsive-image1.jpg 300w,
-    responsive-image2.jpg 600w,
-    responsive-image3.jpg 900w" class="lazyload" />
+	    responsive-image2.jpg 600w,
+	    responsive-image3.jpg 900w"
+    class="lazyload" />
 ```
 
 **Important: How ``sizes`` is calculated**: The automatic sizes calculation uses the width of the image. If it is below ``40`` (can be configured through the ``minSize`` option), lazysizes traverses up the DOM tree until it finds a parent which is over ``40`` and uses this number. Often the following general CSS rule might help: ``img[data-sizes="auto"] { display: block; width: 100%; }`` (see also [specifying image/iframe dimensions](#specify-dimensions)).
@@ -86,7 +87,7 @@ The ``data-sizes="auto"`` feature only makes sense if you use the ``data-srcset`
 
 ##Recommended/possible markup patterns
 
-lazySizes allows you to write multiple different markup patterns. Find your own/best pattern or choose one of the following.
+lazysizes allows you to write multiple different markup patterns. Find your own/best pattern or choose one of the following.
 
 ###Simple pattern
 
@@ -130,7 +131,7 @@ If you are using the LQIP (Low Quality Image Placeholder) pattern, simply add a 
 <img src="lqip-src.jpg" data-src="image.jpg" class="lazyload" />
 ```
 
-###``data-srcset`` with ``data-src`` (i.e.: without a polyfill)
+###Combine ``data-srcset`` with ``data-src``
 
 In case you want to use responsive images for supporting browsers, but don't want to include a polyfill, simply combine your ``data-srcset`` with a ``data-src`` attribute.
 
@@ -140,10 +141,13 @@ In case you want to use responsive images for supporting browsers, but don't wan
 	data-sizes="auto"
     data-src="image3.jpg"
 	data-srcset="lqip-src.jpg 220w,
-    image2.jpg 300w,
-    image3.jpg 600w,
-    image4.jpg 900w" class="lazyload" />
+	    image2.jpg 300w,
+	    image3.jpg 600w,
+	    image4.jpg 900w"
+	class="lazyload" />
 ```
+
+Note: Due to the fact that the ``data-src`` will also be picked up by "Read-Later" Apps, this pattern also makes sense if you use a polyfill.
 
 ###The noscript pattern
 
