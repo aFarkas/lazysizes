@@ -56,7 +56,7 @@ Lazysizes is built upon the Responsive image standard and extends it with additi
 5. **Extendable**: It provides JS and CSS hooks to extend lazysizes with any kind of lazy loading, lazy instantiation, in view callbacks or effects (see also the [available plugins/snippets](#plugins)).
 6. **Intelligent prefetch/Intelligent resource prioritization**: lazysizes prefetches/preloads near the view assets to improve user experience, but only while the browser network is idling (see also ``expand``, ``expFactor`` and ``loadMode`` options). This way in view elements are loaded faster and near of view images are preloaded lazily before they come into view.
 7. **Lightweight, but mature solution**: lazysizes has the right balance between a lightweight and a fast, reliable solution
-8. **SEO improved**: lazysizes does not hide images/assets from google. No matter what markup pattern you use!
+8. **SEO improved**: lazysizes does not hide images/assets from google. No matter what markup pattern you use.
 
 ##More about the API
 **lazysizes** comes with a simple markup and JS API. Normally you will only need to use the markup API.
@@ -168,6 +168,24 @@ In case disabled JavaScript is a concern you can combine this simple pattern wit
 ```
 
 Note: As an alternative to the noscript pattern also checkout the [noscript extension](plugins/noscript).
+
+###modern transparent ``srcset`` pattern
+
+Combine a normal ``src`` attribute with a transparent image as ``srcset`` value and a ``data-srcset`` attribute. This way modern browsers will lazy load without loading the ``src`` attribute and all others will simply fallback to the initial ``src`` attribute (without lazyload). (This nice pattern originated from @ivopetkov.)
+
+```html
+<img
+    src="image3.jpg.jpg"
+    srcset="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+	data-srcset="image3.jpg 600w,
+		image1.jpg 220w,
+	    image2.jpg 300w,
+	    image4.jpg 900w"
+	data-sizes="auto"
+	class="lazyload" />
+```
+
+Note: It is recommended that the first image candidate in ``data-srcset`` matches the ``src`` fallback image.
 
 ###[data-expand] attribute
 Normally lazysizes will expand the viewport area to lazy preload images/iframes which might become visible soon. This value can be adjusted using the ``expand`` option.
