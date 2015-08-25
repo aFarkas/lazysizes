@@ -220,7 +220,7 @@
 						unveilElement(lazyloadElems[i]);
 						loadedSomething = true;
 						if(isLoading > 12){break;}
-						if(isLoading > 6){currentExpand = shrinkExpand;}
+						if(isLoading > 7){currentExpand = shrinkExpand;}
 					} else if(!loadedSomething && isCompleted && !autoLoadElem &&
 						isLoading < 3 && lowRuns < 4 && loadMode > 2 &&
 						(preloadElems[0] || lazySizesConfig.preloadAfterLoad) &&
