@@ -5,6 +5,7 @@
 	var regSplitSet = /\s*\|\s+|\s+\|\s*/g;
 	var regSource = /^(.+?)(?:\s+\[\s*(.+?)\s*\])?$/;
 	var allowedBackgroundSize = {contain: 1, cover: 1};
+	var rAF = window.requestAnimationFrame || setTimeout;
 
 	var proxyWidth = function(elem){
 		var width = lazySizes.gW(elem, elem.parentNode);
@@ -108,10 +109,9 @@
 		createPicture(set, elem, image);
 
 		lazySizes.loader.unveil(image);
-		lazySizes.fire(image, '_lazyloaded', {}, true, true);
 
-
-		setTimeout(function(){
+		rAF(function(){
+			lazySizes.fire(image, '_lazyloaded', {}, true, true);
 			if(image.complete) {
 				proxyLoad({target: image});
 			}

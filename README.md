@@ -185,7 +185,7 @@ Combine a normal ``src`` attribute with a transparent image as ``srcset`` value 
 	class="lazyload" />
 ```
 
-Note: It is recommended that the first image candidate in ``data-srcset`` matches the ``src`` fallback image. (See also [#150](https://github.com/aFarkas/lazysizes/issues/150).)
+Note: It is recommended that the first image candidate in ``data-srcset`` matches the ``src`` fallback image and that you don't use a polyfill. (See also [#150](https://github.com/aFarkas/lazysizes/issues/150).)
 
 ###[data-expand] attribute
 Normally lazysizes will expand the viewport area to lazy preload images/iframes which might become visible soon. This value can be adjusted using the ``expand`` option.

@@ -53,7 +53,7 @@
 				element.src = config.emptySrc;
 			}
 
-			lazySizes.aC(element, 'lazyunloaded');
+			lazySizes.aC(element, config.unloadedClass);
 			lazySizes.aC(element, config.lazyClass);
 		},
 		unloadElements: function(elements){
@@ -64,21 +64,25 @@
 			}
 		},
 		_reload: function(e) {
-			if(lazySizes.hC(e.target, 'lazyunloaded') && e.detail){
+			if(lazySizes.hC(e.target, config.unloadedClass) && e.detail){
 				e.detail.reloaded = true;
-				lazySizes.rC(e.target, 'lazyunloaded');
+				lazySizes.rC(e.target, config.unloadedClass);
 			}
 		}
 	};
 
 	function init(){
 		if(!window.lazySizes || checkElements){return;}
-
+		var dpr = window.devicePixelRatio || 1;
 		config = lazySizes.cfg;
 		removeEventListener('lazybeforeunveil', init);
 
 		if(!('unloadClass' in config)){
 			config.unloadClass = 'lazyunload';
+		}
+
+		if(!('unloadedClass' in config)){
+			config.unloadedClass = 'lazyunloaded';
 		}
 
 		if(!('unloadHidden' in config)){
@@ -89,9 +93,26 @@
 			config.emptySrc = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
 		}
 
+		if(!('autoUnload' in config)){
+			config.autoUnload = true;
+		}
+
+		if(!('unloadPixelThreshold' in config)){
+			config.unloadPixelThreshold =  Math.max( Math.min(document.documentElement.clientWidth * dpr, document.documentElement.clientHeight * dpr, 999) - 40, 320);
+			config.unloadPixelThreshold *= config.unloadPixelThreshold / 2.5;
+		}
+
+		if(config.autoUnload){
+			document.documentElement.addEventListener('load',  function(e){
+				if(e.target.className.indexOf(lazySizesConfig.loadingClass) != -1 && e.target.naturalWidth * e.target.naturalHeight > config.unloadPixelThreshold){
+					lazySizes.aC(e.target, lazySizesConfig.unloadClass);
+				}
+			}, true);
+		}
+
 		lazySizes.unloader = unloader;
 
-		expand = (config.expand * config.expFactor) + 99;
+		expand = ((config.expand * config.expFactor) + 99) * 1.1;
 		checkElements = document.getElementsByClassName([config.unloadClass, config.loadedClass].join(' '));
 
 		setInterval(unloader.checkElements, 9999);
@@ -111,7 +132,7 @@
 		})());
 	}
 
-	requestAnimationFrame(init);
+	setTimeout(init);
 
 	addEventListener('lazybeforeunveil', init);
 })(window, document);

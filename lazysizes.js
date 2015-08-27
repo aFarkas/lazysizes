@@ -15,7 +15,9 @@
 
 	var docElem = document.documentElement;
 
-	var addEventListener = window.addEventListener;
+	var _addEventListener = 'addEventListener';
+
+	var addEventListener = window[_addEventListener];
 
 	var setTimeout = window.setTimeout;
 
@@ -46,7 +48,7 @@
 	};
 
 	var addRemoveLoadEvents = function(dom, fn, add){
-		var action = add ? 'addEventListener' : 'removeEventListener';
+		var action = add ? _addEventListener : 'removeEventListener';
 		if(add){
 			addRemoveLoadEvents(dom, fn);
 		}
@@ -216,11 +218,10 @@
 						(eLright = rect.right) >= elemNegativeExpand &&
 						(eLleft = rect.left) <= eLvW &&
 						(eLbottom || eLright || eLleft || eLtop) &&
-						((isCompleted && isLoading < 3 && !elemExpandVal && (loadMode < 3 || lowRuns < 4)) || isNestedVisible(lazyloadElems[i], elemExpand))){
+						((isCompleted && isLoading < 3 && !elemExpandVal && (loadMode < 3 || lowRuns < 4)) || isNestedVisible(lazyloadElems[i], elemExpand))){ // && lazyloadElems[i].className.indexOf(lazySizesConfig.strictClass) == -1
 						unveilElement(lazyloadElems[i]);
 						loadedSomething = true;
-						if(isLoading > 12){break;}
-						if(isLoading > 7){currentExpand = shrinkExpand;}
+						if(isLoading > 6){currentExpand = shrinkExpand;}
 					} else if(!loadedSomething && isCompleted && !autoLoadElem &&
 						isLoading < 3 && lowRuns < 4 && loadMode > 2 &&
 						(preloadElems[0] || lazySizesConfig.preloadAfterLoad) &&
@@ -451,8 +452,8 @@
 				if(window.MutationObserver){
 					new MutationObserver( throttledCheckElements ).observe( docElem, {childList: true, subtree: true, attributes: true} );
 				} else {
-					docElem.addEventListener('DOMNodeInserted', throttledCheckElements, true);
-					docElem.addEventListener('DOMAttrModified', throttledCheckElements, true);
+					docElem[_addEventListener]('DOMNodeInserted', throttledCheckElements, true);
+					docElem[_addEventListener]('DOMAttrModified', throttledCheckElements, true);
 					setInterval(throttledCheckElements, 999);
 				}
 
@@ -460,14 +461,14 @@
 
 				//, 'fullscreenchange'
 				['focus', 'mouseover', 'click', 'load', 'transitionend', 'animationend', 'webkitAnimationEnd'].forEach(function(name){
-					document.addEventListener(name, throttledCheckElements, true);
+					document[_addEventListener](name, throttledCheckElements, true);
 				});
 
 				if((/d$|^c/.test(document.readyState))){
 					onload();
 				} else {
 					addEventListener('load', onload);
-					document.addEventListener('DOMContentLoaded', throttledCheckElements);
+					document[_addEventListener]('DOMContentLoaded', throttledCheckElements);
 					setTimeout(onload, 20000);
 				}
 
@@ -553,6 +554,7 @@
 			loadingClass: 'lazyloading',
 			preloadClass: 'lazypreload',
 			errorClass: 'lazyerror',
+			//strictClass: 'lazystrict',
 			autosizesClass: 'lazyautosizes',
 			srcAttr: 'data-src',
 			srcsetAttr: 'data-srcset',

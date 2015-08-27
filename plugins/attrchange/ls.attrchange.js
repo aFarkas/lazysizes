@@ -7,7 +7,7 @@
 		var lazySizes = window.lazySizes;
 		var lsCfg = lazySizes.cfg;
 		var attributes = {'data-bgset': 1, 'data-include': 1, 'data-poster': 1, 'data-bg': 1, 'data-script': 1};
-		var classTest = '(' + lsCfg.loadedClass + '|' + lsCfg.loadingClass + ')';
+		var classTest = '(' + lsCfg.loadedClass;
 		var docElem = document.documentElement;
 
 		var onMutation = function(mutations){
@@ -24,11 +24,19 @@
 
 				if(target && lazySizes.hC(target, classTest)){
 					lazySizes.rC(target, lsCfg.loadedClass);
-					lazySizes.rC(target, 'lazyunloaded');
+					if(lsCfg.unloadedClass){
+						lazySizes.rC(target, lsCfg.unloadedClass);
+					}
 					lazySizes.aC(target, lsCfg.lazyClass);
 				}
 			}
 		};
+
+		if(lsCfg.unloadedClass){
+			classTest += '|' + lsCfg.unloadedClass;
+		}
+
+		classTest += + '|' + lsCfg.loadingClass + ')';
 
 		attributes[lsCfg.srcAttr] = 1;
 		attributes[lsCfg.srcsetAttr] = 1;
