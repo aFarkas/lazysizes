@@ -110,7 +110,7 @@
 			if(running){
 				return;
 			}
-			var delay = lazySizesConfig.throttle - (Date.now() - lastTime);
+			var delay = 125 - (Date.now() - lastTime);
 
 			running =  true;
 
@@ -565,8 +565,7 @@
 			init: true,
 			expFactor: 2,
 			expand: 359,
-			loadMode: 2,
-			throttle: 125
+			loadMode: 2
 		};
 
 		lazySizesConfig = window.lazySizesConfig || window.lazysizesConfig || {};
