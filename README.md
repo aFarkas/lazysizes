@@ -491,8 +491,10 @@ In case you are changing the ``data-src``/``data-srcset`` attributes of already 
 This [attrchange / re-initialization extension](plugins/attrchange) automatically detects changes to your ``data-*`` attributes and adds the class for you.
 
 ###[parent-fit extension](plugins/parent-fit)
-
 The [parent fit plugin](plugins/parent-fit) extends the ``data-sizes="auto"`` feature to also calculate the right ``sizes`` for ``object-fit: contain|cover`` image elements and other **height** ( and width) constrained image elements in general.
+
+###[unload extension](plugins/unload)
+The [unload](plugins/unload) extends lazysizes to unload not in view images to improve memory consumption and orientationchange/resize performance.
 
 ###[noscript extension](plugins/noscript)
 The [noscript extension](plugins/noscript) is the ultimate progressive enhancement extension for lazySizes. It allows you to transform any HTML inside a ``noscript`` element as soon as it becomes visible.
