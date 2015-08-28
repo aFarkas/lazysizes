@@ -30,7 +30,7 @@
 			lazySizes.rC(element, config.loadedClass);
 
 			if(element.getAttribute(config.srcsetAttr)){
-				element.setAttribute('src', config.emptySrc);
+				element.setAttribute('srcset', config.emptySrc);
 				isResponsive = true;
 			}
 
@@ -74,6 +74,20 @@
 	function init(){
 		if(!window.lazySizes || checkElements){return;}
 		var dpr = window.devicePixelRatio || 1;
+		var throttleRun = (function(){
+			var running;
+			var run = function(){
+				unloader.checkElements();
+				running = false;
+			};
+			return function(){
+				if(!running){
+					running = true;
+					setTimeout(run, 999);
+				}
+			};
+		})();
+
 		config = lazySizes.cfg;
 		removeEventListener('lazybeforeunveil', init);
 
@@ -115,21 +129,9 @@
 		expand = ((config.expand * config.expFactor) + 99) * 1.1;
 		checkElements = document.getElementsByClassName([config.unloadClass, config.loadedClass].join(' '));
 
-		setInterval(unloader.checkElements, 9999);
+		setInterval(throttleRun, 9999);
 		addEventListener('lazybeforeunveil', unloader._reload, true);
-		addEventListener('lazybeforeunveil', (function(){
-			var running;
-			var run = function(){
-				unloader.checkElements();
-				running = false;
-			};
-			return function(){
-				if(!running){
-					running = true;
-					setTimeout(run, 666);
-				}
-			};
-		})());
+		addEventListener('lazybeforeunveil', throttleRun);
 	}
 
 	setTimeout(init);
