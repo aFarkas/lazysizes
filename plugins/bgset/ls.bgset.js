@@ -21,6 +21,9 @@
 		var optimumx = elem.getAttribute('data-optimumx');
 		var bgSize = (getComputedStyle(elem) || {getPropertyValue: function(){}}).getPropertyValue('background-size');
 
+		if(!allowedBackgroundSize[bgSize] && allowedBackgroundSize[elem.style.backgroundSize]){
+			bgSize = elem.style.backgroundSize;
+		}
 		if(allowedBackgroundSize[bgSize] && (sizes == 'auto' || !sizes)){
 			img.setAttribute('data-parent-fit', bgSize);
 			sizes = 'auto';

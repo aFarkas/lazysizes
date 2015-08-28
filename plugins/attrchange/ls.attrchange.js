@@ -7,7 +7,7 @@
 		var lazySizes = window.lazySizes;
 		var lsCfg = lazySizes.cfg;
 		var attributes = {'data-bgset': 1, 'data-include': 1, 'data-poster': 1, 'data-bg': 1, 'data-script': 1};
-		var classTest = '(' + lsCfg.loadedClass;
+		var regClassTest = '(\\s|^)(' + lsCfg.loadedClass;
 		var docElem = document.documentElement;
 
 		var onMutation = function(mutations){
@@ -22,7 +22,7 @@
 					target = target.parentNode.querySelector('img');
 				}
 
-				if(target && lazySizes.hC(target, classTest)){
+				if(target && regClassTest.test(target.className)){
 					lazySizes.rC(target, lsCfg.loadedClass);
 					if(lsCfg.unloadedClass){
 						lazySizes.rC(target, lsCfg.unloadedClass);
@@ -33,10 +33,12 @@
 		};
 
 		if(lsCfg.unloadedClass){
-			classTest += '|' + lsCfg.unloadedClass;
+			regClassTest += '|' + lsCfg.unloadedClass;
 		}
 
-		classTest += + '|' + lsCfg.loadingClass + ')';
+		regClassTest += '|' + lsCfg.loadingClass + ')(\\s|$)';
+
+		regClassTest = new RegExp(regClassTest);
 
 		attributes[lsCfg.srcAttr] = 1;
 		attributes[lsCfg.srcsetAttr] = 1;

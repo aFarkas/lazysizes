@@ -29,9 +29,13 @@
 
 	var loadEvents = ['load', 'error', 'lazyincluded', '_lazyloaded'];
 
+	var regClassCache = {};
+
 	var hasClass = function(ele, cls) {
-		var reg = new RegExp('(\\s|^)'+cls+'(\\s|$)');
-		return ele.className.match(reg) && reg;
+		if(!regClassCache[cls]){
+			regClassCache[cls] = new RegExp('(\\s|^)'+cls+'(\\s|$)');
+		}
+		return regClassCache[cls].test(ele.className) && regClassCache[cls];
 	};
 
 	var addClass = function(ele, cls) {

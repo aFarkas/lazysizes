@@ -130,8 +130,8 @@
 		checkElements = document.getElementsByClassName([config.unloadClass, config.loadedClass].join(' '));
 
 		setInterval(throttleRun, 9999);
-		addEventListener('lazybeforeunveil', unloader._reload, true);
 		addEventListener('lazybeforeunveil', throttleRun);
+		addEventListener('lazybeforeunveil', unloader._reload, true);
 	}
 
 	setTimeout(init);
