@@ -147,7 +147,7 @@ In case you want to use responsive images for supporting browsers, but don't wan
 	class="lazyload" />
 ```
 
-Note: Due to the fact that the ``data-src`` will also be picked up by "Read-Later" Apps or other tools (Pin it button), this pattern also makes sense if you use a polyfill.
+Note: Due to the fact that the ``data-src`` will also be picked up by "Read-Later" Apps and other tools (Pin it button), this pattern also makes sense if you use a polyfill.
 
 ###The noscript pattern
 
