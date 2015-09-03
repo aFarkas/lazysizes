@@ -112,7 +112,7 @@
 		}
 
 		if(!('unloadPixelThreshold' in config)){
-			config.unloadPixelThreshold =  Math.max( Math.min(document.documentElement.clientWidth * dpr, document.documentElement.clientHeight * dpr, 999) - 40, 320);
+			config.unloadPixelThreshold =  Math.max( Math.min(document.documentElement.clientWidth * dpr, document.documentElement.clientHeight * dpr, 999) - 40, 210 * dpr, 310);
 			config.unloadPixelThreshold *= config.unloadPixelThreshold / 2.5;
 		}
 

@@ -87,7 +87,7 @@ The ``data-sizes="auto"`` feature only makes sense if you use the ``data-srcset`
 
 ##Recommended/possible markup patterns
 
-lazysizes allows you to write multiple different markup patterns. Find your own/best pattern or choose one of the following.
+lazysizes allows you to write multiple different markup patterns. Find your own/best pattern or choose one of the following. (All of the following patterns can be also used with the ``picture`` element.)
 
 ###Simple pattern
 
@@ -147,7 +147,7 @@ In case you want to use responsive images for supporting browsers, but don't wan
 	class="lazyload" />
 ```
 
-Note: Due to the fact that the ``data-src`` will also be picked up by "Read-Later" Apps, this pattern also makes sense if you use a polyfill.
+Note: Due to the fact that the ``data-src`` will also be picked up by "Read-Later" Apps or other tools (Pin it button), this pattern also makes sense if you use a polyfill.
 
 ###The noscript pattern
 
@@ -278,6 +278,7 @@ window.lazySizesConfig.customMedia = {
     <!--[if IE 9]></video><![endif]-->
     <img
         src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+        data-src="http://placehold.it/1400x600/e8117f/fff"
         class="lazyload"
         alt="image with artdirection" />
 </picture>
@@ -296,7 +297,15 @@ document.addEventListener('lazybeforeunveil', function(e){
     var bg = e.target.getAttribute('data-bg');
     if(bg){
         e.target.style.backgroundImage = 'url(' + bg + ')';
-        e.target.removeAttribute('data-bg');
+    }
+});
+//or add AJAX loading
+//<div class="lazyload" data-ajax="my-url.html"></div>
+
+$(document).on('lazybeforeunveil', function(){
+	var ajax = $(e.target).data('ajax');
+    if(ajax){
+        $(e.target).load(ajax);
     }
 });
 ```
@@ -389,7 +398,7 @@ document.addEventListener('lazybeforeunveil', function(e){
 });
 </script>
 
-<div class="slider lazyload"></div>
+<div class="slider lazyload lazypreload"></div>
 
 <div class="chart lazyload" data-expand="-10"></div>
 ```
@@ -427,7 +436,7 @@ Tests whether new elements has came into view. Normally this method only needs t
 
 #####``lazySizes.init()``
 
-LazySizes initializes itself as soon as possible. In case you set ``lazySizesConfig.init`` to ``false`` you need to explicitly call ``lazySizes.init()``.
+LazySizes initializes itself automatically as soon as possible. In case you set ``lazySizesConfig.init`` to ``false`` you need to explicitly call ``lazySizes.init()``.
 
 ```html
 <script>
@@ -517,7 +526,9 @@ To minimize reflows, content jumping or unpredictable behavior with some other J
     width="350"
     height="150"
 	data-srcset="http://placehold.it/350x150 1x,
-    http://placehold.it/700x300 2x" class="lazyload" />
+    http://placehold.it/700x300 2x"
+    data-src="http://placehold.it/350x150"
+    class="lazyload" />
 ```
 
 For flexible responsive images the [CSS intrinsic ratio scaling technique](http://www.mademyday.de/css-height-equals-width-with-pure-css.html) should be used:
@@ -552,7 +563,9 @@ For flexible responsive images the [CSS intrinsic ratio scaling technique](http:
         data-srcset="http://placehold.it/175x75 175w,
         http://placehold.it/350x150 350w,
         http://placehold.it/700x300 700w,
-        http://placehold.it/1400x600 1400w" class="lazyload" />
+        http://placehold.it/1400x600 1400w"
+        data-src="http://placehold.it/700x300"
+        class="lazyload" />
 </div>
 ```
 
@@ -585,7 +598,9 @@ In case you want to dynamically calculate your intrinsic ratios for many differe
         data-srcset="http://placehold.it/175x75 175w,
         http://placehold.it/350x150 350w,
         http://placehold.it/700x300 700w,
-        http://placehold.it/1400x600 1400w" class="lazyload" />
+        http://placehold.it/1400x600 1400w"
+        data-src="http://placehold.it/700x300"
+        class="lazyload" />
 </div>
 ```
 
@@ -665,11 +680,11 @@ $('.my-widget').each(function(){
 For this update pattern you may want to combine this at least with the ``min-height`` pattern explained above.
 
 ##<a id="include-early"></a>Tip: Where/How to include lazySizes
-While lazy loading is a great feature, it is important for users that crucial inview images are loaded as fast as possible. (Most users start to interact with a page after inview images are loaded.)
+While lazy loading is a great feature, it is important for users that crucial in view images are loaded as fast as possible. (Most users start to interact with a page after in view images are loaded.)
 
 In case you normally combine all your scripts into one large script and add this to the bottom of your page, it can be better for perceived performance to generate two or sometimes more script packages: One small package, which includes all scripts which have heavy influence on the content or the UI and another larger one which includes the normal behavior of the page.
 
-This smaller script, which should include lazySizes, must than be placed before the other script(s) (even in the head) to load the crucial content as fast possible.
+This smaller script, which should include lazySizes, should than be placed **before** any other blocking elements (i.e.: script(s)) at the end of the body or after any blocking elements (i.e.: scripts, stylesheets) in the head to load the crucial content as fast possible.
 
 ##Why lazysizes
 In the past I often struggled using lazy image loaders, because the "main check function" is called repeatedly and with a high frequency. Which makes it hard to fulfill two purposes runtime and memory efficiency. And looking into the source code of most so called lazy loaders often also unveils lazy developers...
@@ -687,7 +702,9 @@ Due to the fact, that it is designed to be invoked with a high frequency and the
     src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
 	data-srcset="image2.jpg 300w,
     image3.jpg 600w,
-    image4.jpg 900w" class="lazyload" />
+    image4.jpg 900w"
+    data-src="image3.jpg"
+    class="lazyload" />
 
 <!-- or non-responsive: -->
 <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="

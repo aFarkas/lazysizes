@@ -125,6 +125,59 @@
 		};
 	};
 
+	/*
+	var throttle = function(fn){
+		var running;
+		var lastTime = 0;
+		var Date = window.Date;
+		var requestIdleCallback = window.requestIdleCallback;
+		var gDelay = 125;
+		var dTimeout = 999;
+		var timeout = dTimeout;
+		var run = function(){
+			running = false;
+			lastTime = Date.now();
+			fn();
+		};
+		var afterAF = function(){
+			setImmediate(run);
+		};
+		var getAF = function(){
+			rAF(afterAF);
+		};
+
+		if(requestIdleCallback){
+			gDelay = 99;
+			getAF = function(){
+				requestIdleCallback(run, timeout);
+				if(timeout !== dTimeout){
+					timeout = dTimeout;
+				}
+			};
+		}
+
+		return function(isPriority){
+
+			if((isPriority = isPriority === true)){
+				timeout = 40;
+			}
+
+			if(running){
+				return;
+			}
+			var delay = gDelay - (Date.now() - lastTime);
+
+			running =  true;
+
+			if(isPriority || delay < 0){
+				getAF();
+			} else {
+				setTimeout(getAF, delay);
+			}
+		};
+	};
+	*/
+
 	var loader = (function(){
 		var lazyloadElems, preloadElems, isCompleted, resetPreloadingTimer, loadMode, started;
 
@@ -225,6 +278,7 @@
 						((isCompleted && isLoading < 3 && !elemExpandVal && (loadMode < 3 || lowRuns < 4)) || isNestedVisible(lazyloadElems[i], elemExpand))){ // && lazyloadElems[i].className.indexOf(lazySizesConfig.strictClass) == -1
 						unveilElement(lazyloadElems[i]);
 						loadedSomething = true;
+						if(isLoading > 9){break;}
 						if(isLoading > 6){currentExpand = shrinkExpand;}
 					} else if(!loadedSomething && isCompleted && !autoLoadElem &&
 						isLoading < 3 && lowRuns < 4 && loadMode > 2 &&
@@ -476,7 +530,7 @@
 					setTimeout(onload, 20000);
 				}
 
-				throttledCheckElements();
+				throttledCheckElements(lazyloadElems.length > 0);
 			},
 			checkElems: throttledCheckElements,
 			unveil: unveilElement
