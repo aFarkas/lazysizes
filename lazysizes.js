@@ -15,6 +15,10 @@
 
 	var docElem = document.documentElement;
 
+	var source = document.createElement('source');
+
+	var supportPicture = window.HTMLPictureElement && ('sizes' in source) && ('source' in source);
+
 	var _addEventListener = 'addEventListener';
 
 	var addEventListener = window[_addEventListener];
@@ -72,7 +76,7 @@
 
 	var updatePolyfill = function (el, full){
 		var polyfill;
-		if( ( polyfill = (window.picturefill || window.respimage || lazySizesConfig.pf) ) ){
+		if( !supportPicture && ( polyfill = (window.picturefill || window.respimage || lazySizesConfig.pf) ) ){
 			polyfill({reevaluate: true, elements: [el]});
 		} else if(full && full.src){
 			el.src = full.src;
@@ -347,7 +351,6 @@
 			isLoading++;
 
 			rafBatch(function lazyUnveil(){
-
 				if(elem._lazyRace){
 					delete elem._lazyRace;
 				}
@@ -401,7 +404,7 @@
 
 					if(srcset){
 						elem.setAttribute('srcset', srcset);
-					} else if(src){
+					} else if(src && !isPicture){
 						if(regIframe.test(elem.nodeName)){
 							changeIframeSrc(elem, src);
 						} else {
