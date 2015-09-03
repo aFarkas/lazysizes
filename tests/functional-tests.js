@@ -151,7 +151,7 @@ window.lazyTests = {
 			var viewport;
 			var $topImage;
 			var respimgCalls = 0;
-			var repimgExpectedCalls = 3;
+			var repimgExpectedCalls = window.supportsPicture ? 0 : 3;
 
 			var viewportTests = [
 				['300', 150],
@@ -172,9 +172,6 @@ window.lazyTests = {
 			};
 			run();
 
-			frameWindow.respimage = function(){
-				respimgCalls++;
-			};
 			frameWindow.picturefill = function(){
 				respimgCalls++;
 			};
@@ -337,13 +334,135 @@ window.lazyTests = {
 					var nowSrc;
 					var haspolyfill = frameWindow.respimage || frameWindow.picturefill || (frameWindow.lazySizes.cfg.rias && frameWindow.lazySizes.pWS) || frameWindow.lazySizes.cfg.pf;
 
-					if(window.HTMLPictureElement){
-						nowSrc = haspolyfill ? initialSrc : lazySrc;
+					if(window.supportsPicture){
+						nowSrc = lazySrc;
 					} else {
 						nowSrc = haspolyfill ? 'data:,lazysrcset' : lazySrc;
 					}
 
 					assert.equal($topImage.attr('srcset') || $topImage.attr('data-risrcset') || $topImage.attr('data-pfsrcset'), lazySrcset);
+					assert.equal($topImage.prop('src'), nowSrc);
+					done();
+				});
+			});
+		});
+	}],
+	extendedSrcsetSrc: ['lazyloads srcset or src', function(assert){
+		var done = assert.async();
+
+		this.promise.always(function($, frameWindow){
+			var initialSrc = 'data:,initial';
+			var lazySrcset = 'data:,lazysrcset 300w';
+			var lazySrc = 'data:,lazysrc';
+			var $topImage = $('<img />')
+					.attr({
+						src: initialSrc,
+						'data-srcset': lazySrcset,
+						'data-src': lazySrc,
+						'class': 'lazyload',
+						sizes: '100vw'
+					}).appendTo('body')
+				;
+
+			frameWindow.picturefill = function(){
+
+			};
+
+			assert.equal($topImage.prop('src'), initialSrc);
+			assert.equal($topImage.attr('srcset'), null);
+
+			$topImage.on('lazybeforeunveil', function(){
+				afterUnveil(function(){
+					var nowSrc;
+					if(window.supportsPicture){
+						nowSrc = lazySrc;
+					} else {
+						nowSrc = initialSrc;
+					}
+
+					assert.equal($topImage.attr('srcset') || $topImage.attr('data-risrcset') || $topImage.attr('data-pfsrcset'), lazySrcset);
+					assert.equal($topImage.prop('src'), nowSrc);
+					done();
+				});
+			});
+		});
+	}],
+	extendedPictureSrcsetSrc: ['lazyloads picture srcset or src', function(assert){
+		var done = assert.async();
+
+		this.promise.always(function($, frameWindow){
+			var initialSrc = 'data:,initial';
+			var lazySrcset = 'data:,lazysrcset 300w';
+			var lazySrc = 'data:,lazysrc';
+			var $picture = createPicture($, [
+				{
+					'data-srcset': 'data:,lazysource 200w'
+				},
+				{
+					src: initialSrc,
+					'data-srcset': lazySrcset,
+					'data-src': lazySrc,
+					'class': 'lazyload',
+					sizes: '100vw'
+				}
+			]);
+			var $topImage = $picture.find('img');
+
+			frameWindow.picturefill = function(){};
+
+			$picture.appendTo('body');
+			assert.equal($topImage.prop('src'), initialSrc);
+			assert.equal($topImage.attr('srcset'), null);
+
+			$topImage.on('lazybeforeunveil', function(){
+				afterUnveil(function(){
+					var nowSrc;
+					if(window.supportsPicture){
+						nowSrc = lazySrc;
+					} else {
+						nowSrc = initialSrc;
+					}
+
+					assert.equal($topImage.attr('srcset') || $topImage.attr('data-risrcset') || $topImage.attr('data-pfsrcset'), lazySrcset);
+					assert.equal($topImage.prop('src'), nowSrc);
+					done();
+				});
+			});
+		});
+	}],
+	extendedPictureSrc: ['lazyloads picture src', function(assert){
+		var done = assert.async();
+
+		this.promise.always(function($, frameWindow){
+			var initialSrc = 'data:,initial';
+			var lazySrc = 'data:,lazysrc';
+			var $picture = createPicture($, [
+				{
+					'data-srcset': 'data:,lazysource 200w'
+				},
+				{
+					src: initialSrc,
+					'data-src': lazySrc,
+					'class': 'lazyload',
+					sizes: '100vw'
+				}
+			]);
+			var $topImage = $picture.find('img');
+
+			frameWindow.picturefill = function(){};
+
+			$picture.appendTo('body');
+			assert.equal($topImage.prop('src'), initialSrc);
+
+			$topImage.on('lazybeforeunveil', function(){
+				afterUnveil(function(){
+					var nowSrc;
+					if(window.supportsPicture){
+						nowSrc = lazySrc;
+					} else {
+						nowSrc = initialSrc;
+					}
+
 					assert.equal($topImage.prop('src'), nowSrc);
 					done();
 				});
@@ -401,6 +520,9 @@ QUnit.test.apply(QUnit, lazyTests.simpleAutoSizes);
 QUnit.test.apply(QUnit, lazyTests.parentAutoSizes);
 QUnit.test.apply(QUnit, lazyTests.simpleSrcset);
 QUnit.test.apply(QUnit, lazyTests.simpleSrcsetSrc);
+QUnit.test.apply(QUnit, lazyTests.extendedSrcsetSrc);
+QUnit.test.apply(QUnit, lazyTests.extendedPictureSrc);
+QUnit.test.apply(QUnit, lazyTests.extendedPictureSrcsetSrc);
 QUnit.test.apply(QUnit, lazyTests.nestedOverflow);
 QUnit.test.apply(QUnit, lazyTests.autoSizesEvent);
 QUnit.test.apply(QUnit, lazyTests.autoSizesResize);
