@@ -17,7 +17,7 @@
 
 	var source = document.createElement('source');
 
-	var supportPicture = window.HTMLPictureElement && ('sizes' in source) && ('source' in source);
+	var supportPicture = window.HTMLPictureElement && ('sizes' in source) && ('srcset' in source);
 
 	var _addEventListener = 'addEventListener';
 
