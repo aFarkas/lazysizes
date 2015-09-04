@@ -87,7 +87,7 @@ The ``data-sizes="auto"`` feature only makes sense if you use the ``data-srcset`
 
 ##Recommended/possible markup patterns
 
-lazysizes allows you to write multiple different markup patterns. Find your own/best pattern or choose one of the following. (All of the following patterns can be also used with the ``picture`` element.)
+lazysizes allows you to write multiple different markup patterns. Find your own/best pattern or choose one of the following. (All of the following patterns can be also used for art direction using the ``picture`` element.) In case you are not using the LQIP pattern, consider adding unobtrusive unveil effects ([demo](http://afarkas.github.io/lazysizes/no-src.html#examples)).
 
 ###Simple pattern
 
@@ -112,24 +112,7 @@ Add the class ``lazyload`` and simply omit the ``src`` attribute  or add a data 
 	class="lazyload" />
 ```
 
-Note: In case you are using a progressive JPEG omit the ``src`` attribute completely. In case you are using the simple markup pattern, consider adding unobtrusive unveil effects ([demo](http://afarkas.github.io/lazysizes/no-src.html#examples)).
-
-###LQIP
-If you are using the LQIP (Low Quality Image Placeholder) pattern, simply add a low quality image as the ``src``:
-
-```html
-<!-- responsive example: -->
-<img
-	data-sizes="auto"
-    src="lqip-src.jpg"
-	data-srcset="lqip-src.jpg 220w,
-    image2.jpg 300w,
-    image3.jpg 600w,
-    image4.jpg 900w" class="lazyload" />
-
-<!-- or non-responsive: -->
-<img src="lqip-src.jpg" data-src="image.jpg" class="lazyload" />
-```
+Note: In case you are using a progressive JPEG omit the ``src`` attribute completely.
 
 ###Combine ``data-srcset`` with ``data-src``
 
@@ -147,7 +130,24 @@ In case you want to use responsive images for supporting browsers, but don't wan
 	class="lazyload" />
 ```
 
-Note: Due to the fact that the ``data-src`` will also be picked up by "Read-Later" Apps and other tools (Pin it button), this pattern also makes sense if you use a polyfill.
+Note: Due to the fact that the ``data-src`` will also be picked up by "Read-Later" Apps and other tools (for example Pin it button), this pattern also makes sense if you use a polyfill.
+
+###LQIP
+If you are using the LQIP (Low Quality Image Placeholder) pattern, simply add a low quality image as the ``src``:
+
+```html
+<!-- responsive example: -->
+<img
+	data-sizes="auto"
+    src="lqip-src.jpg"
+	data-srcset="lqip-src.jpg 220w,
+    image2.jpg 300w,
+    image3.jpg 600w,
+    image4.jpg 900w" class="lazyload" />
+
+<!-- or non-responsive: -->
+<img src="lqip-src.jpg" data-src="image.jpg" class="lazyload" />
+```
 
 ###The noscript pattern
 

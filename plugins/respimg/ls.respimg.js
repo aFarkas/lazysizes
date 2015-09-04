@@ -3,6 +3,8 @@
 	'use strict';
 	var polyfill;
 	var config = (window.lazySizes && lazySizes.cfg) || window.lazySizesConfig;
+	var img = document.createElement('img');
+	var supportSrcset = ('sizes' in img) && ('srcset' in img);
 
 	if(!config){
 		config = {};
@@ -16,7 +18,7 @@
 	}
 
 	if(window.picturefill || window.respimage || config.pf){return;}
-	if(window.HTMLPictureElement && ('sizes' in document.createElement('img'))){
+	if(window.HTMLPictureElement && supportSrcset){
 		config.pf = function(){};
 		return;
 	}
@@ -206,6 +208,7 @@
 		};
 
 		var p = function(elem){
+			if(supportSrcset && elem.parentNode && elem.parentNode.nodeName.toUpperCase() != 'PICTURE'){return;}
 			var candidate = getCandidate(elem);
 
 			if(candidate && candidate.u && elem._lazypolyfill.cur != candidate.u){

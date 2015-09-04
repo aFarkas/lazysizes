@@ -15,9 +15,7 @@
 
 	var docElem = document.documentElement;
 
-	var source = document.createElement('source');
-
-	var supportPicture = window.HTMLPictureElement && ('sizes' in source) && ('srcset' in source);
+	var supportPicture = window.HTMLPictureElement && ('sizes' in document.createElement('img'));
 
 	var _addEventListener = 'addEventListener';
 
@@ -44,7 +42,7 @@
 
 	var addClass = function(ele, cls) {
 		if (!hasClass(ele, cls)){
-			ele.className = ele.className.trim() + ' '+cls;
+			ele.className = ele.className.trim() + ' ' + cls;
 		}
 	};
 
