@@ -44,7 +44,7 @@ Can be seen [here](http://afarkas.github.io/lazysizes/#examples)
 
 ##Responsive image support (picture and/or srcset)
 
-Lazysizes is built upon the Responsive image standard and extends it with additional functionality. For full cross browser responsive image support you must use either a full polyfill like [respimage](https://github.com/aFarkas/respimage) or [picturefill](https://github.com/scottjehl/picturefill), or use the extreme lightweight partial [respimg polyfill plugin](plugins/respimg) or the [responsive image on demand plugin](plugins/rias). Alternatively you can simply define a fallback src via the ``data-src`` attribute.
+Lazysizes is built upon the Responsive image standard and extends it with additional functionality. For full cross browser responsive image support you must use either a full polyfill like [respimage](https://github.com/aFarkas/respimage) or [picturefill](https://github.com/scottjehl/picturefill), or use the extreme lightweight partial [respimg polyfill plugin](plugins/respimg) or the [responsive image on demand plugin](plugins/rias). Alternatively you can simply define a fallback src via the ``data-src`` attribute. If you want to learn more about the responsive image syntax read "[The anatomy of responsive images](https://jakearchibald.com/2015/anatomy-of-responsive-images/)".
 
 ##What makes lazysizes so awesome:
 **lazysizes** is different than other lazy image loaders.
@@ -185,7 +185,7 @@ Combine a normal ``src`` attribute with a transparent image as ``srcset`` value 
 	class="lazyload" />
 ```
 
-Note: It is recommended that the first image candidate in ``data-srcset`` matches the ``src`` fallback image and that you don't use a polyfill. (See also [#150](https://github.com/aFarkas/lazysizes/issues/150).)
+Note: It is recommended that the first image candidate in ``data-srcset`` matches the ``src`` fallback image. (See also [#150](https://github.com/aFarkas/lazysizes/issues/150).)
 
 ###[data-expand] attribute
 Normally lazysizes will expand the viewport area to lazy preload images/iframes which might become visible soon. This value can be adjusted using the ``expand`` option.

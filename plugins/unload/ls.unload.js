@@ -118,7 +118,7 @@
 
 		if(config.autoUnload){
 			document.documentElement.addEventListener('load',  function(e){
-				if(e.target.className.indexOf(lazySizesConfig.loadingClass) != -1 && e.target.naturalWidth * e.target.naturalHeight > config.unloadPixelThreshold){
+				if(e.target.className.indexOf(lazySizesConfig.loadingClass) != -1 && e.target.naturalWidth * e.target.naturalHeight > config.unloadPixelThreshold  && e.target.className.indexOf(lazySizesConfig.preloadClass) == -1){
 					lazySizes.aC(e.target, lazySizesConfig.unloadClass);
 				}
 			}, true);
