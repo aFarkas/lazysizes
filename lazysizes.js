@@ -283,7 +283,7 @@
 						if(isLoading > 9){break;}
 						if(isLoading > 6){currentExpand = shrinkExpand;}
 					} else if(!loadedSomething && isCompleted && !autoLoadElem &&
-						isLoading < 3 && lowRuns < 4 && loadMode > 2 &&
+						isLoading < 4 && lowRuns < 4 && loadMode > 2 &&
 						(preloadElems[0] || lazySizesConfig.preloadAfterLoad) &&
 						(preloadElems[0] || (!elemExpandVal && ((eLbottom || eLright || eLleft || eLtop) || lazyloadElems[i].getAttribute(lazySizesConfig.sizesAttr) != 'auto')))){
 						autoLoadElem = preloadElems[0] || lazyloadElems[i];
