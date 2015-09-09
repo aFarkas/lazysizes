@@ -33,6 +33,8 @@
 
 	var regClassCache = {};
 
+	var forEach = Array.prototype.forEach;
+
 	var hasClass = function(ele, cls) {
 		if(!regClassCache[cls]){
 			regClassCache[cls] = new RegExp('(\\s|^)'+cls+'(\\s|$)');
@@ -312,6 +314,25 @@
 			}
 		};
 
+		var handleSources = function(source){
+			var customMedia, parent;
+			var source2 = source;
+			var sourceSrcset = source.getAttribute(lazySizesConfig.srcsetAttr);
+
+			if( (customMedia = lazySizesConfig.customMedia[source.getAttribute('data-media') || source.getAttribute('media')]) ){
+				source2 = document.createElement('source');
+				parent = source.parentNode;
+				source2.setAttribute('sizes', source.getAttribute('sizes'));
+				parent.insertBefore(source2, source);
+				parent.removeChild(source);
+				source2.setAttribute('media', customMedia);
+			}
+
+			if(sourceSrcset){
+				source2.setAttribute('srcset', sourceSrcset);
+			}
+		};
+
 		var rafBatch = (function(){
 			var isRunning;
 			var batch = [];
@@ -331,7 +352,7 @@
 		})();
 
 		var unveilElement = function (elem){
-			var sources, i, len, sourceSrcset, src, srcset, parent, isPicture, event, firesLoad, customMedia, width;
+			var src, srcset, parent, isPicture, event, firesLoad, width;
 
 			var isImg = regImg.test(elem.nodeName);
 
@@ -388,16 +409,7 @@
 					}
 
 					if(isPicture){
-						sources = parent.getElementsByTagName('source');
-						for(i = 0, len = sources.length; i < len; i++){
-							if( (customMedia = lazySizesConfig.customMedia[sources[i].getAttribute('data-media') || sources[i].getAttribute('media')]) ){
-								sources[i].setAttribute('media', customMedia);
-							}
-							sourceSrcset = sources[i].getAttribute(lazySizesConfig.srcsetAttr);
-							if(sourceSrcset){
-								sources[i].setAttribute('srcset', sourceSrcset);
-							}
-						}
+						forEach.call(parent.getElementsByTagName('source'), handleSources);
 					}
 
 					if(srcset){
