@@ -315,32 +315,22 @@
 		};
 
 		var handleSources = function(source){
-			var customMedia, parent, tmp;
-			var source2 = source;
+			var customMedia, parent;
+
 			var sourceSrcset = source.getAttribute(lazySizesConfig.srcsetAttr);
 
 			if( (customMedia = lazySizesConfig.customMedia[source.getAttribute('data-media') || source.getAttribute('media')]) ){
-				parent = source.parentNode;
-				source2 = document.createElement('source');
-				tmp = source.getAttribute('sizes');
-
-				if(tmp){
-					source2.setAttribute('sizes', tmp);
-				}
-
-				tmp = source.getAttribute('type');
-
-				if(tmp){
-					source2.setAttribute('type', tmp);
-				}
-
-				parent.insertBefore(source2, source);
-				parent.removeChild(source);
-				source2.setAttribute('media', customMedia);
+				source.setAttribute('media', customMedia);
 			}
 
 			if(sourceSrcset){
-				source2.setAttribute('srcset', sourceSrcset);
+				source.setAttribute('srcset', sourceSrcset);
+			}
+
+			if(customMedia){
+				parent = source.parentNode;
+				parent.insertBefore(source.cloneNode(), source);
+				parent.removeChild(source);
 			}
 		};
 
