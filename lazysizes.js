@@ -463,6 +463,9 @@
 			addEventListener('scroll', function(){
 				if(lazySizesConfig.loadMode == 3){
 					defaultExpand = scrollingExpand;
+					//setTimeout(function(){
+					//	defaultExpand = scrollingExpand;
+					//}, 98);
 					lazySizesConfig.loadMode = 2;
 				}
 				clearTimeout(scrollTimer);

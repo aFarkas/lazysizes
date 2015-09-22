@@ -11,7 +11,7 @@ It can automatically calculate the ``sizes`` attribute for your responsive image
     ```html
     <script src="lazysizes.min.js" async=""></script>
     ```
-    Note: While you can put the lazysizes script where you want with or without an ``async`` attribute. It is recommended that you put it in the head (For more information see [here](#include-early)).
+    Note: For more information see [here](#include-early).
 
 2. lazysizes does not need any JS configuration: Add the ``class`` ``"lazyload"`` to your images/iframes in conjunction with a ``data-src`` or ``data-srcset`` attribute. Optionally you can also add a ``src`` attribute with a low quality image:
 
@@ -87,7 +87,7 @@ The ``data-sizes="auto"`` feature only makes sense if you use the ``data-srcset`
 
 ##Recommended/possible markup patterns
 
-lazysizes allows you to write multiple different markup patterns. Find your own/best pattern or choose one of the following. (All of the following patterns can be also used for art direction using the ``picture`` element.) In case you are not using the LQIP pattern, consider adding unobtrusive unveil effects ([demo](http://afarkas.github.io/lazysizes/no-src.html#examples)).
+lazysizes allows you to write an endless variety of different markup patterns. Find your own/best pattern or choose one of the following. (All of the following patterns can be also used for art direction using the ``picture`` element.)
 
 ###Simple pattern
 
@@ -95,13 +95,13 @@ Add the class ``lazyload`` and simply omit the ``src`` attribute  or add a data 
 
 ```html
 
-<!--  retina optimized examples -->
+<!--  responsive adaptive example -->
 
 <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
 	class="lazyload"
 	data-srcset="image.jpg 1x, image2.jpg 2x"
     alt="my image" />
-
+<!--  retina optimized example -->
 <img class="lazyload"
 	data-srcset="progressive-image.jpg 1x, progressive-image2.jpg 2x"
     alt="my image" />
@@ -112,7 +112,7 @@ Add the class ``lazyload`` and simply omit the ``src`` attribute  or add a data 
 	class="lazyload" />
 ```
 
-Note: In case you are using a progressive JPEG omit the ``src`` attribute completely.
+Note: In case you are using either ``srcset``/``data-srcset`` or ``picture``, we recommend to extend this pattern with either a ``data-src`` (see next pattern: "Combine ``data-srcset`` with ``data-src``") or with a suitable ``src`` attribute (see: "LQIP" or "modern pattern").
 
 ###Combine ``data-srcset`` with ``data-src``
 
@@ -214,6 +214,36 @@ This becomes especially handy to add unveiling effects for teasers or other elem
 </div>
 ```
 
+###CSS API
+lazysizes adds the class ``lazyloading`` while the images are loading and the class ``lazyloaded`` as soon as the image is loaded. This can be used to add unveil effects:
+
+```css
+/* fade image in after load */
+.lazyload,
+.lazyloading {
+	opacity: 0;
+}
+.lazyloaded {
+	opacity: 1;
+	transition: opacity 300ms;
+}
+```
+
+```css
+/* fade image in while loading and show a spinner as background image (good for progressive images) */
+
+.lazyload {
+	opacity: 0;
+}
+
+.lazyloading {
+	opacity: 1;
+	transition: opacity 300ms;
+	background: #f7f7f7 url(loader.gif) no-repeat center;
+}
+```
+
+
 ###JS API
 **lazysizes** automatically detects new elements with the class ``lazyload`` so you won't need to call or configure anything in most situations.
 
@@ -244,7 +274,7 @@ Here the list of options:
 ```js
 window.lazySizesConfig = window.lazySizesConfig || {};
 //set expand to a higher value on larger displays
-window.lazySizesConfig.expand = Math.min(Math.max(document.documentElement.clientWidth, innerWidth), Math.max(document.documentElement.clientHeight, innerHeight)) > 600 ? 500 : 319;
+window.lazySizesConfig.expand = Math.min(document.documentElement.clientWidth, document.documentElement.clientHeight) > 600 ? 600 : 319;
 ```
 * ``lazySizesConfig.minSize`` (default: ``40``): For ``data-sizes="auto"`` feature. The minimum size of an image that is used to calculate the ``sizes`` attribute. In case it is under ``minSize`` the script traverses up the DOM tree until it finds a parent that is over ``minSize``.
 * ``lazySizesConfig.srcAttr`` (default: ``"data-src"``): The attribute, which should be transformed to ``src``.
@@ -308,71 +338,6 @@ $(document).on('lazybeforeunveil', function(){
         $(e.target).load(ajax);
     }
 });
-```
-
-The ``lazybeforeunveil`` event can also be used to add unveil effects using JS:
-
-```html
-<style>
-img.lazyload {
-    opacity: 0;
-}
-</style>
-
-<script>
-window.lazySizesConfig = window.lazySizesConfig || {};
-window.lazySizesConfig.expand = 20;
-
-
-$(document).on('lazybeforeunveil', (function(){
-	var onLoad = function(e){
-		$(e.target)
-			.animate({opacity: 1})
-			.off('load error', onLoad)
-		;
-
-	};
-	return function(e){
-		if(!e.isDefaultPrevented()){
-			$(e.target)
-				.filter('img')
-					.on('load error', onLoad)
-			;
-		}
-	};
-})());
-</script>
-```
-
-For CSS transition/animations or progress bars / spinners use the ``.lazyloading`` /  ``.lazyloaded`` classes. See also the [animate.html](http://afarkas.github.io/lazysizes/animate.html) and the [no-src.html](http://afarkas.github.io/lazysizes/no-src.html) examples:
-
-```html
-<style>
-.lazyload,
-.lazyloading {
-	opacity: 0;
-}
-.lazyloaded {
-	opacity: 1;
-	transition: opacity 300ms;
-}
-
-/* or add a progress loader gif instead || (Note: you need to add a transparent gif/data uri) */
-
-/*
-.lazyloading {
-    opacity: 1;
-	transition: opacity 300ms;
-	background: #f7f7f7 url(loader.gif) no-repeat center;
-}
-*/
-</style>
-
-<img
-    src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
-    data-src="image.jpg"
-    class="lazyload" />
-
 ```
 
 The ``lazybeforeunveil`` can also be used for lazy initialization and due to the fact that lazysizes also detects new elements in the DOM automatically also for auto- and self-initialization of UI widgets:
@@ -581,7 +546,9 @@ In case you want to dynamically calculate your intrinsic ratios for many differe
 	/* padding-bottom is calculated and rendered in to HTML */
 }
 
-.ratio-box > * {
+.ratio-container img,
+.ratio-container iframe,
+.ratio-container video {
 	position: absolute;
 	top: 0;
 	left: 0;
