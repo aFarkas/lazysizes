@@ -76,7 +76,7 @@
 
 	var updatePolyfill = function (el, full){
 		var polyfill;
-		if( !supportPicture && ( polyfill = (window.picturefill || window.respimage || lazySizesConfig.pf) ) ){
+		if( !supportPicture && ( polyfill = (window.picturefill || lazySizesConfig.pf) ) ){
 			polyfill({reevaluate: true, elements: [el]});
 		} else if(full && full.src){
 			el.src = full.src;
@@ -310,7 +310,7 @@
 			try {
 				elem.contentWindow.location.replace(src);
 			} catch(e){
-				elem.setAttribute('src', src);
+				elem.src = src;
 			}
 		};
 
@@ -419,7 +419,7 @@
 						if(regIframe.test(elem.nodeName)){
 							changeIframeSrc(elem, src);
 						} else {
-							elem.setAttribute('src', src);
+							elem.src = src;
 						}
 					}
 
@@ -448,7 +448,6 @@
 			var scrollTimer;
 			var afterScroll = function(){
 				lazySizesConfig.loadMode = 3;
-				defaultExpand = _defaultExpand;
 				throttledCheckElements();
 			};
 
@@ -462,10 +461,6 @@
 
 			addEventListener('scroll', function(){
 				if(lazySizesConfig.loadMode == 3){
-					defaultExpand = scrollingExpand;
-					//setTimeout(function(){
-					//	defaultExpand = scrollingExpand;
-					//}, 98);
 					lazySizesConfig.loadMode = 2;
 				}
 				clearTimeout(scrollTimer);
@@ -516,8 +511,6 @@
 				preloadElems = document.getElementsByClassName(lazySizesConfig.lazyClass + ' ' + lazySizesConfig.preloadClass);
 
 				defaultExpand = lazySizesConfig.expand;
-				_defaultExpand = defaultExpand;
-				scrollingExpand = defaultExpand * ((lazySizesConfig.expFactor + 1) / 2);
 				preloadExpand = defaultExpand * lazySizesConfig.expFactor;
 
 				addEventListener('scroll', throttledCheckElements, true);
@@ -623,6 +616,7 @@
 
 	(function(){
 		var prop;
+
 		var lazySizesDefaults = {
 			lazyClass: 'lazyload',
 			loadedClass: 'lazyloaded',
@@ -638,8 +632,8 @@
 			minSize: 40,
 			customMedia: {},
 			init: true,
-			expFactor: 2,
-			expand: 359,
+			expFactor: 1.7,
+			expand: docElem.clientHeight > 630 ? docElem.clientWidth > 630 ? 500 : 410 : 359,
 			loadMode: 2
 		};
 
