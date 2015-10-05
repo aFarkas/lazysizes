@@ -187,7 +187,7 @@
 
 		var eLvW, elvH, eLtop, eLleft, eLright, eLbottom;
 
-		var _defaultExpand, scrollingExpand, defaultExpand, preloadExpand;
+		var defaultExpand, preloadExpand;
 
 		var regImg = /^img$/i;
 		var regIframe = /^iframe$/i;
@@ -279,7 +279,7 @@
 						(eLright = rect.right) >= elemNegativeExpand &&
 						(eLleft = rect.left) <= eLvW &&
 						(eLbottom || eLright || eLleft || eLtop) &&
-						((isCompleted && isLoading < 3 && !elemExpandVal && (loadMode < 3 || lowRuns < 4)) || isNestedVisible(lazyloadElems[i], elemExpand))){ // && lazyloadElems[i].className.indexOf(lazySizesConfig.strictClass) == -1
+						((isCompleted && isLoading < 3 && !elemExpandVal && (loadMode < 3 || lowRuns < 4)) || isNestedVisible(lazyloadElems[i], elemExpand))){
 						unveilElement(lazyloadElems[i]);
 						loadedSomething = true;
 						if(isLoading > 9){break;}
