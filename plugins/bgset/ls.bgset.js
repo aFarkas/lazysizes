@@ -2,6 +2,7 @@
 	'use strict';
 	if(!window.addEventListener){return;}
 
+	var regWhite = /\s+/g;
 	var regSplitSet = /\s*\|\s+|\s+\|\s*/g;
 	var regSource = /^(.+?)(?:\s+\[\s*(.+?)\s*\])?$/;
 	var allowedBackgroundSize = {contain: 1, cover: 1};
@@ -42,7 +43,7 @@
 			writable: true
 		});
 
-		sets = sets.split(regSplitSet);
+		sets = sets.replace(regWhite, ' ').split(regSplitSet);
 
 		picture.style.display = 'none';
 		img.className = lazySizesConfig.lazyClass;
