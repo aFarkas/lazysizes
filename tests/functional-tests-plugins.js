@@ -58,8 +58,8 @@ function _optimumxReinit(addClass){
 				assert.equal($image.attr('srcset'), 'data:,img2-50 50w, data:,img2-100 100w');
 			};
 			var test = [
-				['data:,img1-50000 50000w, data:,img1-5000 5000w, data:,img1-500000 500000w', initTest],
-				['data:,img2-100 100w, data:,img2-500000 500000w, data:,img2-50 50w', reinitTest]
+				['\ndata:,img1-50000 50000w, \ndata:,img1-5000 5000w, data:,img1-500000 500000w', initTest],
+				['\ndata:,img2-100 100w, \ndata:,img2-500000 500000w, \ndata:,img2-50 50w', reinitTest]
 			];
 			var run = function(){
 				if(test.length){
@@ -110,7 +110,7 @@ $.extend(window.lazyTests, {
 			var viewport;
 			var $div = $('<div />')
 				.attr({
-					'data-bgset': 'data:,jo2 400w 800h, data:,jo3 800w 1600h, data:,jo4 1200w 2400h [(max-width: 300px)] | ' +
+					'data-bgset': '\ndata:,jo2 400w 800h, \ndata:,jo3 800w 1600h, data:,jo4 1200w 2400h [(max-width: 300px)] | ' +
 					'data:,jo5 800h 500w',
 					'data-sizes': 'auto',
 					'class': 'lazyload',
@@ -167,11 +167,11 @@ $.extend(window.lazyTests, {
 			var viewport;
 			var $picture = createPicture($, [
 				{
-					'data-srcset': 'data:,lazysource150 150w, data:,lazysource100 100w, data:,lazysource280 280w',
+					'data-srcset': '\n\ndata:,lazysource150 150w, \ndata:,lazysource100 100w, \ndata:,lazysource280 280w',
 					media: '(min-width: 0.5em)'
 				},
 				{
-					'data-srcset': 'data:,lazyimg100 100w, data:,lazyimg200 200w, data:,lazyimg150 150w',
+					'data-srcset': '\ndata:,lazyimg100 100w, \n\ndata:,lazyimg200 200w, \n\ndata:,lazyimg150 150w',
 					'data-optimumx': '0.5',
 					'data-sizes': 'auto',
 					'class': 'lazyload'
