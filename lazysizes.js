@@ -304,6 +304,7 @@
 			addClass(e.target, lazySizesConfig.loadedClass);
 			removeClass(e.target, lazySizesConfig.loadingClass);
 			addRemoveLoadEvents(e.target, switchLoadingClass);
+			triggerEvent(e.target, 'lazyloaded');
 		};
 
 		var changeIframeSrc = function(elem, src){
