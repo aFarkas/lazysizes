@@ -633,7 +633,7 @@
 			customMedia: {},
 			init: true,
 			expFactor: 1.7,
-			expand: docElem.clientHeight > 630 ? docElem.clientWidth > 630 ? 500 : 410 : 359,
+			expand: docElem.clientHeight > 630 ? docElem.clientWidth > 890 ? 500 : 410 : 359,
 			loadMode: 2
 		};
 
