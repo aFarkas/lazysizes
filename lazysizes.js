@@ -25,8 +25,6 @@
 
 	var rAF = window.requestAnimationFrame || setTimeout;
 
-	var setImmediate = window.setImmediate || setTimeout;
-
 	var regPicture = /^picture$/i;
 
 	var loadEvents = ['load', 'error', 'lazyincluded', '_lazyloaded'];
@@ -108,7 +106,7 @@
 			fn();
 		};
 		var afterAF = function(){
-			setImmediate(run);
+			setTimeout(run);
 		};
 		var getAF = function(){
 			rAF(afterAF);

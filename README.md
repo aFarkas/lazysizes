@@ -13,21 +13,20 @@ It can automatically calculate the ``sizes`` attribute for your responsive image
     ```
     Note: For more information see [here](#include-early).
 
-2. lazysizes does not need any JS configuration: Add the ``class`` ``"lazyload"`` to your images/iframes in conjunction with a ``data-src`` or ``data-srcset`` attribute. Optionally you can also add a ``src`` attribute with a low quality image:
+2. lazysizes does not need any JS configuration: Add the ``class`` ``"lazyload"`` to your images/iframes in conjunction with a ``data-src`` and/or ``data-srcset`` attribute. Optionally you can also add a ``src`` attribute with a low quality image:
 
     ```html
     <!-- non-responsive: -->
-    <img src="low-quality-src.jpg" data-src="normal-quality-src.jpg" class="lazyload" />
+    <img data-src="image.jpg" class="lazyload" />
     ```
     ```html
     <!-- responsive example with automatic sizes calculation: -->
     <img
         data-sizes="auto"
-        src="lqip-src.jpg"
-        data-srcset="lqip-src.jpg 220w,
-        image2.jpg 300w,
-        image3.jpg 600w,
-        image4.jpg 900w" class="lazyload" />
+        data-src="image2.jpg"
+        data-srcset="image1.jpg 300w,
+        image2.jpg 600w,
+        image3.jpg 900w" class="lazyload" />
     ```
     ```html
     <!-- iframe example -->
@@ -112,7 +111,7 @@ Add the class ``lazyload`` and simply omit the ``src`` attribute  or add a data 
 	class="lazyload" />
 ```
 
-Note: In case you are using either ``srcset``/``data-srcset`` or ``picture``, we recommend to extend this pattern with either a ``data-src`` (see next pattern: "Combine ``data-srcset`` with ``data-src``") or with a suitable ``src`` attribute (see: "LQIP" or "modern pattern").
+Note: In case you are using either ``srcset``/``data-srcset`` or ``picture``, we recommend to extend this pattern with either a ``data-src`` (see next pattern: "Combine ``data-srcset`` with ``data-src``") or with a suitable ``src`` attribute (see:  "modern pattern" or "LQIP").
 
 ###Combine ``data-srcset`` with ``data-src``
 
@@ -123,7 +122,7 @@ In case you want to use responsive images for supporting browsers, but don't wan
 <img
 	data-sizes="auto"
     data-src="image3.jpg"
-	data-srcset="lqip-src.jpg 220w,
+	data-srcset="image1.jpg 220w,
 	    image2.jpg 300w,
 	    image3.jpg 600w,
 	    image4.jpg 900w"
@@ -149,6 +148,24 @@ If you are using the LQIP (Low Quality Image Placeholder) pattern, simply add a 
 <img src="lqip-src.jpg" data-src="image.jpg" class="lazyload" />
 ```
 
+###modern transparent ``srcset`` pattern
+
+Combine a normal ``src`` attribute with a transparent image as ``srcset`` value and a ``data-srcset`` attribute. This way modern browsers will lazy load without loading the ``src`` attribute and all others will simply fallback to the initial ``src`` attribute (without lazyload). (This nice pattern originated from @ivopetkov.)
+
+```html
+<img
+    src="image3.jpg.jpg"
+    srcset="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+	data-srcset="image3.jpg 600w,
+		image1.jpg 220w,
+	    image2.jpg 300w,
+	    image4.jpg 900w"
+	data-sizes="auto"
+	class="lazyload" />
+```
+
+Note: It is recommended that the first image candidate in ``data-srcset`` matches the ``src`` fallback image. (See also [#150](https://github.com/aFarkas/lazysizes/issues/150).)
+
 ###The noscript pattern
 
 In case disabled JavaScript is a concern you can combine this simple pattern with an image inside a ``noscript`` element.
@@ -168,24 +185,6 @@ In case disabled JavaScript is a concern you can combine this simple pattern wit
 ```
 
 Note: As an alternative to the noscript pattern also checkout the [noscript extension](plugins/noscript).
-
-###modern transparent ``srcset`` pattern
-
-Combine a normal ``src`` attribute with a transparent image as ``srcset`` value and a ``data-srcset`` attribute. This way modern browsers will lazy load without loading the ``src`` attribute and all others will simply fallback to the initial ``src`` attribute (without lazyload). (This nice pattern originated from @ivopetkov.)
-
-```html
-<img
-    src="image3.jpg.jpg"
-    srcset="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
-	data-srcset="image3.jpg 600w,
-		image1.jpg 220w,
-	    image2.jpg 300w,
-	    image4.jpg 900w"
-	data-sizes="auto"
-	class="lazyload" />
-```
-
-Note: It is recommended that the first image candidate in ``data-srcset`` matches the ``src`` fallback image. (See also [#150](https://github.com/aFarkas/lazysizes/issues/150).)
 
 ###[data-expand] attribute
 Normally lazysizes will expand the viewport area to lazy preload images/iframes which might become visible soon. This value can be adjusted using the ``expand`` option.
@@ -362,6 +361,7 @@ document.addEventListener('lazybeforeunveil', function(e){
 
 <div class="chart lazyload" data-expand="-10"></div>
 ```
+In case you want to know, when an image is loaded, simply use the native `load` event and/or the native `complete` property.
 
 * ``lazybeforesizes``: This event will be fired on each element with the ``data-sizes="auto"`` attribute right before the calculated ``sizes`` attribute will be set. The ``event.detail.width`` property is set to the calculated width of the element and can be changed to any number. In case the event is ``defaultPrevented`` the ``sizes`` attribute won't be set. See also the [parent-fit extension](plugins/parent-fit).
 ```js

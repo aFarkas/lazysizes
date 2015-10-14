@@ -135,8 +135,17 @@
 
 	</style>
 	<script>
-		window.lazySizesConfig = window.lazySizesConfig || {};
-		window.lazySizesConfig.loadMode = 1;
+		(function(){
+			var docElem = document.documentElement;
+
+			window.lazySizesConfig = window.lazySizesConfig || {};
+
+			window.lazySizesConfig.loadMode = 1;
+
+			//set expand to a higher value on larger displays
+			window.lazySizesConfig.expand = Math.max(Math.min(docElem.clientWidth, docElem.clientHeight), 359);
+			window.lazySizesConfig.expFactor = lazySizesConfig.expand < 500 ? 2.5 : 2;
+		})();
 	</script>
 	<script src="plugins/unveilhooks/ls.unveilhooks.min.js" async=""></script>
 
