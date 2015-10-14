@@ -307,7 +307,7 @@
 			var candidate;
 			var elem = e.target;
 
-			if(window.respimage || window.picturefill || lazySizesConfig.pf){
+			if(!buggySizes && (window.respimage || window.picturefill || lazySizesConfig.pf)){
 				document.removeEventListener('lazybeforesizes', polyfill);
 				return;
 			}
