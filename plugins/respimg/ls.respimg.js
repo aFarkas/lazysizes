@@ -138,7 +138,7 @@
 				if(isImage && elem.parentNode){
 					parsedSet.isPicture = elem.parentNode.nodeName.toUpperCase() == 'PICTURE';
 
-					if(parsedSet.isPicture && elem.getAttribute(config.sizesAttr) != 'auto'){
+					if(parsedSet.isPicture){
 						if(window.matchMedia || (window.Modernizr && Modernizr.mq)){
 							lazySizes.aC(elem, 'lazymatchmedia');
 							runMatchMedia();
