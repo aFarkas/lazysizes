@@ -1,6 +1,6 @@
 #Changelog
 
-##upcomming 1.3.1 version
+##1.3.1 version
 
 * lazysizes core:
 	* replace `setImmediate` with `setTimeout` (improved performance for IE/EDGE).
