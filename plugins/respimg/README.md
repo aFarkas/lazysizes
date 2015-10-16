@@ -1,6 +1,6 @@
 #lazysizes respimg polyfill extension
 
-While [picturefill](https://github.com/scottjehl/picturefill) and [respimage](https://github.com/aFarkas/respimage) are full functional responsive images polyfills, the lazySizes respimg polyfill extension is only a partial polyfill, which supports only the most important subset of the native responsive images standard and only in conjunction with the lazySizes core script.
+While [picturefill](https://github.com/scottjehl/picturefill) are full functional responsive images polyfills, the lazySizes respimg polyfill extension is only a partial polyfill, which supports only the most important subset of the native responsive images standard and only in conjunction with the lazySizes core script.
 
 As a result it is an extreme fast and lightweight plugin.
 
