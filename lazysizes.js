@@ -136,22 +136,24 @@
 		var gDelay = 125;
 		var dTimeout = 999;
 		var timeout = dTimeout;
+		var fastCallThreshold = 0;
 		var run = function(){
 			running = false;
 			lastTime = Date.now();
 			fn();
 		};
 		var afterAF = function(){
-			setImmediate(run);
+			setTimeout(run);
 		};
 		var getAF = function(){
 			rAF(afterAF);
 		};
 
 		if(requestIdleCallback){
-			gDelay = 99;
+			gDelay = 66;
+			fastCallThreshold = 22;
 			getAF = function(){
-				requestIdleCallback(run, timeout);
+				requestIdleCallback(run, {timeout: timeout});
 				if(timeout !== dTimeout){
 					timeout = dTimeout;
 				}
@@ -159,7 +161,7 @@
 		}
 
 		return function(isPriority){
-
+			var delay;
 			if((isPriority = isPriority === true)){
 				timeout = 40;
 			}
@@ -167,11 +169,10 @@
 			if(running){
 				return;
 			}
-			var delay = gDelay - (Date.now() - lastTime);
 
 			running =  true;
 
-			if(isPriority || delay < 0){
+			if(isPriority || (delay = gDelay - (Date.now() - lastTime)) < fastCallThreshold){
 				getAF();
 			} else {
 				setTimeout(getAF, delay);
@@ -631,8 +632,8 @@
 			customMedia: {},
 			init: true,
 			expFactor: 1.7,
-			hFac: 0.9,
-			expand: docElem.clientHeight > 630 ? docElem.clientWidth > 860 ? 500 : 410 : 359,
+			hFac: 0.8,
+			expand: docElem.clientHeight > 600 ? docElem.clientWidth > 860 ? 500 : 410 : 359,
 			loadMode: 2
 		};
 
