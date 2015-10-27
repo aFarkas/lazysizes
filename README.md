@@ -542,9 +542,9 @@ In case you want to dynamically calculate your intrinsic ratios for many differe
 	/* padding-bottom is calculated and rendered in to HTML */
 }
 
-.ratio-container img,
-.ratio-container iframe,
-.ratio-container video {
+.ratio-box img,
+.ratio-box iframe,
+.ratio-box video {
 	position: absolute;
 	top: 0;
 	left: 0;
