@@ -154,7 +154,7 @@ Combine a normal ``src`` attribute with a transparent image as ``srcset`` value 
 
 ```html
 <img
-    src="image3.jpg.jpg"
+    src="image3.jpg"
     srcset="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
 	data-srcset="image3.jpg 600w,
 		image1.jpg 220w,
