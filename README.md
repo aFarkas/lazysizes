@@ -122,14 +122,15 @@ In case you want to use responsive images for supporting browsers, but don't wan
 <img
 	data-sizes="auto"
     data-src="image3.jpg"
-	data-srcset="image1.jpg 220w,
+	data-srcset="image3.jpg 600w,
+	    image1.jpg 220w,
 	    image2.jpg 300w,
 	    image3.jpg 600w,
 	    image4.jpg 900w"
 	class="lazyload" />
 ```
 
-Note: Due to the fact that the ``data-src`` will also be picked up by "Read-Later" Apps and other tools (for example Pin it button), this pattern also makes sense if you use a polyfill.
+Note: Due to the fact that the ``data-src`` will also be picked up by "Read-Later" Apps and other tools (for example Pin it button), this pattern also makes sense if you use a polyfill. In case you don't use a polyfill it is recommended that the first image candidate matches the fallback `src`.
 
 ###LQIP
 If you are using the LQIP (Low Quality Image Placeholder) pattern, simply add a low quality image as the ``src``:
