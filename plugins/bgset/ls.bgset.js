@@ -107,6 +107,8 @@
 		elem = e.target;
 		image = document.createElement('img');
 
+		image.alt = '';
+
 		image._lazybgsetLoading = true;
 		e.detail.firesLoad = true;
 
