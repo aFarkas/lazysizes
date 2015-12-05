@@ -533,7 +533,7 @@ In case you want to dynamically calculate your intrinsic ratios for many differe
 
 ```html
 <style>
-.ratio-box {
+.ratio-container {
 	position: relative;
 	height: 0;
 	display: block;
@@ -553,7 +553,7 @@ In case you want to dynamically calculate your intrinsic ratios for many differe
 }
 </style>
 
-<div class="ratio-box" style="padding-bottom: 42.85% /* calc(75 / 175 * 100%)*/;">
+<div class="ratio-container" style="padding-bottom: 42.85% /* calc(75 / 175 * 100%)*/;">
     <img
         src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
         data-sizes="auto"
