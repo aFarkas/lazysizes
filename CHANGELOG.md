@@ -1,5 +1,14 @@
 #Changelog
 
+##1.3.2
+
+* lazysizes core:
+	* add `hFactor` option (see #181).
+* unload plugin:
+	* simplified `unloadPixelThreshold` calculation.
+* bgset plugin:
+	* add an empty alt to image (see #200)
+
 ##1.3.1 version
 
 * lazysizes core:
