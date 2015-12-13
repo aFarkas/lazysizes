@@ -325,6 +325,7 @@
 				source.setAttribute('srcset', sourceSrcset);
 			}
 
+			//https://bugzilla.mozilla.org/show_bug.cgi?id=1170572
 			if(customMedia){
 				parent = source.parentNode;
 				parent.insertBefore(source.cloneNode(), source);
@@ -454,7 +455,11 @@
 			lazySizesConfig.loadMode = 3;
 
 			if(!isLoading){
-				throttledCheckElements();
+				if(lowRuns){
+					throttledCheckElements();
+				} else {
+					setTimeout(checkElements);
+				}
 			}
 
 			addEventListener('scroll', function(){
