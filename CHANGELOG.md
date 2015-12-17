@@ -1,5 +1,9 @@
 #Changelog
 
+##upcomming 1.3.3
+* lazysizes core:
+	* improved lazyloading in background tabs.
+
 ##1.3.2
 
 * lazysizes core:
@@ -7,7 +11,7 @@
 * unload plugin:
 	* simplified `unloadPixelThreshold` calculation.
 * bgset plugin:
-	* add an empty alt to image (see #200)
+	* add an empty alt to image (see #200).
 
 ##1.3.1 version
 
