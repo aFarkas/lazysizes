@@ -194,7 +194,7 @@
 	if(typeof config.getOptimumX != 'function'){
 		config.getOptimumX = function(/*element*/){
 			var dpr = window.devicePixelRatio || 1;
-			if(dpr > 2.4){
+			if(dpr >= 2.5){
 				dpr *= 0.7; // returns 2.1 for 3
 			} else if(dpr > 1.9){
 				dpr *= 0.85; // returns 1.7 for 2
