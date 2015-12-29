@@ -514,6 +514,10 @@
 				preloadElems = document.getElementsByClassName(lazySizesConfig.lazyClass + ' ' + lazySizesConfig.preloadClass);
 				hFac = lazySizesConfig.hFac;
 
+				if(!('expand' in lazySizesConfig)){
+					lazySizesConfig.expand = docElem.clientHeight > 600 ? docElem.clientWidth > 860 ? 500 : 410 : 359;
+				}
+
 				defaultExpand = lazySizesConfig.expand;
 				preloadExpand = defaultExpand * lazySizesConfig.expFactor;
 
@@ -638,7 +642,6 @@
 			init: true,
 			expFactor: 1.7,
 			hFac: 0.8,
-			expand: docElem.clientHeight > 600 ? docElem.clientWidth > 860 ? 500 : 410 : 359,
 			loadMode: 2
 		};
 
