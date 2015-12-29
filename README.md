@@ -80,9 +80,11 @@ Add the ``class`` ``lazyload`` to all ``img`` and ``iframe`` elements, which sho
     class="lazyload" />
 ```
 
-**Important: How ``sizes`` is calculated**: The automatic sizes calculation uses the width of the image. If it is below ``40`` (can be configured through the ``minSize`` option), lazysizes traverses up the DOM tree until it finds a parent which is over ``40`` and uses this number. Often the following general CSS rule might help: ``img[data-sizes="auto"] { display: block; width: 100%; }`` (see also [specifying image/iframe dimensions](#specify-dimensions)).
+**Important: How ``sizes`` is calculated**: The automatic sizes calculation uses the display width of the image. This means that the width of the image has to be calculable at least approximately before the image itself is loaded. Often the following general CSS rule might help: ``img[data-sizes="auto"] { display: block; width: 100%; }`` (see also [specifying image/iframe dimensions with the recommended aspect ratio definition](#specify-dimensions)). If it is below ``40`` (can be configured through the ``minSize`` option), lazysizes traverses up the DOM tree until it finds a parent which is over ``40`` and uses this number.
 
-The ``data-sizes="auto"`` feature only makes sense if you use the ``data-srcset`` attribute with *width* descriptors which allows the most appropriate image can be selected (It does not make sense if you use the x descriptor or only ``src``.). The width auto-calculated by lazysizes can be modified using the ``lazybeforesizes`` event. Alternatively, the [parent fit plugin](plugins/parent-fit) can be used for sizing images to fit a parent / container, and is the only solution when an image's height needs to be taken into account when fitting it to its container.
+The width auto-calculated by lazysizes can be modified using the ``lazybeforesizes`` event ([lazybeforesizes documentation](#lazybeforesizes-documentation)). Alternatively, the [parent fit plugin](plugins/parent-fit) can be used for sizing images to fit a parent / container, and is the only solution when an image's height needs to be taken into account when fitting it to its container.
+
+The ``data-sizes="auto"`` feature only makes sense if you use the ``data-srcset`` attribute with *width* descriptors which allows the most appropriate image can be selected (It does not make sense if you use the x descriptor or only ``src``.).
 
 ##Recommended/possible markup patterns
 
@@ -132,7 +134,7 @@ In case you want to use responsive images for supporting browsers, but don't wan
 
 Note: Due to the fact that the ``data-src`` will also be picked up by "Read-Later" Apps and other tools (for example Pin it button), this pattern also makes sense if you use a polyfill. In case you don't use a polyfill it is recommended that the first image candidate matches the fallback `src`.
 
-###LQIP
+###LQIP/blurry image placeholder
 If you are using the LQIP (Low Quality Image Placeholder) pattern, simply add a low quality image as the ``src``:
 
 ```html
@@ -365,7 +367,7 @@ document.addEventListener('lazybeforeunveil', function(e){
 ```
 In case you want to know, when an image is loaded, simply use the native `load` event and/or the native `complete` property.
 
-* ``lazybeforesizes``: This event will be fired on each element with the ``data-sizes="auto"`` attribute right before the calculated ``sizes`` attribute will be set. The ``event.detail.width`` property is set to the calculated width of the element and can be changed to any number. In case the event is ``defaultPrevented`` the ``sizes`` attribute won't be set. See also the [parent-fit extension](plugins/parent-fit).
+* <a id="lazybeforesizes-documentation"></a>``lazybeforesizes``: This event will be fired on each element with the ``data-sizes="auto"`` attribute right before the calculated ``sizes`` attribute will be set. The ``event.detail.width`` property is set to the calculated width of the element and can be changed to any number. In case the event is ``defaultPrevented`` the ``sizes`` attribute won't be set. See also the [parent-fit extension](plugins/parent-fit).
 ```js
 $(document).on('lazybeforesizes', function(e){
     //use width of parent node instead of the image width itself
