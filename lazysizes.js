@@ -245,6 +245,15 @@
 
 				lowRuns++;
 
+				if(preloadExpand == null){
+					if(!('expand' in lazySizesConfig)){
+						lazySizesConfig.expand = docElem.clientHeight > 600 ? docElem.clientWidth > 860 ? 500 : 410 : 359;
+					}
+
+					defaultExpand = lazySizesConfig.expand;
+					preloadExpand = defaultExpand * lazySizesConfig.expFactor;
+				}
+
 				if(currentExpand < preloadExpand && isLoading < 1 && lowRuns > 3 && loadMode > 2){
 					currentExpand = preloadExpand;
 					lowRuns = 0;
@@ -374,14 +383,12 @@
 					delete elem._lazyRace;
 				}
 
-				removeClass(elem, lazySizesConfig.lazyClass);
-
 				if(!(event = triggerEvent(elem, 'lazybeforeunveil')).defaultPrevented){
 
 					if(sizes){
 						if(isAuto){
-							addClass(elem, lazySizesConfig.autosizesClass);
 							autoSizer.updateElem(elem, true, width);
+							addClass(elem, lazySizesConfig.autosizesClass);
 						} else {
 							elem.setAttribute('sizes', sizes);
 						}
@@ -426,6 +433,8 @@
 						updatePolyfill(elem, {src: src});
 					}
 				}
+
+				removeClass(elem, lazySizesConfig.lazyClass);
 
 				if( !firesLoad || elem.complete ){
 					if(firesLoad){
@@ -513,13 +522,6 @@
 				lazyloadElems = document.getElementsByClassName(lazySizesConfig.lazyClass);
 				preloadElems = document.getElementsByClassName(lazySizesConfig.lazyClass + ' ' + lazySizesConfig.preloadClass);
 				hFac = lazySizesConfig.hFac;
-
-				if(!('expand' in lazySizesConfig)){
-					lazySizesConfig.expand = docElem.clientHeight > 600 ? docElem.clientWidth > 860 ? 500 : 410 : 359;
-				}
-
-				defaultExpand = lazySizesConfig.expand;
-				preloadExpand = defaultExpand * lazySizesConfig.expFactor;
 
 				addEventListener('scroll', throttledCheckElements, true);
 

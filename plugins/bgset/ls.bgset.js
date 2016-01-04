@@ -114,13 +114,15 @@
 
 		createPicture(set, elem, image);
 
-		lazySizes.loader.unveil(image);
+		setTimeout(function(){
+			lazySizes.loader.unveil(image);
 
-		rAF(function(){
-			lazySizes.fire(image, '_lazyloaded', {}, true, true);
-			if(image.complete) {
-				proxyLoad({target: image});
-			}
+			rAF(function(){
+				lazySizes.fire(image, '_lazyloaded', {}, true, true);
+				if(image.complete) {
+					proxyLoad({target: image});
+				}
+			});
 		});
 
 	});
