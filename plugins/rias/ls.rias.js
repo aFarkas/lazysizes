@@ -198,7 +198,7 @@
 	}
 
 	addEventListener('lazybeforesizes', function(e){
-		var elem, src, elemOpts, parent, sources, i, len, sourceSrc, sizes, detail, hasPlaceholder, modified, emptyList;
+		var elem, src, elemOpts, parent, sources, i, len, sourceSrc, sizes, detail, hasPlaceholder, modified, emptyList, max_width_allowed;
 		elem = e.target;
 
 		if(!e.detail.dataAttr || e.defaultPrevented || riasCfg.disabled || !((sizes = elem.getAttribute(config.sizesAttr) || elem.getAttribute('sizes')) && regAllowedSizes.test(sizes))){return;}
@@ -208,6 +208,16 @@
 		elemOpts = createAttrObject(elem, src);
 
 		hasPlaceholder = regWidth.test(elemOpts.prefix) || regWidth.test(elemOpts.postfix);
+
+		/* never allow sizes to be set to a width higher than the maximum width image we have.
+		*
+		* This stops some upscaling on Firefox and Chrome as they use the sizes
+		* attribute to set the intrinsic width/height of an image. If no CSS rules
+		* (or just a max-with) are used, small images get upscaled.
+		*
+		*/
+		max_width_allowed = Math.max.apply(null, elemOpts.widths);
+		e.detail.width = Math.min(max_width_allowed, e.detail.width);
 
 		if(elemOpts.isPicture && (parent = elem.parentNode)){
 			sources = parent.getElementsByTagName('source');
