@@ -19,6 +19,7 @@
 	var createPicture = function(sets, elem, img){
 		var picture = document.createElement('picture');
 		var sizes = elem.getAttribute(lazySizesConfig.sizesAttr);
+		var ratio = elem.getAttribute('data-ratio');
 		var optimumx = elem.getAttribute('data-optimumx');
 		var bgSize = (getComputedStyle(elem) || {getPropertyValue: function(){}}).getPropertyValue('background-size');
 
@@ -75,6 +76,9 @@
 		}
 		if(optimumx){
 			img.setAttribute('data-optimumx', optimumx);
+		}
+		if(ratio) {
+			img.setAttribute('data-ratio', ratio);
 		}
 
 		picture.appendChild(img);
