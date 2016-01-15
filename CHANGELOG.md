@@ -1,6 +1,6 @@
 #Changelog
 
-##upcomming 1.4.0
+##1.4.0
 * lazysizes core:
 	* improved lazyloading in background tabs.
 	* improved avoiding layout thrashing
