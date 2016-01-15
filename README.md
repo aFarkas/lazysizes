@@ -134,7 +134,7 @@ In case you want to use responsive images for supporting browsers, but don't wan
 
 Note: Due to the fact that the ``data-src`` will also be picked up by "Read-Later" Apps and other tools (for example Pin it button), this pattern also makes sense if you use a polyfill. In case you don't use a polyfill it is recommended that the first image candidate matches the fallback `src`.
 
-###LQIP/blurry image placeholder
+###LQIP/blurry image placeholder/Blur up image technique
 If you are using the LQIP (Low Quality Image Placeholder) pattern, simply add a low quality image as the ``src``:
 
 ```html
@@ -150,6 +150,45 @@ If you are using the LQIP (Low Quality Image Placeholder) pattern, simply add a 
 <!-- or non-responsive: -->
 <img src="lqip-src.jpg" data-src="image.jpg" class="lazyload" />
 ```
+
+The LQIP technique can be enhanced by combining it with CSS transitions/animation to sharpen/unblur or overfade the LQIP image:
+
+```html
+<style>
+	.blur-up {
+		-webkit-filter: blur(5px);
+		filter: blur(5px);
+		transition: filter 400ms, -webkit-filter 400ms;
+	}
+
+	.blur-up.lazyloaded {
+		-webkit-filter: blur(0);
+		filter: blur(0);
+	}
+</style>
+
+<img src="lqip-src.jpg" data-src="image.jpg" class="lazyload blur-up" />
+
+<!-- ... -->
+
+<style>
+	.fade-box .lazyload,
+	 .fade-box .lazyloading {
+		opacity: 0;
+		transition: opacity 400ms;
+	}
+
+	.fade-box img.lazyloaded {
+		opacity: 1;
+	}
+</style>
+
+<div class="ratio-box fade-box">
+	<img src="lqip-src.jpg" data-src="image.jpg" />
+	<img data-src="image.jpg" class="lazyload" />
+</div>
+```
+
 
 ###modern transparent ``srcset`` pattern
 
