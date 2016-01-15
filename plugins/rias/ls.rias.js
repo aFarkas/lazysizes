@@ -147,15 +147,17 @@
 	}
 
 	function setSrc(src, opts, elem){
-		var elemW = 0, elemH = 0;
+		var elemW = 0;
+		var elemH = 0;
+		var sizeElement = elem;
 
 		if(!src){return;}
 
 		if (opts.ratio === 'container') {
 			// calculate image or parent ratio
-			var sizeElement = elem;
 			elemW = sizeElement.scrollWidth;
 			elemH = sizeElement.scrollHeight;
+
 			while ((!elemW || !elemH) && sizeElement !== document) {
 				sizeElement = sizeElement.parentNode;
 				elemW = sizeElement.scrollWidth;
@@ -297,7 +299,7 @@
 		var getX = function(elem){
 			var dpr = window.devicePixelRatio || 1;
 			var optimum = lazySizes.getX && lazySizes.getX(elem);
-			return Math.min(optimum || dpr, 2.5, dpr);
+			return Math.min(optimum || dpr, 2.4, dpr);
 		};
 
 		var getCandidate = function(elem, width){

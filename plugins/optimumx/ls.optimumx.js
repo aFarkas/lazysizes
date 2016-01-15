@@ -194,12 +194,12 @@
 	if(typeof config.getOptimumX != 'function'){
 		config.getOptimumX = function(/*element*/){
 			var dpr = window.devicePixelRatio || 1;
-			if(dpr >= 2.5){
-				dpr *= 0.7; // returns 2.1 for 3
+			if(dpr > 2.5){
+				dpr *= 0.6; // returns 1.8 for 3
 			} else if(dpr > 1.9){
-				dpr *= 0.85; // returns 1.7 for 2
+				dpr *= 0.8; // returns 1.6 for 2
 			}
-			return Math.min(Math.round(dpr * 100) / 100, 2.2);
+			return Math.min(Math.round(dpr * 100) / 100, 2);
 		};
 	}
 
