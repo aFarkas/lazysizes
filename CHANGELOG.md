@@ -1,8 +1,14 @@
 #Changelog
 
-##upcomming 1.3.3
+##upcomming 1.4.0
 * lazysizes core:
 	* improved lazyloading in background tabs.
+	* improved avoiding layout thrashing
+	* support of SVG elements (`svg`/`image`/`use`...)
+* bgset/parentFit plugin:
+	* improved avoiding layout thrashing
+* rias (and bgset):
+	* added support for height calculation (thx to @LRancez, [#213](https://github.com/aFarkas/lazysizes/pull/213))
 
 ##1.3.2
 
