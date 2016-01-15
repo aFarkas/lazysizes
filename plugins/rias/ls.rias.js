@@ -133,9 +133,9 @@
 		url = ((options.prefix || '') + url + (options.postfix || '')).replace(regPlaceholder, replaceFn);
 
 		options.widths.forEach(function(width){
-			width = options.widthmap[width] || width;
+			var widthAlias = options.widthmap[width] || width;
 			var candidate = {
-				u: url.replace(regWidth, width)
+				u: url.replace(regWidth, widthAlias)
 						.replace(regHeight, options.ratio ? Math.round(width * options.ratio) : ''),
 				w: width
 			};
