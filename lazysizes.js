@@ -200,6 +200,7 @@
 
 		var isLoading = 0;
 		var lowRuns = 0;
+		var isStarted = 0;
 
 		var resetPreloading = function(e){
 			isLoading--;
@@ -312,7 +313,13 @@
 		var switchLoadingClass = function(e){
 			addClass(e.target, lazySizesConfig.loadedClass);
 			removeClass(e.target, lazySizesConfig.loadingClass);
-			addRemoveLoadEvents(e.target, switchLoadingClass);
+			addRemoveLoadEvents(e.target, rafSwitchLoadingClass);
+		};
+		var rafSwitchLoadingClass = function(e){
+			e = {target: e.target};
+			rAF(function(){
+				switchLoadingClass(e);
+			});
 		};
 
 		var changeIframeSrc = function(elem, src){
@@ -353,12 +360,17 @@
 				}
 				isRunning = false;
 			};
-			return function(fn){
+			var add = function(fn){
 				batch.push(fn);
 				if(!isRunning){
 					isRunning = true;
 					rAF(runBatch);
 				}
+			};
+
+			return {
+				add: add,
+				run: runBatch
 			};
 		})();
 
@@ -380,10 +392,12 @@
 			elem._lazyRace = true;
 			isLoading++;
 
-			rafBatch(function lazyUnveil(){
+			rafBatch.add(function lazyUnveil(){
 				if(elem._lazyRace){
 					delete elem._lazyRace;
 				}
+
+				isStarted++;
 
 				if(!(event = triggerEvent(elem, 'lazybeforeunveil')).defaultPrevented){
 
@@ -414,7 +428,7 @@
 						resetPreloadingTimer = setTimeout(resetPreloading, 2500);
 
 						addClass(elem, lazySizesConfig.loadingClass);
-						addRemoveLoadEvents(elem, switchLoadingClass, true);
+						addRemoveLoadEvents(elem, rafSwitchLoadingClass, true);
 					}
 
 					if(isPicture){
@@ -438,14 +452,16 @@
 
 				removeClass(elem, lazySizesConfig.lazyClass);
 
-				if( !firesLoad || elem.complete ){
-					if(firesLoad){
-						resetPreloading(event);
-					} else {
-						isLoading--;
+				rAF(function(){
+					if( !firesLoad || elem.complete ){
+						if(firesLoad){
+							resetPreloading(event);
+						} else {
+							isLoading--;
+						}
+						switchLoadingClass(event);
 					}
-					switchLoadingClass(event);
-				}
+				});
 			});
 		};
 
@@ -465,12 +481,13 @@
 
 			lazySizesConfig.loadMode = 3;
 
-			if(!isLoading){
-				if(lowRuns){
-					throttledCheckElements();
-				} else {
-					setTimeout(checkElements);
-				}
+			if(isStarted){
+				throttledCheckElements();
+			} else {
+				setTimeout(function(){
+					checkElements();
+					rafBatch.run();
+				});
 			}
 
 			addEventListener('scroll', function(){
