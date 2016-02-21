@@ -48,7 +48,7 @@ Lazysizes is built upon the Responsive image standard and extends it with additi
 ##What makes lazysizes so awesome:
 **lazysizes** is different than other lazy image loaders.
 
-1. **Detects any visibility changes on current and future lazyload elements in any web enviroment automatically**: The script works as an universal, self-initializing, self-configuring and self-destroying component and detects any changes to the visibility of any current and future image/iframe elements automatically no matter whether it becomes visible through a user scroll, a CSS animation triggered through ``:hover`` or through any kind of JS behavior (carousel, slider, infinite scroll, masonry, isotope/filtering/sorting, AJAX, SPAs...). It also works automatically in conjunction with any kind of JS-/CSS-/Frontend-Framework (jQuery mobile, Bootstrap, Backbone, Angular, React, Ember (see also the [attrchange/re-initialization extension](plugins/attrchange))).
+1. **Detects any visibility changes on current and future lazyload elements in any web environment automatically**: The script works as an universal, self-initializing, self-configuring and self-destroying component and detects any changes to the visibility of any current and future image/iframe elements automatically no matter whether it becomes visible through a user scroll, a CSS animation triggered through ``:hover`` or through any kind of JS behavior (carousel, slider, infinite scroll, masonry, isotope/filtering/sorting, AJAX, SPAs...). It also works automatically in conjunction with any kind of JS-/CSS-/Frontend-Framework (jQuery mobile, Bootstrap, Backbone, Angular, React, Ember (see also the [attrchange/re-initialization extension](plugins/attrchange))).
 2. **Future-proof**: It directly includes standard responsive image support (``picture`` and ``srcset``)
 3. **Separation of concerns**: For responsive image support it adds an automatic ``sizes`` calculation as also alias names for media queries feature. There is also no JS change needed if you add a scrollable container with CSS (overflow: auto) or create a mega menu containing images.
 4. **Performance**: It's based on highly efficient, best practice code (runtime **and** network) to work jank-free at 60fps and can be used with hundreds of images/iframes on CSS and JS-heavy pages or webapps.
@@ -664,7 +664,7 @@ or at least add a ``min-height`` (and ``min-width``) to minimize content jumps:
 * If you use the "unknown intrinsic ratio pattern" and the width of the loaded image will not (approximately) match the width of its container, the ``data-sizes="auto"`` feature will not be effective when used on its own. In this situation the most appropriate size for the image to fit in the available space can be calculated automatically using the [parent fit plugin](plugins/parent-fit).
 * see also the [aspectratio extension](plugins/aspectratio) for an alternative way to add aspectratio.
 
-###Updateing layout of JS widgets
+###Updating layout of JS widgets
 In case you can't specify the image dimensions using CSS or one of the above suggested methods and your JS widgets have problems to calculate the right dimensions. You can use the following pattern to update your JS widgets (sliders/masonry):
 
 ```js
