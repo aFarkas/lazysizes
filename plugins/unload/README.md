@@ -16,3 +16,26 @@ Simply add the lazysizes unload extension to your site.
 * ``lazySizesConfig.unloadHidden`` (default: ``true``): Whether hidden images (``display: none;``) also should be unloaded.
 
 **Note**: In case you dynamically change the ``data-src``/``data-srcset`` of an already unloaded element, you have to remove the ``lazyunloaded`` class.
+
+##Events
+
+* ``lazyafterunload``: This event will be fired on the unloaded lazyload elements. This event can be used to extend the unload functionality.
+```js
+//div ajax example which returns DOM string:
+document.addEventListener('lazybeforeunveil', function (e) {
+    var containerId = e.target.getAttribute('data-id');
+    
+    //load ajax content with containerId
+    //append content to e.target.innerHTML
+});
+
+//clean DOM nodes inside container that where previously loaded by ajax:
+//lazyafterunload gives possibility to take care of the cleanup in this case
+document.addEventListener('lazyafterunload', function (e) {
+    var container = e.target;
+    
+    while (container.firstElementChild) {
+        container.removeChild(container.firstElementChild);
+    }
+});
+```
