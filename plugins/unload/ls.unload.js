@@ -55,6 +55,7 @@
 
 			lazySizes.aC(element, config.unloadedClass);
 			lazySizes.aC(element, config.lazyClass);
+			lazySizes.fire(element, 'lazyafterunload');
 		},
 		unloadElements: function(elements){
 			elements = Array.isArray(elements) ? elements : unloadElements;
