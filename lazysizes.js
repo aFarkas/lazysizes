@@ -393,10 +393,6 @@
 			isLoading++;
 
 			rafBatch.add(function lazyUnveil(){
-				if(elem._lazyRace){
-					delete elem._lazyRace;
-				}
-
 				isStarted++;
 
 				if(!(event = triggerEvent(elem, 'lazybeforeunveil')).defaultPrevented){
@@ -450,9 +446,12 @@
 					}
 				}
 
-				removeClass(elem, lazySizesConfig.lazyClass);
-
 				rAF(function(){
+					if(elem._lazyRace){
+						delete elem._lazyRace;
+					}
+					removeClass(elem, lazySizesConfig.lazyClass);
+
 					if( !firesLoad || elem.complete ){
 						if(firesLoad){
 							resetPreloading(event);
