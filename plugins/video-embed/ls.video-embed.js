@@ -33,12 +33,9 @@
 	}
 
 	function embedVimeoImg(id, elem){
-		var img = document.createElement('img');
-
 		getJSON(vimeoApi.replace(regId, id), function(data){
 			if(data && data.thumbnail_url){
-				img.src = data.thumbnail_url;
-				elem.appendChild(img);
+				elem.style.backgroundImage = 'url('+ data.thumbnail_url +')';
 			}
 		});
 		elem.addEventListener('click', embedVimeoIframe);
@@ -61,10 +58,7 @@
 	}
 
 	function embedYoutubeImg(id, elem){
-		var img = document.createElement('img');
-
-		img.src = youtubeImg.replace(regId, id);
-		elem.appendChild(img);
+		elem.style.backgroundImage = 'url('+ youtubeImg.replace(regId, id) +')';
 		elem.addEventListener('click', embedYoutubeIframe);
 	}
 
