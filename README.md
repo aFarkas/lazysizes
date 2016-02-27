@@ -716,3 +716,8 @@ Due to the fact, that it is designed to be invoked with a high frequency and the
     data-src="image.jpg"
     class="lazyload" />
 ```
+
+
+##Contributing
+
+Questions, Help, Discussions or Contributions? Join our dev chat on Gitter: [lazysizes on gitter](https://gitter.im/aFarkas/lazysizes)
