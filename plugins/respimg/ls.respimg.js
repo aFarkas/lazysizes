@@ -1,10 +1,19 @@
 (function(window, document, undefined){
 	/*jshint eqnull:true */
 	'use strict';
-	var polyfill;
+	var polyfill, edgeMatch;
 	var config = (window.lazySizes && lazySizes.cfg) || window.lazySizesConfig;
 	var img = document.createElement('img');
 	var supportSrcset = ('sizes' in img) && ('srcset' in img);
+	var regHDesc = /\s+\d+h/g;
+	var forEach = Array.prototype.forEach;
+	var removeHDescriptors = function(source){
+		var srcset = source.getAttribute(lazySizesConfig.srcsetAttr);
+
+		if(srcset){
+			source.setAttribute(lazySizesConfig.srcsetAttr, srcset.replace(regHDesc, ''));
+		}
+	};
 
 	if(!config){
 		config = {};
@@ -19,6 +28,17 @@
 
 	if(window.picturefill || window.respimage || config.pf){return;}
 	if(window.HTMLPictureElement && supportSrcset){
+
+		if(document.msElementsFromPoint && (edgeMatch = navigator.userAgent.match(/Edge\/(\d+)/)) && edgeMatch[1] < 15){
+			document.addEventListener('lazybeforeunveil', function(e){
+				var picture = e.target.parentNode;
+				if(picture){
+					forEach.call(picture.getElementsByTagName('source'), removeHDescriptors);
+				}
+				removeHDescriptors(e.target);
+			});
+		}
+
 		config.pf = function(){};
 		return;
 	}
@@ -70,7 +90,6 @@
 		var parseWsrcset = (function(){
 			var candidates;
 			var regWCandidates = /(([^,\s].[^\s]+)\s+(\d+)w)/g;
-			var regHDesc = /\s+\d+h/g;
 			var regMultiple = /\s/;
 			var addCandidate = function(match, candidate, url, wDescriptor){
 				candidates.push({
