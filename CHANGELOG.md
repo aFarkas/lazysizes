@@ -1,5 +1,14 @@
 #Changelog
 
+##upcoming 1.5.0
+	* lazysizes core:
+		* improved lazyloading in background tabs.
+		* fixed set lazyloaded class to early in FF.
+	* bgset/parentFit plugin:
+    	* improved avoiding layout thrashing.
+    * respimg/bgset/parentFit plugin:
+    	* fixed bug in Edge 14 to parse height descriptors correctly.
+
 ##1.4.0
 * lazysizes core:
 	* improved lazyloading in background tabs.

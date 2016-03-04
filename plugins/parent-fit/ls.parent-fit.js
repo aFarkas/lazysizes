@@ -2,6 +2,7 @@
 	'use strict';
 
 	if(!window.addEventListener){return;}
+	var oldReadCallback;
 	var regDescriptors = /\s+(\d+)(w|h)\s+(\d+)(w|h)/;
 	var regPicture = /^picture$/i;
 
@@ -54,6 +55,9 @@
 			return dims.w / dims.h;
 		},
 		calculateSize: function(element, width){
+			if(element._parentfitWidthCache){
+				return element._parentfitWidthCache;
+			}
 			var displayRatio, height, imageRatio, retWidth;
 			var fitObj = this.getFit(element);
 			var fit = fitObj.fit;
@@ -92,12 +96,29 @@
 		}
 	};
 
+	window.lazySizesConfig = window.lazySizesConfig || {};
+
+	oldReadCallback = window.lazySizesConfig.rC;
+
+	window.lazySizesConfig.rC = function(elem, width){
+		if(oldReadCallback){
+			width = oldReadCallback.apply(this, arguments) || width;
+		}
+
+		elem._parentfitWidthCache = parentFit.calculateSize(elem, width) || width;
+		return elem._parentfitWidthCache;
+	};
+
 	window.addEventListener('lazybeforeunveil', extend, true);
 
 	document.addEventListener('lazybeforesizes', function(e){
 		if(e.defaultPrevented){return;}
+		var element = e.target;
+		e.detail.width = parentFit.calculateSize(element, e.detail.width);
 
-		e.detail.width = parentFit.calculateSize(e.target, e.detail.width);
+		if(element._parentfitWidthCache){
+			delete element._parentfitWidthCache;
+		}
 	});
 	setTimeout(extend);
 })(window, document);

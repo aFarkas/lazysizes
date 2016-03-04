@@ -392,6 +392,10 @@
 			elem._lazyRace = true;
 			isLoading++;
 
+			if(lazySizesConfig.rC){
+				width = lazySizesConfig.rC(elem, width) || width;
+			}
+
 			rafBatch.add(function lazyUnveil(){
 				isStarted++;
 

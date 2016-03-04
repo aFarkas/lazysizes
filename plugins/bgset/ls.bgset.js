@@ -2,6 +2,7 @@
 	'use strict';
 	if(!window.addEventListener){return;}
 
+	var oldReadCallback;
 	var regWhite = /\s+/g;
 	var regSplitSet = /\s*\|\s+|\s+\|\s*/g;
 	var regSource = /^(.+?)(?:\s+\[\s*(.+?)\s*\])?$/;
@@ -9,23 +10,38 @@
 	var rAF = window.requestAnimationFrame || setTimeout;
 
 	var proxyWidth = function(elem){
-		var width = lazySizes.gW(elem, elem.parentNode);
+		var width = (elem._bgsetReadCache && 'width' in elem._bgsetReadCache) ?
+			elem._bgsetReadCache.width :
+			lazySizes.gW(elem, elem.parentNode)
+		;
+
 		if(!elem._lazysizesWidth || width > elem._lazysizesWidth){
 			elem._lazysizesWidth = width;
 		}
 		return elem._lazysizesWidth;
 	};
+	var getBgSize = function(elem){
+		var bgSize;
 
+		if(elem._bgsetReadCache){
+			bgSize = elem._bgsetReadCache.bgSize;
+		} else {
+			bgSize = (getComputedStyle(elem) || {getPropertyValue: function(){}}).getPropertyValue('background-size');
+
+			if(!allowedBackgroundSize[bgSize] && allowedBackgroundSize[elem.style.backgroundSize]){
+				bgSize = elem.style.backgroundSize;
+			}
+		}
+
+		return bgSize;
+	};
 	var createPicture = function(sets, elem, img){
 		var picture = document.createElement('picture');
 		var sizes = elem.getAttribute(lazySizesConfig.sizesAttr);
 		var ratio = elem.getAttribute('data-ratio');
 		var optimumx = elem.getAttribute('data-optimumx');
-		var bgSize = (getComputedStyle(elem) || {getPropertyValue: function(){}}).getPropertyValue('background-size');
+		var bgSize = getBgSize(elem);
 
-		if(!allowedBackgroundSize[bgSize] && allowedBackgroundSize[elem.style.backgroundSize]){
-			bgSize = elem.style.backgroundSize;
-		}
 		if(allowedBackgroundSize[bgSize] && (sizes == 'auto' || !sizes)){
 			img.setAttribute('data-parent-fit', bgSize);
 			sizes = 'auto';
@@ -103,6 +119,32 @@
 		}
 	};
 
+	window.lazySizesConfig = window.lazySizesConfig || {};
+
+	oldReadCallback = window.lazySizesConfig.rC;
+
+	window.lazySizesConfig.rC = function(elem, width){
+		var bgSize;
+
+		if(oldReadCallback){
+			width = oldReadCallback.apply(this, arguments) || width;
+		}
+
+		if(elem.getAttribute('data-bgset')){
+			bgSize = getBgSize(elem);
+
+			if(allowedBackgroundSize[bgSize] || elem.getAttribute(lazySizesConfig.sizesAttr)){
+				width = proxyWidth(elem);
+			}
+			elem._bgsetReadCache = {
+				bgSize: bgSize,
+				width: width,
+			};
+		}
+
+		return elem._bgsetReadCache && elem._bgsetReadCache.width || width;
+	};
+
 	addEventListener('lazybeforeunveil', function(e){
 		var set, image, elem;
 
@@ -118,6 +160,8 @@
 
 		createPicture(set, elem, image);
 
+		image._bgsetReadCache = elem._bgsetReadCache;
+
 		setTimeout(function(){
 			lazySizes.loader.unveil(image);
 
@@ -125,6 +169,14 @@
 				lazySizes.fire(image, '_lazyloaded', {}, true, true);
 				if(image.complete) {
 					proxyLoad({target: image});
+				}
+
+				if(elem._bgsetReadCache){
+					delete elem._bgsetReadCache;
+				}
+
+				if(image._bgsetReadCache){
+					delete image._bgsetReadCache;
 				}
 			});
 		});
