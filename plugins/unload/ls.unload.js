@@ -137,7 +137,5 @@
 		addEventListener('lazybeforeunveil', unloader._reload, true);
 	}
 
-	setTimeout(init);
-
 	addEventListener('lazybeforeunveil', init);
 })(window, document);
