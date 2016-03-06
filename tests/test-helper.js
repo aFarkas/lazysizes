@@ -1,6 +1,7 @@
 (function(){
 	'use strict';
 	var source = document.createElement('source');
+	var requestAnimationFrame = window.requestAnimationFrame || setTimeout;
 	window.createBeforeEach = function(params){
 		params = $.param(params || {});
 		return function(){
@@ -51,7 +52,9 @@
 	window.supportsPicture = !window.bustedSrcset && window.HTMLPictureElement && ('sizes' in source) && ('srcset' in source);
 	window.afterUnveil = (function(){
 		return function(fn, delay){
-			setTimeout(fn, delay || 9);
+			setTimeout(function(){
+				requestAnimationFrame(fn);
+			}, delay || 9);
 		};
 	})();
 })();

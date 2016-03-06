@@ -52,10 +52,10 @@ function _optimumxReinit(addClass){
 					}
 				];
 				assert.propEqual(cleanUpDensity($image.prop('_lazyOptimumx').cands), success);
-				assert.equal($image.prop('_lazyOptimumx').cSrcset.length, 2);
-				assert.equal($image.prop('_lazyOptimumx').cSrcset[0], 'data:,img2-50 50w');
-				assert.equal($image.prop('_lazyOptimumx').cSrcset[1], 'data:,img2-100 100w');
-				assert.equal($image.attr('srcset'), 'data:,img2-50 50w, data:,img2-100 100w');
+				assert.equal($image.prop('_lazyOptimumx').cSrcset.length, 2, '1');
+				assert.equal($image.prop('_lazyOptimumx').cSrcset[0], 'data:,img2-50 50w', '2');
+				assert.equal($image.prop('_lazyOptimumx').cSrcset[1], 'data:,img2-100 100w', '3');
+				assert.equal($image.attr('srcset'), 'data:,img2-50 50w, data:,img2-100 100w', '4');
 			};
 			var test = [
 				['\ndata:,img1-50000 50000w, \ndata:,img1-5000 5000w, data:,img1-500000 500000w', initTest],
@@ -68,6 +68,7 @@ function _optimumxReinit(addClass){
 						.attr('data-srcset', placeholderSrc[0])
 						.attr('data-optimumx', '0.6')
 					;
+
 
 					if(addClass){
 						$image.addClass('lazyload');
@@ -85,8 +86,6 @@ function _optimumxReinit(addClass){
 				.appendTo('body')
 			;
 
-			run();
-
 			$image.on('lazybeforeunveil', function(e){
 				unveiled++;
 			});
@@ -94,9 +93,11 @@ function _optimumxReinit(addClass){
 			$image.on('lazybeforeunveil', function(e){
 				afterUnveil(function(){
 					placeholderSrc[1]();
-					run();
+					setTimeout(run, 20);
 				});
 			});
+
+			run();
 		});
 	};
 }
@@ -508,7 +509,7 @@ $.extend(window.lazyTests, {
 			$image.on('lazybeforeunveil', function(e){
 				afterUnveil(function(){
 					placeholderSrc[1]();
-					run();
+					setTimeout(run, 17);
 				});
 			});
 

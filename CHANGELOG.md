@@ -8,6 +8,8 @@
     	* improved avoiding layout thrashing.
     * respimg/bgset/parentFit plugin:
     	* fixed bug in Edge 14 to parse height descriptors correctly.
+    * unload plugin:
+    	unload plugin was broken since version 1.4.0 (thanks to @hokamoto)
 
 ##1.4.0
 * lazysizes core:

@@ -113,8 +113,7 @@
 		}
 
 		if(!('unloadPixelThreshold' in config)){
-			config.unloadPixelThreshold = Math.min(docElem.clientWidth, docElem.clientHeight, 999) - 99;
-			config.unloadPixelThreshold *= config.unloadPixelThreshold / 2.5;
+			config.unloadPixelThreshold = 60000;
 		}
 
 		if(config.autoUnload){
