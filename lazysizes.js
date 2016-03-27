@@ -200,7 +200,6 @@
 
 		var isLoading = 0;
 		var lowRuns = 0;
-		var isStarted = 0;
 
 		var resetPreloading = function(e){
 			isLoading--;
@@ -397,7 +396,6 @@
 			}
 
 			rafBatch.add(function lazyUnveil(){
-				isStarted++;
 
 				if(!(event = triggerEvent(elem, 'lazybeforeunveil')).defaultPrevented){
 
@@ -484,13 +482,11 @@
 
 			lazySizesConfig.loadMode = 3;
 
-			if(isStarted){
-				throttledCheckElements();
+			if(document.hidden){
+				checkElements();
+				rafBatch.run();
 			} else {
-				setTimeout(function(){
-					checkElements();
-					rafBatch.run();
-				});
+				throttledCheckElements();
 			}
 
 			addEventListener('scroll', function(){
