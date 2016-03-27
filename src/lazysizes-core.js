@@ -1,10 +1,4 @@
-(function(window, factory) {
-	var lazySizes = factory(window, window.document);
-	window.lazySizes = lazySizes;
-	if(typeof module == 'object' && module.exports){
-		module.exports = lazySizes;
-	}
-}(window, function l(window, document) {
+function l(window, document) {
 	'use strict';
 	/*jshint eqnull:true */
 	if(!document.getElementsByClassName){return;}
@@ -693,4 +687,3 @@
 		gW: getWidth
 	};
 }
-));

@@ -20,20 +20,25 @@
 						dead_code: true
 					}
 				},
-
-				main: {
-					src: [ "lazysizes.js" ],
-					dest: "lazysizes.min.js"
-				},
 				plugins: {
-					files: [{
-						expand: true,
-						cwd: 'plugins/',
-						src: ['**/*.js', '!*.min.js', '!**/*.min.js'],
-						dest: 'plugins/',
-						ext: '.min.js',
-						extDot: 'last'
-					}]
+					files: [
+						{
+							expand: true,
+							cwd: 'plugins/',
+							src: ['**/*.js', '!*.min.js', '!**/*.min.js'],
+							dest: 'plugins/',
+							ext: '.min.js',
+							extDot: 'last'
+						},
+						{
+							expand: true,
+							cwd: '',
+							src: ['lazysizes*.js', '!*.min.js'],
+							dest: '',
+							ext: '.min.js',
+							extDot: 'last'
+						}
+					]
 				}
 			},
 			jshint: {
@@ -95,9 +100,18 @@
 		grunt.loadNpmTasks('grunt-plato');
 		grunt.loadNpmTasks('grunt-contrib-qunit');
 
+		grunt.registerTask('wrapcore', 'wraps lazysizes into umd and common wrapper.', function() {
+			var ls = grunt.file.read('src/lazysizes-core.js');
+			var common = grunt.file.read('src/common.wrapper');
+			var umd = grunt.file.read('src/umd.wrapper');
+
+			grunt.file.write('lazysizes.js', common.replace('{{ls}}', ls));
+			grunt.file.write('lazysizes-umd.js', umd.replace('{{ls}}', ls));
+		});
+
 
 		// Default task.
-		grunt.registerTask("default", [ "test", "uglify", "bytesize", "maxFilesize" ]);
+		grunt.registerTask("default", [ "wrapcore", "test", "uglify", "bytesize", "maxFilesize" ]);
 		grunt.registerTask("test", [ "jshint" ]);
 	};
 })();

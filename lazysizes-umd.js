@@ -3,6 +3,8 @@
 	window.lazySizes = lazySizes;
 	if(typeof module == 'object' && module.exports){
 		module.exports = lazySizes;
+	} else if (typeof define == 'function' && define.amd) {
+		define(lazySizes);
 	}
 }(window, function l(window, document) {
 	'use strict';
