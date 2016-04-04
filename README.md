@@ -363,7 +363,7 @@ window.lazySizesConfig.customMedia = {
 //<div class="lazyload" data-bg="background-image-url.jpg"></div>
 
 $(document).on('lazybeforeunveil', function(e) {
-	var bg = $(e.target).data('data-bg');
+	var bg = $(e.target).data('bg');
     if (bg) {
         $(e.target).css('background-image', 'url(' + bg + ')');
     }
