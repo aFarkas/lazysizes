@@ -1,6 +1,6 @@
 #Changelog
 
-##upcoming 1.5.0
+##1.5.0
 	Breaking change:
 		* the lazysizes.js and lazysizes.min.js files do not register as AMD modules anymore, if you need an AMD module use the new lazysizes-umd.js or lazysizes-umd.min.js file.
 	* lazysizes core:
