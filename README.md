@@ -360,18 +360,21 @@ window.lazySizesConfig.customMedia = {
 * ``lazybeforeunveil``: This event will be fired on each lazyload element right before of the "unveil" transformation. This event can be used to extend the unveil functionality. In case the event is ``defaultPrevented`` the default transformation action will be prevented (see also the [ls.unveilhooks.js plugin](plugins/unveilhooks/ls.unveilhooks.js)):
 ```js
 //add simple support for background images:
-document.addEventListener('lazybeforeunveil', function(e){
-    var bg = e.target.getAttribute('data-bg');
-    if(bg){
-        e.target.style.backgroundImage = 'url(' + bg + ')';
+//<div class="lazyload" data-bg="background-image-url.jpg"></div>
+
+$(document).on('lazybeforeunveil', function(e) {
+	var bg = $(e.target).data('data-bg');
+    if (bg) {
+        $(e.target).css('background-image', 'url(' + bg + ')');
     }
 });
+
 //or add AJAX loading
 //<div class="lazyload" data-ajax="my-url.html"></div>
 
-$(document).on('lazybeforeunveil', function(){
+$(document).on('lazybeforeunveil', function(e) {
 	var ajax = $(e.target).data('ajax');
-    if(ajax){
+    if (ajax) {
         $(e.target).load(ajax);
     }
 });
