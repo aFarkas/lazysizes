@@ -1,19 +1,51 @@
 (function(window, document, undefined){
 	/*jshint eqnull:true */
 	'use strict';
-	var polyfill, edgeMatch;
+	var polyfill;
 	var config = (window.lazySizes && lazySizes.cfg) || window.lazySizesConfig;
 	var img = document.createElement('img');
 	var supportSrcset = ('sizes' in img) && ('srcset' in img);
 	var regHDesc = /\s+\d+h/g;
 	var forEach = Array.prototype.forEach;
-	var removeHDescriptors = function(source){
-		var srcset = source.getAttribute(lazySizesConfig.srcsetAttr);
+	var fixEdgeHDescriptor = function(edgeMatch){
+		var img = document.createElement('img');
+		var removeHDescriptors = function(source){
+			var srcset = source.getAttribute(lazySizesConfig.srcsetAttr);
+			if(srcset){
+				source.setAttribute(lazySizesConfig.srcsetAttr, srcset.replace(regHDesc, ''));
+			}
+		};
+		var handler = function(e){
+			var picture = e.target.parentNode;
 
-		if(srcset){
-			source.setAttribute(lazySizesConfig.srcsetAttr, srcset.replace(regHDesc, ''));
+			if(picture && picture.nodeName == 'PICTURE'){
+				forEach.call(picture.getElementsByTagName('source'), removeHDescriptors);
+			}
+			removeHDescriptors(e.target);
+		};
+
+		var test = function(){
+			if(!!img.currentSrc){
+				document.removeEventListener('lazybeforeunveil', handler);
+			}
+		};
+
+		if(edgeMatch[1]){
+			document.addEventListener('lazybeforeunveil', handler);
+
+			if(true || edgeMatch[1] > 14){
+				img.onload = test;
+				img.onerror = test;
+
+				img.srcset = 'data:,a 1w 1h';
+
+				if(img.complete){
+					test();
+				}
+			}
 		}
 	};
+
 
 	if(!config){
 		config = {};
@@ -27,16 +59,11 @@
 	}
 
 	if(window.picturefill || window.respimage || config.pf){return;}
+
 	if(window.HTMLPictureElement && supportSrcset){
 
-		if(document.msElementsFromPoint && (edgeMatch = navigator.userAgent.match(/Edge\/(\d+)/)) && edgeMatch[1] < 15){
-			document.addEventListener('lazybeforeunveil', function(e){
-				var picture = e.target.parentNode;
-				if(picture){
-					forEach.call(picture.getElementsByTagName('source'), removeHDescriptors);
-				}
-				removeHDescriptors(e.target);
-			});
+		if(document.msElementsFromPoint){
+			fixEdgeHDescriptor(navigator.userAgent.match(/Edge\/(\d+)/));
 		}
 
 		config.pf = function(){};
