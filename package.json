@@ -1,63 +1,16 @@
 {
   "name": "lazysizes",
-  "version": "1.5.0",
-  "filename": "lazysizes.min.js",
+  "version": "0.1.0",
+  "filename": "lazysizes.js",
   "author": "Alexander Farkas <info@corrupt-system.de>",
   "repository": {
     "type": "git",
-    "url": "git://github.com/aFarkas/lazysizes.git"
+    "url": "git://github.com/bbc/lazysizes.git"
   },
   "namespace": "lazySizes",
-  "browser": "lazysizes.js",
   "devDependencies": {
     "grunt": "~0.4.2",
-    "grunt-bytesize": "~0.1.1",
     "grunt-cli": "~0.1",
-    "grunt-contrib-jshint": "~0.10.0",
-    "grunt-contrib-qunit": "^0.5.2",
-    "grunt-contrib-uglify": "^0.7.0",
-    "grunt-contrib-watch": "~0.4.0",
-    "grunt-max-filesize": "^0.1.0",
-    "grunt-plato": "^1.2.1",
-    "grunt-uncss": "~0.3.7",
-    "jquery": "^2.1.4",
-    "jquery-deparam": "^0.1.0",
-    "picturefill": "^2.2.0",
-    "qunitjs": "^1.17.0",
-    "respimage": "^1.4.2"
-  },
-  "npmName": "lazysizes",
-  "npmFileMap": [
-    {
-      "basePath": "",
-      "files": [
-        "lazysizes.min.js",
-        "plugins/**/*.min.js"
-      ]
-    }
-  ],
-  "description": "High performance (jankfree) lazy loader for images (including responsive images), iframes and scripts (widgets).",
-  "keywords": [
-    "lazy",
-    "loader",
-    "lazyloader",
-    "lazyload",
-    "lazySizes",
-    "performance",
-    "responsive",
-    "image",
-    "images",
-    "responsive images",
-    "picture",
-    "srcset",
-    "respimg",
-    "respimage",
-    "include",
-    "ajax",
-    "img",
-    "imager",
-    "imager.js",
-    "picturefill",
-    "component"
-  ]
+    "grunt-contrib-jshint": "~0.10.0"
+  }
 }
