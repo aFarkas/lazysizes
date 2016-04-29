@@ -152,7 +152,7 @@ $.extend(window.lazyTests, {
 
 
 			$div.on('lazybeforesizes', function(e){
-				setTimeout(function(){
+				afterUnveil(function(){
 					viewport[1]();
 					run();
 				});
@@ -184,7 +184,9 @@ $.extend(window.lazyTests, {
 				var haspolyfill = frameWindow.respimage || frameWindow.picturefill || (frameWindow.lazySizes.cfg.rias && frameWindow.lazySizes.pWS) || frameWindow.lazySizes.cfg.pf;
 				var nowSrc = window.HTMLPictureElement || !haspolyfill ?
 					'' : 'data:,lazysource150';
+
 				assert.equal($source.attr('srcset'), 'data:,lazysource100 100w, data:,lazysource150 150w');
+
 				if(!window.bustedSrcset || !frameWindow.lazySizes.cfg.pf){
 					assert.equal($image.attr('srcset') || $image.attr('data-risrcset') || $image.attr('data-pfsrcset'), 'data:,lazyimg100 100w, data:,lazyimg150 150w');
 				}
@@ -233,7 +235,7 @@ $.extend(window.lazyTests, {
 			assert.equal($image.attr('srcset'), null);
 
 			$image.on('lazybeforesizes', function(e){
-				setTimeout(function(){
+				afterUnveil(function(){
 					assert.equal($source.attr('src'), null);
 					assert.equal($source.attr('data-src'), null);
 					viewport[1]();
@@ -539,51 +541,6 @@ $.extend(window.lazyTests, {
 			});
 		});
 	}],
-	riasSimpleSizes: ['lazysizes rias works with simple sizes', function(assert){
-		var done = assert.async();
-
-		this.promise.always(function($){
-			var $image;
-
-			$image = $('<img data-sizes="1200px" style="width: 100%;" data-widths="[300, 500, 1200]" class="lazyload" />')
-				.attr('data-src', 'data:,image-{width}')
-				.appendTo('body')
-			;
-
-			$image.on('lazybeforeunveil', function(e){
-				afterUnveil(function(){
-					assert.equal($image.prop('currentSrc') || $image.attr('src'), 'data:,image-1200');
-					done();
-				});
-			});
-		});
-	}],
-	attrchangeRiasSimpleSizes: ['lazysizes rias works with simple sizes and attrchange', function(assert){
-		var done = assert.async();
-
-		this.promise.always(function($){
-			var $image;
-
-			$image = $('<img data-sizes="1200px" style="width: 100%;" data-widths="[300, 500, 1200]" class="lazyload" />')
-				.attr('data-src', 'data:,image-{width}')
-				.appendTo('body')
-			;
-
-			$image.one('lazybeforeunveil', function(e){
-				afterUnveil(function(){
-					assert.equal($image.prop('currentSrc') || $image.attr('src'), 'data:,image-1200');
-					$image.attr('data-src', 'data:,image2-{width}');
-
-					$image.one('lazybeforeunveil', function(e){
-						afterUnveil(function(){
-							assert.equal($image.prop('currentSrc') || $image.attr('src'), 'data:,image2-1200');
-							done();
-						});
-					});
-				});
-			});
-		});
-	}],
 	noscriptImg: ['noscript img', function(assert){
 		var done = assert.async();
 
@@ -664,7 +621,6 @@ QUnit.test.apply(QUnit, lazyTests.riasPictureResize);
 QUnit.test.apply(QUnit, lazyTests.simplePicture);
 QUnit.test.apply(QUnit, lazyTests.simpleAutoSizesPicture);
 QUnit.test.apply(QUnit, lazyTests.riasReinit);
-QUnit.test.apply(QUnit, lazyTests.riasSimpleSizes);
 QUnit.test.apply(QUnit, lazyTests.riasAutoSizes);
 
 QUnit.module( "optimumx + rias + respimage", {
@@ -682,7 +638,6 @@ QUnit.test.apply(QUnit, lazyTests.riasResize);
 QUnit.test.apply(QUnit, lazyTests.riasPictureResize);
 QUnit.test.apply(QUnit, lazyTests.simpleAutoSizesPicture);
 QUnit.test.apply(QUnit, lazyTests.riasReinit);
-QUnit.test.apply(QUnit, lazyTests.riasSimpleSizes);
 QUnit.test.apply(QUnit, lazyTests.riasAutoSizes);
 
 QUnit.module( "rias", {
@@ -696,7 +651,6 @@ QUnit.test.apply(QUnit, lazyTests.riasResize);
 QUnit.test.apply(QUnit, lazyTests.riasPictureResize);
 QUnit.test.apply(QUnit, lazyTests.simplePicture);
 QUnit.test.apply(QUnit, lazyTests.riasReinit);
-QUnit.test.apply(QUnit, lazyTests.riasSimpleSizes);
 QUnit.test.apply(QUnit, lazyTests.riasAutoSizes);
 
 QUnit.module( "rias + respimage", {
@@ -712,7 +666,6 @@ QUnit.module( "rias + respimage", {
 QUnit.test.apply(QUnit, lazyTests.riasResize);
 QUnit.test.apply(QUnit, lazyTests.riasPictureResize);
 QUnit.test.apply(QUnit, lazyTests.riasReinit);
-QUnit.test.apply(QUnit, lazyTests.riasSimpleSizes);
 QUnit.test.apply(QUnit, lazyTests.riasAutoSizes);
 
 QUnit.module( "mini respimg polyfill", {
@@ -747,7 +700,6 @@ QUnit.test.apply(QUnit, lazyTests.riasResize);
 QUnit.test.apply(QUnit, lazyTests.riasPictureResize);
 QUnit.test.apply(QUnit, lazyTests.simpleAutoSizesPicture);
 QUnit.test.apply(QUnit, lazyTests.riasReinit);
-QUnit.test.apply(QUnit, lazyTests.attrchangeRiasSimpleSizes);
 
 QUnit.module( "attrchange + optimumx mix", {
 	beforeEach: createBeforeEach(

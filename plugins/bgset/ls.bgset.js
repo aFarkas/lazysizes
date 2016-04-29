@@ -2,18 +2,12 @@
 	'use strict';
 	if(!window.addEventListener){return;}
 
-	var oldReadCallback;
 	var regWhite = /\s+/g;
 	var regSplitSet = /\s*\|\s+|\s+\|\s*/g;
 	var regSource = /^(.+?)(?:\s+\[\s*(.+?)\s*\])?$/;
 	var allowedBackgroundSize = {contain: 1, cover: 1};
-	var rAF = window.requestAnimationFrame || setTimeout;
-
 	var proxyWidth = function(elem){
-		var width = (elem._bgsetReadCache && 'width' in elem._bgsetReadCache) ?
-			elem._bgsetReadCache.width :
-			lazySizes.gW(elem, elem.parentNode)
-		;
+		var width = lazySizes.gW(elem, elem.parentNode);
 
 		if(!elem._lazysizesWidth || width > elem._lazysizesWidth){
 			elem._lazysizesWidth = width;
@@ -23,14 +17,10 @@
 	var getBgSize = function(elem){
 		var bgSize;
 
-		if(elem._bgsetReadCache){
-			bgSize = elem._bgsetReadCache.bgSize;
-		} else {
-			bgSize = (getComputedStyle(elem) || {getPropertyValue: function(){}}).getPropertyValue('background-size');
+		bgSize = (getComputedStyle(elem) || {getPropertyValue: function(){}}).getPropertyValue('background-size');
 
-			if(!allowedBackgroundSize[bgSize] && allowedBackgroundSize[elem.style.backgroundSize]){
-				bgSize = elem.style.backgroundSize;
-			}
+		if(!allowedBackgroundSize[bgSize] && allowedBackgroundSize[elem.style.backgroundSize]){
+			bgSize = elem.style.backgroundSize;
 		}
 
 		return bgSize;
@@ -40,12 +30,6 @@
 		var sizes = elem.getAttribute(lazySizesConfig.sizesAttr);
 		var ratio = elem.getAttribute('data-ratio');
 		var optimumx = elem.getAttribute('data-optimumx');
-		var bgSize = getBgSize(elem);
-
-		if(allowedBackgroundSize[bgSize] && (sizes == 'auto' || !sizes)){
-			img.setAttribute('data-parent-fit', bgSize);
-			sizes = 'auto';
-		}
 
 		if(elem._lazybgset && elem._lazybgset.parentNode == elem){
 			elem.removeChild(elem._lazybgset);
@@ -119,32 +103,6 @@
 		}
 	};
 
-	window.lazySizesConfig = window.lazySizesConfig || {};
-
-	oldReadCallback = window.lazySizesConfig.rC;
-
-	window.lazySizesConfig.rC = function(elem, width){
-		var bgSize;
-
-		if(oldReadCallback){
-			width = oldReadCallback.apply(this, arguments) || width;
-		}
-
-		if(elem.getAttribute('data-bgset')){
-			bgSize = getBgSize(elem);
-
-			if(allowedBackgroundSize[bgSize] || elem.getAttribute(lazySizesConfig.sizesAttr)){
-				width = proxyWidth(elem);
-			}
-			elem._bgsetReadCache = {
-				bgSize: bgSize,
-				width: width,
-			};
-		}
-
-		return elem._bgsetReadCache && elem._bgsetReadCache.width || width;
-	};
-
 	addEventListener('lazybeforeunveil', function(e){
 		var set, image, elem;
 
@@ -160,23 +118,13 @@
 
 		createPicture(set, elem, image);
 
-		image._bgsetReadCache = elem._bgsetReadCache;
-
 		setTimeout(function(){
 			lazySizes.loader.unveil(image);
 
-			rAF(function(){
+			lazySizes.rAF(function(){
 				lazySizes.fire(image, '_lazyloaded', {}, true, true);
 				if(image.complete) {
 					proxyLoad({target: image});
-				}
-
-				if(elem._bgsetReadCache){
-					delete elem._bgsetReadCache;
-				}
-
-				if(image._bgsetReadCache){
-					delete image._bgsetReadCache;
 				}
 			});
 		});
@@ -184,6 +132,24 @@
 	});
 
 	document.addEventListener('load', proxyLoad, true);
+
+	window.addEventListener('lazybeforesizes', function(e){
+		if(e.target._lazybgset && e.detail.dataAttr){
+			var elem = e.target._lazybgset;
+			var bgSize = getBgSize(elem);
+
+			if(allowedBackgroundSize[bgSize]){
+				e.target._lazysizesParentFit = bgSize;
+
+				lazySizes.rAF(function(){
+					e.target.setAttribute('data-parent-fit', bgSize);
+					if(e.target._lazysizesParentFit){
+						delete e.target._lazysizesParentFit;
+					}
+				});
+			}
+		}
+	}, true);
 
 	document.documentElement.addEventListener('lazybeforesizes', function(e){
 		if(e.defaultPrevented || !e.target._lazybgset){return;}

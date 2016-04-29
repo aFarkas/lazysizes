@@ -208,24 +208,28 @@
 	addEventListener('lazybeforesizes', function(e){
 		var optimumx, lazyData, width, attr;
 
+		var elem = e.target;
+		var detail = e.detail;
+		var dataAttr = detail.dataAttr;
+
 		if(e.defaultPrevented ||
-			!(optimumx = getOptimumX(e.target)) ||
+			!(optimumx = getOptimumX(elem)) ||
 			optimumx >= devicePixelRatio){return;}
 
-		lazyData = parseImg(e.target, '_lazyOptimumx');
+		if(dataAttr && elem._lazyOptimumx && !detail.reloaded && (!config.unloadedClass || !lazySizes.hC(elem, config.unloadedClass))){
+			elem._lazyOptimumx = null;
+		}
 
-		width = e.detail.width * optimumx;
+		lazyData = parseImg(elem, '_lazyOptimumx');
+
+		width = detail.width * optimumx;
 
 		if(width && (lazyData.width || 0) < width){
-			attr = e.detail.dataAttr ? lazySizes.cfg.srcsetAttr : 'srcset';
+			attr = dataAttr ? lazySizes.cfg.srcsetAttr : 'srcset';
 
-			constrainSets(e.target, width, attr, '_lazyOptimumx');
-		}
-	});
-
-	addEventListener('lazybeforeunveil', function(e){
-		if(e.target._lazyOptimumx && !e.detail.reloaded){
-			e.target._lazyOptimumx = null;
+			lazySizes.rAF(function(){
+				constrainSets(elem, width, attr, '_lazyOptimumx');
+			});
 		}
 	});
 

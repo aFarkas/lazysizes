@@ -5,46 +5,63 @@
 	var config = (window.lazySizes && lazySizes.cfg) || window.lazySizesConfig;
 	var img = document.createElement('img');
 	var supportSrcset = ('sizes' in img) && ('srcset' in img);
-	var regHDesc = /\s+\d+h/g;
-	var forEach = Array.prototype.forEach;
-	var fixEdgeHDescriptor = function(edgeMatch){
-		var img = document.createElement('img');
-		var removeHDescriptors = function(source){
-			var srcset = source.getAttribute(lazySizesConfig.srcsetAttr);
-			if(srcset){
-				source.setAttribute(lazySizesConfig.srcsetAttr, srcset.replace(regHDesc, ''));
-			}
-		};
-		var handler = function(e){
-			var picture = e.target.parentNode;
 
-			if(picture && picture.nodeName == 'PICTURE'){
-				forEach.call(picture.getElementsByTagName('source'), removeHDescriptors);
-			}
-			removeHDescriptors(e.target);
-		};
+	var fixEdgeHDescriptor = (function(){
+		var regHDesc = /\s+\d+h/g;
+		var regDescriptors = /\s+(\d+)(w|h)\s+(\d+)(w|h)/;
+		var forEach = Array.prototype.forEach;
 
-		var test = function(){
-			if(!!img.currentSrc){
-				document.removeEventListener('lazybeforeunveil', handler);
-			}
-		};
+		return function(edgeMatch){
+			var img = document.createElement('img');
+			var removeHDescriptors = function(source){
+				var ratio;
+				var srcset = source.getAttribute(lazySizesConfig.srcsetAttr);
+				if(srcset){
+					if(srcset.match(regDescriptors)){
+						if(RegExp.$2 == 'w'){
+							ratio = RegExp.$1 / RegExp.$3;
+						} else {
+							ratio = RegExp.$3 / RegExp.$1;
+						}
 
-		if(edgeMatch[1]){
-			document.addEventListener('lazybeforeunveil', handler);
+						if(ratio){
+							source.setAttribute('data-aspectratio', ratio);
+						}
+					}
+					source.setAttribute(lazySizesConfig.srcsetAttr, srcset.replace(regHDesc, ''));
+				}
+			};
+			var handler = function(e){
+				var picture = e.target.parentNode;
 
-			if(true || edgeMatch[1] > 14){
-				img.onload = test;
-				img.onerror = test;
+				if(picture && picture.nodeName == 'PICTURE'){
+					forEach.call(picture.getElementsByTagName('source'), removeHDescriptors);
+				}
+				removeHDescriptors(e.target);
+			};
 
-				img.srcset = 'data:,a 1w 1h';
+			var test = function(){
+				if(!!img.currentSrc){
+					document.removeEventListener('lazybeforeunveil', handler);
+				}
+			};
 
-				if(img.complete){
-					test();
+			if(edgeMatch[1]){
+				document.addEventListener('lazybeforeunveil', handler);
+
+				if(true || edgeMatch[1] > 14){
+					img.onload = test;
+					img.onerror = test;
+
+					img.srcset = 'data:,a 1w 1h';
+
+					if(img.complete){
+						test();
+					}
 				}
 			}
-		}
-	};
+		};
+	})();
 
 
 	if(!config){

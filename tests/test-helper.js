@@ -53,7 +53,9 @@
 	window.afterUnveil = (function(){
 		return function(fn, delay){
 			setTimeout(function(){
-				requestAnimationFrame(fn);
+				requestAnimationFrame(function(){
+					setTimeout(fn,0);
+				});
 			}, delay || 9);
 		};
 	})();

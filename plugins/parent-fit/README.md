@@ -47,3 +47,21 @@ To do so include this plugin, combine your width descriptors with height descrip
 In case the *width* keyword is used, lazySizes simply takes the width of the parent container instead of the ``img`` element itself. In this case a **h** descriptor isn't necessary.
 
 Note: This plugin should be also added, if you use the [bgset plugin](../bgset/) in combination with ``data-sizes="auto"`` and ``background-size: cover|contain``.
+
+###[data-parent-object="html|.my-image-container"]
+Normally the next closest parent that is not the `picture` element is used as the parent (i.e.: `:not(picture)`). This can be changed using the `data-parent-object` option. It takes any kind of simple selectors. If you want to use the viewport as the parent simply add `html`
+
+###Controlling `data-parent-fit` and `data-parent-object` with CSS
+These option can also be set via CSS by abusing either the `content` or the `font-family` property.
+
+The `data-parent-fit` option is called here `object-fit` and `data-parent-fit` is called `object-parent`:
+
+```css
+.my-image {
+	/* option 1:*/
+	content: "object-parent: html, object-fit: contain";
+
+
+	/* option 2:*/
+	font-family: inherit, object-parent: html, object-fit: contain;
+}

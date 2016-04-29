@@ -167,7 +167,7 @@ window.lazyTests = {
 					setTimeout(function(){
 						assert.equal(respimgCalls, repimgExpectedCalls);
 						done();
-					}, 90);
+					}, 99);
 				}
 			};
 			run();
@@ -184,8 +184,10 @@ window.lazyTests = {
 
 			$topImage.on('lazybeforesizes', function(e){
 				afterUnveil(function(){
-					assert.equal($topImage.attr('sizes'), viewport[1]+'px');
-					run();
+					setTimeout(function(){
+						assert.equal($topImage.attr('sizes'), viewport[1]+'px');
+						run();
+					}, 99);
 				});
 			});
 		});
@@ -207,7 +209,7 @@ window.lazyTests = {
 			$topImage.parent().appendTo('body');
 		});
 	}],
-	simplePicture: ['lazyloads srcset on picture', function(assert){
+	simplePicture: ['lazyloads srcset on picture (simplePicture)', function(assert){
 		var done = assert.async();
 
 		this.promise.always(function($, frameWindow){
@@ -240,7 +242,7 @@ window.lazyTests = {
 			});
 		});
 	}],
-	simpleAutoSizesPicture: ['lazyloads srcset on picture', function(assert){
+	simpleAutoSizesPicture: ['lazyloads srcset on picture (simpleAutoSizesPicture)', function(assert){
 		var done = assert.async();
 
 		this.promise.always(function($, frameWindow){
@@ -268,6 +270,7 @@ window.lazyTests = {
 					var haspolyfill = frameWindow.respimage || frameWindow.picturefill || (frameWindow.lazySizes.cfg.rias && frameWindow.lazySizes.pWS) || frameWindow.lazySizes.cfg.pf;
 
 					assert.equal($source.attr('srcset'), 'data:,lazysource 200w');
+					console.log($source.attr('sizes'))
 					assert.equal($source.attr('sizes'), $image.attr('sizes'));
 					assert.equal($image.attr('srcset') || $image.attr('data-risrcset') || $image.attr('data-pfsrcset'), 'data:,lazyimg 200w');
 					assert.equal($image.prop('src'), window.HTMLPictureElement || !haspolyfill ?  '' : 'data:,lazysource');
@@ -309,7 +312,7 @@ window.lazyTests = {
 			});
 		});
 	}],
-	simpleSrcsetSrc: ['lazyloads srcset or src', function(assert){
+	simpleSrcsetSrc: ['lazyloads srcset or src (simpleSrcsetSrc)', function(assert){
 		var done = assert.async();
 
 		this.promise.always(function($, frameWindow){
@@ -347,7 +350,7 @@ window.lazyTests = {
 			});
 		});
 	}],
-	extendedSrcsetSrc: ['lazyloads srcset or src', function(assert){
+	extendedSrcsetSrc: ['lazyloads srcset or src (extendedSrcsetSrc)', function(assert){
 		var done = assert.async();
 
 		this.promise.always(function($, frameWindow){
