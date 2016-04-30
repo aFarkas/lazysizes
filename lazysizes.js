@@ -97,6 +97,7 @@
 
 		return width;
 	};
+
 	var rAF = (function(){
 		var running, waiting;
 		var fns = [];
@@ -125,6 +126,7 @@
 			}
 		};
 	})();
+
 	var rAFIt = function(fn, simple){
 		return simple ?
 			function() {
@@ -139,6 +141,7 @@
 			}
 		;
 	};
+
 	var throttle = function(fn){
 		var running;
 		var lastTime = 0;
@@ -187,7 +190,8 @@
 			}
 		};
 	};
-	//http://modernjavascript.blogspot.de/2013/08/building-better-debounce.html
+
+	//based on http://modernjavascript.blogspot.de/2013/08/building-better-debounce.html
 	var debounce = function(func) {
 		var timeout, timestamp;
 		var wait = 99;

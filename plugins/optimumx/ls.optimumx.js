@@ -163,6 +163,11 @@
 
 	var getOptimumX = function(element){
 		var optimumx = element.getAttribute('data-optimumx') || element.getAttribute('data-maxdpr');
+
+		if(!optimumx && config.constrainPixelDensity){
+			optimumx = 'auto';
+		}
+
 		if(optimumx){
 			if(optimumx == 'auto'){
 				optimumx = config.getOptimumX(element);
