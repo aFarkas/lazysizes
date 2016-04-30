@@ -27,6 +27,8 @@
 
 	var requestAnimationFrame = window.requestAnimationFrame || setTimeout;
 
+	var requestIdleCallback = window.requestIdleCallback;
+
 	var regPicture = /^picture$/i;
 
 	var loadEvents = ['load', 'error', 'lazyincluded', '_lazyloaded'];
@@ -142,7 +144,6 @@
 	var throttle = function(fn){
 		var running;
 		var lastTime = 0;
-		var requestIdleCallback = window.requestIdleCallback;
 		var gDelay = 99;
 		var RIC_DEFAULT_TIMEOUT = 999;
 		var rICTimeout = RIC_DEFAULT_TIMEOUT;
@@ -192,14 +193,17 @@
 	var debounce = function(func) {
 		var timeout, timestamp;
 		var wait = 99;
+		var run = function(){
+			timeout = null;
+			func();
+		};
 		var later = function() {
 			var last = Date.now() - timestamp;
 
 			if (last < wait) {
 				setTimeout(later, wait - last);
 			} else {
-				timeout = null;
-				func();
+				(requestIdleCallback || run)(run);
 			}
 		};
 
@@ -378,7 +382,7 @@
 			}
 		};
 
-		var lazyUnveil = rAFIt(function (elem, width, isAuto, sizes, isImg){
+		var lazyUnveil = rAFIt(function (elem, isAuto, sizes, isImg){
 			var src, srcset, parent, isPicture, event, firesLoad;
 
 			if(!(event = triggerEvent(elem, 'lazybeforeunveil')).defaultPrevented){
@@ -467,7 +471,7 @@
 			elem._lazyRace = true;
 			isLoading++;
 
-			lazyUnveil(elem, width, isAuto, sizes, isImg);
+			lazyUnveil(elem, isAuto, sizes, isImg);
 		};
 
 		var onload = function(){
