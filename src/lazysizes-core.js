@@ -6,7 +6,9 @@ function l(window, document) {
 	var lazySizesConfig;
 
 	var docElem = document.documentElement;
+
 	var Date = window.Date;
+
 	var supportPicture = window.HTMLPictureElement;
 
 	var _addEventListener = 'addEventListener';
@@ -91,6 +93,7 @@ function l(window, document) {
 
 		return width;
 	};
+
 	var rAF = (function(){
 		var running, waiting;
 		var fns = [];
@@ -119,6 +122,7 @@ function l(window, document) {
 			}
 		};
 	})();
+
 	var rAFIt = function(fn, simple){
 		return simple ?
 			function() {
@@ -133,6 +137,7 @@ function l(window, document) {
 			}
 		;
 	};
+
 	var throttle = function(fn){
 		var running;
 		var lastTime = 0;
@@ -181,6 +186,7 @@ function l(window, document) {
 			}
 		};
 	};
+
 	//based on http://modernjavascript.blogspot.de/2013/08/building-better-debounce.html
 	var debounce = function(func) {
 		var timeout, timestamp;
