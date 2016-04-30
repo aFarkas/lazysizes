@@ -12,7 +12,9 @@
 	var lazySizesConfig;
 
 	var docElem = document.documentElement;
+
 	var Date = window.Date;
+
 	var supportPicture = window.HTMLPictureElement;
 
 	var _addEventListener = 'addEventListener';
