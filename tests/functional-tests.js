@@ -165,29 +165,34 @@ window.lazyTests = {
 					$iframe.css('width', viewport[0]);
 				} else {
 					setTimeout(function(){
+						$topImage.off('lazybeforesizes.test');
 						assert.equal(respimgCalls, repimgExpectedCalls);
 						done();
 					}, 99);
 				}
 			};
-			run();
 
 			frameWindow.picturefill = function(){
 				respimgCalls++;
 			};
 
-			$topImage = $('<div style="width: 100%;">' +
-			'<img data-sizes="auto" style="width: 50%;" class="lazyload" />' +
-			'</div>')
-				.appendTo('body')
-				.find('img');
+			run();
 
-			$topImage.on('lazybeforesizes', function(e){
-				afterUnveil(function(){
-					setTimeout(function(){
-						assert.equal($topImage.attr('sizes'), viewport[1]+'px');
-						run();
-					}, 99);
+			afterUnveil(function(){
+				$topImage = $('<div style="width: 100%;">' +
+				'<img data-sizes="auto" style="width: 50%;" class="lazyload" />' +
+				'</div>')
+					.appendTo('body')
+					.find('img');
+
+				$topImage.on('lazybeforesizes.test', function(e){
+					console.log('viewport width: '+ $topImage.width())
+					afterUnveil(function(){
+						setTimeout(function(){
+							assert.equal($topImage.attr('sizes'), viewport[1]+'px');
+							run();
+						}, 99);
+					});
 				});
 			});
 		});

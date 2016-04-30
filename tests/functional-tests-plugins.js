@@ -126,7 +126,6 @@ $.extend(window.lazyTests, {
 				.appendTo('body')
 			;
 			var initialTest = function(){
-
 				assert.equal($('source').eq(0).attr('sizes'), '200px');
 			};
 
@@ -135,7 +134,6 @@ $.extend(window.lazyTests, {
 			};
 			var viewportTests = [
 				['300', initialTest],
-				['200', initialTest],
 				['500', endTest]
 			];
 
@@ -148,8 +146,6 @@ $.extend(window.lazyTests, {
 				}
 			};
 			run();
-
-
 
 			$div.on('lazybeforesizes', function(e){
 				afterUnveil(function(){
@@ -184,8 +180,6 @@ $.extend(window.lazyTests, {
 				var haspolyfill = frameWindow.respimage || frameWindow.picturefill || (frameWindow.lazySizes.cfg.rias && frameWindow.lazySizes.pWS) || frameWindow.lazySizes.cfg.pf;
 				var nowSrc = window.HTMLPictureElement || !haspolyfill ?
 					'' : 'data:,lazysource150';
-
-				console.log(frameWindow.picturefill)
 
 				assert.equal($source.attr('srcset'), 'data:,lazysource100 100w, data:,lazysource150 150w');
 
@@ -405,8 +399,8 @@ $.extend(window.lazyTests, {
 			var viewportTests = [
 				['300', initTest],
 				['400', initTest],
-				['1300', largerTest],
-				['920', largerTest],
+				['1500', largerTest],
+				['1220', largerTest],
 				['450', initTest]
 			];
 			var run = function(){
