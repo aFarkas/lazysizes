@@ -3,15 +3,37 @@
 
 	if(!window.addEventListener){return;}
 	var regDescriptors = /\s+(\d+)(w|h)\s+(\d+)(w|h)/;
-	var regCssFit = /object-fit["']*\s*:\s*["']*(contain|cover|width)/;
-	var regCssObject = /object-parent["']*\s*:\s*["']*(.+?)(?=(\s|$|\+|\)|\(|\[|]|>|<|~|\{|}|,|'|"))/;
+	var regCssFit = /parent-fit["']*\s*:\s*["']*(contain|cover|width)/;
+	var regCssObject = /parent-container["']*\s*:\s*["']*(.+?)(?=(\s|$|,|'|"|;))/;
 	var regPicture = /^picture$/i;
 	var getCSS = function (elem){
 		return (getComputedStyle(elem, null) || {});
 	};
 	var parentFit = {
+		getParent: function(element, parentSel){
+			var parent;
+			var parentNode = element.parentNode;
+
+			if(parentSel != 'self'){
+				if(parentSel && (parentNode.closest || window.jQuery)){
+					parent = (parentNode.closest ?
+							parentNode.closest(parentSel) :
+							jQuery(parentNode).closest(parentSel)[0]) ||
+						parentNode
+					;
+				} else {
+					parent = parentNode;
+				}
+			}
+
+			if(parent && regPicture.test(parent.nodeName || '')){
+				parent = parent.parentNode;
+			}
+
+			return parent;
+		},
 		getFit: function(element){
-			var tmpMatch, parentObj, parentNode;
+			var tmpMatch, parentObj;
 			var css = getCSS(element);
 			var content = css.content || css.fontFamily;
 			var obj = {
@@ -23,28 +45,15 @@
 			}
 
 			if(obj.fit){
-				parentNode = element.parentNode;
-				parentObj = element.getAttribute('data-parent-object');
+				parentObj = element._lazysizesParentContainer || element.getAttribute('data-parent-container');
 
 				if(!parentObj && content && (tmpMatch = content.match(regCssObject))){
 					parentObj = tmpMatch[1];
 				}
 
-				if(parentObj != 'self'){
-					if(parentObj && (parentNode.closest || window.jQuery)){
-						obj.parent = (parentNode.closest ?
-								parentNode.closest(parentObj) :
-							jQuery(parentNode).closest(parentObj)[0]) ||
-							parentNode
-						;
-					} else {
-						obj.parent = parentNode;
-					}
-				}
+				obj.parent = parentFit.getParent(element, parentObj);
 
-				if(obj.parent && regPicture.test(obj.parent.nodeName || '')){
-					obj.parent = obj.parent.parentNode;
-				}
+
 			} else {
 				obj.fit = css.objectFit;
 			}
@@ -117,11 +126,11 @@
 			if(!lazySizes.parentFit){
 				lazySizes.parentFit = parentFit;
 			}
-			window.removeEventListener('lazybeforeunveil', extend, true);
+			window.removeEventListener('lazybeforesizes', extend, true);
 		}
 	};
 
-	window.addEventListener('lazybeforeunveil', extend, true);
+	window.addEventListener('lazybeforesizes', extend, true);
 
 	document.addEventListener('lazybeforesizes', function(e){
 		if(e.defaultPrevented){return;}

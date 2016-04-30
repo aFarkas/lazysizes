@@ -46,27 +46,27 @@ To do so include this plugin, combine your width descriptors with height descrip
 
 In case the *width* keyword is used, lazySizes simply takes the width of the parent container instead of the ``img`` element itself. In this case a **h** descriptor isn't necessary.
 
-###[data-parent-object="html|.my-image-container"]
-Normally the next closest parent that is not a `picture` element is used as the parent (i.e.: `:not(picture)`). This can be changed using the `data-parent-object` option. It takes any simple selector. If you want to use the viewport as the parent simply add `html`.
+###[data-parent-container="html|.my-image-container"]
+Normally the next closest parent that is not a `picture` element is used as the parent (i.e.: `:not(picture)`). This can be changed using the `data-parent-container` option. It takes any simple selector. If you want to use the viewport as the parent simply add `html`.
 
-As a special keyword the value `self` can be used to signalize, that image itself should taken.
+As a special keyword the value `self` can be used to signalize, that image itself should be taken.
 
-###Controlling `data-parent-fit` and `data-parent-object` with CSS
+###Controlling `data-parent-fit` and `data-parent-container` with CSS
 These option can also be set via CSS by abusing either the `content` or the `font-family` property.
 
-The `data-parent-fit` option is called here `object-fit` and `data-parent-fit` is called `object-parent`:
+The `data-parent-fit` option is called here `parent-fit` and `data-parent-container` is called `parent-container`:
 
 ```css
 img.my-image {
 	/* option 1: (Note: we don't use pseudo)*/
 	/* set object-fit/data-parant-fit value: */
-	content: "object-fit: cover";
-	/* set both data-parent-object and data-parant-fit property: */
-	content: "object-parent: html, object-fit: contain";
+	content: "parent-fit: cover";
+	/* set both data-parent-container and data-parant-fit property: */
+	content: "parent-container: html; parent-fit: contain";
 
 
 	/* option 2:*/
-	font-family: inherit, object-parent: html, object-fit: contain;
+	font-family: inherit, parent-container: html; parent-fit: contain;
 }
 
 **Note: This plugin should be also added, if you use the [bgset plugin](../bgset/) in combination with ``data-sizes="auto"`` and ``background-size: cover|contain``.**
