@@ -49,7 +49,7 @@
 
 	window.isTrident = /rident/.test(navigator.userAgent);
 	window.bustedSrcset = (('srcset' in document.createElement('img')) && !('sizes' in document.createElement('img')));
-	window.supportsPicture = !window.bustedSrcset && window.HTMLPictureElement && ('sizes' in source) && ('srcset' in source);
+	window.supportsPicture = !window.bustedSrcset && window.HTMLPictureElement;
 	window.afterUnveil = (function(){
 		return function(fn, delay){
 			setTimeout(function(){
