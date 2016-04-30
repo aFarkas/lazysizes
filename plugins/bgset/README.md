@@ -2,7 +2,7 @@
 
 This simple and small plugin allows you to define multiple background images with a width descriptor, similar to how ``img[srcset]`` works as also art directed images using media queries, similar to how ``picture`` works.
 
-The extension will then load the best image size for the current viewport and device. In case the browser does not support responsive images natively either picturefill, respimage or the [respimg polyfill plugin](../respimg) has to be used:
+The extension will then load the best image size for the current viewport and device. In case the browser does not support responsive images natively either picturefill or the [respimg polyfill plugin](../respimg) has to be used:
 
 ```html
 <script>
@@ -51,4 +51,4 @@ Of course also resolution switching and art direction can be combined:
 
 Here you find a [small bgset demo](http://jsfiddle.net/trixta/bfqqnosp/embedded/result/).
 
-Note: In case you use this plugin with ``background-size: cover|contain`` and the ``data-sizes="auto"`` feature, we recommend to also use the [parent-fit extension](../parent-fit/) to calculate the right ``sizes`` attribute for you. See also the following [demo](http://jsfiddle.net/trixta/w96o9xm5/).
+**Note: In case you use this plugin with ``background-size: cover|contain`` and the ``data-sizes="auto"`` feature, we recommend to also use the [parent-fit extension](../parent-fit/) to calculate the right ``sizes`` attribute for you. See also the following [demo](http://jsfiddle.net/trixta/w96o9xm5/).**

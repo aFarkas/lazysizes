@@ -30,14 +30,16 @@
 					parentObj = tmpMatch[1];
 				}
 
-				if(parentObj && (parentNode.closest || window.jQuery)){
-					obj.parent = (parentNode.closest ?
-							parentNode.closest(parentObj) :
-						jQuery(parentNode).closest(parentObj)[0]) ||
-						parentNode
-					;
-				} else {
-					obj.parent = parentNode;
+				if(parentObj != 'self'){
+					if(parentObj && (parentNode.closest || window.jQuery)){
+						obj.parent = (parentNode.closest ?
+								parentNode.closest(parentObj) :
+							jQuery(parentNode).closest(parentObj)[0]) ||
+							parentNode
+						;
+					} else {
+						obj.parent = parentNode;
+					}
 				}
 
 				if(obj.parent && regPicture.test(obj.parent.nodeName || '')){

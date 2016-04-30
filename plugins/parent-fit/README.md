@@ -4,7 +4,7 @@ The parent fit plugin extends the ``data-sizes="auto"`` feature to also calculat
 
 ##Usage
 
-For this to work properly the physical aspect-ratio of the image candidates need to be calculable. To do so at least one of the image candidates inside the ``srcset`` attribute also need to include a **h** (height) descriptor.
+For this to work properly the physical aspect-ratio of the image candidates need to be calculable. To do so at least one of the image candidates inside the ``srcset`` attribute also need to include a **h** (height) descriptor for at least one image candidate in each `srcset`.
 
 ###object-fit: contain|cover usage
 
@@ -12,15 +12,15 @@ Simply include this plugin, combine your width descriptors with height descripto
 
 ```html
 <img data-srcset="http://lorempixel.com/400/800/people/6/ 400w 800h,
-	http://lorempixel.com/300/600/people/6/ 300w 600h,
-	http://lorempixel.com/200/400/people/6/ 200w 400h"
+	http://lorempixel.com/300/600/people/6/ 300w,
+	http://lorempixel.com/200/400/people/6/ 200w"
 	 data-sizes="auto"
 	 class="lazyload"
 	 style="width: 400px; height: 400px; object-fit: contain;" />
 
 <img data-srcset="http://lorempixel.com/800/400/people/9/ 800w 400h,
-	http://lorempixel.com/600/300/people/9/ 600w 300h,
-	http://lorempixel.com/400/200/people/9/ 400w 200h"
+	http://lorempixel.com/600/300/people/9/ 600w,
+	http://lorempixel.com/400/200/people/9/ 400w"
 	 data-sizes="auto"
 	 class="lazyload"
 	 style="width: 400px; height: 400px; object-fit: cover;" />
@@ -35,8 +35,8 @@ To do so include this plugin, combine your width descriptors with height descrip
 ```html
 <div style="width: 400px; height: 400px; display: flex; align-items: center; justify-content: center;">
 	<img data-srcset="http://lorempixel.com/400/800/people/6/ 400w 800h,
-		http://lorempixel.com/300/600/people/6/ 300w 600h,
-		http://lorempixel.com/200/400/people/6/ 200w 400h"
+		http://lorempixel.com/300/600/people/6/ 300w,
+		http://lorempixel.com/200/400/people/6/ 200w"
 		 data-sizes="auto"
 		 class="lazyload"
 		 data-parent-fit="contain"
@@ -46,10 +46,10 @@ To do so include this plugin, combine your width descriptors with height descrip
 
 In case the *width* keyword is used, lazySizes simply takes the width of the parent container instead of the ``img`` element itself. In this case a **h** descriptor isn't necessary.
 
-Note: This plugin should be also added, if you use the [bgset plugin](../bgset/) in combination with ``data-sizes="auto"`` and ``background-size: cover|contain``.
-
 ###[data-parent-object="html|.my-image-container"]
-Normally the next closest parent that is not the `picture` element is used as the parent (i.e.: `:not(picture)`). This can be changed using the `data-parent-object` option. It takes any kind of simple selectors. If you want to use the viewport as the parent simply add `html`
+Normally the next closest parent that is not a `picture` element is used as the parent (i.e.: `:not(picture)`). This can be changed using the `data-parent-object` option. It takes any simple selector. If you want to use the viewport as the parent simply add `html`.
+
+As a special keyword the value `self` can be used to signalize, that image itself should taken.
 
 ###Controlling `data-parent-fit` and `data-parent-object` with CSS
 These option can also be set via CSS by abusing either the `content` or the `font-family` property.
@@ -57,11 +57,16 @@ These option can also be set via CSS by abusing either the `content` or the `fon
 The `data-parent-fit` option is called here `object-fit` and `data-parent-fit` is called `object-parent`:
 
 ```css
-.my-image {
-	/* option 1:*/
+img.my-image {
+	/* option 1: (Note: we don't use pseudo)*/
+	/* set object-fit/data-parant-fit value: */
+	content: "object-fit: cover";
+	/* set both data-parent-object and data-parant-fit property: */
 	content: "object-parent: html, object-fit: contain";
 
 
 	/* option 2:*/
 	font-family: inherit, object-parent: html, object-fit: contain;
 }
+
+**Note: This plugin should be also added, if you use the [bgset plugin](../bgset/) in combination with ``data-sizes="auto"`` and ``background-size: cover|contain``.**
