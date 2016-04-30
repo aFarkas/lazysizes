@@ -270,7 +270,6 @@ window.lazyTests = {
 					var haspolyfill = frameWindow.respimage || frameWindow.picturefill || (frameWindow.lazySizes.cfg.rias && frameWindow.lazySizes.pWS) || frameWindow.lazySizes.cfg.pf;
 
 					assert.equal($source.attr('srcset'), 'data:,lazysource 200w');
-					console.log($source.attr('sizes'))
 					assert.equal($source.attr('sizes'), $image.attr('sizes'));
 					assert.equal($image.attr('srcset') || $image.attr('data-risrcset') || $image.attr('data-pfsrcset'), 'data:,lazyimg 200w');
 					assert.equal($image.prop('src'), window.HTMLPictureElement || !haspolyfill ?  '' : 'data:,lazysource');

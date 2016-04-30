@@ -5,9 +5,8 @@
 	var config = (window.lazySizes && lazySizes.cfg) || window.lazySizesConfig;
 	var img = document.createElement('img');
 	var supportSrcset = ('sizes' in img) && ('srcset' in img);
-
+	var regHDesc = /\s+\d+h/g;
 	var fixEdgeHDescriptor = (function(){
-		var regHDesc = /\s+\d+h/g;
 		var regDescriptors = /\s+(\d+)(w|h)\s+(\d+)(w|h)/;
 		var forEach = Array.prototype.forEach;
 
@@ -75,7 +74,7 @@
 		};
 	}
 
-	if(window.picturefill || window.respimage || config.pf){return;}
+	if(window.picturefill || config.pf){return;}
 
 	if(window.HTMLPictureElement && supportSrcset){
 
@@ -89,7 +88,7 @@
 
 	config.pf = function(options){
 		var i, len;
-		if(window.picturefill || window.respimage){return;}
+		if(window.picturefill){return;}
 		for(i = 0, len = options.elements.length; i < len; i++){
 			polyfill(options.elements[i]);
 		}
