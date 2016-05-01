@@ -352,7 +352,9 @@
 			removeClass(e.target, lazySizesConfig.loadingClass);
 			addRemoveLoadEvents(e.target, rafSwitchLoadingClass);
 		};
+
 		var rafedSwitchLoadingClass = rAFIt(switchLoadingClass);
+
 		var rafSwitchLoadingClass = function(e){
 			rafedSwitchLoadingClass({target: e.target});
 		};
@@ -484,6 +486,7 @@
 				setTimeout(onload, 999);
 				return;
 			}
+
 			var afterScroll = debounce(function(){
 				lazySizesConfig.loadMode = 3;
 				throttledCheckElements();
@@ -567,6 +570,7 @@
 				updatePolyfill(elem, event.detail);
 			}
 		});
+		
 		var getSizeElement = function (elem, dataAttr, width){
 			var event;
 			var parent = elem.parentNode;
