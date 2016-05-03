@@ -380,10 +380,10 @@ function l(window, document) {
 			}
 		};
 
-		var lazyUnveil = rAFIt(function (elem, isAuto, sizes, isImg){
+		var lazyUnveil = rAFIt(function (elem, detail, isAuto, sizes, isImg){
 			var src, srcset, parent, isPicture, event, firesLoad;
 
-			if(!(event = triggerEvent(elem, 'lazybeforeunveil')).defaultPrevented){
+			if(!(event = triggerEvent(elem, 'lazybeforeunveil', detail)).defaultPrevented){
 
 				if(sizes){
 					if(isAuto){
@@ -401,7 +401,7 @@ function l(window, document) {
 					isPicture = parent && regPicture.test(parent.nodeName || '');
 				}
 
-				firesLoad = event.detail.firesLoad || (('src' in elem) && (srcset || src || isPicture));
+				firesLoad = detail.firesLoad || (('src' in elem) && (srcset || src || isPicture));
 
 				event = {target: elem};
 
@@ -451,7 +451,7 @@ function l(window, document) {
 		});
 
 		var unveilElement = function (elem){
-			var width;
+			var detail;
 
 			var isImg = regImg.test(elem.nodeName);
 
@@ -461,15 +461,16 @@ function l(window, document) {
 
 			if( (isAuto || !isCompleted) && isImg && (elem.src || elem.srcset) && !elem.complete && !hasClass(elem, lazySizesConfig.errorClass)){return;}
 
+			detail = triggerEvent(elem, 'lazyunveilread').detail;
+
 			if(isAuto){
-				width = elem.offsetWidth;
-				autoSizer.updateElem(elem, true, width);
+				 autoSizer.updateElem(elem, true, elem.offsetWidth);
 			}
 
 			elem._lazyRace = true;
 			isLoading++;
 
-			lazyUnveil(elem, isAuto, sizes, isImg);
+			lazyUnveil(elem, detail, isAuto, sizes, isImg);
 		};
 
 		var onload = function(){
@@ -573,7 +574,6 @@ function l(window, document) {
 					width = event.detail.width;
 
 					if(width && width !== elem._lazysizesWidth){
-
 						sizeElement(elem, parent, event, width);
 					}
 				}

@@ -352,9 +352,7 @@
 			removeClass(e.target, lazySizesConfig.loadingClass);
 			addRemoveLoadEvents(e.target, rafSwitchLoadingClass);
 		};
-
 		var rafedSwitchLoadingClass = rAFIt(switchLoadingClass);
-
 		var rafSwitchLoadingClass = function(e){
 			rafedSwitchLoadingClass({target: e.target});
 		};
@@ -388,10 +386,10 @@
 			}
 		};
 
-		var lazyUnveil = rAFIt(function (elem, isAuto, sizes, isImg){
+		var lazyUnveil = rAFIt(function (elem, detail, isAuto, sizes, isImg){
 			var src, srcset, parent, isPicture, event, firesLoad;
 
-			if(!(event = triggerEvent(elem, 'lazybeforeunveil')).defaultPrevented){
+			if(!(event = triggerEvent(elem, 'lazybeforeunveil', detail)).defaultPrevented){
 
 				if(sizes){
 					if(isAuto){
@@ -409,7 +407,7 @@
 					isPicture = parent && regPicture.test(parent.nodeName || '');
 				}
 
-				firesLoad = event.detail.firesLoad || (('src' in elem) && (srcset || src || isPicture));
+				firesLoad = detail.firesLoad || (('src' in elem) && (srcset || src || isPicture));
 
 				event = {target: elem};
 
@@ -459,7 +457,7 @@
 		});
 
 		var unveilElement = function (elem){
-			var width;
+			var detail;
 
 			var isImg = regImg.test(elem.nodeName);
 
@@ -469,15 +467,16 @@
 
 			if( (isAuto || !isCompleted) && isImg && (elem.src || elem.srcset) && !elem.complete && !hasClass(elem, lazySizesConfig.errorClass)){return;}
 
+			detail = triggerEvent(elem, 'lazyunveilread').detail;
+
 			if(isAuto){
-				width = elem.offsetWidth;
-				autoSizer.updateElem(elem, true, width);
+				 autoSizer.updateElem(elem, true, elem.offsetWidth);
 			}
 
 			elem._lazyRace = true;
 			isLoading++;
 
-			lazyUnveil(elem, isAuto, sizes, isImg);
+			lazyUnveil(elem, detail, isAuto, sizes, isImg);
 		};
 
 		var onload = function(){
@@ -486,7 +485,6 @@
 				setTimeout(onload, 999);
 				return;
 			}
-
 			var afterScroll = debounce(function(){
 				lazySizesConfig.loadMode = 3;
 				throttledCheckElements();
@@ -570,7 +568,6 @@
 				updatePolyfill(elem, event.detail);
 			}
 		});
-		
 		var getSizeElement = function (elem, dataAttr, width){
 			var event;
 			var parent = elem.parentNode;
@@ -583,7 +580,6 @@
 					width = event.detail.width;
 
 					if(width && width !== elem._lazysizesWidth){
-
 						sizeElement(elem, parent, event, width);
 					}
 				}
