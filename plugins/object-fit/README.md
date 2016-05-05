@@ -1,6 +1,6 @@
 #lazySizes object fit extension
 
-This extension polyfills `object-fit`: `cover` and `contain` properties as also the `object-position` in non supporting browsers and is built on top of the [parent-fit plugin](../parent-fit).
+This extension polyfills `object-fit`: `cover` and `contain` properties as also the `object-position` in non supporting browsers and is built on top of the [parent-fit plugin](../parent-fit). Here you find a [simple demo](https://jsfiddle.net/trixta/x2p17f31/).
 
 ##Usage
 

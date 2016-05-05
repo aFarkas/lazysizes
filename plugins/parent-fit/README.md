@@ -69,4 +69,4 @@ img.my-image {
 	font-family: inherit, parent-container: html; parent-fit: contain;
 }
 
-**Note: This plugin should be also added, if you use the [bgset plugin](../bgset/) in combination with ``data-sizes="auto"`` and ``background-size: cover|contain``.**
+**Note: This plugin should be also added, if you use the [bgset plugin](../bgset/) in combination with ``data-sizes="auto"`` and ``background-size: cover|contain`` and it is also the base of the [object-fit polyfill plugin](../object-fit).**
