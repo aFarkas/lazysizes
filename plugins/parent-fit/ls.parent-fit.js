@@ -23,11 +23,11 @@
 					;
 				} else {
 					parent = parentNode;
-				}
-			}
 
-			if(parent && regPicture.test(parent.nodeName || '')){
-				parent = parent.parentNode;
+					if(parent && regPicture.test(parent.nodeName || '')){
+						parent = parent.parentNode;
+					}
+				}
 			}
 
 			return parent;
@@ -126,11 +126,11 @@
 			if(!lazySizes.parentFit){
 				lazySizes.parentFit = parentFit;
 			}
-			window.removeEventListener('lazybeforesizes', extend, true);
+			window.removeEventListener('lazyunveilread', extend, true);
 		}
 	};
 
-	window.addEventListener('lazybeforesizes', extend, true);
+	window.addEventListener('lazyunveilread', extend, true);
 
 	document.addEventListener('lazybeforesizes', function(e){
 		if(e.defaultPrevented){return;}

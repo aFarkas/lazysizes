@@ -1,23 +1,36 @@
 (function(){
 	'use strict';
-	var support = 'objectFit' in document.createElement('a').style;
+	var style = document.createElement('a').style;
+	var fitSupport = 'objectFit' in style;
+	var positionSupport = 'objectPosition' in style;
 	var regCssFit = /object-fit["']*\s*:\s*["']*(contain|cover)/;
 	var regCssObject = /object-container["']*\s*:\s*["']*(.+?)(?=(\s|$|,|'|"|;))/;
+	var regCssPosition = /object-position["']*\s*:\s*["']*(.+?)(?=($|,|'|"|;))/;
+	var positionDefaults = {
+		center: 'center',
+		'50% 50%': 'center',
+	};
 
 	function getObject(element){
 		var css = (getComputedStyle(element, null) || {});
-		var content = css.content || css.fontFamily || '';
+		var content = css.fontFamily || '';
 		var objectFit = content.match(regCssFit) || '';
 		var objectContainer = objectFit && content.match(regCssObject) || '';
+		var objectPosition = objectFit && content.match(regCssPosition) || '';
+
+		if(objectPosition){
+			objectPosition = objectPosition[1];
+		}
 
 		return {
 			fit: objectFit && objectFit[1] || '',
-			container: objectContainer,
+			container: objectContainer && objectContainer[1],
+			position: positionDefaults[objectPosition] || objectPosition || 'center',
 		};
 	}
 
 	function initFix(element, config){
-		var container = lazySizes.parentFit.getParent(config.container) || element.parentNode;
+		var container = lazySizes.parentFit.getParent(element, config.container) || element.parentNode;
 		var containerStyle = container.style;
 
 		var onChange = function(){
@@ -39,7 +52,7 @@
 
 		lazySizes.rAF(function(){
 			containerStyle.backgroundRepeat = 'no-repeat';
-			containerStyle.backgroundPosition = 'center';
+			containerStyle.backgroundPosition = config.position;
 			containerStyle.backgroundSize = config.fit;
 			element.style.display = 'none';
 
@@ -61,13 +74,12 @@
 		});
 	}
 
-	if(!support){
-		addEventListener('lazybeforesizes', function(e){
-			if(e.defaultPrevented || !e.detail.dataAttr){return;}
+	if(!fitSupport || !positionSupport){
+		addEventListener('lazyunveilread', function(e){
 			var element = e.target;
 			var obj = getObject(element);
 
-			if(obj.fit){
+			if(obj.fit && (!fitSupport || (obj.position != 'center'))){
 				initFix(element, obj);
 			}
 		}, true);
