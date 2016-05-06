@@ -52,21 +52,14 @@ Normally the next closest parent that is not a `picture` element is used as the 
 As a special keyword the value `self` can be used to signalize, that image itself should be taken.
 
 ###Controlling `data-parent-fit` and `data-parent-container` with CSS
-These option can also be set via CSS by abusing either the `content` or the `font-family` property.
+These option can also be set via CSS by abusing the `font-family` property.
 
 The `data-parent-fit` option is called here `parent-fit` and `data-parent-container` is called `parent-container`:
 
 ```css
 img.my-image {
-	/* option 1: (Note: we don't use pseudo)*/
-	/* set object-fit/data-parant-fit value: */
-	content: "parent-fit: cover";
-	/* set both data-parent-container and data-parant-fit property: */
-	content: "parent-container: html; parent-fit: contain";
-
-
-	/* option 2:*/
-	font-family: inherit, parent-container: html; parent-fit: contain;
+	font-family: parent-container: html; parent-fit: contain;
 }
+```
 
 **Note: This plugin should be also added, if you use the [bgset plugin](../bgset/) in combination with ``data-sizes="auto"`` and ``background-size: cover|contain`` and it is also the base of the [object-fit polyfill plugin](../object-fit).**
