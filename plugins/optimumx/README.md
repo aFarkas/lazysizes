@@ -110,6 +110,8 @@ window.lazySizesConfig.config.getOptimumX = function(/*element*/){
         dpr *= 0.6; // returns 1.8 for 3
     } else if(dpr > 1.9){
         dpr *= 0.8; // returns 1.6 for 2
+    } else {
+        dpr -= 0.01;
     }
     return Math.min(Math.round(dpr * 100) / 100, 2);
 };

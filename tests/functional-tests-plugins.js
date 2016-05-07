@@ -209,10 +209,6 @@ $.extend(window.lazyTests, {
 				if(viewportTests.length){
 					viewport = viewportTests.shift();
 					$iframe.css('width', viewport[0]);
-
-					if(viewport[0] == '500'){
-						window.stopTest = true;
-					}
 				} else {
 					done();
 				}
