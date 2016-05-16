@@ -147,7 +147,7 @@
 	var throttle = function(fn){
 		var running;
 		var lastTime = 0;
-		var gDelay = 99;
+		var gDelay = 125;
 		var RIC_DEFAULT_TIMEOUT = 999;
 		var rICTimeout = RIC_DEFAULT_TIMEOUT;
 		var run = function(){
@@ -287,7 +287,7 @@
 
 				if(preloadExpand == null){
 					if(!('expand' in lazySizesConfig)){
-						lazySizesConfig.expand = docElem.clientHeight > 600 ? docElem.clientWidth > 600 ? 550 : 410 : 359;
+						lazySizesConfig.expand = docElem.clientHeight > 500 ? 500 : 400;
 					}
 
 					defaultExpand = lazySizesConfig.expand;
@@ -636,7 +636,7 @@
 			minSize: 40,
 			customMedia: {},
 			init: true,
-			expFactor: 1.7,
+			expFactor: 1.6,
 			hFac: 0.8,
 			loadMode: 2
 		};
