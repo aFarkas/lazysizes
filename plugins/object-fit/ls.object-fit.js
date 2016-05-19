@@ -1,10 +1,9 @@
 (function(){
 	'use strict';
 	var style = document.createElement('a').style;
-	var fitSupport = 'objectFit' in style;
-	var positionSupport = 'objectPosition' in style;
+	var fitSupport = false && 'objectFit' in style;
+	var positionSupport = fitSupport && 'objectPosition' in style;
 	var regCssFit = /object-fit["']*\s*:\s*["']*(contain|cover)/;
-	var regCssObject = /object-container["']*\s*:\s*["']*(.+?)(?=(\s|$|,|'|"|;))/;
 	var regCssPosition = /object-position["']*\s*:\s*["']*(.+?)(?=($|,|'|"|;))/;
 	var positionDefaults = {
 		center: 'center',
@@ -15,7 +14,6 @@
 		var css = (getComputedStyle(element, null) || {});
 		var content = css.fontFamily || '';
 		var objectFit = content.match(regCssFit) || '';
-		var objectContainer = objectFit && content.match(regCssObject) || '';
 		var objectPosition = objectFit && content.match(regCssPosition) || '';
 
 		if(objectPosition){
@@ -24,48 +22,56 @@
 
 		return {
 			fit: objectFit && objectFit[1] || '',
-			container: objectContainer && objectContainer[1],
 			position: positionDefaults[objectPosition] || objectPosition || 'center',
 		};
 	}
 
 	function initFix(element, config){
-		var container = lazySizes.parentFit.getParent(element, config.container) || element.parentNode;
-		var containerStyle = container.style;
+		var styleElement = element.cloneNode(false);
+		var styleElementStyle = styleElement.style;
 
 		var onChange = function(){
 			var src = element.currentSrc || element.src;
 
 			if(src){
-				containerStyle.backgroundImage = 'url(' + src + ')';
+				styleElementStyle.backgroundImage = 'url(' + src + ')';
 			}
 		};
 
 		element._lazysizesParentFit = config.fit;
-		if(config.container){
-			element._lazysizesParentContainer = config.container;
-		}
 
 		element.addEventListener('load', function(){
 			lazySizes.rAF(onChange);
 		}, true);
 
 		lazySizes.rAF(function(){
-			containerStyle.backgroundRepeat = 'no-repeat';
-			containerStyle.backgroundPosition = config.position;
-			containerStyle.backgroundSize = config.fit;
-			element.style.display = 'none';
 
-			element.setAttribute('data-parent-fit', config.fit);
-			if(element._lazysizesParentFit){
-				delete element._lazysizesParentFit;
+			var hideElement = element;
+			var container = element.parentNode;
+
+			if(container.nodeName.toLowerCase() == 'PICTURE'){
+				hideElement = container;
+				container = container.parentNode;
 			}
 
-			if(config.container){
-				element.setAttribute('data-parent-container', config.container);
-				if(element._lazysizesParentContainer){
-					delete element._lazysizesParentContainer;
-				}
+			lazySizes.rC(styleElement, lazySizes.cfg.loadingClass);
+			lazySizes.rC(styleElement, lazySizes.cfg.loadedClass);
+			lazySizes.rC(styleElement, lazySizes.cfg.lazyClass);
+
+			styleElement.src = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
+			styleElement.srcset = '';
+
+			styleElementStyle.backgroundRepeat = 'no-repeat';
+			styleElementStyle.backgroundPosition = config.position;
+			styleElementStyle.backgroundSize = config.fit;
+
+			hideElement.style.display = 'none';
+
+			element.setAttribute('data-parent-fit', config.fit);
+			container.insertBefore(styleElement, hideElement);
+
+			if(element._lazysizesParentFit){
+				delete element._lazysizesParentFit;
 			}
 
 			if(element.complete){

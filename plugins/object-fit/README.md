@@ -5,19 +5,21 @@ This extension polyfills `object-fit`: `cover` and `contain` properties as also 
 ##Usage
 
 ###Include JS files:
-Include lazysizes, lazysizes parent-fit, lazysizes object fit and optionally lazysizes respimg plugin. Lazysizes object-fit and respimg plugin are only needed in browser that don't support object fit or responsive images.
+Include lazysizes, lazysizes object fit and optionally lazysizes parent-fit and lazysizes respimg plugin. Lazysizes object-fit and respimg plugin are only needed in browser that don't support object fit or responsive images.
 
 ```html
-<script src="../plugins/parent-fit/ls.parent-fit.min.js"></script>
+<!-- required: -->
 <script src="../plugins/object-fit/ls.object-fit.min.js"></script>
-<script src="../plugins/respimg/ls.respimg.min.js"></script>
 <script src="../lazysizes.min.js" async=""></script>
+
+<!-- only for data-sizes="auto" in combination with object fit -->
+<script src="../plugins/parent-fit/ls.parent-fit.min.js"></script>
+<!-- only for respimg support -->
+<script src="../plugins/respimg/ls.respimg.min.js"></script>
 ```
 
 ###Add markup
 The object-fit plugin is not a full polyfill.
-
-It requires you to write an additional container, that has the same dimensions as your image. In non supporting browser this container is used to display a background image.
 
 ```html
 <div class="imagecontainer">
@@ -62,8 +64,13 @@ To init the plugin on an image simply use the `font-family` property directly on
 	left: 0;
 	width: 100%;
 	height: 100%;
+	transition: 400ms transform;
 
 	object-fit: contain;
 	font-family: "object-fit: contain";
+}
+
+.imagecontainer-img:hover {
+	transform: scale(1.1);
 }
 ```
