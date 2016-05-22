@@ -5,6 +5,7 @@
 	var positionSupport = fitSupport && 'objectPosition' in style;
 	var regCssFit = /object-fit["']*\s*:\s*["']*(contain|cover)/;
 	var regCssPosition = /object-position["']*\s*:\s*["']*(.+?)(?=($|,|'|"|;))/;
+	var blankSrc = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
 	var positionDefaults = {
 		center: 'center',
 		'50% 50%': 'center',
@@ -44,6 +45,15 @@
 			lazySizes.rAF(onChange);
 		}, true);
 
+		styleElement.addEventListener('load', function(){
+			var curSrc = styleElement.currentSrc || styleElement.src;
+
+			if(curSrc && curSrc != blankSrc){
+				styleElement.src = blankSrc;
+				styleElement.srcset = '';
+			}
+		});
+
 		lazySizes.rAF(function(){
 
 			var hideElement = element;
@@ -59,7 +69,7 @@
 			lazySizes.rC(styleElement, lazySizes.cfg.lazyClass);
 			lazySizes.aC(styleElement, lazySizes.cfg.objectFitClass || 'lazysizes-display-clone');
 
-			styleElement.src = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
+			styleElement.src = blankSrc;
 			styleElement.srcset = '';
 
 			styleElementStyle.backgroundRepeat = 'no-repeat';
