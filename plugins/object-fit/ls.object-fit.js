@@ -1,7 +1,7 @@
 (function(){
 	'use strict';
 	var style = document.createElement('a').style;
-	var fitSupport = false && 'objectFit' in style;
+	var fitSupport = 'objectFit' in style;
 	var positionSupport = fitSupport && 'objectPosition' in style;
 	var regCssFit = /object-fit["']*\s*:\s*["']*(contain|cover)/;
 	var regCssPosition = /object-position["']*\s*:\s*["']*(.+?)(?=($|,|'|"|;))/;
@@ -68,6 +68,7 @@
 			hideElement.style.display = 'none';
 
 			element.setAttribute('data-parent-fit', config.fit);
+			element.setAttribute('data-parent-container', 'prev');
 			container.insertBefore(styleElement, hideElement);
 
 			if(element._lazysizesParentFit){

@@ -636,7 +636,7 @@
 			minSize: 40,
 			customMedia: {},
 			init: true,
-			expFactor: 1.6,
+			expFactor: 1.5,
 			hFac: 0.8,
 			loadMode: 2
 		};
