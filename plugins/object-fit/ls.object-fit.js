@@ -57,6 +57,7 @@
 			lazySizes.rC(styleElement, lazySizes.cfg.loadingClass);
 			lazySizes.rC(styleElement, lazySizes.cfg.loadedClass);
 			lazySizes.rC(styleElement, lazySizes.cfg.lazyClass);
+			lazySizes.aC(styleElement, lazySizes.cfg.objectFitClass || 'lazysizes-display-clone');
 
 			styleElement.src = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
 			styleElement.srcset = '';
@@ -69,6 +70,7 @@
 
 			element.setAttribute('data-parent-fit', config.fit);
 			element.setAttribute('data-parent-container', 'prev');
+
 			container.insertBefore(styleElement, hideElement);
 
 			if(element._lazysizesParentFit){
