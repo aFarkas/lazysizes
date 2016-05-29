@@ -1,6 +1,6 @@
 #Changelog
 
-##upcoming 2.0.0
+##2.0.0
 
 * lazysizes core:
 	* heavily improved performance (`requestIdleCallback`, better debouncing and a lot more).
