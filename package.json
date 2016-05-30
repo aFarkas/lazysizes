@@ -8,6 +8,7 @@
     "url": "git://github.com/aFarkas/lazysizes.git"
   },
   "namespace": "lazySizes",
+  "main": "lazysizes.js",
   "browser": "lazysizes.js",
   "devDependencies": {
     "grunt": "~0.4.2",
