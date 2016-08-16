@@ -237,7 +237,7 @@
 		var currentExpand = 0;
 
 		var isLoading = 0;
-		var lowRuns = 0;
+		var lowRuns = -1;
 
 		var resetPreloading = function(e){
 			isLoading--;
@@ -294,10 +294,10 @@
 					preloadExpand = defaultExpand * lazySizesConfig.expFactor;
 				}
 
-				if(currentExpand < preloadExpand && isLoading < 1 && lowRuns > 3 && loadMode > 2){
+				if(currentExpand < preloadExpand && isLoading < 1 && lowRuns > 2 && loadMode > 2 && !document.hidden){
 					currentExpand = preloadExpand;
 					lowRuns = 0;
-				} else if(loadMode > 1 && lowRuns > 2 && isLoading < 6){
+				} else if(loadMode > 1 && lowRuns > 1 && isLoading < 6){
 					currentExpand = defaultExpand;
 				} else {
 					currentExpand = shrinkExpand;

@@ -184,7 +184,7 @@ The LQIP technique can be enhanced by combining it with CSS transitions/animatio
 </style>
 
 <div class="ratio-box fade-box">
-	<img src="lqip-src.jpg" data-src="image.jpg" />
+	<img src="lqip-src.jpg" />
 	<img data-src="image.jpg" class="lazyload" />
 </div>
 ```
@@ -192,7 +192,7 @@ The LQIP technique can be enhanced by combining it with CSS transitions/animatio
 
 ###modern transparent ``srcset`` pattern
 
-Combine a normal ``src`` attribute with a transparent image as ``srcset`` value and a ``data-srcset`` attribute. This way modern browsers will lazy load without loading the ``src`` attribute and all others will simply fallback to the initial ``src`` attribute (without lazyload). (This nice pattern originated from @ivopetkov.)
+Combine a normal ``src`` attribute with a transparent or low quality image as ``srcset`` value and a ``data-srcset`` attribute. This way modern browsers will lazy load without loading the ``src`` attribute and all others will simply fallback to the initial ``src`` attribute (without lazyload). (This nice pattern originated from @ivopetkov.)
 
 ```html
 <img
@@ -463,21 +463,6 @@ Fixes, PRs and issues are always welcome, make sure to create a new branch from 
 ##<a name="plugins"></a>Available plugins in this repo
 It is recommended to concat all plugins together with lazySizes. In case you don't concat it is recommended to include the plugin scripts *before* the lazySizes main script.
 
-###[RIaS plugin - (Responsive Images as a Service / Responsive image on demand)](plugins/rias)
-The [RIaS plugin is a neat full responsive images solution](plugins/rias) without the need of any additional plugins/polyfills.
-
-It enables lazySizes to generate the best suitable image source based on an URL pattern. It works with pre-build images (i.e. grunt-responsive-images) as also with any third party (ReSrc, Pixtulate, mobify, WURFL's Image Tailor ...) or self hosted restful responsive image service (responsive image on demand). It makes responsive images even more easier without any need for another third party script.
-
-```html
-<img
-	data-src="image-service/w_{width}/image.jpg"
-	data-sizes="auto"
-	class="lazyload"
-	alt="" />
-```
-
-In general the [RIaS plugin](plugins/rias) plugin combines the simplicity of the famous Imager.js solution with the future power of native responsive images implementations and the webcomponent-like working of lazySizes' ``.lazyload`` elements (self-initialization, self-configuration and self-destroying).
-
 ###[respimg polyfill plugin](plugins/respimg)
 
 The respimg polyfill plugin is an extremely lightweight alternate polyfill for the most important subsets of responsive images (srcset and picture).
@@ -522,6 +507,12 @@ The [print plugin](plugins/print) plugin enables lazySizes to unveil all element
 
 ###[progressive plugin](plugins/progressive)
 The [progressive plugin](plugins/progressive) adds better support for rendering progressive jpgs/pngs.
+
+###[RIaS plugin - (Responsive Images as a Service / Responsive image on demand)](plugins/rias)
+The [RIaS plugin is a neat full responsive images solution](plugins/rias) without the need of any additional plugins/polyfills.
+
+It enables lazySizes to generate the best suitable image source based on an URL pattern. It works with pre-build images (i.e. grunt-responsive-images) as also with any third party (ReSrc, Pixtulate, mobify, WURFL's Image Tailor ...) or self hosted restful responsive image service (responsive image on demand). It makes responsive images even more easier without any need for another third party script.
+
 
 ##<a name="specify-dimensions"></a>Tip: Specifying image dimensions (minimizing reflows and avoiding page jumps)
 To minimize reflows, content jumping or unpredictable behavior with some other JS widgets (isotope, masonry, some sliders/carousels...) the width **and** the height of an image should be calculable by the browser before the image source itself is loaded. For "static" images this can be done using either CSS or using the content attributes:
