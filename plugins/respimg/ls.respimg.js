@@ -256,9 +256,12 @@
 				width = source.getAttribute('sizes') || '';
 				width = regPxLength.test(width) && parseInt(width, 10) || lazySizes.gW(elem, elem.parentNode);
 				srces.d = getX(elem);
-				if(!srces.w || srces.w < width){
+				if(!srces.src || !srces.w || srces.w < width){
 					srces.w = width;
 					src = reduceCandidate(srces.sort(ascendingSort));
+					srces.src = src;
+				} else {
+					src = srces.src;
 				}
 			} else {
 				src = srces[0];
