@@ -115,6 +115,12 @@
 			}
 		});
 
+		var elemStyles = window.getComputedStyle(elem);
+		var aspectRatio = elemStyles.getPropertyValue('--aspect-ratio').trim() || null;
+                if (aspectRatio) {
+                    options.ratio = aspectRatio;
+                }
+
 		return options;
 	}
 
