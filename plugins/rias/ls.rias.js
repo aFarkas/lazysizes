@@ -83,8 +83,7 @@
 		};
 
 		setOption = function(attr, run){
-			var attrVal = elem.getAttribute('data-'+ attr);
-			attrVal = elemStyles.getPropertyValue('--' + attr).trim() || attrVal;
+			var attrVal = elem.getAttribute('data-'+ attr) || elemStyles.getPropertyValue('--ls-' + attr).trim() || null;
 
 			if(attrVal != null){
 				if(attrVal == 'true'){
