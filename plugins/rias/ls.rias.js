@@ -74,6 +74,7 @@
 
 	function getElementOptions(elem, src){
 		var attr, parent, setOption, options;
+		var elemStyles = window.getComputedStyle(elem);
 
 
 		parent = elem.parentNode;
@@ -83,6 +84,7 @@
 
 		setOption = function(attr, run){
 			var attrVal = elem.getAttribute('data-'+ attr);
+			attrVal = elemStyles.getPropertyValue('--' + attr).trim() || attrVal;
 
 			if(attrVal != null){
 				if(attrVal == 'true'){
@@ -114,12 +116,6 @@
 				setOption(match, true);
 			}
 		});
-
-		var elemStyles = window.getComputedStyle(elem);
-		var aspectRatio = elemStyles.getPropertyValue('--aspect-ratio').trim() || null;
-                if (aspectRatio) {
-                    options.ratio = aspectRatio;
-                }
 
 		return options;
 	}
