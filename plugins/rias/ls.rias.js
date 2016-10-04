@@ -74,6 +74,7 @@
 
 	function getElementOptions(elem, src){
 		var attr, parent, setOption, options;
+		var elemStyles = window.getComputedStyle(elem);
 
 
 		parent = elem.parentNode;
@@ -82,7 +83,7 @@
 		};
 
 		setOption = function(attr, run){
-			var attrVal = elem.getAttribute('data-'+ attr);
+			var attrVal = elem.getAttribute('data-'+ attr) || elemStyles.getPropertyValue('--ls-' + attr).trim() || null;
 
 			if(attrVal != null){
 				if(attrVal == 'true'){
