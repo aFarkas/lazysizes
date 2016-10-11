@@ -287,7 +287,7 @@
 
 				if(preloadExpand == null){
 					if(!('expand' in lazySizesConfig)){
-						lazySizesConfig.expand = docElem.clientHeight > 500 ? 500 : 400;
+						lazySizesConfig.expand = docElem.clientHeight > 500 && docElem.clientWidth > 500 ? 500 : 372;
 					}
 
 					defaultExpand = lazySizesConfig.expand;
