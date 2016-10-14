@@ -6,6 +6,7 @@
 	var regCssFit = /object-fit["']*\s*:\s*["']*(contain|cover)/;
 	var regCssPosition = /object-position["']*\s*:\s*["']*(.+?)(?=($|,|'|"|;))/;
 	var blankSrc = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
+	var regBgUrlEscape = /\(|\)|'/;
 	var positionDefaults = {
 		center: 'center',
 		'50% 50%': 'center',
@@ -37,7 +38,7 @@
 			var src = element.currentSrc || element.src;
 
 			if(src){
-				styleElementStyle.backgroundImage = 'url(' + src + ')';
+				styleElementStyle.backgroundImage = 'url(' + (regBgUrlEscape.test(src) ? JSON.stringify(src) : src ) + ')';
 
 				if(!switchClassesAdded){
 					switchClassesAdded = true;

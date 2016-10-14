@@ -25,10 +25,11 @@ For background images, use data-bg attribute:
 (function(window, document){
 	/*jshint eqnull:true */
 	'use strict';
-	var bgLoad;
+	var bgLoad, regBgUrlEscape;
 	var uniqueUrls = {};
 
 	if(document.addEventListener){
+		regBgUrlEscape = /\(|\)|'/;
 
 		bgLoad = function (url, cb){
 			var img = document.createElement('img');
@@ -79,7 +80,7 @@ For background images, use data-bg attribute:
 				if (bg) {
 					e.detail.firesLoad = true;
 					load = function(){
-						e.target.style.backgroundImage = 'url(' + bg + ')';
+						e.target.style.backgroundImage = 'url(' + (regBgUrlEscape.test(bg) ? JSON.stringify(bg) : bg ) + ')';
 						e.detail.firesLoad = false;
 						lazySizes.fire(e.target, '_lazyloaded', {}, true, true);
 					};

@@ -5,6 +5,7 @@
 	var regWhite = /\s+/g;
 	var regSplitSet = /\s*\|\s+|\s+\|\s*/g;
 	var regSource = /^(.+?)(?:\s+\[\s*(.+?)\s*\])?$/;
+	var regBgUrlEscape = /\(|\)|'/;
 	var allowedBackgroundSize = {contain: 1, cover: 1};
 	var proxyWidth = function(elem){
 		var width = lazySizes.gW(elem, elem.parentNode);
@@ -94,7 +95,7 @@
 		var bg = image.currentSrc || image.src;
 
 		if(bg){
-			elem.style.backgroundImage = 'url('+ bg +')';
+			elem.style.backgroundImage = 'url(' + (regBgUrlEscape.test(bg) ? JSON.stringify(bg) : bg ) + ')';
 		}
 
 		if(image._lazybgsetLoading){
