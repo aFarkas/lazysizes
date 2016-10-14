@@ -184,7 +184,7 @@
 		var includeStr = (elem.getAttribute('data-include') || '');
 		var includeData = elem.lazyInclude;
 		var initialContent;
-		if(!includeData || includeData.str != includeStr || includeConfig.noCache){
+		if(!includeData || includeData.str != includeStr || includeConfig.allowReload){
 			initialContent = {saved: false, content: null};
 			includeData = {
 				str: includeStr,
