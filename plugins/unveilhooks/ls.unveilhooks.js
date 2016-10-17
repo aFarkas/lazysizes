@@ -79,7 +79,7 @@ For background images, use data-bg attribute:
 				if (bg) {
 					e.detail.firesLoad = true;
 					load = function(){
-						e.target.style.backgroundImage = 'url(' + bg + ')';
+						e.target.style.backgroundImage = 'url("' + bg + '")';
 						e.detail.firesLoad = false;
 						lazySizes.fire(e.target, '_lazyloaded', {}, true, true);
 					};
