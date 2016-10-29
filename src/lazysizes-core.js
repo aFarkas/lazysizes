@@ -142,7 +142,7 @@ function l(window, document) {
 		var running;
 		var lastTime = 0;
 		var gDelay = 125;
-		var RIC_DEFAULT_TIMEOUT = 999;
+		var RIC_DEFAULT_TIMEOUT = 666;
 		var rICTimeout = RIC_DEFAULT_TIMEOUT;
 		var run = function(){
 			running = false;
@@ -164,7 +164,7 @@ function l(window, document) {
 		return function(isPriority){
 			var delay;
 			if((isPriority = isPriority === true)){
-				rICTimeout = 66;
+				rICTimeout = 44;
 			}
 
 			if(running){
@@ -533,7 +533,9 @@ function l(window, document) {
 					setTimeout(onload, 20000);
 				}
 
-				throttledCheckElements(lazyloadElems.length > 0);
+				if(lazyloadElems.length){
+					checkElements();
+				}
 			},
 			checkElems: throttledCheckElements,
 			unveil: unveilElement
