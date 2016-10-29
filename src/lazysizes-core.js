@@ -535,6 +535,8 @@ function l(window, document) {
 
 				if(lazyloadElems.length){
 					checkElements();
+				} else {
+					throttledCheckElements();
 				}
 			},
 			checkElems: throttledCheckElements,
