@@ -109,7 +109,7 @@ function l(window, document) {
 			running = false;
 		};
 
-		return function(fn){
+		var rafBatch = function(fn){
 			if(running){
 				fn.apply(this, arguments);
 			} else {
@@ -121,6 +121,10 @@ function l(window, document) {
 				}
 			}
 		};
+
+		rafBatch._lsFlush = run;
+
+		return rafBatch;
 	})();
 
 	var rAFIt = function(fn, simple){
