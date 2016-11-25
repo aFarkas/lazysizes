@@ -323,7 +323,7 @@ window.lazySizesConfig = window.lazySizesConfig || {};
 window.lazySizesConfig.customMedia = {
     '--small': '(max-width: 480px)',
     '--medium': '(max-width: 900px)',
-    '--large': '(max-width: 1400px)'
+    '--large': '(max-width: 1400px)',
 };
 </script>
 
@@ -352,7 +352,7 @@ window.lazySizesConfig.customMedia = {
 * ``lazySizesConfig.expFactor`` (default: ``1.5``): The ``expFactor`` is used to calculate the "preload expand", by multiplying the normal ``expand`` with the ``expFactor`` which is used to preload assets while the browser is idling (no important network traffic and no scrolling). (Reasonable values are between ``1.5`` and ``4`` depending on the ``expand`` option).
 * ``lazySizesConfig.hFac`` (default: ``0.8``): The ``hFac`` (horizontal factor) modifies the horizontal expand by multiplying the ``expand`` value with the ``hFac`` value. Use case: In case of carousels there is often the wish to make the horizontal expand narrower than the normal vertical expand option. Reasonable values are between 0.4 - 1. In the unlikely case of a horizontal scrolling website also 1 - 1.5.
 * ``lazySizesConfig.loadMode`` (default: ``2``): The ``loadMode`` can be used to constrain the allowed loading mode. Possible values are 0 = don't load anything, 1 = only load visible elements, 2 = load also very near view elements (``expand`` option) and 3 = load also not so near view elements (``expand`` * ``expFactor`` option). This value is automatically set to ``3`` after onload. Change this value to ``1`` if you (also) optimize for the onload event or change it to ``3`` if your onload event is already heavily delayed.
-* ``lazySizesConfig.init`` (default: ``true``): By default lazysizes initializes itself as soon as possible, to load in view assets as soon as possible. In the unlikely case you need to setup/configure something with a later script you can set this option to ``false`` and call ``lazySizes.init();`` later explicitly.
+* ``lazySizesConfig.init`` (default: ``true``): By default lazysizes initializes itself, to load in view assets as soon as possible. In the unlikely case you need to setup/configure something with a later script you can set this option to ``false`` and call ``lazySizes.init();`` later explicitly.
 
 ####JS API - events
 **lazysizes** provides two events to modify or extend the behavior of **lazysizes**.
@@ -439,7 +439,7 @@ Tests whether new elements has came into view. Normally this method only needs t
 
 #####``lazySizes.init()``
 
-LazySizes initializes itself automatically as soon as possible. In case you set ``lazySizesConfig.init`` to ``false`` you need to explicitly call ``lazySizes.init()``.
+LazySizes initializes itself automatically. In case you set ``lazySizesConfig.init`` to ``false`` you need to explicitly call ``lazySizes.init()``. Note: You can speed up initial loading of in view images if you call `lazySizesConfig.init()` explicitly after lazysizes and all plugins are loaded.
 
 ```html
 <script>
@@ -683,7 +683,7 @@ While lazy loading is a great feature, it is important for users that crucial in
 
 In case you normally combine all your scripts into one large script and add this to the bottom of your page, it can be better for perceived performance to generate two or sometimes more script packages: One small package, which includes all scripts which have heavy influence on the content or the UI and another larger one which includes the normal behavior of the page.
 
-This smaller script, which should include lazySizes, should than be placed **before** any other blocking elements (i.e.: script(s)) at the end of the body or after any blocking elements (i.e.: scripts, stylesheets) in the head to load the crucial content as fast possible.
+This smaller script, which should include lazySizes (and all its plugins), should than be placed **before** any other blocking elements (i.e.: script(s)) at the end of the body or after any blocking elements (i.e.: scripts, stylesheets) in the head to load the crucial content as fast possible. (Note: It might make also sense to call `lazySizes.init();` explicitly right after lazySizes and all its plugins are added.)
 
 ##Why lazysizes
 In the past I often struggled using lazy image loaders, because the "main check function" is called repeatedly and with a high frequency. Which makes it hard to fulfill two purposes runtime and memory efficiency. And looking into the source code of most so called lazy loaders often also unveils lazy developers...

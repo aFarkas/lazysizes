@@ -545,6 +545,7 @@
 
 				if(lazyloadElems.length){
 					checkElements();
+					rAF._lsFlush();
 				} else {
 					throttledCheckElements();
 				}
