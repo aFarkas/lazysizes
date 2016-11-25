@@ -407,3 +407,18 @@ define(function(){
 	return Nav;
 });
 ```
+
+Note: For amd require JS or SystemJS to work the `requireJs` and/or the `systemJs` option has to be provided:
+
+
+```js
+window.lazySizesConfig = window.lazySizesConfig || {};
+
+window.lazySizesConfig.requireJs = function(modules, cb){
+	window.require(modules, cb);
+};
+
+window.lazySizesConfig.systemJs = function(module, cb){
+	window.System.import(module).then(cb);
+};
+```

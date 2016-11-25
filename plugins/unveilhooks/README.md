@@ -23,7 +23,7 @@ The unveilhooks plugin extends lazySizes to also unveil / lazyload scripts/widge
  	<!-- sources -->
 </video>
 
-<!-- require.js example -->
+<!-- require.js * example -->
 <div class="lazyload" data-require="module-name"></div>
 
 
@@ -50,5 +50,14 @@ Note: In case you want to lazyload a background image via a ``class`` you can do
 For support responsive background images see the [bgset extension](../bgset).
 
 For more complex loading of styles and AMD modules please see the [include extension](../include).
+
+Note: To support the require example you need to the requireJs option:
+
+```js
+window.lazySizesConfig = window.lazySizesConfig || {};
+window.lazySizesConfig.requireJs = function(modules, cb){
+	window.require(modules, cb);
+};
+```
  
 

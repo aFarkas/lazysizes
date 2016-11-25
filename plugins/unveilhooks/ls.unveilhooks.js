@@ -70,8 +70,10 @@ For background images, use data-bg attribute:
 				// handle data-require
 				tmp = e.target.getAttribute('data-require');
 				if(tmp){
-					if(window.require){
-						require([tmp]);
+					if(lazySizes.cfg.requireJs){
+						lazySizes.cfg.requireJs([tmp]);
+					} else {
+						addStyleScript(tmp);
 					}
 				}
 

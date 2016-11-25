@@ -303,16 +303,38 @@
 
 	function loadRequire(urls, callback){
 		urls = urls.split('|,|');
-		require(urls, callback);
+
+		var last = urls.length - 1;
+
+		if(lazySizes.cfg.requireJs){
+			lazySizes.cfg.requireJs(urls, callback);
+		} else {
+			urls.forEach(function(url, index){
+				loadStyleScript(url, index == last ? callback : null);
+			});
+		}
 	}
 
-	function loadStyle(url){
+	function loadSystemJs(url, callback){
+		if(lazySizes.cfg.systemJs){
+			lazySizes.cfg.systemJs(url, callback);
+		} else {
+			loadStyleScript(url, callback);
+		}
+	}
+
+	function loadStyleScript(url, isScript, cb){
 		if(!uniqueUrls[url]){
-			var elem = document.createElement('link');
+			var elem = document.createElement(isScript === true ? 'script' : 'link');
 			var insertElem = document.getElementsByTagName('script')[0];
 
-			elem.rel = 'stylesheet';
-			elem.href = url;
+			if(isScript){
+				elem.src = url;
+				elem.async = false;
+			} else {
+				elem.rel = 'stylesheet';
+				elem.href = url;
+			}
 			insertElem.parentNode.insertBefore(elem, insertElem);
 			uniqueUrls[url] = true;
 			uniqueUrls[elem.href] = true;
@@ -321,7 +343,7 @@
 
 	function loadStyles(urls){
 		urls = urls.split('|,|');
-		urls.forEach(loadStyle);
+		urls.forEach(loadStyleScript);
 	}
 
 	function transformInclude(module){
@@ -441,11 +463,13 @@
 					include();
 				}
 			};
-			if(candidate.urls.module && window.System && System.import){
-				System.import(candidate.urls.module).then(loadRequireImportCB);
-			} else if(window.require) {
+
+			if(candidate.urls.amd){
 				loadRequire(candidate.urls.amd, loadRequireImportCB);
+			} else {
+				loadSystemJs(candidate.urls.module, loadRequireImportCB);
 			}
+
 		} else {
 			modules = [];
 		}
