@@ -97,23 +97,28 @@ function l(window, document) {
 	var rAF = (function(){
 		var running, waiting;
 		var fns = [];
+		var secondFns = [];
 
 		var run = function(){
-			var fn;
+			var runFns = fns;
+
+			fns = secondFns;
+
 			running = true;
 			waiting = false;
-			while(fns.length){
-				fn = fns.shift();
-				fn[0].apply(fn[1], fn[2]);
+
+			while(runFns.length){
+				runFns.shift()();
 			}
+
 			running = false;
 		};
 
-		var rafBatch = function(fn){
-			if(running){
+		var rafBatch = function(fn, queue){
+			if(running && !queue){
 				fn.apply(this, arguments);
 			} else {
-				fns.push([fn, this, arguments]);
+				fns.push(fn);
 
 				if(!waiting){
 					waiting = true;
@@ -437,12 +442,12 @@ function l(window, document) {
 				}
 			}
 
-			rAF(function(){
-				if(elem._lazyRace){
-					delete elem._lazyRace;
-				}
-				removeClass(elem, lazySizesConfig.lazyClass);
+			if(elem._lazyRace){
+				delete elem._lazyRace;
+			}
+			removeClass(elem, lazySizesConfig.lazyClass);
 
+			rAF(function(){
 				if( !firesLoad || elem.complete ){
 					if(firesLoad){
 						resetPreloading(event);
@@ -451,7 +456,7 @@ function l(window, document) {
 					}
 					switchLoadingClass(event);
 				}
-			});
+			}, true);
 		});
 
 		var unveilElement = function (elem){
