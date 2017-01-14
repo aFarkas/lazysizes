@@ -96,13 +96,14 @@ function l(window, document) {
 
 	var rAF = (function(){
 		var running, waiting;
-		var fns = [];
+		var firstFns = [];
 		var secondFns = [];
+		var fns = firstFns;
 
 		var run = function(){
 			var runFns = fns;
 
-			fns = secondFns;
+			fns = firstFns.length ? secondFns : firstFns;
 
 			running = true;
 			waiting = false;
@@ -448,7 +449,7 @@ function l(window, document) {
 			removeClass(elem, lazySizesConfig.lazyClass);
 
 			rAF(function(){
-				if( !firesLoad || elem.complete ){
+				if( !firesLoad || (elem.complete && elem.naturalWidth > 1)){
 					if(firesLoad){
 						resetPreloading(event);
 					} else {
