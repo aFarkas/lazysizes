@@ -458,7 +458,7 @@ lazySizes.init();
 **lazysizes** supports all browsers, that support [``document.getElementsByClassName``](http://caniuse.com/#feat=getelementsbyclassname) (== all browsers but not IE8-). In case you need to support IE8, see also the [noscript extension](plugins/noscript/README.md#ie8) (or use a modified noscript pattern or the LQIP pattern).
 
 ##Contributing
-Fixes, PRs and issues are always welcome, make sure to create a new branch from the **master** (not the gh-pages branch), validate against JShint and test in all browsers. In case of an API/documentation change make sure to also document it here in the readme.md.
+Fixes, PRs and issues are always welcome, make sure to create a new branch from the **master** (not the gh-pages branch), validate against JSHint and test in all browsers. In case of an API/documentation change make sure to also document it here in the readme.md.
 
 ##<a name="plugins"></a>Available plugins in this repo
 It is recommended to concat all plugins together with lazySizes. In case you don't concat it is recommended to include the plugin scripts *before* the lazySizes main script.
@@ -692,7 +692,7 @@ But in a world of responsive retina optimized images on the one hand and JS widg
 
 **lazysizes** is different:
 
-Due to the fact, that it is designed to be invoked with a high frequency and therefore works highly efficient, it was possible to hook into all kinds of events as a mutationobserver meaning this lazyloader works as a simple drop in solution - you simply write/render your markup and no matter whether the ``.lazyload`` element was added by AJAX or revealed by a JS or CSS animation it will be picked up by **layzsizes**.
+Due to the fact, that it is designed to be invoked with a high frequency and therefore works highly efficient, it was possible to hook into all kinds of events as a mutationobserver meaning this lazyloader works as a simple drop in solution - you simply write/render your markup and no matter whether the ``.lazyload`` element was added by AJAX or revealed by a JS or CSS animation it will be picked up by **lazysizes**.
 
 ```html
 <!-- responsive example: -->
