@@ -60,5 +60,8 @@
     "imager.js",
     "picturefill",
     "component"
-  ]
+  ],
+  "scripts": {
+  	"test": "grunt qunit"
+  }
 }
