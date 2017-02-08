@@ -29,7 +29,7 @@ For background images, use data-bg attribute:
 	var uniqueUrls = {};
 
 	if(document.addEventListener){
-		regBgUrlEscape = /\(|\)|'/;
+		regBgUrlEscape = /\(|\)|\s|'/;
 
 		bgLoad = function (url, cb){
 			var img = document.createElement('img');
