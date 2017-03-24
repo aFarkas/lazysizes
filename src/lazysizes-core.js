@@ -235,7 +235,7 @@ function l(window, document) {
 		var regImg = /^img$/i;
 		var regIframe = /^iframe$/i;
 
-		var supportScroll = ('onscroll' in window) && !(/glebot/.test(navigator.userAgent));
+		var supportScroll = ('onscroll' in window) && !(/glebot/.test(navigator.userAgent)) && !('operamini' in window);
 
 		var shrinkExpand = 0;
 		var currentExpand = 0;
