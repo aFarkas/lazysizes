@@ -1,10 +1,10 @@
-#lazysizes
+# lazysizes
 
 **lazysizes** is a fast (jank-free), SEO-friendly and self-initializing lazyloader for images (including responsive images ``picture``/``srcset``), iframes, scripts/widgets and much more. It also prioritizes resources by differentiating between crucial in view and near view elements to make perceived performance even faster.
 
 It may become also your number one tool to integrate responsive images. It can automatically calculate the ``sizes`` attribute for your responsive images, it allows you to share media queries for your ``media`` attributes with your CSS, helping to separate layout (CSS) from content/structure (HTML) and it makes integrating responsive images into any environment really simple. It also includes a set of optional plugins to further extend its functionality.
 
-##How to
+## How to
 
 1. Download the [lazysizes.min.js script](http://afarkas.github.io/lazysizes/lazysizes.min.js) and include **lazysizes** in your webpage. (Or install via npm: ``npm install lazysizes --save`` or bower ``bower install lazysizes --save``)
 
@@ -19,6 +19,7 @@ It may become also your number one tool to integrate responsive images. It can a
     <!-- non-responsive: -->
     <img data-src="image.jpg" class="lazyload" />
     ```
+
     ```html
     <!-- responsive example with automatic sizes calculation: -->
     <img
@@ -28,6 +29,7 @@ It may become also your number one tool to integrate responsive images. It can a
         image2.jpg 600w,
         image3.jpg 900w" class="lazyload" />
     ```
+
     ```html
     <!-- iframe example -->
     <iframe frameborder="0"
@@ -41,11 +43,11 @@ It may become also your number one tool to integrate responsive images. It can a
 ##[Demo with code examples](http://afarkas.github.io/lazysizes/#examples)
 Can be seen [here](http://afarkas.github.io/lazysizes/#examples)
 
-##Responsive image support (picture and/or srcset)
+## Responsive image support (picture and/or srcset)
 
 Lazysizes is built upon the Responsive image standard and extends it with additional functionality. For full cross browser responsive image support you must use either a full polyfill like [picturefill](https://github.com/scottjehl/picturefill) or use the extreme lightweight partial [respimg polyfill plugin](plugins/respimg) or the [responsive image on demand plugin](plugins/rias). Alternatively you can simply define a fallback src via the ``data-src`` attribute. If you want to learn more about the responsive image syntax read "[The anatomy of responsive images](https://jakearchibald.com/2015/anatomy-of-responsive-images/)".
 
-##What makes lazysizes so awesome:
+## What makes lazysizes so awesome:
 **lazysizes** is different than other lazy image loaders.
 
 1. **Detects any visibility changes on current and future lazyload elements in any web environment automatically**: The script works as an universal, self-initializing, self-configuring and self-destroying component and detects any changes to the visibility of any current and future image/iframe elements automatically no matter whether it becomes visible through a user scroll, a CSS animation triggered through ``:hover`` or through any kind of JS behavior (carousel, slider, infinite scroll, masonry, isotope/filtering/sorting, AJAX, SPAs...). It also works automatically in conjunction with any kind of JS-/CSS-/Frontend-Framework (jQuery mobile, Bootstrap, Backbone, Angular, React, Ember (see also the [attrchange/re-initialization extension](plugins/attrchange))).
@@ -57,10 +59,10 @@ Lazysizes is built upon the Responsive image standard and extends it with additi
 7. **Lightweight, but mature solution**: lazysizes has the right balance between a lightweight and a fast, reliable solution
 8. **SEO improved**: lazysizes does not hide images/assets from google. No matter what markup pattern you use.
 
-##More about the API
+## More about the API
 **lazysizes** comes with a simple markup and JS API. Normally you will only need to use the markup API.
 
-###Markup API
+### Markup API
 Add the ``class`` ``lazyload`` to all ``img`` and ``iframe`` elements, which should be loaded lazy. *Instead* of a ``src`` or ``srcset`` attribute use a ``data-src`` or ``data-srcset`` attribute:
 
 ```html
@@ -86,11 +88,11 @@ The width auto-calculated by lazysizes can be modified using the ``lazybeforesiz
 
 The ``data-sizes="auto"`` feature only makes sense if you use the ``data-srcset`` attribute with *width* descriptors which allows the most appropriate image can be selected (It does not make sense if you use the x descriptor or only ``src``.).
 
-##Recommended/possible markup patterns
+## Recommended/possible markup patterns
 
 lazysizes allows you to write an endless variety of different markup patterns. Find your own/best pattern or choose one of the following. (All of the following patterns can be also used for art direction using the ``picture`` element.)
 
-###Simple pattern
+### Simple pattern
 
 Add the class ``lazyload`` and simply omit the ``src`` attribute  or add a data uri as fallback ``src``.
 
@@ -115,7 +117,7 @@ Add the class ``lazyload`` and simply omit the ``src`` attribute  or add a data 
 
 Note: In case you are using either ``srcset``/``data-srcset`` or ``picture``, we recommend to extend this pattern with either a ``data-src`` (see next pattern: "Combine ``data-srcset`` with ``data-src``") or with a suitable ``src`` attribute (see:  "modern pattern" or "LQIP").
 
-###Combine ``data-srcset`` with ``data-src``
+### Combine ``data-srcset`` with ``data-src``
 
 In case you want to use responsive images for supporting browsers, but don't want to include a polyfill, simply combine your ``data-srcset`` with a ``data-src`` attribute.
 
@@ -134,7 +136,7 @@ In case you want to use responsive images for supporting browsers, but don't wan
 
 Note: Due to the fact that the ``data-src`` will also be picked up by "Read-Later" Apps and other tools (for example Pin it button), this pattern also makes sense if you use a polyfill. In case you don't use a polyfill it is recommended that the first image candidate matches the fallback `src`.
 
-###LQIP/blurry image placeholder/Blur up image technique
+### LQIP/blurry image placeholder/Blur up image technique
 If you are using the LQIP (Low Quality Image Placeholder) pattern, simply add a low quality image as the ``src``:
 
 ```html
@@ -190,7 +192,7 @@ The LQIP technique can be enhanced by combining it with CSS transitions/animatio
 ```
 
 
-###modern transparent ``srcset`` pattern
+### modern transparent ``srcset`` pattern
 
 Combine a normal ``src`` attribute with a transparent or low quality image as ``srcset`` value and a ``data-srcset`` attribute. This way modern browsers will lazy load without loading the ``src`` attribute and all others will simply fallback to the initial ``src`` attribute (without lazyload). (This nice pattern originated from @ivopetkov.)
 
@@ -208,7 +210,7 @@ Combine a normal ``src`` attribute with a transparent or low quality image as ``
 
 Note: It is recommended that the first image candidate in ``data-srcset`` matches the ``src`` fallback image. (See also [#150](https://github.com/aFarkas/lazysizes/issues/150).)
 
-###The noscript pattern
+### The noscript pattern
 
 In case disabled JavaScript is a concern you can combine this simple pattern with an image inside a ``noscript`` element.
 
@@ -228,7 +230,7 @@ In case disabled JavaScript is a concern you can combine this simple pattern wit
 
 Note: As an alternative to the noscript pattern also checkout the [noscript extension](plugins/noscript).
 
-###[data-expand] attribute
+### [data-expand] attribute
 Normally lazysizes will expand the viewport area to lazy preload images/iframes which might become visible soon. This value can be adjusted using the ``expand`` option.
 
 Additionally this general option can be overridden with the ``data-expand`` attribute for each element. Different than the general ``expand`` option the ``data-expand`` attribute also accepts negative values (All numbers but ``0`` are accepted!).
@@ -255,7 +257,7 @@ This becomes especially handy to add unveiling effects for teasers or other elem
 </div>
 ```
 
-###CSS API
+### CSS API
 lazysizes adds the class ``lazyloading`` while the images are loading and the class ``lazyloaded`` as soon as the image is loaded. This can be used to add unveil effects:
 
 ```css
@@ -285,10 +287,10 @@ lazysizes adds the class ``lazyloading`` while the images are loading and the cl
 ```
 
 
-###JS API
+### JS API
 **lazysizes** automatically detects new elements with the class ``lazyload`` so you won't need to call or configure anything in most situations.
 
-####JS API - options
+#### JS API - options
 Options can be set by declaring a global configuration option object named ``lazySizesConfig``. This object must be defined before the lazysizes script. A basic example:
 
 ```js
@@ -354,7 +356,7 @@ window.lazySizesConfig.customMedia = {
 * ``lazySizesConfig.loadMode`` (default: ``2``): The ``loadMode`` can be used to constrain the allowed loading mode. Possible values are 0 = don't load anything, 1 = only load visible elements, 2 = load also very near view elements (``expand`` option) and 3 = load also not so near view elements (``expand`` * ``expFactor`` option). This value is automatically set to ``3`` after onload. Change this value to ``1`` if you (also) optimize for the onload event or change it to ``3`` if your onload event is already heavily delayed.
 * ``lazySizesConfig.init`` (default: ``true``): By default lazysizes initializes itself, to load in view assets as soon as possible. In the unlikely case you need to setup/configure something with a later script you can set this option to ``false`` and call ``lazySizes.init();`` later explicitly.
 
-####JS API - events
+#### JS API - events
 **lazysizes** provides two events to modify or extend the behavior of **lazysizes**.
 
 * ``lazybeforeunveil``: This event will be fired on each lazyload element right before of the "unveil" transformation. This event can be used to extend the unveil functionality. In case the event is ``defaultPrevented`` the default transformation action will be prevented (see also the [ls.unveilhooks.js plugin](plugins/unveilhooks/ls.unveilhooks.js)):
@@ -414,7 +416,7 @@ $(document).on('lazybeforesizes', function(e){
 });
 ```
 
-####JS API - methods
+#### JS API - methods
 #####``lazySizes.loader.unveil(DOMNode)``
 
 In case a developer wants to show an image even if it is not inside the viewport the ``lazySizes.loader.unveil(DOMNode)`` can be called:
@@ -454,67 +456,67 @@ lazySizes.init();
 </script>
 ```
 
-##Browser Support
+## Browser Support
 **lazysizes** supports all browsers, that support [``document.getElementsByClassName``](http://caniuse.com/#feat=getelementsbyclassname) (== all browsers but not IE8-). In case you need to support IE8, see also the [noscript extension](plugins/noscript/README.md#ie8) (or use a modified noscript pattern or the LQIP pattern).
 
-##Contributing
+## Contributing
 Fixes, PRs and issues are always welcome, make sure to create a new branch from the **master** (not the gh-pages branch), validate against JSHint and test in all browsers. In case of an API/documentation change make sure to also document it here in the readme.md.
 
-##<a name="plugins"></a>Available plugins in this repo
+## <a name="plugins"></a>Available plugins in this repo
 It is recommended to concat all plugins together with lazySizes. In case you don't concat it is recommended to include the plugin scripts *before* the lazySizes main script.
 
-###[respimg polyfill plugin](plugins/respimg)
+### [respimg polyfill plugin](plugins/respimg)
 
 The respimg polyfill plugin is an extremely lightweight alternate polyfill for the most important subsets of responsive images (srcset and picture).
 
-###[OPTIMUMX plugin](plugins/optimumx)
+### [OPTIMUMX plugin](plugins/optimumx)
 The ``srcset`` attribute with the *w* descriptor and ``sizes`` attribute automatically also includes high DPI images. But each image has a different optimal pixel density, which might be lower (for example 1.5x) than the pixel density of your device (2x or 3x). This information is unknown to the browser and therefore can't be optimized for. The [lazySizes optimumx extension](plugins/optimumx) gives you more control to trade between perceived quality vs. perceived performance.
 
-###[object-fit extension](plugins/object-fit)
+### [object-fit extension](plugins/object-fit)
 The [object fit plugin](plugins/object-fit) polyfills the `object-fit` and the `object-position` property in non supporting browsers.
 
-###[unveilhooks plugin](plugins/unveilhooks)
+### [unveilhooks plugin](plugins/unveilhooks)
 The [unveilhooks plugin](plugins/unveilhooks) plugin enables lazySizes to lazyload background images, widgets/components/scripts, styles and video/audio elements.
 
-###[include plugin](plugins/include)
+### [include plugin](plugins/include)
 The [include plugin](plugins/include) plugin enables lazySizes to lazyload content, styles or AMD modules either simply postponed or conditionally (for example matching certain media queries). This extension also heavily simplifies the architecture of conditional, dynamically changing responsive behavior and has great scalability.
 
-###[bgset plugin - lazy responsive background-image](plugins/bgset)
+### [bgset plugin - lazy responsive background-image](plugins/bgset)
 The bgset plugin allows lazyloading of multiple background images with different resolutions/sizes and/or media queries (responsive background images). In case you only need one image use the unveilhooks extension.
 
-###[lazysizes custommedia extension](plugins/custommedia)
+### [lazysizes custommedia extension](plugins/custommedia)
 [lazySizes custommedia extension](plugins/custommedia) allows you to automatically sync and manage your breakpoints between your CSS and the ``media`` attributes of your ``"picture > source"`` elements using the ``customMedia`` option of lazySizes.
 
-###[attrchange / re-initialization extension](plugins/attrchange)
+### [attrchange / re-initialization extension](plugins/attrchange)
 In case you are changing the ``data-src``/``data-srcset`` attributes of already transformed lazyload elements, you must normally also re-add the ``lazyload`` class to the element.
 
 This [attrchange / re-initialization extension](plugins/attrchange) automatically detects changes to your ``data-*`` attributes and adds the class for you.
 
-###[parent-fit extension](plugins/parent-fit)
+### [parent-fit extension](plugins/parent-fit)
 The [parent fit plugin](plugins/parent-fit) extends the ``data-sizes="auto"`` feature to also calculate the right ``sizes`` for ``object-fit: contain|cover`` image elements and other **height** ( and width) constrained image elements in general.
 
-###[unload extension](plugins/unload)
+### [unload extension](plugins/unload)
 The [unload](plugins/unload) extends lazysizes to unload not in view images to improve memory consumption and orientationchange/resize performance.
 
-###[noscript extension](plugins/noscript)
+### [noscript extension](plugins/noscript)
 The [noscript extension](plugins/noscript) is the ultimate progressive enhancement extension for lazySizes. It allows you to transform any HTML inside a ``noscript`` element as soon as it becomes visible.
 
-###[aspectratio extension](plugins/aspectratio)
+### [aspectratio extension](plugins/aspectratio)
 The [aspectratio extension](plugins/aspectratio) allows you to control the aspectratio of your images using markup instead of CSS. It is an alternative for the [CSS intrinsic ratio technique](#specify-dimensions).
 
-###[print plugin](plugins/print)
+### [print plugin](plugins/print)
 The [print plugin](plugins/print) plugin enables lazySizes to unveil all elements as soon as the user starts to print. (Or set ``lazySizesConfig.preloadAfterLoad`` to ``true``).
 
-###[progressive plugin](plugins/progressive)
+### [progressive plugin](plugins/progressive)
 The [progressive plugin](plugins/progressive) adds better support for rendering progressive jpgs/pngs.
 
-###[RIaS plugin - (Responsive Images as a Service / Responsive image on demand)](plugins/rias)
+### [RIaS plugin - (Responsive Images as a Service / Responsive image on demand)](plugins/rias)
 The [RIaS plugin is a neat full responsive images solution](plugins/rias) without the need of any additional plugins/polyfills.
 
 It enables lazySizes to generate the best suitable image source based on an URL pattern. It works with pre-build images (i.e. grunt-responsive-images) as also with any third party (ReSrc, Pixtulate, mobify, WURFL's Image Tailor ...) or self hosted restful responsive image service (responsive image on demand). It makes responsive images even more easier without any need for another third party script.
 
 
-##<a name="specify-dimensions"></a>Tip: Specifying image dimensions (minimizing reflows and avoiding page jumps)
+## <a name="specify-dimensions"></a>Tip: Specifying image dimensions (minimizing reflows and avoiding page jumps)
 To minimize reflows, content jumping or unpredictable behavior with some other JS widgets (isotope, masonry, some sliders/carousels...) the width **and** the height of an image should be calculable by the browser before the image source itself is loaded. For "static" images this can be done using either CSS or using the content attributes:
 
 ```html
@@ -658,7 +660,7 @@ or at least add a ``min-height`` (and ``min-width``) to minimize content jumps:
 * If you use the "unknown intrinsic ratio pattern" and the width of the loaded image will not (approximately) match the width of its container, the ``data-sizes="auto"`` feature will not be effective when used on its own. In this situation the most appropriate size for the image to fit in the available space can be calculated automatically using the [parent fit plugin](plugins/parent-fit).
 * see also the [aspectratio extension](plugins/aspectratio) for an alternative way to add aspectratio.
 
-###Updating layout of JS widgets
+### Updating layout of JS widgets
 In case you can't specify the image dimensions using CSS or one of the above suggested methods and your JS widgets have problems to calculate the right dimensions. You can use the following pattern to update your JS widgets (sliders/masonry):
 
 ```js
@@ -678,14 +680,14 @@ $('.my-widget').each(function(){
 
 For this update pattern you may want to combine this at least with the ``min-height`` pattern explained above.
 
-##<a id="include-early"></a>Tip: Where/How to include lazySizes
+## <a id="include-early"></a>Tip: Where/How to include lazySizes
 While lazy loading is a great feature, it is important for users that crucial in view images are loaded as fast as possible. (Most users start to interact with a page after in view images are loaded.)
 
 In case you normally combine all your scripts into one large script and add this to the bottom of your page, it can be better for perceived performance to generate two or sometimes more script packages: One small package, which includes all scripts which have heavy influence on the content or the UI and another larger one which includes the normal behavior of the page.
 
 This smaller script, which should include lazySizes (and all its plugins), should than be placed **before** any other blocking elements (i.e.: script(s)) at the end of the body or after any blocking elements (i.e.: scripts, stylesheets) in the head to load the crucial content as fast possible. (Note: It might make also sense to call `lazySizes.init();` explicitly right after lazySizes and all its plugins are added.)
 
-##Why lazysizes
+## Why lazysizes
 In the past I often struggled using lazy image loaders, because the "main check function" is called repeatedly and with a high frequency. Which makes it hard to fulfill two purposes runtime and memory efficiency. And looking into the source code of most so called lazy loaders often also unveils lazy developers...
 
 But in a world of responsive retina optimized images on the one hand and JS widgets like carousels or tabs (a lot of initially hidden images) on the other hand lazy loading images becomes more and more important, so I created this project.
