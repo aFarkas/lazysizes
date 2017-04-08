@@ -370,7 +370,7 @@ function l(window, document) {
 		};
 
 		var handleSources = function(source){
-			var customMedia, parent;
+			var customMedia;
 
 			var sourceSrcset = source[_getAttribute](lazySizesConfig.srcsetAttr);
 
@@ -380,13 +380,6 @@ function l(window, document) {
 
 			if(sourceSrcset){
 				source.setAttribute('srcset', sourceSrcset);
-			}
-
-			//https://bugzilla.mozilla.org/show_bug.cgi?id=1170572
-			if(customMedia){
-				parent = source.parentNode;
-				parent.insertBefore(source.cloneNode(), source);
-				parent.removeChild(source);
 			}
 		};
 
