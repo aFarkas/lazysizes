@@ -1,4 +1,4 @@
-#lazysizes bgset extension - responsive background images
+# lazysizes bgset extension - responsive background images
 
 This simple and small plugin allows you to define multiple background images with a width descriptor, similar to how ``img[srcset]`` works as also art directed images using media queries, similar to how ``picture`` works.
 

@@ -1,4 +1,4 @@
-#lazysizes plugins/extensions/snippets
+# lazysizes plugins/extensions/snippets
 
 **lazysizes** works out of the box with standard and responsive images (``src``, ``srcset`` and ``picture``) and iframes.
 

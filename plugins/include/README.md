@@ -1,4 +1,4 @@
-#lazysizes include plugin
+# lazysizes include plugin
 
 **lazysizes** include extension/plugin asynchronously include non crucial content, styles or JS modules. Due to lazyloading, prioritized queuing and preload after load techniques lazySizes include extension scales much better than similar other solutions.
 
@@ -11,7 +11,7 @@ Typical use cases are:
 * clean and simple architecture for initialization/loading and/or destroying/unloading of (conditional) JS behaviors
 * deferred self-initializing of DOM behaviors
 
-##Basic usage
+## Basic usage
 
 Put a ``data-include`` attribute on your ``.lazyload`` element and reference the URL to load:
 
@@ -30,7 +30,7 @@ The ``data-include`` can also consume a list of candidates represented by a URL 
 
 The condition is either a media query or the name of a configured condition rule. The condition rule can be configured through CSS or through JS via the ``include.conditions`` option.
 
-###Condition configuration through CSS
+### Condition configuration through CSS
 
 The Lazysizes include extension checks wether the condition name matches the CSS ``content`` value the of ``:after`` or ``:before`` pseudo elements from the ``html`` element (can be configured).
 
@@ -59,7 +59,7 @@ html:after {
 </div>
 ```
 
-###Condition configuration through JS
+### Condition configuration through JS
 
 A condition can also be configured through the ``lazySizesConfig.include.conditions`` option map. Each key is either a string representing a media query or a function:
 
@@ -104,7 +104,7 @@ document.addEventListener('lazyincluded', function(e){
 </div>
 ```
 
-###Loading Styles or (AMD) Modules
+### Loading Styles or (AMD) Modules
 
 The include feature can also load CSS, AMD or ES6 modules. To mark an URL as CSS put a ``css:``, to load an AMD module put a ``amd:`` or to load an ES6 module put a ``module:`` identifier in front of the URL:
 
@@ -127,7 +127,7 @@ Content, Style and AMD includes can also be mixed and used with or without condi
 
 In case content and a behavior include is used together lazySizes will load them in parallel but makes sure to first include the content and then initialize the behavior. 
 
-####AMD/ES6 module features
+#### AMD/ES6 module features
 
 While you can write your AMD/ES6 module how you want lazysizes include extension will check wether your module provides the following methods:
 
@@ -205,7 +205,7 @@ In case the content doesn't contain any mutable states, that need to be transfer
 
 The data object is shared between the ``lazyunload``, ``lazytransform`` and ``lazyload`` so that a possible state can be transferred.
 
-####Loading multiple styles and modules
+#### Loading multiple styles and modules
 
 Multiple styles or AMD modules for one candidate can be configured by separating them with ``|,|`` signs:
 
@@ -217,7 +217,7 @@ Multiple styles or AMD modules for one candidate can be configured by separating
 </div>
 ```
 
-###Scalability and queue priority
+### Scalability and queue priority
 
 The include feature will always use a download queue to make sure, that multiple includes do not jam the browsers own request queue. In case of many non crucial includes mixed with some crucial includes on one page the ``data-lazyqueue`` attribute can be used to add a queue priority for the include extension:
 
@@ -252,16 +252,16 @@ The include feature will always use a download queue to make sure, that multiple
 </div>
 ```
 
-###Events
+### Events
 
 * ``lazyincludeload`` is a cancelable event fired at the element before the request is started. The ``event.detail`` object can be used to modify the XHR request.
 * ``lazyincludeloaded`` is a cancelable event fired at the element after the request is complete, but before the content is added. The ``event.detail.content`` property can be used to modify the content (for example to transform JSON to HTML).
 * ``lazyincluded`` is an event fired at the element right after the HTML was injected.
 
-###Options
+### Options
 All include options are configurable through the ``lazySizesConfig.include`` option object:
 
-####``contentElement`` (default: ``"html"``):
+#### ``contentElement`` (default: ``"html"``):
 
 The selector of the element, which should be used to check for the CSS content value:
 
@@ -274,7 +274,7 @@ window.lazySizesConfig = {
 };
 ```
 
-####``conditions`` option (default: ``{}``):
+#### ``conditions`` option (default: ``{}``):
 The conditions option can be used to create new custom conditions.
 
 ```js
@@ -291,7 +291,7 @@ window.lazySizesConfig = {
 };
 ```
 
-####``map`` option (default: ``{}``):
+#### ``map`` option (default: ``{}``):
 
 The ``map`` option allows to map the value of the ``data-include`` attribute to another string. This does not only work for the hole value, but also for parsed parts.
 
@@ -317,7 +317,7 @@ This option becomes useful to separate content from behavior.
 
 The include feature works together with all normal lazySizes options (i.e.: ``addClasses`` for load indicators), events and methods.
 
-##Reacting to user interaction
+## Reacting to user interaction
 
 Of course it is also possible to react to a user interaction.
 
@@ -366,7 +366,7 @@ $(document).on('click', '.load-include', function(){
 </script>
 ```
 
-##Sharing States between two modules
+## Sharing States between two modules
 
 
 ```html

@@ -1,4 +1,4 @@
-#lazysizes optimumx plugin
+# lazysizes optimumx plugin
 
 **lazysizes** optimumx plugin helps you to limit/constrain the maximum resolution in case the **w descriptor** is used. Simply add the attribute ``data-optimumx="1.6"`` to constrain the max resolution to 1.6.
 
@@ -21,7 +21,7 @@ This plugin depends on the ``data-sizes="auto"`` feature of **lazysizes**.
 
 A **simple [demo can be seen here](http://afarkas.github.io/lazysizes/optimumx/)**. This extension also supports art-directed responsive images using the ``picture`` element.
 
-##Usage
+## Usage
 
 ```html
 <!-- concat the following scripts into one and add them to your HTML -->
@@ -76,7 +76,7 @@ In case you want to use a CDN you can use the combohandler service provided by j
 <script src="http://cdn.jsdelivr.net/g/lazysizes(lazysizes.min.js+plugins/optimumx/ls.optimumx.min.js)" async=""></script>
 ```
 
-###The ``getOptimumX`` option callback
+### The ``getOptimumX`` option callback
 
 Normally the image specific optimal pixel density should be added as a floating point number using the ``data-optimumx`` attribute. Additionally it is also possible to add the ``"auto"`` keyword as a value of the ``data-optimumx`` attribute. In that case the ``getOptimumX`` option callback is invoked with the element as the first argument.
 
@@ -117,7 +117,7 @@ window.lazySizesConfig.config.getOptimumX = function(/*element*/){
 };
 ```
 
-##<a name="compressive-picture-pattern"></a>Background information: Compressive picture pattern
+## <a name="compressive-picture-pattern"></a>Background information: Compressive picture pattern
 
 From a perceived performance vs. perceived quality standpoint the best way to deal with High DPI images is to serve higher compressed candidates to clients with high resolution displays.
 
@@ -173,7 +173,7 @@ Unfortunately these techniques also double or even triple (think 1x: 65-85q, 2x:
 
 But be aware each image has different characteristics: While some images look great on a HIGH DPI device even with a ``data-optimumx="1.2"`` other will need a much higher density for a good perceived quality.
 
-##<a name="lying-sizes"></a>Background information: Lying sizes attribute
+## <a name="lying-sizes"></a>Background information: Lying sizes attribute
 
 There is also another much more lightweight way to get a similar effect. Instead of parsing and constraining the ``srcset`` to meet the ``data-optimumx`` constraint, there is also the possibility to modify the ``sizes`` attribute instead.
 

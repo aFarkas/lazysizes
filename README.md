@@ -40,7 +40,7 @@ It may become also your number one tool to integrate responsive images. It can a
     ```
 
 
-##[Demo with code examples](http://afarkas.github.io/lazysizes/#examples)
+## [Demo with code examples](http://afarkas.github.io/lazysizes/#examples)
 Can be seen [here](http://afarkas.github.io/lazysizes/#examples)
 
 ## Responsive image support (picture and/or srcset)
@@ -417,7 +417,7 @@ $(document).on('lazybeforesizes', function(e){
 ```
 
 #### JS API - methods
-#####``lazySizes.loader.unveil(DOMNode)``
+##### ``lazySizes.loader.unveil(DOMNode)``
 
 In case a developer wants to show an image even if it is not inside the viewport the ``lazySizes.loader.unveil(DOMNode)`` can be called:
 
@@ -427,7 +427,7 @@ lazySizes.loader.unveil(imgElem);
 
 Note: As a more lazy alternative the ``lazypreload`` class can be set: ``$(imgElem).addClass('lazypreload');``.
 
-#####``lazySizes.autoSizer.checkElems()``
+##### ``lazySizes.autoSizer.checkElems()``
 
 In case one or more image elements with the attribute ``data-sizes="auto"`` have changed in size ``lazySizes.autoSizer.updateElems`` can be called (For example to implement element queries):
 
@@ -435,11 +435,11 @@ In case one or more image elements with the attribute ``data-sizes="auto"`` have
 lazySizes.autoSizer.checkElems();
 ```
 
-#####``lazySizes.loader.checkElems()``
+##### ``lazySizes.loader.checkElems()``
 
 Tests whether new elements has came into view. Normally this method only needs to be called, if ``lazySizesConfig.loadMode`` was set to ``0``.
 
-#####``lazySizes.init()``
+##### ``lazySizes.init()``
 
 LazySizes initializes itself automatically. In case you set ``lazySizesConfig.init`` to ``false`` you need to explicitly call ``lazySizes.init()``. Note: You can speed up initial loading of in view images if you call `lazySizesConfig.init()` explicitly after lazysizes and all plugins are loaded.
 
