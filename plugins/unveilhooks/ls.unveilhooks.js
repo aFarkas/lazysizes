@@ -22,7 +22,16 @@ For background images, use data-bg attribute:
  <div class="lazyload" data-require="module-name"></div>
 */
 
-(function(window, document){
+(function(window, factory) {
+	factory = factory.bind(null, window, window.document);
+	if(typeof module == 'object' && module.exports){
+		factory(require('lazysizes'));
+	} else if (typeof define == 'function' && define.amd) {
+		require(['lazysizes'], factory);
+	} else {
+		factory(window.lazySizes);
+	}
+}(window, function(window, document, lazySizes) {
 	/*jshint eqnull:true */
 	'use strict';
 	var bgLoad, regBgUrlEscape;
@@ -125,4 +134,4 @@ For background images, use data-bg attribute:
 		uniqueUrls[elem.src || elem.href] = true;
 		insertElem.parentNode.insertBefore(elem, insertElem);
 	}
-})(window, document);
+}));

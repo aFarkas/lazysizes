@@ -1,4 +1,13 @@
-(function(window, document){
+(function(window, factory) {
+	factory = factory.bind(null, window, window.document);
+	if(typeof module == 'object' && module.exports){
+		factory(require('lazysizes'));
+	} else if (typeof define == 'function' && define.amd) {
+		require(['lazysizes'], factory);
+	} else {
+		factory(window.lazySizes);
+	}
+}(window, function(window, document, lazySizes) {
 	'use strict';
 
 	if(!window.addEventListener){return;}
@@ -24,25 +33,9 @@
 		return matchesMedia(media);
 	};
 
-	var addClass = function(elem, className){
-		if($){
-			$(elem).addClass(className);
-		} else if(window.lazySizes){
-			lazySizes.aC(elem, className);
-		} else {
-			elem.classList.add(className);
-		}
-	};
-
-	var removeClass = function(elem, className){
-		if($){
-			$(elem).removeClass(className);
-		} else if(window.lazySizes){
-			lazySizes.rC(elem, className);
-		} else {
-			elem.classList.remove(className);
-		}
-	};
+	var addClass = lazySizes.aC;
+	var removeClass = lazySizes.rC;
+	var lazySizesConfig = lazySizes.cfg;
 
 	function AspectRatio(){
 		this.ratioElems = document.getElementsByClassName('lazyaspectratio');
@@ -117,7 +110,7 @@
 				for(i = 0, len = sources.length; i < len; i++){
 					customMedia = sources[i].getAttribute('data-media') || sources[i].getAttribute('media');
 
-					if(window.lazySizesConfig && lazySizesConfig.customMedia[customMedia]){
+					if(lazySizesConfig.customMedia[customMedia]){
 						customMedia = lazySizesConfig.customMedia[customMedia];
 					}
 
@@ -206,4 +199,4 @@
 		define(imageRatio);
 	}
 
-})(window, document);
+}));

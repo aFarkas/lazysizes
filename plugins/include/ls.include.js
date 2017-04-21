@@ -2,7 +2,16 @@
  This plugin extends lazySizes to lazyLoad and/or conditionally load content
  */
 
-(function(window, document){
+(function(window, factory) {
+	factory = factory.bind(null, window, window.document);
+	if(typeof module == 'object' && module.exports){
+		factory(require('lazysizes'));
+	} else if (typeof define == 'function' && define.amd) {
+		require(['lazysizes'], factory);
+	} else {
+		factory(window.lazySizes);
+	}
+}(window, function(window, document, lazySizes) {
 	/*jshint eqnull:true */
 	'use strict';
 
@@ -110,7 +119,7 @@
 		};
 	})();
 
-	config = (window.lazySizes && lazySizes.cfg) || window.lazySizesConfig;
+	config = (lazySizes && lazySizes.cfg) || window.lazySizesConfig;
 
 	if(!config){
 		config = {};
@@ -420,11 +429,7 @@
 			event = lazySizes.fire(elem, 'lazyincludeloaded', detail);
 
 			if(detail.insert && detail.isSuccess && !event.defaultPrevented && detail.content != null && detail.content != elem.innerHTML){
-				if(window.jQuery){
-					jQuery(elem).html(detail.content);
-				} else {
-					elem.innerHTML = detail.content;
-				}
+				elem.innerHTML = detail.content;
 			}
 
 			queue.d();
@@ -501,4 +506,4 @@
 	addEventListener('resize', refreshIncludes, false);
 	addEventListener('lazyrefreshincludes', refreshIncludes, false);
 
-})(window, document);
+}));

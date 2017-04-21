@@ -15,7 +15,16 @@
  	see a live demo here: http://afarkas.github.io/lazysizes/maxdpr/
  */
 
-(function(window, document, undefined){
+(function(window, factory) {
+	factory = factory.bind(null, window, window.document);
+	if(typeof module == 'object' && module.exports){
+		factory(require('lazysizes'));
+	} else if (typeof define == 'function' && define.amd) {
+		require(['lazysizes'], factory);
+	} else {
+		factory(window.lazySizes);
+	}
+}(window, function(window, document, lazySizes) {
 	/*jshint eqnull:true */
 	'use strict';
 	if(!window.addEventListener){return;}
@@ -192,7 +201,7 @@
 	};
 
 	var extentLazySizes = function(){
-		if(window.lazySizes && !window.lazySizes.getOptimumX){
+		if(lazySizes && !lazySizes.getOptimumX){
 			lazySizes.getX = getOptimumX;
 			lazySizes.pWS = parseWsrcset;
 			docElem.removeEventListener('lazybeforeunveil', extentLazySizes);
@@ -202,7 +211,7 @@
 	docElem.addEventListener('lazybeforeunveil', extentLazySizes);
 	setTimeout(extentLazySizes);
 
-	config = (window.lazySizes && lazySizes.cfg) || window.lazySizesConfig;
+	config = (lazySizes && lazySizes.cfg) || window.lazySizesConfig;
 
 	if(!config){
 		config = {};
@@ -253,4 +262,4 @@
 		}
 	});
 
-})(window, document);
+}));

@@ -4,14 +4,22 @@
  	content: '--small: (max-width: 500px) | --medium: (max-width: 1100px) | --large: (min-width: 1100px)';
  }
 */
-(function(window){
+(function(window, factory) {
+	factory = factory.bind(null, window, window.document);
+	if(typeof module == 'object' && module.exports){
+		factory(require('lazysizes'));
+	} else if (typeof define == 'function' && define.amd) {
+		require(['lazysizes'], factory);
+	} else {
+		factory(window.lazySizes);
+	}
+}(window, function(window, document, lazySizes) {
 	/*jshint eqnull:true */
 	'use strict';
 	var docElem = document.documentElement;
 
 	var create = function(){
-		if(!window.lazySizes || window.lazySizes.getCustomMedias){return;}
-		var lazySizes = window.lazySizes;
+		if(!lazySizes || lazySizes.getCustomMedias){return;}
 
 		lazySizes.getCustomMedias = (function(){
 			var regCleanPseudos = /['"]/g;
@@ -67,4 +75,4 @@
 		setTimeout(create);
 	}
 
-})(window);
+}));

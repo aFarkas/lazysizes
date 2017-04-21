@@ -1,8 +1,8 @@
 (function(window, factory) {
-	var lazySizes = factory(window, window.document);
-	window.lazySizes = lazySizes;
 	if(typeof module == 'object' && module.exports){
 		module.exports = lazySizes;
+	} else {
+		window.lazySizes = factory(window, window.document);
 	}
 }(window, function l(window, document) {
 	'use strict';

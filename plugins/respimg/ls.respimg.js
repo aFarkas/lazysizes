@@ -1,8 +1,17 @@
-(function(window, document, undefined){
+(function(window, factory) {
+	factory = factory.bind(null, window, window.document);
+	if(typeof module == 'object' && module.exports){
+		factory(require('lazysizes'));
+	} else if (typeof define == 'function' && define.amd) {
+		require(['lazysizes'], factory);
+	} else {
+		factory(window.lazySizes);
+	}
+}(window, function(window, document, lazySizes) {
 	/*jshint eqnull:true */
 	'use strict';
 	var polyfill;
-	var config = (window.lazySizes && lazySizes.cfg) || window.lazySizesConfig;
+	var config = (lazySizes && lazySizes.cfg) || window.lazySizesConfig;
 	var img = document.createElement('img');
 	var supportSrcset = ('sizes' in img) && ('srcset' in img);
 	var regHDesc = /\s+\d+h/g;
@@ -300,7 +309,7 @@
 		})();
 
 	}
-})(window, document);
+}));
 
 /**
  * Some versions of iOS (8.1-) do load the first candidate of a srcset candidate list, if width descriptors with the sizes attribute is used.
@@ -318,7 +327,16 @@
  * 	/>
  */
 
-(function(document){
+(function(window, factory) {
+	factory = factory.bind(null, window, window.document);
+	if(typeof module == 'object' && module.exports){
+		factory(require('lazysizes'));
+	} else if (typeof define == 'function' && define.amd) {
+		require(['lazysizes'], factory);
+	} else {
+		factory(window.lazySizes);
+	}
+}(window, function(window, document, lazySizes) {
 	'use strict';
 	var regPicture;
 	var img = document.createElement('img');
@@ -364,4 +382,4 @@
 			picture.insertBefore(source, elem);
 		});
 	}
-})(document);
+}));
