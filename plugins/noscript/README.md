@@ -1,8 +1,8 @@
-#lazysizes noscript/progressive enhancement extension
+# lazysizes noscript/progressive enhancement extension
 
 The noscript extension is the true ultimate progressive enhancement extension for lazySizes. It allows you to transform any HTML inside a ``noscript`` element as soon as it becomes visible.
 
-##Markup
+## Markup
 
 The ``lazyload`` class has to be added to the parent element of the ``noscript`` element and this element has to also have a ``data-noscript`` attribute. As soon as it is near the viewport the content of the ``noscript`` element will replace the content of the ``.lazyload`  element.
 
@@ -47,7 +47,7 @@ The ``lazyload`` class has to be added to the parent element of the ``noscript``
 
 **Important note**: While you also can transform responsive images with this plugin, neither the ``data-sizes`` nor the ``customMedia`` features do work with the ``noscript`` extension. Also note: Android 2.x is not supported with this plugin.
 
-##Troubleshooting: Escaped HTML entities
+## Troubleshooting: Escaped HTML entities
 Normally the content of a ``noscript`` must be retrieved as text. But in some cases for example, if the ``noscript`` element was created in a XML documented/context, it must be retrieved as HTML. This can't be automatically detected.
 
 In case this happens, you can fix this either by making sure that ``noscript`` elements are always created in a *text/html* context or by overriding the ``getNoscriptContent`` option callback:
@@ -60,7 +60,7 @@ window.lazySizesConfig.getNoscriptContent =  function(noScript){
 };
 ```
 
-##<a name="ie8"></a>Add IE8- support with conditional comments
+## <a name="ie8"></a>Add IE8- support with conditional comments
 The noscript extension can also be used in conjunction with conditional comments to add progressive enhancement support for IE8-:
 
 ```html

@@ -1,10 +1,10 @@
-#lazySizes object fit extension
+# lazySizes object fit extension
 
 This extension polyfills `object-fit`: `cover` and `contain` properties as also the `object-position` in non supporting browsers. Here you find a [simple demo](https://jsfiddle.net/trixta/x2p17f31/).
 
-##Usage
+## Usage
 
-###Include JS files:
+### Include JS files:
 Include lazysizes and lazysizes object fit and optionally lazysizes parent-fit and lazysizes respimg plugin. Lazysizes object-fit and respimg plugin are only needed in browser that don't support object fit or responsive images. Lazysizes parent-fit is recommended if you use object fit responsive images in combination with `data-sizes="auto"`.
 
 ```html
@@ -18,7 +18,7 @@ Include lazysizes and lazysizes object fit and optionally lazysizes parent-fit a
 <script src="../plugins/respimg/ls.respimg.min.js"></script>
 ```
 
-###Add markup
+### Add markup
 The object-fit plugin is not a full polyfill.
 
 ```html
@@ -39,7 +39,7 @@ The object-fit plugin is not a full polyfill.
 </div>
 ```
 
-###CSS
+### CSS
 
 To init the plugin on an image simply use the `font-family` property directly on your image.
 

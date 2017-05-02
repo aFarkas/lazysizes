@@ -1,14 +1,14 @@
-#lazysizes respimg polyfill extension
+# lazysizes respimg polyfill extension
 
 While [picturefill](https://github.com/scottjehl/picturefill) are full functional responsive images polyfills, the lazySizes respimg polyfill extension is only a partial polyfill, which supports only the most important subset of the native responsive images standard and only in conjunction with the lazySizes core script.
 
 As a result it is an extreme fast and lightweight plugin.
 
-##constrained Markup support
+## constrained Markup support
 
 This plugin supports both art directed responsive images using the ``picture`` element as also resolution switching based on ``data-srcset`` using the width descriptor (and of course the combination of both).
 
-###What is *not* supported:
+### What is *not* supported:
 
 - The use of explicit density descriptors (**x** descriptor) are not supported (This should not be a problem, because all use cases of the density descriptor can always also be substituted with a width descriptor).
 - If ``data-srcset`` with width descriptors (**w** descriptor)  are used either the ``data-sizes="auto"`` feature has to be used or the ``sizes`` value has to consist of just one source size value with the CSS *px* unit.
@@ -17,7 +17,7 @@ This plugin supports both art directed responsive images using the ``picture`` e
 - The use of the ``source[media]`` is supported for all browsers, which [do support ``matchMedia``](http://caniuse.com/#search=matchMedia). To add full support for IE9 and other legacy browsers a [``window.matchMedia`` polyfill](https://github.com/paulirish/matchMedia.js/) or ``Modernizr.mq`` (Modernizr Media Queries) can be used.
 
 
-###What is *fully* supported
+### What is *fully* supported
 
 Aside from above mentioned constraints everything else is fully supported. Here are some practical examples of fully supported responsive images:
 
@@ -95,7 +95,7 @@ window.lazySizesConfig.customMedia = {
     class="lazyload" />
 ```
 
-###Tip: Using/Generating more complex dynamic ``sizes``
+### Tip: Using/Generating more complex dynamic ``sizes``
 
 As explained above this partial polyfill only accepts one value for ``sizes`` using only the *px* length. Due to the fact, that also ``data-sizes="auto"`` is supported the ``lazybeforesizes`` event can be used to dynamically change/add different ``sizes``:
 

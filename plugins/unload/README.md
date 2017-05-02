@@ -1,12 +1,12 @@
-#lazysizes unload
+# lazysizes unload
 
 Unloads ``img.lazyload`` (including ``picture``) elements if they consume a lot of memory and they are out of view. To improve memory consumption as also resize/orientationchange performance.
 
-##Usage
+## Usage
 
 Simply add the lazysizes unload extension to your site.
 
-##Options
+## Options
 
 * ``lazySizesConfig.unloadClass`` (default: ``"lazyunload"``): Elements with this class will be unloaded even if they only consume less memory/pixels than defined in ``unloadPixelThreshold``.
 * ``lazySizesConfig.unloadedClass`` (default: ``"lazyunloaded"``): If an element was unloaded it becomes the class ``lazyunloaded``.
@@ -17,7 +17,7 @@ Simply add the lazysizes unload extension to your site.
 
 **Note**: In case you dynamically change the ``data-src``/``data-srcset`` of an already unloaded element, you have to remove the ``lazyunloaded`` class.
 
-##Events
+## Events
 
 * ``lazyafterunload``: This event will be fired on the unloaded lazyload elements. This event can be used to extend the unload functionality.
 ```js

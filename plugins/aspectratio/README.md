@@ -1,10 +1,10 @@
-#lazysizes aspectratio extension
+# lazysizes aspectratio extension
 
 This plugin helps to pre-occupy the space needed for an image by calculating the height from the image width or the width from the height (This means the width or height has to be calculable before the image is loaded). This can serve as an alternative to the different CSS intrinsic ratio patterns.
 
 Note: The CSS patterns are recommended, but especially in case of different ratio's for art directed images not so convenient.
 
-##Markup API:
+## Markup API:
 
 The value of the ``data-aspectratio`` has to be defined as the *width* divided by the *height*  of the image.
 
@@ -47,7 +47,7 @@ Example values for an image with a width of 400 and a height of 200 (all mean th
 </picture>
 ```
 
-##JS API
+## JS API
 
 In case new elements are added to the DOM the global ``imageRatio.processImages`` method can be used. The method takes either an element representing the container/wrapper of the new elements or a list of image elements:
 

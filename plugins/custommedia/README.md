@@ -1,8 +1,8 @@
-#lazysizes custommedia extension
+# lazysizes custommedia extension
 
 lazySizes custommedia extension allows you to automatically sync and manage your breakpoints between your CSS and the ``media`` attributes of your ``"picture > source"`` elements using the ``customMedia`` option of lazySizes.
 
-##Configuration via CSS
+## Configuration via CSS
 
 The following CSS...
 

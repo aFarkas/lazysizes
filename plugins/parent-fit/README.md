@@ -1,12 +1,12 @@
-#lazySizes parent fit extension
+# lazySizes parent fit extension
 
 The parent fit plugin extends the ``data-sizes="auto"`` feature to also calculate the right ``sizes`` for ``object-fit: contain|cover`` image elements as also **height** ( and width) constrained image elements in general.
 
-##Usage
+## Usage
 
 For this to work properly the physical aspect-ratio of the image candidates need to be calculable. To do so at least one of the image candidates inside the ``srcset`` attribute also need to include a **h** (height) descriptor for at least one image candidate in each `srcset`.
 
-###object-fit: contain|cover usage
+### object-fit: contain|cover usage
 
 Simply include this plugin, combine your width descriptors with height descriptors and use ``object-fit``.
 
@@ -26,7 +26,7 @@ Simply include this plugin, combine your width descriptors with height descripto
 	 style="width: 400px; height: 400px; object-fit: cover;" />
 ```
 
-###[data-parent-fit="contain|cover|width"] usage
+### [data-parent-fit="contain|cover|width"] usage
 
 Due to the fact, that object-fit isn't supported in IE11. This plugin also supports calculating height and width constrained images based on the parent element.
 
@@ -46,12 +46,12 @@ To do so include this plugin, combine your width descriptors with height descrip
 
 In case the *width* keyword is used, lazySizes simply takes the width of the parent container instead of the ``img`` element itself. In this case a **h** descriptor isn't necessary.
 
-###[data-parent-container="html|.my-image-container"]
+### [data-parent-container="html|.my-image-container"]
 Normally the next closest parent that is not a `picture` element is used as the parent (i.e.: `:not(picture)`). This can be changed using the `data-parent-container` option. It takes any simple selector. If you want to use the viewport as the parent simply add `html`.
 
 As a special keyword the value `self` can be used to signalize, that image itself should be taken.
 
-###Controlling `data-parent-fit` and `data-parent-container` with CSS
+### Controlling `data-parent-fit` and `data-parent-container` with CSS
 These option can also be set via CSS by abusing the `font-family` property.
 
 The `data-parent-fit` option is called here `parent-fit` and `data-parent-container` is called `parent-container`:
