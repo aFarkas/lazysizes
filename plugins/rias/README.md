@@ -323,6 +323,14 @@ document.addEventListener('lazyriasmodifyoptions', function(e){
     alt="" />
 ```
 
+###data-ratio and automatic {height} replacement
+
+Adding `data-ratio` attribute will automatically replace `{height}` placeholder as follows:
+
+- If the `data-ratio` is not set, then `{height}` is removed
+- If the `data-ratio` is set to a number, the `{height}` is replaced by the proportional height according to the ratio specified
+- If the `data-ratio` is set to the word "container", the ratio is automatically calculated based on the container size and the `{height}` is replaced accordingly
+
 ###Tip: Constraining the pixel density for a generated ``srcset`` attribute.
 
 In case you don't want to generate additional compressive images for high resolution displays you can combine the RIaS extension with the [optimumx extension](../optimumx) to constrain the maximum pixel density for the generated ``srcset`` list.
