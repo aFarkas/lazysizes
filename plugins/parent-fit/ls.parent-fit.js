@@ -1,4 +1,13 @@
-(function(window, document){
+(function(window, factory) {
+	factory = factory.bind(null, window, window.document);
+	if(typeof module == 'object' && module.exports){
+		factory(require('lazysizes'));
+	} else if (typeof define == 'function' && define.amd) {
+		require(['lazysizes'], factory);
+	} else {
+		factory(window.lazySizes);
+	}
+}(window, function(window, document, lazySizes) {
 	'use strict';
 
 	if(!window.addEventListener){return;}
@@ -132,12 +141,10 @@
 	};
 
 	var extend = function(){
-		if(window.lazySizes){
-			if(!lazySizes.parentFit){
-				lazySizes.parentFit = parentFit;
-			}
-			window.removeEventListener('lazyunveilread', extend, true);
+		if(!lazySizes.parentFit){
+			lazySizes.parentFit = parentFit;
 		}
+		window.removeEventListener('lazyunveilread', extend, true);
 	};
 
 	window.addEventListener('lazyunveilread', extend, true);
@@ -150,4 +157,4 @@
 
 	setTimeout(extend);
 
-})(window, document);
+}));

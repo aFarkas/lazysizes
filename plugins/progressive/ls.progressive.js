@@ -1,7 +1,16 @@
 /*
 This lazysizes plugin optimizes perceived performance by adding better support for rendering progressive JPGs/PNGs in conjunction with the LQIP pattern.
 */
-(function(document){
+(function(window, factory) {
+	factory = factory.bind(null, window, window.document);
+	if(typeof module == 'object' && module.exports){
+		factory(require('lazysizes'));
+	} else if (typeof define == 'function' && define.amd) {
+		require(['lazysizes'], factory);
+	} else {
+		factory(window.lazySizes);
+	}
+}(window, function(window, document, lazySizes) {
 	/*jshint eqnull:true */
 	'use strict';
 	var regImg, onLoad;
@@ -29,4 +38,4 @@ This lazysizes plugin optimizes perceived performance by adding better support f
 			}
 		}, false);
 	}
-})(document);
+}));
