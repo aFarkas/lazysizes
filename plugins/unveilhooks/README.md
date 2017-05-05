@@ -1,4 +1,4 @@
-#lazysizes unveilhooks extension
+# lazysizes unveilhooks extension
 
 The unveilhooks plugin extends lazySizes to also unveil / lazyload scripts/widgets, background images, styles and video/audio elements:
 
