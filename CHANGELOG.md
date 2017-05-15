@@ -1,5 +1,12 @@
 # Changelog
 
+### 4.0.0-RC1
+	* make all plugins CommonJS compatible (thx to @claudiobmgrtnr and @jantimon)
+	* added `loadHidden` option(thx to @justinvoelker)
+	* added artdirection plugin (no documentation yet, but great)
+	* iOS 8.1 fixes has to loaded explicitly (not included in respimg plugin anymore)
+	* removed `picture` support for old FF 38-
+
 ## 2.0.0
 
 * lazysizes core:

@@ -346,6 +346,7 @@
 						(eLright = rect.right) >= elemNegativeExpand * hFac &&
 						(eLleft = rect.left) <= eLvW &&
 						(eLbottom || eLright || eLleft || eLtop) &&
+						(lazySizesConfig.loadHidden || getCSS(lazyloadElems[i], 'visibility') != 'hidden') &&
 						((isCompleted && isLoading < 3 && !elemExpandVal && (loadMode < 3 || lowRuns < 4)) || isNestedVisible(lazyloadElems[i], elemExpand))){
 						unveilElement(lazyloadElems[i]);
 						loadedSomething = true;
@@ -655,7 +656,8 @@
 			init: true,
 			expFactor: 1.5,
 			hFac: 0.8,
-			loadMode: 2
+			loadMode: 2,
+			loadHidden: true,
 		};
 
 		lazySizesConfig = window.lazySizesConfig || window.lazysizesConfig || {};
