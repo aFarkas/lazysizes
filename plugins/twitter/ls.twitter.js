@@ -1,11 +1,17 @@
 (function(window, factory) {
+	var globalInstall = function(){
+		factory(window.lazySizes);
+		window.removeEventListener('lazyunveilread', globalInstall, true);
+	};
+
 	factory = factory.bind(null, window, window.document);
+
 	if(typeof module == 'object' && module.exports){
 		factory(require('lazysizes'));
-	} else if (typeof define == 'function' && define.amd) {
-		require(['lazysizes'], factory);
+	} else if(window.lazySizes) {
+		globalInstall();
 	} else {
-		factory(window.lazySizes);
+		window.addEventListener('lazyunveilread', globalInstall, true);
 	}
 }(window, function(window, document, lazySizes) {
 	/*
@@ -44,6 +50,8 @@
 	}
 
 	document.addEventListener('lazybeforeunveil', function(e){
+		if(e.detail.instance != lazySizes){return;}
+
 		var twttrWidget = e.target.getAttribute('data-twitter');
 
 		if(twttrWidget){

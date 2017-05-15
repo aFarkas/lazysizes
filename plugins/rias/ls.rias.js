@@ -1,17 +1,21 @@
 (function(window, factory) {
+	var globalInstall = function(){
+		factory(window.lazySizes);
+		window.removeEventListener('lazyunveilread', globalInstall, true);
+	};
+
 	factory = factory.bind(null, window, window.document);
+
 	if(typeof module == 'object' && module.exports){
 		factory(require('lazysizes'));
-	} else if (typeof define == 'function' && define.amd) {
-		require(['lazysizes'], factory);
+	} else if(window.lazySizes) {
+		globalInstall();
 	} else {
-		factory(window.lazySizes);
+		window.addEventListener('lazyunveilread', globalInstall, true);
 	}
 }(window, function(window, document, lazySizes) {
 	/*jshint eqnull:true */
 	'use strict';
-
-	if(!document.addEventListener){return;}
 
 	var config, riasCfg;
 	var replaceTypes = {string: 1, number: 1};
@@ -219,6 +223,8 @@
 	}
 
 	addEventListener('lazybeforesizes', function(e){
+		if(e.detail.instance != lazySizes){return;}
+
 		var elem, src, elemOpts, parent, sources, i, len, sourceSrc, sizes, detail, hasPlaceholder, modified, emptyList;
 		elem = e.target;
 
@@ -346,6 +352,8 @@
 		};
 
 		var polyfill = function(e){
+			if(e.detail.instance != lazySizes){return;}
+
 			var candidate;
 			var elem = e.target;
 

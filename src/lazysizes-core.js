@@ -3,7 +3,7 @@ function l(window, document) {
 	/*jshint eqnull:true */
 	if(!document.getElementsByClassName){return;}
 
-	var lazySizesConfig;
+	var lazysizes, lazySizesConfig;
 
 	var docElem = document.documentElement;
 
@@ -64,7 +64,13 @@ function l(window, document) {
 	var triggerEvent = function(elem, name, detail, noBubbles, noCancelable){
 		var event = document.createEvent('CustomEvent');
 
-		event.initCustomEvent(name, !noBubbles, !noCancelable, detail || {});
+		if(!detail){
+			detail = {};
+		}
+
+		detail.instance = lazysizes;
+
+		event.initCustomEvent(name, !noBubbles, !noCancelable, detail);
 
 		elem.dispatchEvent(event);
 		return event;
@@ -660,7 +666,7 @@ function l(window, document) {
 		});
 	})();
 
-	return {
+	lazysizes = {
 		cfg: lazySizesConfig,
 		autoSizer: autoSizer,
 		loader: loader,
@@ -673,4 +679,6 @@ function l(window, document) {
 		gW: getWidth,
 		rAF: rAF,
 	};
+
+	return lazysizes;
 }

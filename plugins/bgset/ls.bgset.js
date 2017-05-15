@@ -1,11 +1,17 @@
 (function(window, factory) {
+	var globalInstall = function(){
+		factory(window.lazySizes);
+		window.removeEventListener('lazyunveilread', globalInstall, true);
+	};
+
 	factory = factory.bind(null, window, window.document);
+
 	if(typeof module == 'object' && module.exports){
 		factory(require('lazysizes'));
-	} else if (typeof define == 'function' && define.amd) {
-		require(['lazysizes'], factory);
+	} else if(window.lazySizes) {
+		globalInstall();
 	} else {
-		factory(window.lazySizes);
+		window.addEventListener('lazyunveilread', globalInstall, true);
 	}
 }(window, function(window, document, lazySizes) {
 	'use strict';
@@ -144,6 +150,7 @@
 	document.addEventListener('load', proxyLoad, true);
 
 	window.addEventListener('lazybeforesizes', function(e){
+		if(e.detail.instance != lazySizes){return;}
 		if(e.target._lazybgset && e.detail.dataAttr){
 			var elem = e.target._lazybgset;
 			var bgSize = getBgSize(elem);
@@ -162,7 +169,7 @@
 	}, true);
 
 	document.documentElement.addEventListener('lazybeforesizes', function(e){
-		if(e.defaultPrevented || !e.target._lazybgset){return;}
+		if(e.defaultPrevented || !e.target._lazybgset || e.detail.instance != lazySizes){return;}
 		e.detail.width = proxyWidth(e.target._lazybgset);
 	});
 }));

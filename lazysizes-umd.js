@@ -12,7 +12,7 @@
 	/*jshint eqnull:true */
 	if(!document.getElementsByClassName){return;}
 
-	var lazySizesConfig;
+	var lazysizes, lazySizesConfig;
 
 	var docElem = document.documentElement;
 
@@ -73,7 +73,13 @@
 	var triggerEvent = function(elem, name, detail, noBubbles, noCancelable){
 		var event = document.createEvent('CustomEvent');
 
-		event.initCustomEvent(name, !noBubbles, !noCancelable, detail || {});
+		if(!detail){
+			detail = {};
+		}
+
+		detail.instance = lazysizes;
+
+		event.initCustomEvent(name, !noBubbles, !noCancelable, detail);
 
 		elem.dispatchEvent(event);
 		return event;
@@ -379,7 +385,7 @@
 		};
 
 		var handleSources = function(source){
-			var customMedia, parent;
+			var customMedia;
 
 			var sourceSrcset = source[_getAttribute](lazySizesConfig.srcsetAttr);
 
@@ -389,13 +395,6 @@
 
 			if(sourceSrcset){
 				source.setAttribute('srcset', sourceSrcset);
-			}
-
-			//https://bugzilla.mozilla.org/show_bug.cgi?id=1170572
-			if(customMedia){
-				parent = source.parentNode;
-				parent.insertBefore(source.cloneNode(), source);
-				parent.removeChild(source);
 			}
 		};
 
@@ -447,7 +446,7 @@
 					}
 				}
 
-				if(srcset || isPicture){
+				if(isImg && (srcset || isPicture)){
 					updatePolyfill(elem, {src: src});
 				}
 			}
@@ -676,7 +675,7 @@
 		});
 	})();
 
-	return {
+	lazysizes = {
 		cfg: lazySizesConfig,
 		autoSizer: autoSizer,
 		loader: loader,
@@ -689,5 +688,7 @@
 		gW: getWidth,
 		rAF: rAF,
 	};
+
+	return lazysizes;
 }
 ));

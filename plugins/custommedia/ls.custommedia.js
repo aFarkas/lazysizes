@@ -5,74 +5,69 @@
  }
 */
 (function(window, factory) {
+	var globalInstall = function(){
+		factory(window.lazySizes);
+		window.removeEventListener('lazyunveilread', globalInstall, true);
+	};
+
 	factory = factory.bind(null, window, window.document);
+
 	if(typeof module == 'object' && module.exports){
 		factory(require('lazysizes'));
-	} else if (typeof define == 'function' && define.amd) {
-		require(['lazysizes'], factory);
+	} else if(window.lazySizes) {
+		globalInstall();
 	} else {
-		factory(window.lazySizes);
+		window.addEventListener('lazyunveilread', globalInstall, true);
 	}
 }(window, function(window, document, lazySizes) {
 	/*jshint eqnull:true */
 	'use strict';
 	var docElem = document.documentElement;
 
-	var create = function(){
-		if(!lazySizes || lazySizes.getCustomMedias){return;}
+	lazySizes.getCustomMedias = (function(){
+		var regCleanPseudos = /['"]/g;
+		var regSplit = /\s*\|\s*/g;
+		var regNamedQueries = /^([a-z0-9_-]+)\s*:\s*(.+)$/i;
 
-		lazySizes.getCustomMedias = (function(){
-			var regCleanPseudos = /['"]/g;
-			var regSplit = /\s*\|\s*/g;
-			var regNamedQueries = /^([a-z0-9_-]+)\s*:\s*(.+)$/i;
-
-			var getStyle = function(elem, pseudo){
-				return ((getComputedStyle(elem, pseudo) || {getPropertyValue: function(){}}).getPropertyValue('content') || 'none').replace(regCleanPseudos, '').trim();
-			};
-			var parse = function(string, object){
-				string.split(regSplit).forEach(function(query){
-					if(query.match(regNamedQueries)){
-						object[RegExp.$1] = RegExp.$2;
-					}
-				});
-			};
-			return function(object, element){
-				object = object || lazySizes.cfg.customMedia;
-				element = element || document.querySelector('html');
-				parse(getStyle(element, ':before'), object);
-				parse(getStyle(element, ':after'), object);
-				return object;
-			};
-		})();
-
-		lazySizes.updateCustomMedia = function(){
-			var i, len, customMedia;
-			var elems = docElem.querySelectorAll('source[media][data-media][srcset]');
-
-			lazySizes.getCustomMedias();
-
-			for(i = 0, len = elems.length; i < len; i++){
-				if( (customMedia = lazySizes.cfg.customMedia[elems[i].getAttribute('data-media') || elems[i].getAttribute('media')]) ){
-					elems[i].setAttribute('media', customMedia);
-				}
-			}
-
-			elems = docElem.querySelector('source[media][data-media][srcset] ~ img');
-			for(i = 0, len = elems.length; i < len; i++){
-				lazySizes.uP(elems[i]);
-			}
-
-			lazySizes.autoSizer.checkElems();
+		var getStyle = function(elem, pseudo){
+			return ((getComputedStyle(elem, pseudo) || {getPropertyValue: function(){}}).getPropertyValue('content') || 'none').replace(regCleanPseudos, '').trim();
 		};
+		var parse = function(string, object){
+			string.split(regSplit).forEach(function(query){
+				if(query.match(regNamedQueries)){
+					object[RegExp.$1] = RegExp.$2;
+				}
+			});
+		};
+		return function(object, element){
+			object = object || lazySizes.cfg.customMedia;
+			element = element || document.querySelector('html');
+			parse(getStyle(element, ':before'), object);
+			parse(getStyle(element, ':after'), object);
+			return object;
+		};
+	})();
+
+	lazySizes.updateCustomMedia = function(){
+		var i, len, customMedia;
+		var elems = docElem.querySelectorAll('source[media][data-media][srcset]');
 
 		lazySizes.getCustomMedias();
-		docElem.removeEventListener('lazybeforeunveil', create);
+
+		for(i = 0, len = elems.length; i < len; i++){
+			if( (customMedia = lazySizes.cfg.customMedia[elems[i].getAttribute('data-media') || elems[i].getAttribute('media')]) ){
+				elems[i].setAttribute('media', customMedia);
+			}
+		}
+
+		elems = docElem.querySelector('source[media][data-media][srcset] ~ img');
+		for(i = 0, len = elems.length; i < len; i++){
+			lazySizes.uP(elems[i]);
+		}
+
+		lazySizes.autoSizer.checkElems();
 	};
 
-	if(window.addEventListener){
-		docElem.addEventListener('lazybeforeunveil', create);
-		create();
-		setTimeout(create);
-	}
+	lazySizes.getCustomMedias();
 
 }));
