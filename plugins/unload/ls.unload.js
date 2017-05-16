@@ -24,10 +24,10 @@
 		checkElements: function(){
 			var i, len, box;
 
-			var vTop = expand * -1;
+			var vTop = lazySizesConfig.expand * -1;
 			var vLeft = vTop;
-			var vBottom = innerHeight + expand;
-			var vRight = innerWidth + expand;
+			var vBottom = window.innerHeight + lazySizesConfig.expand;
+			var vRight = window.innerWidth + lazySizesConfig.expand;
 
 			for(i = 0, len = checkElements.length; i < len; i++){
 				box = checkElements[i].getBoundingClientRect();
