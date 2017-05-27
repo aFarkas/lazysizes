@@ -43,10 +43,40 @@
 		}
 		return regClassCache[cls].test(ele[_getAttribute]('class') || '') && regClassCache[cls];
 	};
+	
+	// matches polyfill
+	(function (ElementPrototype) {
+		ElementPrototype.matches = ElementPrototype.matches ||
+		ElementPrototype.matchesSelector ||
+		ElementPrototype.webkitMatchesSelector ||
+		ElementPrototype.msMatchesSelector ||
+		function (selector) {
+			var node = this, nodes = (node.parentNode || node.document).querySelectorAll(selector), i = -1;
+			while (nodes[++i] && nodes[i] != node);
+			return !!nodes[i];
+		}
+	})(Element.prototype);
 
-	var addClass = function(ele, cls) {
-		if (!hasClass(ele, cls)){
+	// closest polyfill
+	(function (ElementPrototype) {
+		ElementPrototype.closest = ElementPrototype.closest ||
+		function (selector) {
+			var el = this;
+			while (el.matches && !el.matches(selector)) el = el.parentNode;
+			return el.matches ? el : null;
+		}
+	})(Element.prototype);
+
+	var addClass = function (ele, cls) {
+		if (!hasClass(ele, cls)) {
 			ele.setAttribute('class', (ele[_getAttribute]('class') || '').trim() + ' ' + cls);
+			if (cls === 'lazyloaded') {
+				var div = ele.closest('.lazyContainer');
+				if (div) {
+					div.className = "";
+					div.style.paddingBottom = 0;
+				}
+			}
 		}
 	};
 
