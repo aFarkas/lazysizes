@@ -368,6 +368,7 @@
 			addClass(e.target, lazySizesConfig.loadedClass);
 			removeClass(e.target, lazySizesConfig.loadingClass);
 			addRemoveLoadEvents(e.target, rafSwitchLoadingClass);
+			triggerEvent(e.target, 'lazyloaded');
 		};
 		var rafedSwitchLoadingClass = rAFIt(switchLoadingClass);
 		var rafSwitchLoadingClass = function(e){
