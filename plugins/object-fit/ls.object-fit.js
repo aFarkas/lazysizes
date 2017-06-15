@@ -1,6 +1,6 @@
 (function(window, factory) {
-	var globalInstall = function(){
-		factory(window.lazySizes);
+	var globalInstall = function(initialEvent){
+		factory(window.lazySizes, initialEvent);
 		window.removeEventListener('lazyunveilread', globalInstall, true);
 	};
 
@@ -13,7 +13,7 @@
 	} else {
 		window.addEventListener('lazyunveilread', globalInstall, true);
 	}
-}(window, function(window, document, lazySizes) {
+}(window, function(window, document, lazySizes, initialEvent) {
 	'use strict';
 	var style = document.createElement('a').style;
 	var fitSupport = 'objectFit' in style;
@@ -126,7 +126,7 @@
 	}
 
 	if(!fitSupport || !positionSupport){
-		window.addEventListener('lazyunveilread', function(e){
+		var onRead = function(e){
 			if(e.detail.instance != lazySizes){return;}
 
 			var element = e.target;
@@ -135,6 +135,12 @@
 			if(obj.fit && (!fitSupport || (obj.position != 'center'))){
 				initFix(element, obj);
 			}
-		}, true);
+		};
+
+		window.addEventListener('lazyunveilread', onRead, true);
+
+		if(initialEvent && initialEvent.detail){
+			onRead(initialEvent);
+		}
 	}
 }));
