@@ -117,6 +117,27 @@ window.lazySizesConfig.config.getOptimumX = function(/*element*/){
 };
 ```
 
+### The `constrainPixelDensity` option
+
+In case the `constrainPixelDensity` is set to `true`. All images without a `data-optimumx` attribute are treated as they would have a `data-optimumx="auto"` attribute.
+
+```html
+<script>
+window.lazySizesConfig = window.lazySizesConfig || {};
+window.lazySizesConfig.constrainPixelDensity = true;
+</script>
+
+<img
+    data-srcset="http://placehold.it/300x150 300w,
+    	http://placehold.it/700x300 700w,
+    	http://placehold.it/1400x600 1400w,
+    	http://placehold.it/2800x1200 2800w"
+     data-sizes="auto"
+     class="lazyload"
+     src="http://placehold.it/300x150"
+     alt="flexible image" />
+```
+
 ## <a name="compressive-picture-pattern"></a>Background information: Compressive picture pattern
 
 From a perceived performance vs. perceived quality standpoint the best way to deal with High DPI images is to serve higher compressed candidates to clients with high resolution displays.
