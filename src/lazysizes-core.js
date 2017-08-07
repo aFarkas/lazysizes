@@ -361,11 +361,10 @@ function l(window, document) {
 		var throttledCheckElements = throttle(checkElements);
 
 		var switchLoadingClass = function(e){
-			if(regImg.test(e.nodeName) && !e.naturalwidth){
+			if(regImg.test(e.nodeName) && !e.naturalWidth){
 				addClass(e.target, lazySizesConfig.errorClass);
-			} else {
-				addClass(e.target, lazySizesConfig.loadedClass);
 			}
+			addClass(e.target, lazySizesConfig.loadedClass);
 			removeClass(e.target, lazySizesConfig.loadingClass);
 			addRemoveLoadEvents(e.target, rafSwitchLoadingClass);
 			triggerEvent(e.target, 'lazyloaded');
