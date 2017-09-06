@@ -68,7 +68,8 @@ To init the plugin on an image simply use the `font-family` property directly on
 	transition: 400ms transform;
 
 	object-fit: contain;
-	font-family: "object-fit: contain";
+	object-position: top;
+	font-family: "object-fit: contain, object-position: top";
 }
 
 .imagecontainer-img:hover {
