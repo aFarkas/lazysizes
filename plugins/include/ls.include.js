@@ -401,7 +401,7 @@
 		}
 
 		include = function(){
-			var event, loadRequireImportCB;
+			var event;
 			var status = xhrObj.status;
 			var content = xhrObj.content || xhrObj.responseText;
 			var reset = !!(content == null && old && old.urls.include);
@@ -468,7 +468,7 @@
 		}
 
 		if(candidate.urls.amd || candidate.urls.module){
-			loadRequireImportCB = function(){
+			var loadRequireImportCB = function(){
 				modules = Array.prototype.slice.call(arguments);
 				if(xhrObj){
 					include();
