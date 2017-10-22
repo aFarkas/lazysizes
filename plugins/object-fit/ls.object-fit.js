@@ -44,7 +44,7 @@
 	}
 
 	function initFix(element, config){
-		var switchClassesAdded;
+		var switchClassesAdded, addedSrc;
 		var lazysizesCfg = lazySizes.cfg;
 		var styleElement = element.cloneNode(false);
 		var styleElementStyle = styleElement.style;
@@ -52,7 +52,8 @@
 		var onChange = function(){
 			var src = element.currentSrc || element.src;
 
-			if(src){
+			if(src && addedSrc !== src){
+				addedSrc = src;
 				styleElementStyle.backgroundImage = 'url(' + (regBgUrlEscape.test(src) ? JSON.stringify(src) : src ) + ')';
 
 				if(!switchClassesAdded){
@@ -62,12 +63,14 @@
 				}
 			}
 		};
+		var rafedOnChange = function(){
+			lazySizes.rAF(onChange);
+		};
 
 		element._lazysizesParentFit = config.fit;
 
-		element.addEventListener('load', function(){
-			lazySizes.rAF(onChange);
-		}, true);
+		element.addEventListener('lazyloaded', rafedOnChange, true);
+		element.addEventListener('load', rafedOnChange, true);
 
 		styleElement.addEventListener('load', function(){
 			var curSrc = styleElement.currentSrc || styleElement.src;
