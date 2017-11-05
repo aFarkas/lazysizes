@@ -329,6 +329,9 @@
 		var unveilElements = function(change){
 			var i, len;
 			for(i = 0, len = change.length; i < len; i++){
+				if (change.isIntersecting === false) {
+					continue;
+				}
 				unveilElement(change[i].target);
 			}
 		};
