@@ -311,7 +311,7 @@
 		request.open.apply(request, detail.openArgs);
 		request.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 		if(detail.xhrModifier){
-			detail.xhrModifier(request, elem, candidate);
+			detail.xhrModifier(request, detail.candidate);
 		}
 		request.send(detail.sendData);
 	}
