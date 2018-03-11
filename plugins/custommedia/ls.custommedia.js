@@ -34,8 +34,10 @@
 		};
 		var parse = function(string, object){
 			string.split(regSplit).forEach(function(query){
-				if(query.match(regNamedQueries)){
-					object[RegExp.$1] = RegExp.$2;
+				var match = query.match(regNamedQueries);
+
+				if(match){
+					object[match[1]] = match[2];
 				}
 			});
 		};

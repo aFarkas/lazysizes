@@ -18,9 +18,10 @@
 	}
 }(window, function(window, document, lazySizes) {
 	/*jshint eqnull:true */
+	var match;
 	var ua = navigator.userAgent;
 
-	if ( window.HTMLPictureElement && ((/ecko/).test(ua) && ua.match(/rv\:(\d+)/) && RegExp.$1 < 41) ) {
+	if ( window.HTMLPictureElement && ((/ecko/).test(ua) && (match = ua.match(/rv\:(\d+)/)) && match[1] < 41) ) {
 		addEventListener("resize", (function() {
 			var timer;
 

@@ -133,12 +133,13 @@
 			var regRatio = /^\s*([+\d\.]+)(\s*[\/x]\s*([+\d\.]+))?\s*$/;
 			var ratioCache = {};
 			return function(ratio){
+				var match;
 
-				if(!ratioCache[ratio] && ratio.match(regRatio)){
-					if(RegExp.$3){
-						ratioCache[ratio] = RegExp.$1 / RegExp.$3;
+				if(!ratioCache[ratio] && (match = ratio.match(regRatio))){
+					if(match[3]){
+						ratioCache[ratio] = match[1] / match[3];
 					} else {
-						ratioCache[ratio] = RegExp.$1 * 1;
+						ratioCache[ratio] = match[1] * 1;
 					}
 				}
 

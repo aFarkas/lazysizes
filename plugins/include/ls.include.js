@@ -152,8 +152,9 @@
 
 	function addUrl(url){
 		/*jshint validthis:true */
-		if(url.match(regTypes)){
-			this.urls[RegExp.$1] = includeConfig.map[RegExp.$2] || RegExp.$2;
+		var match;
+		if((match = url.match(regTypes))){
+			this.urls[match[1]] = includeConfig.map[match[2]] || match[2];
 		} else {
 			this.urls.include = includeConfig.map[url] || url;
 		}
@@ -168,10 +169,10 @@
 		map = input.match(regUrlCan);
 
 		if(map){
-			url = RegExp.$1;
+			url = map[1];
 			output = {
-				condition: config.include.conditions[RegExp.$3] || config.customMedia[RegExp.$3] || RegExp.$2 || null,
-				name: RegExp.$3
+				condition: config.include.conditions[map[3]] || config.customMedia[map[3]] || map[2] || null,
+				name: map[3]
 			};
 		} else {
 			url = input;

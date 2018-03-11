@@ -28,14 +28,14 @@
 		return function(edgeMatch){
 			var img = document.createElement('img');
 			var removeHDescriptors = function(source){
-				var ratio;
+				var ratio, match;
 				var srcset = source.getAttribute(lazySizesConfig.srcsetAttr);
 				if(srcset){
-					if(srcset.match(regDescriptors)){
-						if(RegExp.$2 == 'w'){
-							ratio = RegExp.$1 / RegExp.$3;
+					if((match = srcset.match(regDescriptors))){
+						if(match[2] == 'w'){
+							ratio = match[1] / match[3];
 						} else {
-							ratio = RegExp.$3 / RegExp.$1;
+							ratio = match[3] / match[1];
 						}
 
 						if(ratio){

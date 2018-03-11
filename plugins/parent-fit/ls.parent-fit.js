@@ -84,7 +84,7 @@
 		},
 
 		getImageRatio: function(element){
-			var i, srcset, media, ratio;
+			var i, srcset, media, ratio, match;
 			var parent = element.parentNode;
 			var elements = parent && regPicture.test(parent.nodeName || '') ?
 					parent.querySelectorAll('source, img') :
@@ -100,11 +100,11 @@
 				if(srcset && (!media || (window.matchMedia && matchMedia(media) || {}).matches )){
 					ratio = parseFloat(element.getAttribute('data-aspectratio'));
 
-					if(!ratio && srcset.match(regDescriptors)){
-						if(RegExp.$2 == 'w'){
-							ratio = RegExp.$1 / RegExp.$3;
+					if(!ratio && (match = srcset.match(regDescriptors))){
+						if(match[2] == 'w'){
+							ratio = match[1] / match[3];
 						} else {
-							ratio = RegExp.$3 / RegExp.$1;
+							ratio = match[3] / match[1];
 						}
 					}
 					break;

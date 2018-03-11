@@ -28,14 +28,15 @@
 	var slice = [].slice;
 
 	function getCandidatesAspectRatio(element){
+		var match;
 		var ratio = parseFloat(element.getAttribute('data-aspectratio'));
 		var srcset = element.getAttribute(lazySizesConfig.srcsetAttr) || element.getAttribute('srcset');
 
-		if(!ratio && srcset.match(regDescriptors)){
-			if(RegExp.$2 == 'w'){
-				ratio = RegExp.$1 / RegExp.$3;
+		if(!ratio && (match = srcset.match(regDescriptors))){
+			if(match[2] == 'w'){
+				ratio = match[1] / match[3];
 			} else {
-				ratio = RegExp.$3 / RegExp.$1;
+				ratio = match[3] / match[1];
 			}
 		}
 

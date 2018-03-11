@@ -70,16 +70,17 @@
 		}
 
 		sets.forEach(function(set){
+			var match;
 			var source = document.createElement('source');
 
 			if(sizes && sizes != 'auto'){
 				source.setAttribute('sizes', sizes);
 			}
 
-			if(set.match(regSource)){
-				source.setAttribute(lazySizesConfig.srcsetAttr, RegExp.$1);
-				if(RegExp.$2){
-					source.setAttribute('media', lazySizesConfig.customMedia[RegExp.$2] || RegExp.$2);
+			if((match = set.match(regSource))){
+				source.setAttribute(lazySizesConfig.srcsetAttr, match[1]);
+				if(match[2]){
+					source.setAttribute('media', lazySizesConfig.customMedia[match[2]] || match[2]);
 				}
 			}
 			picture.appendChild(source);
