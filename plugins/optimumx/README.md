@@ -83,7 +83,7 @@ Normally the image specific optimal pixel density should be added as a floating 
 ```html
 <script>
 window.lazySizesConfig = window.lazySizesConfig || {};
-window.lazySizesConfig.getOptimumX = function(element){
+window.lazySizesConfig.getOptimumX = function(_element){
     return window.devicePixelRatio > 1.6 ? devicePixelRatio * 0.9 : 1;
 };
 </script>

@@ -163,14 +163,14 @@
 	var throttle = function(fn){
 		var running;
 		var lastTime = 0;
-		var gDelay = 125;
+		var gDelay = lazySizesConfig.throttleDelay;
 		var rICTimeout = lazySizesConfig.ricTimeout;
 		var run = function(){
 			running = false;
 			lastTime = Date.now();
 			fn();
 		};
-		var idleCallback = requestIdleCallback && lazySizesConfig.ricTimeout ?
+		var idleCallback = requestIdleCallback && rICTimeout > 49 ?
 			function(){
 				requestIdleCallback(run, {timeout: rICTimeout});
 
@@ -202,7 +202,7 @@
 				delay = 0;
 			}
 
-			if(isPriority || (delay < 9 && requestIdleCallback)){
+			if(isPriority || delay < 9){
 				idleCallback();
 			} else {
 				setTimeout(idleCallback, delay);
@@ -259,7 +259,8 @@
 			hFac: 0.8,
 			loadMode: 2,
 			loadHidden: true,
-			ricTimeout: 300,
+			ricTimeout: 100,
+			throttleDelay: 125,
 		};
 
 		lazySizesConfig = window.lazySizesConfig || window.lazysizesConfig || {};
