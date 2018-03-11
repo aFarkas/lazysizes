@@ -125,7 +125,7 @@ Content, Style and AMD includes can also be mixed and used with or without condi
 </div>
 ```
 
-In case content and a behavior include is used together lazySizes will load them in parallel but makes sure to first include the content and then initialize the behavior. 
+In case content and a behavior include is used together lazySizes will load them in parallel but makes sure to first include the content and then initialize the behavior.
 
 #### AMD/ES6 module features
 
@@ -258,6 +258,31 @@ The include feature will always use a download queue to make sure, that multiple
 * ``lazyincludeloaded`` is a cancelable event fired at the element after the request is complete, but before the content is added. The ``event.detail.content`` property can be used to modify the content (for example to transform JSON to HTML).
 * ``lazyincluded`` is an event fired at the element right after the HTML was injected.
 
+Here are some examples:
+
+```js
+const component = document.querySelector('.lazy-component');
+
+// Modify the request headers when the targeted component kicks off an XHR
+component.addEventListener('lazyincludeload', function(event) {
+  if (event.detail) {
+    event.detail.xhrModifier = function(request, candidate) {
+      request.setRequestHeader('Accept', 'application/json');
+    }
+  }
+});
+
+// Transform a JSON response into HTML before it is injected
+component.addEventListener('lazyincludeloaded', function(event) {
+  if (event.detail.content) {
+    var json = JSON.parse(event.detail.content);
+    var html = '<h1>' + json.title + '</h1>';
+    html += '<div>' + json.body + '</div>';
+    event.detail.content = html;
+  }
+});
+```
+
 ### Options
 All include options are configurable through the ``lazySizesConfig.include`` option object:
 
@@ -385,7 +410,7 @@ define(function(){
 	};
 
 	Nav.prototype = {
-		
+
 	};
 
 	Nav.lazyunload = function(data){
@@ -396,7 +421,7 @@ define(function(){
         	searchValue: $('input.search', data.target).val();
         };
 	};
-    
+
 	Nav.lazyload = function(data){
     	//check wether mobileNav has shared some data
 		if(data.shareState){
