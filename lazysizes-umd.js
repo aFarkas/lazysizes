@@ -262,7 +262,7 @@
 			hFac: 0.8,
 			loadMode: 2,
 			loadHidden: true,
-			ricTimeout: 100,
+			ricTimeout: 0,
 			throttleDelay: 125,
 		};
 
