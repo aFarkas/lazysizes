@@ -57,7 +57,7 @@ Lazysizes is built upon the Responsive image standard and extends it with additi
 5. **Extendable**: It provides JS and CSS hooks to extend lazysizes with any kind of lazy loading, lazy instantiation, in view callbacks or effects (see also the [available plugins/snippets](#plugins)).
 6. **Intelligent prefetch/Intelligent resource prioritization**: lazysizes prefetches/preloads near the view assets to improve user experience, but only while the browser network is idling (see also ``expand``, ``expFactor`` and ``loadMode`` options). This way in view elements are loaded faster and near of view images are preloaded lazily before they come into view.
 7. **Lightweight, but mature solution**: lazysizes has the right balance between a lightweight and a fast, reliable solution
-8. **SEO improved**: lazysizes does not hide images/assets from google. No matter what markup pattern you use.
+8. **SEO improved**: lazysizes does not hide images/assets from Google. No matter what markup pattern you use. Google doesn't scroll/interact with your website. lazysizes detects, whether the user agent is capable to scroll and if not, reveals all images instantly.
 
 ## More about the API
 **lazysizes** comes with a simple markup and JS API. Normally you will only need to use the markup API.
