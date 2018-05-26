@@ -53,4 +53,4 @@ Of course also resolution switching and art direction can be combined:
 
 Here you find a [small bgset demo](http://jsfiddle.net/trixta/bfqqnosp/embedded/result/).
 
-**Note: In case you use this plugin with ``background-size: cover|contain`` and the ``data-sizes="auto"`` feature, we recommend to also use the [parent-fit extension](../parent-fit/) to calculate the right ``sizes`` attribute for you. See also the following [demo](http://jsfiddle.net/trixta/w96o9xm5/). Also have a look into the [object-fit polyfill plugin](../object-fit).**
+**Note: In case you use this plugin with ``background-size: cover|contain`` and the ``data-sizes="auto"`` feature, we recommend to also use the [parent-fit extension](../parent-fit/) to calculate the right ``sizes`` attribute for you. See also the following [demo](http://jsfiddle.net/trixta/w96o9xm5/). In these cases the [object-fit polyfill plugin](../object-fit) should be a better option than bgset.**
