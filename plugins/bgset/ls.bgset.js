@@ -19,7 +19,8 @@
 
 	var regWhite = /\s+/g;
 	var regSplitSet = /\s*\|\s+|\s+\|\s*/g;
-	var regSource = /^(.+?)(?:\s+\[\s*(.+?)\s*\])?$/;
+	var regSource = /^(.+?)(?:\s+\[\s*(.+?)\s*\])(?:\s+\[\s*(.+?)\s*\])?$/;
+	var regType = /^\s*\(*\s*type\s*:\s*(.+?)\s*\)*\s*$/;
 	var regBgUrlEscape = /\(|\)|'/;
 	var allowedBackgroundSize = {contain: 1, cover: 1};
 	var proxyWidth = function(elem){
@@ -40,6 +41,16 @@
 		}
 
 		return bgSize;
+	};
+	var setTypeOrMedia = function(source, match){
+		if(match){
+			var typeMatch = match.match(regType);
+			if(typeMatch && typeMatch[1]){
+				source.setAttribute('type', typeMatch[1]);
+			} else {
+				source.setAttribute('media', lazySizesConfig.customMedia[match] || match);
+			}
+		}
 	};
 	var createPicture = function(sets, elem, img){
 		var picture = document.createElement('picture');
@@ -79,9 +90,9 @@
 
 			if((match = set.match(regSource))){
 				source.setAttribute(lazySizesConfig.srcsetAttr, match[1]);
-				if(match[2]){
-					source.setAttribute('media', lazySizesConfig.customMedia[match[2]] || match[2]);
-				}
+
+				setTypeOrMedia(source, match[2]);
+				setTypeOrMedia(source, match[3]);
 			}
 			picture.appendChild(source);
 		});

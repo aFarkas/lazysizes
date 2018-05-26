@@ -39,6 +39,8 @@ window.lazySizesConfig.customMedia = {
 <div class="lazyload" data-bgset="image-200.jpg [--small] | image-300.jpg [--medium] | image-400.jpg"></div>
 <!-- or without customMedia options: -->
 <div class="lazyload" data-bgset="image-200.jpg [(max-width: 480px)] | image-300.jpg [(max-width: 700px)] | image-400.jpg"></div>
+<!-- or with type attribute: -->
+<div class="lazyload" data-bgset="logo.svg [type: image/svg+xml] | logo.png"></div>
 ```
 
 Of course also resolution switching and art direction can be combined:
