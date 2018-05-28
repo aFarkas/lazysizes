@@ -46,7 +46,7 @@
 			var remove = function () {
 				lazySizes.rAF(function() {
 					try {
-						// blurImg.remove();
+						blurImg.remove();
 					} catch(er){
 
 					}
