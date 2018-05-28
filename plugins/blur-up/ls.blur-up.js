@@ -19,7 +19,7 @@
 	var slice = [].slice;
 	var regBlurUp = /blur-up["']*\s*:\s*["']*(always|auto)/;
 
-	var matchesMedia = function () {
+	var matchesMedia = function (source) {
 		var media = source.getAttribute('data-media') || source.getAttribute('media');
 		return !media || window.matchesMedia(lazySizes.cfg.customMedia[media] || media).matches;
 	};
