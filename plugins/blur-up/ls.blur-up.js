@@ -81,12 +81,11 @@
 			isBlurUpLoaded = true;
 
 			requestAnimationFrame(function () {
-				lazySizes.rC(blurImg, 'ls-blur-up-loading');
 				lazySizes.aC(blurImg, 'ls-blur-up-loaded');
 			});
 		});
 
-		blurImg.className = 'ls-blur-up-img ls-blur-up-loading';
+		blurImg.className = 'ls-blur-up-img';
 		blurImg.src = src;
 
 		img.addEventListener('load', onload);
