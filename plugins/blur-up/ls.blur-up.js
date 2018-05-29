@@ -99,7 +99,7 @@
 		img.addEventListener('error', onload);
 
 		if(!parent.getAttribute('data-expand')){
-			parent.setAttribute('data-expand', 0);
+			parent.setAttribute('data-expand', -1);
 		}
 
 		lazySizes.aC(parent, lazySizes.cfg.lazyClass);
