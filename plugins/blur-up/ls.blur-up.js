@@ -91,7 +91,7 @@
 		img.addEventListener('load', onload);
 		img.addEventListener('error', onload);
 
-		if(blurUp != 'unobtrusive'){
+		if(blurUp == 'unobtrusive'){
 			blurImg.className += ' ls-inview';
 			setStateUp();
 		} else {
