@@ -40,25 +40,25 @@
 		var parent = (picture || img).parentNode;
 		var blurImg = document.createElement('img');
 
+		var remove = function () {
+			lazySizes.rAF(function() {
+				try {
+					blurImg.parentNode.removeChild(blurImg);
+				} catch(er){
+
+				}
+			});
+		};
+
 		var setStateUp = function(force){
 			isState++;
-
-			var remove = function () {
-				lazySizes.rAF(function() {
-					try {
-						blurImg.remove();
-					} catch(er){
-
-					}
-				});
-			};
 
 			isForced = force || isForced;
 
 			if(force){
 				remove();
 			} else if(isState > 1) {
-				setTimeout(remove, 3000);
+				setTimeout(remove, 5000);
 			}
 		};
 
