@@ -17,7 +17,7 @@
 	'use strict';
 
 	var slice = [].slice;
-	var regBlurUp = /blur-up["']*\s*:\s*["']*(always|auto)/;
+	var regBlurUp = /blur-up["']*\s*:\s*["']*(always|auto|unobtrusive)/;
 
 	var matchesMedia = function (source) {
 		var media = source.getAttribute('data-media') || source.getAttribute('media');
@@ -70,22 +70,12 @@
 				lazySizes.aC(blurImg, 'ls-original-loaded');
 			});
 
-			if(!isBlurUpLoaded || Date.now() - start < 99){
+			if(!isBlurUpLoaded || Date.now() - start < 66){
 				setStateUp(true);
 			} else {
 				setStateUp();
 			}
 		};
-
-		parent.addEventListener('lazybeforeunveil', function (e) {
-			if(parent != e.target){
-				return;
-			}
-
-			lazySizes.aC(blurImg, 'ls-inview');
-
-			setStateUp();
-		});
 
 		blurImg.addEventListener('load', function(){
 			isBlurUpLoaded = true;
@@ -94,19 +84,33 @@
 		blurImg.className = 'ls-blur-up-img';
 		blurImg.src = src;
 
-
 		img.addEventListener('load', onload);
 		img.addEventListener('error', onload);
 
-		if(!parent.getAttribute('data-expand')){
-			parent.setAttribute('data-expand', -1);
-		}
+		if(blurUp != 'unobtrusive'){
+			blurImg.className += ' ls-inview';
+			setStateUp();
+		} else {
+			if(!parent.getAttribute('data-expand')){
+				parent.setAttribute('data-expand', -1);
+			}
 
-		lazySizes.aC(parent, lazySizes.cfg.lazyClass);
+			parent.addEventListener('lazybeforeunveil', function (e) {
+				if(parent != e.target){
+					return;
+				}
+
+				lazySizes.aC(blurImg, 'ls-inview');
+
+				setStateUp();
+			});
+
+			lazySizes.aC(parent, lazySizes.cfg.lazyClass);
+		}
 
 		parent.insertBefore(blurImg, (picture || img).nextSibling);
 
-		if(blurUp == 'auto'){
+		if(blurUp != 'always'){
 			blurImg.style.visibility = 'hidden';
 
 			setTimeout(function(){
