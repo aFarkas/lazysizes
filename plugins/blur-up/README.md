@@ -22,7 +22,8 @@
 		height: 100%;
 		display: block;
 
-		font-family: "blur-up: always";
+		/* only if you want to change the blur-up option from auto to always */
+		font-family: "blur-up: always", "object-fit: cover";
 
 		object-fit: cover;
 	}
