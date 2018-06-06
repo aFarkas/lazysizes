@@ -20,6 +20,7 @@ The new image (`ls-blur-up-img`) will get the following state classes to enable 
 		min-width: 320px;
 		max-width: 900px;
 	}
+
 	.mediabox {
 		position: relative;
 		display: block;

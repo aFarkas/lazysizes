@@ -1,6 +1,9 @@
 # Changelog
 
-## 4.0.0-RC1
+## 4.0.3
+	* add [blur up plugin](https://jsfiddle.net/trixta/v0oq0412/embedded/result/)
+
+## 4.0.0
 	* make all plugins CommonJS compatible (thx to @claudiobmgrtnr and @jantimon)
 	* added `loadHidden` option(thx to @justinvoelker)
 	* added artdirection plugin (no documentation yet, but great)
