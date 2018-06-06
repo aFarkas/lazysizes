@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.0.4
+	* fixes issue in bgset introduced with version 4.0.3
+
 ## 4.0.3
 	* add [blur up plugin](https://jsfiddle.net/trixta/v0oq0412/embedded/result/)
 
