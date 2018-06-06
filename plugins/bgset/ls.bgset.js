@@ -93,7 +93,10 @@
 
 				setTypeOrMedia(source, match[2]);
 				setTypeOrMedia(source, match[3]);
+			} else {
+				source.setAttribute(lazySizesConfig.srcsetAttr, set);
 			}
+
 			picture.appendChild(source);
 		});
 
