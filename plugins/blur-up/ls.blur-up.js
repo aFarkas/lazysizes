@@ -21,14 +21,14 @@
 
 	var matchesMedia = function (source) {
 		var media = source.getAttribute('data-media') || source.getAttribute('media');
-		return !media || window.matchesMedia(lazySizes.cfg.customMedia[media] || media).matches;
+		return !media || window.matchMedia(lazySizes.cfg.customMedia[media] || media).matches;
 	};
 
 	var getLowSrc = function (picture, img) {
 		var sources = picture ? slice.call(picture.querySelectorAll('source, img')) : [img];
 
 		return sources.find(function (src) {
-			return matchesMedia(src) || src.getAttribute('data-lowsrc');
+			return matchesMedia(src) && src.getAttribute('data-lowsrc');
 		}).getAttribute('data-lowsrc');
 	};
 
@@ -77,13 +77,17 @@
 			}
 		};
 
-		blurImg.addEventListener('load', function(){
+		var onloadBlurUp = function(){
 			isBlurUpLoaded = true;
 
-			requestAnimationFrame(function () {
+			lazySizes.rAF(function () {
 				lazySizes.aC(blurImg, 'ls-blur-up-loaded');
 			});
-		});
+
+			blurImg.removeEventListener('load', onloadBlurUp);
+		};
+
+		blurImg.addEventListener('load', onloadBlurUp);
 
 		blurImg.className = 'ls-blur-up-img';
 		blurImg.src = src;
@@ -95,11 +99,7 @@
 			blurImg.className += ' ls-inview';
 			setStateUp();
 		} else {
-			if(!parent.getAttribute('data-expand')){
-				parent.setAttribute('data-expand', -1);
-			}
-
-			parent.addEventListener('lazybeforeunveil', function (e) {
+			var parentUnveil = function (e) {
 				if(parent != e.target){
 					return;
 				}
@@ -107,7 +107,15 @@
 				lazySizes.aC(blurImg, 'ls-inview');
 
 				setStateUp();
-			});
+
+				parent.removeEventListener('lazybeforeunveil', parentUnveil);
+			};
+
+			if(!parent.getAttribute('data-expand')){
+				parent.setAttribute('data-expand', -1);
+			}
+
+			parent.addEventListener('lazybeforeunveil', parentUnveil);
 
 			lazySizes.aC(parent, lazySizes.cfg.lazyClass);
 		}
@@ -118,7 +126,7 @@
 			blurImg.style.visibility = 'hidden';
 
 			setTimeout(function(){
-				requestAnimationFrame(function () {
+				lazySizes.rAF(function () {
 					if(!isForced){
 						blurImg.style.visibility = '';
 					}
@@ -157,6 +165,6 @@
 
 		if(!match && !img.getAttribute('data-lowsrc')){return;}
 
-		detail.blurUp = match && match[1] || 'auto';
+		detail.blurUp = match && match[1] || 'always';
 	});
 }));

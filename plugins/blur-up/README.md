@@ -1,3 +1,18 @@
+# The lazysizes Blur Up plugin
+
+The lazysizes Blur Up plugin ([demo](https://jsfiddle.net/trixta/v0oq0412/embedded/result/)) gives you the possibility to also lazyload the low quality placeholder and enables you to create a blur up/fade over effect.
+
+This way the low quality image placeholder technique is more appealing to the user.
+
+## How to
+
+Simply add a `data-lowsrc` attribute with the loq quality image placeholder image to your `img` and in case of `picture` to your `source` elements.
+
+Lazysizes will then create a new image right after your original image with the following class `ls-blur-up-img`.
+
+The new image (`ls-blur-up-img`) will get the following state classes to enable you to write a custom CSS animation/transition as soon as the image is in view and loaded: `ls-inview`/`ls-original-loaded`.
+
+
 ```html
 <style>
 	.wrapper {
@@ -40,7 +55,6 @@
 	}
 </style>
 <div class="wrapper">
-
 	<div class="mediabox">
 		<img
 			class="mediabox-img lazyload"

@@ -153,7 +153,9 @@ If you are using the LQIP (Low Quality Image Placeholder) pattern, simply add a 
 <img src="lqip-src.jpg" data-src="image.jpg" class="lazyload" />
 ```
 
-The LQIP technique can be enhanced by combining it with CSS transitions/animation to sharpen/unblur or overfade the LQIP image:
+The LQIP technique can be enhanced by combining it with CSS transitions/animation to sharpen/unblur or overfade the LQIP image.
+
+Please also have a look at our [lazysizes Blur Up plugin](https://jsfiddle.net/trixta/v0oq0412/embedded/result/).
 
 ```html
 <style>
@@ -478,17 +480,17 @@ The ``srcset`` attribute with the *w* descriptor and ``sizes`` attribute automat
 ### [parent-fit extension](plugins/parent-fit)
 The [parent fit plugin](plugins/parent-fit) extends the ``data-sizes="auto"`` feature to also calculate the right ``sizes`` for ``object-fit: contain|cover`` image elements and other **height** ( and width) constrained image elements in general.
 
-### [object-fit extension](plugins/object-fit)
-The [object fit plugin](plugins/object-fit) polyfills the `object-fit` and the `object-position` property in non supporting browsers.
+### [object-fit polyfill extension](plugins/object-fit)
+The [object fit polyfill plugin](plugins/object-fit) polyfills the `object-fit` and the `object-position` property in non supporting browsers.
+
+### [blur up / effect plugin](plugins/blur-up)
+The [blur up / effect plugin](plugins/blur-up) allows you to create [great over fade / blur uo effects](https://jsfiddle.net/trixta/v0oq0412/embedded/result/) with low quality image placeholder.
 
 ### [unveilhooks plugin](plugins/unveilhooks)
 The [unveilhooks plugin](plugins/unveilhooks) plugin enables lazySizes to lazyload background images, widgets/components/scripts, styles and video/audio elements.
 
 ### [include plugin](plugins/include)
 The [include plugin](plugins/include) plugin enables lazySizes to lazyload content, styles or AMD modules either simply postponed or conditionally (for example matching certain media queries). This extension also heavily simplifies the architecture of conditional, dynamically changing responsive behavior and has great scalability.
-
-### [bgset plugin - lazy responsive background-image](plugins/bgset)
-The bgset plugin allows lazyloading of multiple background images with different resolutions/sizes and/or media queries (responsive background images). In case you only need one image use the unveilhooks extension.
 
 ### [lazysizes custommedia extension](plugins/custommedia)
 [lazySizes custommedia extension](plugins/custommedia) allows you to automatically sync and manage your breakpoints between your CSS and the ``media`` attributes of your ``"picture > source"`` elements using the ``customMedia`` option of lazySizes.
@@ -503,9 +505,6 @@ The [unload](plugins/unload) extends lazysizes to unload not in view images to i
 
 ### [noscript extension](plugins/noscript)
 The [noscript extension](plugins/noscript) is the ultimate progressive enhancement extension for lazySizes. It allows you to transform any HTML inside a ``noscript`` element as soon as it becomes visible.
-
-### [aspectratio extension](plugins/aspectratio)
-The [aspectratio extension](plugins/aspectratio) allows you to control the aspectratio of your images using markup instead of CSS. It is an alternative for the [CSS intrinsic ratio technique](#specify-dimensions).
 
 ### [progressive plugin](plugins/progressive)
 The [progressive plugin](plugins/progressive) adds better support for rendering progressive jpgs/pngs.
