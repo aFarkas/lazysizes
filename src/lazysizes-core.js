@@ -405,13 +405,16 @@ function l(window, document) {
 
 		var switchLoadingClass = function(e){
 			addClass(e.target, lazySizesConfig.loadedClass);
+			if (e.type === 'error') {
+				addClass(e.target, lazySizesConfig.errorClass);
+			}
 			removeClass(e.target, lazySizesConfig.loadingClass);
 			addRemoveLoadEvents(e.target, rafSwitchLoadingClass);
 			triggerEvent(e.target, 'lazyloaded');
 		};
 		var rafedSwitchLoadingClass = rAFIt(switchLoadingClass);
 		var rafSwitchLoadingClass = function(e){
-			rafedSwitchLoadingClass({target: e.target});
+			rafedSwitchLoadingClass({target: e.target, type: e.type});
 		};
 
 		var changeIframeSrc = function(elem, src){
