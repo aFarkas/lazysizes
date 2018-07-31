@@ -18,17 +18,20 @@
 
 	var slice = [].slice;
 	var regBlurUp = /blur-up["']*\s*:\s*["']*(always|auto|unobtrusive)/;
+	var regType = /image\/(jpeg|png|gif|svg\+xml)/;
 
 	var matchesMedia = function (source) {
 		var media = source.getAttribute('data-media') || source.getAttribute('media');
-		return !media || window.matchMedia(lazySizes.cfg.customMedia[media] || media).matches;
+		var type = source.getAttribute('type');
+
+		return (!type || regType.test(type)) && (!media || window.matchMedia(lazySizes.cfg.customMedia[media] || media).matches);
 	};
 
 	var getLowSrc = function (picture, img) {
 		var sources = picture ? slice.call(picture.querySelectorAll('source, img')) : [img];
 
 		return sources.find(function (src) {
-			return matchesMedia(src) && src.getAttribute('data-lowsrc');
+			return src.getAttribute('data-lowsrc') && matchesMedia(src);
 		}).getAttribute('data-lowsrc');
 	};
 

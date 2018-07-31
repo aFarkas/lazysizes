@@ -309,7 +309,7 @@ function l(window, document) {
 		var isNestedVisible = function(elem, elemExpand){
 			var outerRect;
 			var parent = elem;
-			var visible = getCSS(document.body, 'visibility') == 'hidden' || (getCSS(elem.parentNode.parentNode || elem.parentNode, 'visibility') != 'hidden' && getCSS(elem, 'visibility') != 'hidden');
+			var visible = getCSS(document.body, 'visibility') == 'hidden' || (getCSS(elem.parentNode, 'visibility') != 'hidden' && getCSS(elem, 'visibility') != 'hidden');
 
 			eLtop -= elemExpand;
 			eLbottom += elemExpand;
