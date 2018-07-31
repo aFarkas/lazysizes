@@ -85,6 +85,9 @@
 	var updatePolyfill = function (el, full){
 		var polyfill;
 		if( !supportPicture && ( polyfill = (window.picturefill || lazySizesConfig.pf) ) ){
+			if(full && full.src && !el[_getAttribute]('srcset')){
+				el.setAttribute('srcset', full.src);
+			}
 			polyfill({reevaluate: true, elements: [el]});
 		} else if(full && full.src){
 			el.src = full.src;
@@ -312,7 +315,7 @@
 		var isNestedVisible = function(elem, elemExpand){
 			var outerRect;
 			var parent = elem;
-			var visible = getCSS(document.body, 'visibility') == 'hidden' || getCSS(elem, 'visibility') != 'hidden';
+			var visible = getCSS(document.body, 'visibility') == 'hidden' || (getCSS(elem.parentNode.parentNode || elem.parentNode, 'visibility') != 'hidden' && getCSS(elem, 'visibility') != 'hidden');
 
 			eLtop -= elemExpand;
 			eLbottom += elemExpand;

@@ -100,7 +100,7 @@ Add the class ``lazyload`` and simply omit the ``src`` attribute  or add a data 
 
 <!--  responsive adaptive example -->
 
-<img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+<img
 	class="lazyload"
 	data-srcset="image.jpg 1x, image2.jpg 2x"
     alt="my image" />
@@ -110,7 +110,7 @@ Add the class ``lazyload`` and simply omit the ``src`` attribute  or add a data 
     alt="my image" />
 
 <!-- or non-responsive: -->
-<img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+<img
 	data-src="image.jpg"
 	class="lazyload" />
 ```
@@ -155,7 +155,7 @@ If you are using the LQIP (Low Quality Image Placeholder) pattern, simply add a 
 
 The LQIP technique can be enhanced by combining it with CSS transitions/animation to sharpen/unblur or overfade the LQIP image.
 
-Please also have a look at our [lazysizes Blur Up plugin](https://jsfiddle.net/trixta/v0oq0412/embedded/result/).
+Please also have a look at our [lazysizes Blur Up plugin](https://jsfiddle.net/trixta/v0oq0412/embedded/result/) (recommended).
 
 ```html
 <style>
@@ -209,8 +209,6 @@ Combine a normal ``src`` attribute with a transparent or low quality image as ``
 	data-sizes="auto"
 	class="lazyload" />
 ```
-
-Note: It is recommended that the first image candidate in ``data-srcset`` matches the ``src`` fallback image. (See also [#150](https://github.com/aFarkas/lazysizes/issues/150).)
 
 ### The noscript pattern
 
@@ -321,7 +319,7 @@ Here the list of options:
 * ``lazySizesConfig.srcsetAttr`` (default: ``"data-srcset"``): The attribute, which should be transformed to ``srcset``.
 * ``lazySizesConfig.sizesAttr`` (default: ``"data-sizes"``): The attribute, which should be transformed to ``sizes``. Makes almost only makes sense with the value ``"auto"``. Otherwise the ``sizes`` attribute should be used directly.
 * ``lazySizesConfig.customMedia`` (default: ``{}``): The ``customMedia`` option object is an alias map for different media queries. It can be used to separate/centralize your multiple specific media queries implementation (layout) from the ``source[media]`` attribute (content/structure) by creating labeled media queries. (See also the [custommedia extension](plugins/custommedia)).
-* ``lazySizesConfig.loadHidden`` (default: ``true``): Wether to load `visibility: hidden` elements.
+* ``lazySizesConfig.loadHidden`` (default: ``true``): Wether to load `visibility: hidden` elements. Important: lazySizes will load hidden images always delayed. If you want them to be loaded as fast as possible you can use `opacity: 0.001` but never `visibility: hidden` or `opacity: 0`.
 * ``lazySizesConfig.ricTimeout`` (default: ``0``): The timeout option used for the `requestIdleCallback`. Reasonable values between: 0, 100 - 1000. (Values below 50 disable the `requestIdleCallback` feature.)
 * ``lazySizesConfig.throttleDelay`` (default: ``125``): The timeout option used to throttle all listeners. Reasonable values between: 66 - 200.
 ```html
@@ -350,7 +348,7 @@ window.lazySizesConfig.customMedia = {
         data-srcset="http://placehold.it/1800x900/117fe8/fff" />
     <!--[if IE 9]></video><![endif]-->
     <img
-        src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+
         data-src="http://placehold.it/1400x600/e8117f/fff"
         class="lazyload"
         alt="image with artdirection" />
@@ -411,7 +409,7 @@ document.addEventListener('lazybeforeunveil', function(e){
 
 <div class="chart lazyload" data-expand="-10"></div>
 ```
-*<a id="lazyloaded-documentation"></a>`lazyloaded`: After the image is fully loaded lazysizes dispatches a `lazyloaded` event. While this often duplicates the native `load` event it is often more convenient.
+*<a id="lazyloaded-documentation"></a>`lazyloaded`: After the image is fully loaded lazysizes dispatches a `lazyloaded` event. While this often duplicates the native `load` event it is often more convenient to use.
 
 * <a id="lazybeforesizes-documentation"></a>``lazybeforesizes``: This event will be fired on each element with the ``data-sizes="auto"`` attribute right before the calculated ``sizes`` attribute will be set. The ``event.detail.width`` property is set to the calculated width of the element and can be changed to any number. In case the event is ``defaultPrevented`` the ``sizes`` attribute won't be set. See also the [parent-fit extension](plugins/parent-fit).
 ```js
@@ -484,7 +482,7 @@ The [parent fit plugin](plugins/parent-fit) extends the ``data-sizes="auto"`` fe
 The [object fit polyfill plugin](plugins/object-fit) polyfills the `object-fit` and the `object-position` property in non supporting browsers.
 
 ### [blur up / effect plugin](plugins/blur-up)
-The [blur up / effect plugin](plugins/blur-up) allows you to create [great over fade / blur uo effects](https://jsfiddle.net/trixta/v0oq0412/embedded/result/) with low quality image placeholder.
+The [blur up / effect plugin](plugins/blur-up) allows you to create [great over fade / blur uo effects](https://jsfiddle.net/trixta/v0oq0412/embedded/result/) with low quality image placeholder, which improves the user experience and perceived performance in case you are using a low quality image approach.
 
 ### [unveilhooks plugin](plugins/unveilhooks)
 The [unveilhooks plugin](plugins/unveilhooks) plugin enables lazySizes to lazyload background images, widgets/components/scripts, styles and video/audio elements.
@@ -520,7 +518,7 @@ To minimize reflows, content jumping or unpredictable behavior with some other J
 
 ```html
 <img
-	src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+
     width="350"
     height="150"
 	data-srcset="http://placehold.it/350x150 1x,
@@ -556,7 +554,7 @@ For flexible responsive images the [CSS intrinsic ratio scaling technique](http:
 
 <div class="ratio-container">
     <img
-        src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+
         data-sizes="auto"
         data-srcset="http://placehold.it/175x75 175w,
         http://placehold.it/350x150 350w,
@@ -593,7 +591,7 @@ In case you want to dynamically calculate your intrinsic ratios for many differe
 
 <div class="ratio-box" style="padding-bottom: 42.85% /* calc(75 / 175 * 100%)*/;">
     <img
-        src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+
         data-sizes="auto"
         data-srcset="http://placehold.it/175x75 175w,
         http://placehold.it/350x150 350w,
@@ -639,7 +637,7 @@ In case the exact ratio of your image is unknown you can also vary the intrinsic
 
 <div class="ratio-container unknown-ratio-container">
     <img
-        src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+
         data-src="http://placehold.it/350x150"
         class="lazyload" />
 </div>
@@ -699,7 +697,7 @@ Due to the fact, that it is designed to be invoked with a high frequency and the
 <!-- responsive example: -->
 <img
 	data-sizes="auto"
-    src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+
 	data-srcset="image2.jpg 300w,
     image3.jpg 600w,
     image4.jpg 900w"
@@ -707,7 +705,7 @@ Due to the fact, that it is designed to be invoked with a high frequency and the
     class="lazyload" />
 
 <!-- or non-responsive: -->
-<img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+<img
     data-src="image.jpg"
     class="lazyload" />
 ```
