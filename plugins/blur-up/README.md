@@ -1,4 +1,4 @@
-# The lazysizes Blur Up plugin
+# The lazysizes Blur Up/effect plugin plugin
 
 The lazysizes Blur Up plugin ([demo](https://jsfiddle.net/trixta/v0oq0412/embedded/result/)) gives you the possibility to also lazyload the low quality placeholder and enables you to create a blur up/fade over effect.
 

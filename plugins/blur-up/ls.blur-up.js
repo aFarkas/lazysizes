@@ -29,10 +29,11 @@
 
 	var getLowSrc = function (picture, img) {
 		var sources = picture ? slice.call(picture.querySelectorAll('source, img')) : [img];
-
-		return sources.find(function (src) {
+		var element = sources.find(function (src) {
 			return src.getAttribute('data-lowsrc') && matchesMedia(src);
-		}).getAttribute('data-lowsrc');
+		});
+
+		return element && element.getAttribute('data-lowsrc');
 	};
 
 	var createBlurup = function(picture, img, src, blurUp){
@@ -135,7 +136,7 @@
 					return;
 				}
 
-				lazySizes.aC(img || blurImg, 'ls-inview');
+				lazySizes.aC(blurImg || img, 'ls-inview');
 
 				setStateUp();
 
