@@ -6,7 +6,7 @@ This way the low quality image placeholder technique is more appealing to the us
 
 ## How to
 
-Simply add a `data-lowsrc` attribute with the loq quality image placeholder image to your `img` and in case of `picture` to your `source` elements.
+Simply add a `data-lowsrc` attribute with the low quality image placeholder image to your `img` and in case of `picture` to your `source` elements.
 
 Lazysizes will then create a new image right after your original image with the following class `ls-blur-up-img`.
 
