@@ -33,6 +33,12 @@
 					lazySizes.rC(target, lsCfg.unloadedClass);
 				}
 				lazySizes.aC(target, lsCfg.lazyClass);
+
+				if(target.style.display == 'none' || (target.parentNode && target.parentNode.style.display == 'none')){
+					setTimeout(function () {
+						lazySizes.loader.unveil(target);
+					}, 0);
+				}
 			});
 		};
 
