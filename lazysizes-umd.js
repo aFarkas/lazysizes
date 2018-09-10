@@ -71,7 +71,7 @@
 	};
 
 	var triggerEvent = function(elem, name, detail, noBubbles, noCancelable){
-		var event = document.createEvent('CustomEvent');
+		var event = document.createEvent.call(window.document, 'CustomEvent');
 
 		if(!detail){
 			detail = {};
