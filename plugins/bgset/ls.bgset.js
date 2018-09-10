@@ -124,8 +124,16 @@
 		var elem = image._lazybgset;
 		var bg = image.currentSrc || image.src;
 
+
 		if(bg){
-			elem.style.backgroundImage = 'url(' + (regBgUrlEscape.test(bg) ? JSON.stringify(bg) : bg ) + ')';
+			var event = lazySizes.fire(elem, 'bgsetproxy', {
+				src: bg,
+				useSrc: regBgUrlEscape.test(bg) ? JSON.stringify(bg) : bg,
+			});
+
+			if(!event.defaultPrevented){
+				elem.style.backgroundImage = 'url(' + event.detail.useSrc + ')';
+			}
 		}
 
 		if(image._lazybgsetLoading){
