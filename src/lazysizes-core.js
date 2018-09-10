@@ -62,7 +62,7 @@ function l(window, document) {
 	};
 
 	var triggerEvent = function(elem, name, detail, noBubbles, noCancelable){
-		var event = document.createEvent.call(window.document, 'CustomEvent');
+		var event = document.createEvent('Event');
 
 		if(!detail){
 			detail = {};
@@ -70,7 +70,9 @@ function l(window, document) {
 
 		detail.instance = lazysizes;
 
-		event.initCustomEvent(name, !noBubbles, !noCancelable, detail);
+		event.initEvent(name, !noBubbles, !noCancelable);
+
+		event.detail = detail;
 
 		elem.dispatchEvent(event);
 		return event;
