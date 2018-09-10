@@ -4,6 +4,8 @@ This simple and small plugin allows you to define multiple background images wit
 
 The extension will then load the best image size for the current viewport and device. In case the browser does not support responsive images natively either picturefill or the [respimg polyfill plugin](../respimg) has to be used:
 
+Note: This plugin is deprecated in most cases. Check wether the object-fit CSS property in combination with the [object-fit polyfill](../object-fit) is better for your needs.
+
 ```html
 <script>
     function loadJS(u){var r=document.getElementsByTagName("script")[0],s=document.createElement("script");s.src=u;r.parentNode.insertBefore(s,r);}

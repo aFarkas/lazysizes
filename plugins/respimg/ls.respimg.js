@@ -25,7 +25,7 @@
 		var regDescriptors = /\s+(\d+)(w|h)\s+(\d+)(w|h)/;
 		var forEach = Array.prototype.forEach;
 
-		return function(edgeMatch){
+		return function(){
 			var img = document.createElement('img');
 			var removeHDescriptors = function(source){
 				var ratio, match;
@@ -60,19 +60,15 @@
 				}
 			};
 
-			if(edgeMatch[1]){
-				document.addEventListener('lazybeforeunveil', handler);
+			document.addEventListener('lazybeforeunveil', handler);
 
-				if(true || edgeMatch[1] > 14){
-					img.onload = test;
-					img.onerror = test;
+			img.onload = test;
+			img.onerror = test;
 
-					img.srcset = 'data:,a 1w 1h';
+			img.srcset = 'data:,a 1w 1h';
 
-					if(img.complete){
-						test();
-					}
-				}
+			if(img.complete){
+				test();
 			}
 		};
 	})();

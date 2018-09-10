@@ -5,7 +5,7 @@ This extension polyfills `object-fit`: `cover` and `contain` properties as also 
 ## Usage
 
 ### Include JS files:
-Include lazysizes and lazysizes object fit and optionally lazysizes parent-fit and lazysizes respimg plugin. Lazysizes object-fit and respimg plugin are only needed in browser that don't support object fit or responsive images. Lazysizes parent-fit is recommended if you use object fit responsive images in combination with `data-sizes="auto"`.
+Include lazysizes and lazysizes object fit and optionally lazysizes [parent-fit](../parent-fit) and lazysizes respimg plugin. Lazysizes object-fit and respimg plugin are only needed in browser that don't support object fit or responsive images. Lazysizes parent-fit is recommended if you use object fit responsive images in combination with `data-sizes="auto"`.
 
 ```html
 <!-- polyfill for object-fit (only needed in browsers that don't support object-fit) -->

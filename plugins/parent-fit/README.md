@@ -4,7 +4,7 @@ The parent fit plugin extends the ``data-sizes="auto"`` feature to also calculat
 
 ## Usage
 
-For this to work properly the physical aspect-ratio of the image candidates need to be calculable. To do so at least one of the image candidates inside the ``srcset`` attribute also need to include a **h** (height) descriptor for at least one image candidate in each `srcset`.
+For this to work properly the physical aspect-ratio of the image candidates need to be calculable. To do so either a `data-aspectratio` attribute has to be provided on the `source`/`img` element or at least one of the image candidates inside the ``srcset`` attribute also need to include a **h** (height) descriptor.
 
 ### object-fit: contain|cover usage
 

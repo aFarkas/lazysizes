@@ -26,6 +26,7 @@
 	}
 	var config, includeConfig, baseContentElement, basePseudos;
 	var regSplitCan = /\s*,+\s+/;
+	var cssComplete = {complete: 1, loaded: 1};
 	var uniqueUrls = {};
 	var regWhite = /\s+/;
 	var regTypes = /^(amd|css|module)\:(.+)/i;
@@ -339,6 +340,22 @@
 		}
 	}
 
+	function isStyleReady(link){
+		var ready = false;
+		var sheets = document.styleSheets;
+		var href = link.href;
+
+		for(var i = 0, length = sheets.length; i < length; i++){
+			if(sheets[i].href == href){
+				ready = true;
+				break;
+			}
+		}
+
+
+		return ready;
+	}
+
 	function loadStyleScript(url, isScript, cb){
 		if(!uniqueUrls[url]){
 			var elem = document.createElement(isScript === true ? 'script' : 'link');
@@ -351,15 +368,67 @@
 				elem.rel = 'stylesheet';
 				elem.href = url;
 			}
-			insertElem.parentNode.insertBefore(elem, insertElem);
-			uniqueUrls[url] = true;
+
+			uniqueUrls[url] = [];
 			uniqueUrls[elem.href] = true;
+
+			if(cb){
+				var timer;
+				var load = function(e){
+					if(e.type == 'readystatechange' && !cssComplete[e.target.readyState]){return;}
+
+					var cbs = uniqueUrls[url];
+
+					elem.removeEventListener('load', load);
+					elem.removeEventListener('error', load);
+					elem.removeEventListener('readystatechange', load);
+					elem.removeEventListener('loadcssdefined', load);
+
+					if(timer){
+						clearInterval(timer);
+					}
+
+					uniqueUrls[url] = true;
+
+					while(cbs.length){
+						cbs.shift()();
+					}
+				};
+
+				if(!isScript){
+					timer = setInterval(function(){
+						if(isStyleReady(elem)){
+							load({});
+						}
+					}, 60);
+				}
+
+				elem.addEventListener('load', load);
+				elem.addEventListener('error', load);
+				elem.addEventListener('readystatechange', load);
+				elem.addEventListener('loadcssdefined', load);
+
+				uniqueUrls[url][0] = cb;
+			}
+
+			insertElem.parentNode.insertBefore(elem, insertElem);
+		} else if(cb){
+			if(uniqueUrls[url] === true){
+				setTimeout(cb);
+			} else {
+				uniqueUrls[url].push(cb);
+			}
 		}
 	}
 
-	function loadStyles(urls){
+	function loadStyles(urls, cb){
 		urls = urls.split('|,|');
-		urls.forEach(loadStyleScript);
+
+		var last = urls.length - 1;
+
+		urls.forEach(function(url, index){
+			loadStyleScript(url, false, index == last ? cb : null);
+		});
 	}
 
 	function transformInclude(module){
@@ -384,7 +453,7 @@
 	}
 
 	function loadCandidate(elem, candidate){
-		var include, xhrObj, modules;
+		var include, xhrObj, modules, waitCss, runInclude;
 		var old = elem.lazyInclude.current || null;
 		var detail = {
 			candidate: candidate,
@@ -400,6 +469,12 @@
 			queue.d();
 			return;
 		}
+
+		runInclude = function(){
+			if(xhrObj && modules && !waitCss){
+				include();
+			}
+		};
 
 		include = function(){
 			var event;
@@ -455,14 +530,16 @@
 		elem.setAttribute('data-currentinclude', candidate.name);
 
 		if(candidate.urls.css){
-			loadStyles(candidate.urls.css);
+			waitCss = true;
+			loadStyles(candidate.urls.css, function () {
+				waitCss = false;
+				runInclude();
+			});
 		}
 		if(detail.content == null && candidate.urls.include){
 			loadInclude(detail, function(data){
 				xhrObj = data;
-				if(modules){
-					include();
-				}
+				runInclude();
 			});
 		} else {
 			xhrObj = detail;
@@ -471,9 +548,7 @@
 		if(candidate.urls.amd || candidate.urls.module){
 			var loadRequireImportCB = function(){
 				modules = Array.prototype.slice.call(arguments);
-				if(xhrObj){
-					include();
-				}
+				runInclude();
 			};
 
 			if(candidate.urls.amd){
@@ -486,9 +561,7 @@
 			modules = [];
 		}
 
-		if(xhrObj && modules){
-			include();
-		}
+		runInclude();
 	}
 
 	function findLoadCandidate(elem){
