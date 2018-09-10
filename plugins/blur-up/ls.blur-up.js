@@ -19,6 +19,7 @@
 	var slice = [].slice;
 	var regBlurUp = /blur-up["']*\s*:\s*["']*(always|auto|unobtrusive)/;
 	var regType = /image\/(jpeg|png|gif|svg\+xml)/;
+	var transSrc = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
 
 	var matchesMedia = function (source) {
 		var media = source.getAttribute('data-media') || source.getAttribute('media');
@@ -51,16 +52,20 @@
 			var onloadBlurUp = function(){
 				isBlurUpLoaded = true;
 
-				lazySizes.rAF(function () {
-					lazySizes.aC(blurImg, 'ls-blur-up-loaded');
-				});
+				if(blurImg){
+					lazySizes.rAF(function () {
+						lazySizes.aC(blurImg, 'ls-blur-up-loaded');
+					});
 
-				blurImg.removeEventListener('load', onloadBlurUp);
+					blurImg.removeEventListener('load', onloadBlurUp);
+					blurImg.removeEventListener('error', onloadBlurUp);
+				}
 			};
 
 			blurImg = document.createElement('img');
 
 			blurImg.addEventListener('load', onloadBlurUp);
+			blurImg.addEventListener('error', onloadBlurUp);
 
 			blurImg.className = 'ls-blur-up-img';
 			blurImg.src = src;
@@ -166,7 +171,7 @@
 			picture = null;
 		}
 
-		createBlurup(picture, img, getLowSrc(picture, img), detail.blurUp);
+		createBlurup(picture, img, getLowSrc(picture, img) || transSrc, detail.blurUp);
 	});
 
 	window.addEventListener('lazyunveilread', function (e) {
