@@ -103,10 +103,14 @@
 		};
 
 		return function(fn){
+			var args;
+
 			if(running){
 				fn.apply(this, arguments);
 			} else {
-				fns.push([fn, this, arguments]);
+				args = [];
+				args.push.apply(args, arguments)
+				fns.push([fn, this, args]);
 
 				if(!waiting){
 					waiting = true;
@@ -122,11 +126,7 @@
 				rAF(fn);
 			} :
 			function(){
-				var that = this;
-				var args = arguments;
-				rAF(function(){
-					fn.apply(that, args);
-				});
+				rAF(fn.bind.bind(fn, this).apply(undefined, arguments));
 			}
 		;
 	};
