@@ -482,7 +482,7 @@ The [parent fit plugin](plugins/parent-fit) extends the ``data-sizes="auto"`` fe
 The [object fit polyfill plugin](plugins/object-fit) polyfills the `object-fit` and the `object-position` property in non supporting browsers.
 
 ### [blur up / effect plugin](plugins/blur-up)
-The [blur up / effect plugin](plugins/blur-up) allows you to create [great over fade / blur uo effects](https://jsfiddle.net/trixta/v0oq0412/embedded/result/) with low quality image placeholder, which improves the user experience and perceived performance in case you are using a low quality image approach.
+The [blur up / effect plugin](plugins/blur-up) allows you to create [great over fade / blur up effects](https://jsfiddle.net/trixta/v0oq0412/embedded/result/) with low quality image placeholder, which improves the user experience and perceived performance in case you are using a low quality image approach.
 
 ### [unveilhooks plugin](plugins/unveilhooks)
 The [unveilhooks plugin](plugins/unveilhooks) plugin enables lazySizes to lazyload background images, widgets/components/scripts, styles and video/audio elements.
