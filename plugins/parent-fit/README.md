@@ -4,13 +4,25 @@ The parent fit plugin extends the ``data-sizes="auto"`` feature to also calculat
 
 ## Usage
 
-For this to work properly the physical aspect-ratio of the image candidates need to be calculable. To do so either a `data-aspectratio` attribute has to be provided on the `source`/`img` element or at least one of the image candidates inside the ``srcset`` attribute also need to include a **h** (height) descriptor.
+For this to work properly the physical aspect-ratio of the image candidates need to be calculable. To do so either a `data-aspectratio` attribute has to be provided on the `source`/`img` element(s) or at least one of the image candidates inside the ``srcset`` attribute also need to include a **h** (height) descriptor. (MS Edge has problems to read image candidates using the h descrptor, which is fixed by the [respimg polyfill](../respimg)=
 
 ### object-fit: contain|cover usage
 
-Simply include this plugin, combine your width descriptors with height descriptors and use ``object-fit``.
+Simply include this plugin, combine your width descriptors with height descriptors and use ``object-fit``. (To get object-fit support into IE9-11 use the [object-fit polyfill](../object-fit).)
 
 ```html
+<!-- Usage of the data-aspectratio attribute: Divide width by height: 400/800 = data-aspectratio="0.5" -->
+
+<img data-srcset="http://lorempixel.com/400/800/people/6/ 400w 800h,
+	http://lorempixel.com/300/600/people/6/ 300w,
+	http://lorempixel.com/200/400/people/6/ 200w"
+	data-aspectratio="0.5"
+	 data-sizes="auto"
+	 class="lazyload"
+	 style="width: 400px; height: 400px; object-fit: contain;" />
+
+<!-- Usage of the h descriptor -->
+
 <img data-srcset="http://lorempixel.com/400/800/people/6/ 400w 800h,
 	http://lorempixel.com/300/600/people/6/ 300w,
 	http://lorempixel.com/200/400/people/6/ 200w"
@@ -24,11 +36,15 @@ Simply include this plugin, combine your width descriptors with height descripto
 	 data-sizes="auto"
 	 class="lazyload"
 	 style="width: 400px; height: 400px; object-fit: cover;" />
+
+
 ```
+
+
 
 ### [data-parent-fit="contain|cover|width"] usage
 
-Due to the fact, that object-fit isn't supported in IE11. This plugin also supports calculating height and width constrained images based on the parent element.
+This plugin also supports calculating height and width constrained images based on the parent element.
 
 To do so include this plugin, combine your width descriptors with height descriptors and add the attribute ``data-parent-fit`` with either ``"contain"`` or ``"cover"`` as the keyword.
 
