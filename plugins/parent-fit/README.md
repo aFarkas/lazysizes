@@ -13,7 +13,7 @@ Simply include this plugin, combine your width descriptors with height descripto
 ```html
 <!-- Usage of the data-aspectratio attribute: Divide width by height: 400/800 = data-aspectratio="0.5" -->
 
-<img data-srcset="http://lorempixel.com/400/800/people/6/ 400w 800h,
+<img data-srcset="http://lorempixel.com/400/800/people/6/ 400w,
 	http://lorempixel.com/300/600/people/6/ 300w,
 	http://lorempixel.com/200/400/people/6/ 200w"
 	data-aspectratio="0.5"
