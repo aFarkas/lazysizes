@@ -4,7 +4,7 @@ The parent fit plugin extends the ``data-sizes="auto"`` feature to also calculat
 
 ## Usage
 
-For this to work properly the physical aspect-ratio of the image candidates need to be calculable. To do so either a `data-aspectratio` attribute has to be provided on the `source`/`img` element(s) or at least one of the image candidates inside the ``srcset`` attribute also need to include a **h** (height) descriptor. (MS Edge has problems to read image candidates using the h descrptor, which is fixed by the [respimg polyfill](../respimg)=
+For this to work properly the physical aspect-ratio of the image candidates need to be calculable. To do so either a `data-aspectratio` attribute has to be provided on the `source`/`img` element(s) or at least one of the image candidates inside the ``srcset`` attribute also need to include a **h** (height) descriptor. (MS Edge has problems to read image candidates using the h descrptor, which is fixed by the [respimg polyfill](../respimg))
 
 ### object-fit: contain|cover usage
 
@@ -44,7 +44,7 @@ Simply include this plugin, combine your width descriptors with height descripto
 
 ### [data-parent-fit="contain|cover|width"] usage
 
-This plugin also supports calculating height and width constrained images based on the parent element.
+This plugin also supports calculating height and width constrained images based on a parent element.
 
 To do so include this plugin, combine your width descriptors with height descriptors and add the attribute ``data-parent-fit`` with either ``"contain"`` or ``"cover"`` as the keyword.
 
