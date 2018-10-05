@@ -54,7 +54,9 @@
 
 				if(blurImg){
 					lazySizes.rAF(function () {
-						lazySizes.aC(blurImg, 'ls-blur-up-loaded');
+						if(blurImg) {
+							lazySizes.aC(blurImg, 'ls-blur-up-loaded');
+						}
 					});
 
 					blurImg.removeEventListener('load', onloadBlurUp);
