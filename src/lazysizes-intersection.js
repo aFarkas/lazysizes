@@ -10,7 +10,7 @@
 	/*jshint eqnull:true */
 	if(!window.IntersectionObserver || !document.getElementsByClassName || !window.MutationObserver){return;}
 
-	var lazySizesConfig;
+	var lazysizes, lazySizesConfig;
 
 	var docElem = document.documentElement;
 
@@ -28,7 +28,7 @@
 
 	var requestAnimationFrame = window.requestAnimationFrame || setTimeout;
 
-	var requestIdleCallback = window.requestIdleCallback;
+	var requestIdleCallback = window.requestIdleCallback || setTimeout;
 
 	var regPicture = /^picture$/i;
 
@@ -61,7 +61,13 @@
 	var triggerEvent = function(elem, name, detail, noBubbles, noCancelable){
 		var event = document.createEvent('CustomEvent');
 
-		event.initCustomEvent(name, !noBubbles, !noCancelable, detail || {});
+		if(!detail){
+			detail = {};
+		}
+
+		detail.instance = lazysizes;
+
+		event.initCustomEvent(name, !noBubbles, !noCancelable, detail);
 
 		elem.dispatchEvent(event);
 		return event;
@@ -524,7 +530,7 @@
 		});
 	})();
 
-	return {
+	lazysizes = {
 		cfg: lazySizesConfig,
 		autoSizer: autoSizer,
 		loader: loader,
@@ -537,4 +543,6 @@
 		gW: getWidth,
 		rAF: rAF,
 	};
+
+	return lazysizes;
 }));
