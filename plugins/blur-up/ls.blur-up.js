@@ -71,6 +71,7 @@
 
 			blurImg.className = 'ls-blur-up-img';
 			blurImg.src = src;
+			blurImg.alt = '';
 
 			blurImg.className += ' ls-inview';
 
