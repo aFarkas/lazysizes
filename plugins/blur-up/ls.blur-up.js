@@ -72,6 +72,7 @@
 			blurImg.className = 'ls-blur-up-img';
 			blurImg.src = src;
 			blurImg.alt = '';
+			blurImg.setAttribute('aria-hidden', 'true');
 
 			blurImg.className += ' ls-inview';
 
