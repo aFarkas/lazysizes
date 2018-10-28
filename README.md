@@ -484,6 +484,11 @@ The [object fit polyfill plugin](plugins/object-fit) polyfills the `object-fit` 
 ### [blur up / effect plugin](plugins/blur-up)
 The [blur up / effect plugin](plugins/blur-up) allows you to create [great over fade / blur up effects](https://jsfiddle.net/trixta/v0oq0412/embedded/result/) with low quality image placeholder, which improves the user experience and perceived performance in case you are using a low quality image approach.
 
+### [attrchange / re-initialization extension](plugins/attrchange)  (strongly recommended if you use React, Angular etc.)
+In case you are changing the ``data-src``/``data-srcset`` attributes of already transformed lazyload elements, you must normally also re-add the ``lazyload`` class to the element.
+
+This [attrchange / re-initialization extension](plugins/attrchange) automatically detects changes to your ``data-*`` attributes and adds the class for you.
+
 ### [unveilhooks plugin](plugins/unveilhooks)
 The [unveilhooks plugin](plugins/unveilhooks) plugin enables lazySizes to lazyload background images, widgets/components/scripts, styles and video/audio elements.
 
@@ -492,11 +497,6 @@ The [include plugin](plugins/include) plugin enables lazySizes to lazyload conte
 
 ### [lazysizes custommedia extension](plugins/custommedia)
 [lazySizes custommedia extension](plugins/custommedia) allows you to automatically sync and manage your breakpoints between your CSS and the ``media`` attributes of your ``"picture > source"`` elements using the ``customMedia`` option of lazySizes.
-
-### [attrchange / re-initialization extension](plugins/attrchange)
-In case you are changing the ``data-src``/``data-srcset`` attributes of already transformed lazyload elements, you must normally also re-add the ``lazyload`` class to the element.
-
-This [attrchange / re-initialization extension](plugins/attrchange) automatically detects changes to your ``data-*`` attributes and adds the class for you.
 
 ### [unload extension](plugins/unload)
 The [unload](plugins/unload) extends lazysizes to unload not in view images to improve memory consumption and orientationchange/resize performance.
