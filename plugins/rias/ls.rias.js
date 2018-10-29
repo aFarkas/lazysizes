@@ -161,7 +161,11 @@
 			var widthAlias = options.widthmap[width] || width;
 			var candidate = {
 				u: url.replace(regWidth, widthAlias)
-						.replace(regHeight, options.ratio ? Math.round(width * options.ratio) : ''),
+						.replace(regHeight, options.ratio ?
+							riasCfg.traditionalRatio ?
+								Math.round(width * options.ratio) :
+								Math.round(width / options.ratio)
+							: ''),
 				w: width
 			};
 
