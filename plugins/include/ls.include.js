@@ -370,7 +370,7 @@
 			}
 
 			uniqueUrls[url] = [];
-			uniqueUrls[elem.href] = true;
+			uniqueUrls[elem.href] = uniqueUrls[url];
 
 			if(cb){
 				var timer;
@@ -389,11 +389,14 @@
 					}
 
 					uniqueUrls[url] = true;
+					uniqueUrls[elem.href] = true;
 
 					while(cbs.length){
 						cbs.shift()();
 					}
 				};
+
+				uniqueUrls[elem.href][0] = cb;
 
 				if(!isScript){
 					timer = setInterval(function(){
@@ -408,7 +411,6 @@
 				elem.addEventListener('readystatechange', load);
 				elem.addEventListener('loadcssdefined', load);
 
-				uniqueUrls[url][0] = cb;
 			}
 
 			insertElem.parentNode.insertBefore(elem, insertElem);
