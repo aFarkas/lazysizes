@@ -41,7 +41,9 @@
 			absUrl: false,
 			modifyOptions: noop,
 			widthmap: {},
-			ratio: false
+			ratio: false,
+			traditionalRatio: false,
+			'aspect-ratio': false,
 		};
 
 		config = (lazySizes && lazySizes.cfg) || window.lazySizesConfig;
@@ -159,12 +161,14 @@
 
 		options.widths.forEach(function(width){
 			var widthAlias = options.widthmap[width] || width;
+			var ratio = options['aspect-ratio'] || options.ratio;
+			var traditionalRatio = !options['aspect-ratio'] && riasCfg.traditionalRatio;
 			var candidate = {
 				u: url.replace(regWidth, widthAlias)
-						.replace(regHeight, options.ratio ?
-							riasCfg.traditionalRatio ?
-								Math.round(width * options.ratio) :
-								Math.round(width / options.ratio)
+						.replace(regHeight, ratio ?
+							traditionalRatio ?
+								Math.round(width * ratio) :
+								Math.round(width / ratio)
 							: ''),
 				w: width
 			};
