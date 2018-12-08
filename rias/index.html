@@ -36,10 +36,10 @@
 		}
 
 		.tall img {
-			--ls-ratio: 2
+			--ls-aspectratio: 0.5;
 		}
 		.wide img {
-			--ls-ratio: 0.5;
+			--ls-aspectratio: 2;
 		}
 	</style>
 
@@ -125,11 +125,11 @@
 			</div>
 			<div class="col-sm-6">
 				<h3>Aspect ratio</h3>
-				<p>In addition, you can set the ascpect ratio of the image from CSS. You only need to set the custom CSS variable <code>--ls-ratio</code> on the <code>img</code> and add a <code>{height}</code> placeholder </p>
+				<p>In addition, you can set the ascpect ratio of the image from CSS. You only need to set the custom CSS variable <code>--ls-aspectratio</code> on the <code>img</code> and add a <code>{height}</code> placeholder </p>
 <pre>
 &lt;style&gt;
 		img.rectangle {
-			--ls-ratio: 0.5
+			--ls-aspectratio: 2;
 		}
 &lt;style/&gt;
 
@@ -140,7 +140,7 @@
 	class="lazyload rectangle"
 	alt="" /&gt;
 </pre>
-			    <p>Note that you can also set the aspect ratio via a <code>data-ratio</code> value on the <code>img</code> tag.</p>
+			    <p>Note that you can also set the aspect ratio via a <code>data-aspectratio</code> value on the <code>img</code> tag.</p>
 			</div>
 		</div>
 
