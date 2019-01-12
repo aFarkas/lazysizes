@@ -59,7 +59,6 @@ The new image (`ls-blur-up-img`) will get the following state classes to enable 
 	<div class="mediabox">
 		<img
 			class="mediabox-img lazyload"
-			src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
 			data-srcset="https://picsum.photos/400/600?image=1074 600w 400h,
 				https://picsum.photos/800/1200?image=1074 1200w"
 			data-lowsrc="https://picsum.photos/200/300?image=1074"
