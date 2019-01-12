@@ -284,8 +284,6 @@ function l(window, document) {
 
 		var eLvW, elvH, eLtop, eLleft, eLright, eLbottom;
 
-		var defaultExpand, preloadExpand, hFac;
-
 		var regImg = /^img$/i;
 		var regIframe = /^iframe$/i;
 
@@ -335,8 +333,8 @@ function l(window, document) {
 		};
 
 		var checkElements = function() {
-			var eLlen, i, rect, autoLoadElem, loadedSomething, elemExpand, elemNegativeExpand, elemExpandVal, beforeExpandVal;
-
+			var eLlen, i, rect, autoLoadElem, loadedSomething, elemExpand, elemNegativeExpand, elemExpandVal,
+				beforeExpandVal, defaultExpand, preloadExpand, hFac;
 			var lazyloadElems = lazysizes.elements;
 
 			if((loadMode = lazySizesConfig.loadMode) && isLoading < 8 && (eLlen = lazyloadElems.length)){
@@ -345,14 +343,14 @@ function l(window, document) {
 
 				lowRuns++;
 
-				if(preloadExpand == null){
-					if(!('expand' in lazySizesConfig)){
-						lazySizesConfig.expand = docElem.clientHeight > 500 && docElem.clientWidth > 500 ? 500 : 370;
-					}
-
+				if(!lazySizesConfig.expand || lazySizesConfig.expand < 1){
+					defaultExpand = docElem.clientHeight > 500 && docElem.clientWidth > 500 ? 500 : 370;
+				} else {
 					defaultExpand = lazySizesConfig.expand;
-					preloadExpand = defaultExpand * lazySizesConfig.expFactor;
 				}
+
+				preloadExpand = defaultExpand * lazySizesConfig.expFactor;
+				hFac = lazySizesConfig.hFac;
 
 				if(currentExpand < preloadExpand && isLoading < 1 && lowRuns > 2 && loadMode > 2 && !document.hidden){
 					currentExpand = preloadExpand;
@@ -565,7 +563,6 @@ function l(window, document) {
 
 				lazysizes.elements = document.getElementsByClassName(lazySizesConfig.lazyClass);
 				preloadElems = document.getElementsByClassName(lazySizesConfig.lazyClass + ' ' + lazySizesConfig.preloadClass);
-				hFac = lazySizesConfig.hFac;
 
 				addEventListener('scroll', throttledCheckElements, true);
 
