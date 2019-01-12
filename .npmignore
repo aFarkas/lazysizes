@@ -12,6 +12,7 @@ bower_components
 /assets
 /include
 /plato-report
+/src
 index.html
 no-src.html
 user-developer-experience.html
@@ -20,3 +21,4 @@ Gruntfile.js
 component.json
 bower.json
 Authors.txt
+*.min.js
