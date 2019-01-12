@@ -409,7 +409,7 @@ document.addEventListener('lazybeforeunveil', function(e){
 
 <div class="chart lazyload" data-expand="-10"></div>
 ```
-*<a id="lazyloaded-documentation"></a>`lazyloaded`: After the image is fully loaded lazysizes dispatches a `lazyloaded` event. While this often duplicates the native `load` event it is often more convenient to use.
+* <a id="lazyloaded-documentation"></a>`lazyloaded`: After the image is fully loaded lazysizes dispatches a `lazyloaded` event. While this often duplicates the native `load` event it is often more convenient to use.
 
 * <a id="lazybeforesizes-documentation"></a>``lazybeforesizes``: This event will be fired on each element with the ``data-sizes="auto"`` attribute right before the calculated ``sizes`` attribute will be set. The ``event.detail.width`` property is set to the calculated width of the element and can be changed to any number. In case the event is ``defaultPrevented`` the ``sizes`` attribute won't be set. See also the [parent-fit extension](plugins/parent-fit).
 ```js
