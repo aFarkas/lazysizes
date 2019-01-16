@@ -45,7 +45,7 @@ Can be seen [here](http://afarkas.github.io/lazysizes/#examples)
 
 ## Responsive image support (picture and/or srcset)
 
-Lazysizes is built upon the Responsive image standard and extends it with additional functionality. For full cross browser responsive image support you must use either a full polyfill like [picturefill](https://github.com/scottjehl/picturefill) or use the extreme lightweight partial [respimg polyfill plugin](plugins/respimg) or the [responsive image on demand plugin](plugins/rias). Alternatively you can simply define a fallback src via the ``data-src`` attribute. If you want to learn more about the responsive image syntax read "[The anatomy of responsive images](https://jakearchibald.com/2015/anatomy-of-responsive-images/)".
+Lazysizes is built upon the Responsive image standard and extends it with additional functionality. For full cross browser responsive image support you must use either a full polyfill like [picturefill](https://github.com/scottjehl/picturefill) or use the extreme lightweight partial [respimg polyfill plugin](plugins/respimg) or the [responsive image on demand plugin](plugins/rias). Alternatively, you can simply define a fallback src via the ``data-src`` attribute. If you want to learn more about the responsive image syntax read "[The anatomy of responsive images](https://jakearchibald.com/2015/anatomy-of-responsive-images/)".
 
 ## What makes lazysizes so awesome:
 **lazysizes** is different than other lazy image loaders.
@@ -233,7 +233,7 @@ Note: As an alternative to the noscript pattern also checkout the [noscript exte
 ### [data-expand] attribute
 Normally lazysizes will expand the viewport area to lazy preload images/iframes which might become visible soon. This value can be adjusted using the ``expand`` option.
 
-Additionally this general option can be overridden with the ``data-expand`` attribute for each element. Different than the general ``expand`` option the ``data-expand`` attribute also accepts negative values (All numbers but ``0`` are accepted!).
+Additionally, this general option can be overridden with the ``data-expand`` attribute for each element. Different than the general ``expand`` option the ``data-expand`` attribute also accepts negative values (All numbers but ``0`` are accepted!).
 
 This becomes especially handy to add unveiling effects for teasers or other elements:
 
@@ -317,9 +317,9 @@ Here the list of options:
 * ``lazySizesConfig.minSize`` (default: ``40``): For ``data-sizes="auto"`` feature. The minimum size of an image that is used to calculate the ``sizes`` attribute. In case it is under ``minSize`` the script traverses up the DOM tree until it finds a parent that is over ``minSize``.
 * ``lazySizesConfig.srcAttr`` (default: ``"data-src"``): The attribute, which should be transformed to ``src``.
 * ``lazySizesConfig.srcsetAttr`` (default: ``"data-srcset"``): The attribute, which should be transformed to ``srcset``.
-* ``lazySizesConfig.sizesAttr`` (default: ``"data-sizes"``): The attribute, which should be transformed to ``sizes``. Makes almost only makes sense with the value ``"auto"``. Otherwise the ``sizes`` attribute should be used directly.
+* ``lazySizesConfig.sizesAttr`` (default: ``"data-sizes"``): The attribute, which should be transformed to ``sizes``. Makes almost only makes sense with the value ``"auto"``. Otherwise, the ``sizes`` attribute should be used directly.
 * ``lazySizesConfig.customMedia`` (default: ``{}``): The ``customMedia`` option object is an alias map for different media queries. It can be used to separate/centralize your multiple specific media queries implementation (layout) from the ``source[media]`` attribute (content/structure) by creating labeled media queries. (See also the [custommedia extension](plugins/custommedia)).
-* ``lazySizesConfig.loadHidden`` (default: ``true``): Wether to load `visibility: hidden` elements. Important: lazySizes will load hidden images always delayed. If you want them to be loaded as fast as possible you can use `opacity: 0.001` but never `visibility: hidden` or `opacity: 0`.
+* ``lazySizesConfig.loadHidden`` (default: ``true``): Whether to load `visibility: hidden` elements. Important: lazySizes will load hidden images always delayed. If you want them to be loaded as fast as possible you can use `opacity: 0.001` but never `visibility: hidden` or `opacity: 0`.
 * ``lazySizesConfig.ricTimeout`` (default: ``0``): The timeout option used for the `requestIdleCallback`. Reasonable values between: 0, 100 - 1000. (Values below 50 disable the `requestIdleCallback` feature.)
 * ``lazySizesConfig.throttleDelay`` (default: ``125``): The timeout option used to throttle all listeners. Reasonable values between: 66 - 200.
 ```html
@@ -634,7 +634,7 @@ or at least add a ``min-height`` (and ``min-width``) to minimize content jumps:
 
 **Note**:
 
-* If you use the "unknown intrinsic ratio pattern" and the width of the loaded image will not (approximately) match the width of its container, the ``data-sizes="auto"`` feature will not be effective when used on its own. In this situation the most appropriate size for the image to fit in the available space can be calculated automatically using the [parent fit plugin](plugins/parent-fit).
+* If you use the "unknown intrinsic ratio pattern" and the width of the loaded image will not (approximately) match the width of its container, the ``data-sizes="auto"`` feature will not be effective when used on its own. In this situation, the most appropriate size for the image to fit in the available space can be calculated automatically using the [parent fit plugin](plugins/parent-fit).
 * see also the [aspectratio extension](plugins/aspectratio) for an alternative way to add aspectratio.
 
 ### Updating layout of JS widgets
@@ -665,7 +665,7 @@ In case you normally combine all your scripts into one large script and add this
 This smaller script, which should include lazySizes (and all its plugins), should than be placed **before** any other blocking elements (i.e.: script(s)) at the end of the body or after any blocking elements (i.e.: scripts, stylesheets) in the head to load the crucial content as fast possible. (Note: It might make also sense to call `lazySizes.init();` explicitly right after lazySizes and all its plugins are added.)
 
 ## Why lazysizes
-In the past I often struggled using lazy image loaders, because the "main check function" is called repeatedly and with a high frequency. Which makes it hard to fulfill two purposes runtime and memory efficiency. And looking into the source code of most so called lazy loaders often also unveils lazy developers...
+In the past, I often struggled using lazy image loaders, because the "main check function" is called repeatedly and with a high frequency. Which makes it hard to fulfill two purposes runtime and memory efficiency. And looking into the source code of most so called lazy loaders often also unveils lazy developers...
 
 But in a world of responsive retina optimized images on the one hand and JS widgets like carousels or tabs (a lot of initially hidden images) on the other hand lazy loading images becomes more and more important, so I created this project.
 
