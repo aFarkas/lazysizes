@@ -282,7 +282,7 @@ function l(window, document) {
 	var loader = (function(){
 		var preloadElems, isCompleted, resetPreloadingTimer, loadMode, started;
 
-		var eLvW, elvH, eLtop, eLleft, eLright, eLbottom;
+		var eLvW, elvH, eLtop, eLleft, eLright, eLbottom, isBodyHidden;
 
 		var regImg = /^img$/i;
 		var regIframe = /^iframe$/i;
@@ -306,10 +306,18 @@ function l(window, document) {
 			}
 		};
 
+		var isVisible = function (elem) {
+			if (isBodyHidden == null) {
+				isBodyHidden = getCSS(document.body, 'visibility') == 'hidden';
+			}
+
+			return isBodyHidden || (getCSS(elem.parentNode, 'visibility') != 'hidden' && getCSS(elem, 'visibility') != 'hidden');
+		};
+
 		var isNestedVisible = function(elem, elemExpand){
 			var outerRect;
 			var parent = elem;
-			var visible = getCSS(document.body, 'visibility') == 'hidden' || (getCSS(elem.parentNode, 'visibility') != 'hidden' && getCSS(elem, 'visibility') != 'hidden');
+			var visible = isVisible(elem);
 
 			eLtop -= elemExpand;
 			eLbottom += elemExpand;
@@ -343,14 +351,13 @@ function l(window, document) {
 
 				lowRuns++;
 
-				if(!lazySizesConfig.expand || lazySizesConfig.expand < 1){
-					defaultExpand = docElem.clientHeight > 500 && docElem.clientWidth > 500 ? 500 : 370;
-				} else {
-					defaultExpand = lazySizesConfig.expand;
-				}
+				defaultExpand = (!lazySizesConfig.expand || lazySizesConfig.expand < 1) ?
+					docElem.clientHeight > 500 && docElem.clientWidth > 500 ? 500 : 370 :
+					lazySizesConfig.expand;
 
 				preloadExpand = defaultExpand * lazySizesConfig.expFactor;
 				hFac = lazySizesConfig.hFac;
+				isBodyHidden = null;
 
 				if(currentExpand < preloadExpand && isLoading < 1 && lowRuns > 2 && loadMode > 2 && !document.hidden){
 					currentExpand = preloadExpand;
@@ -385,7 +392,7 @@ function l(window, document) {
 						(eLright = rect.right) >= elemNegativeExpand * hFac &&
 						(eLleft = rect.left) <= eLvW &&
 						(eLbottom || eLright || eLleft || eLtop) &&
-						(lazySizesConfig.loadHidden || getCSS(lazyloadElems[i], 'visibility') != 'hidden') &&
+						(lazySizesConfig.loadHidden || isVisible(lazyloadElems[i])) &&
 						((isCompleted && isLoading < 3 && !elemExpandVal && (loadMode < 3 || lowRuns < 4)) || isNestedVisible(lazyloadElems[i], elemExpand))){
 						unveilElement(lazyloadElems[i]);
 						loadedSomething = true;
