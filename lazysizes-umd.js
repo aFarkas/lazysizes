@@ -266,6 +266,7 @@
 			expFactor: 1.5,
 			hFac: 0.8,
 			loadMode: 2,
+			changeLoadModeAfterPageLoad: true,
 			loadHidden: true,
 			ricTimeout: 0,
 			throttleDelay: 125,
@@ -555,13 +556,17 @@
 				return;
 			}
 			var afterScroll = debounce(function(){
-				lazySizesConfig.loadMode = 3;
+				if (lazySizesConfig.changeLoadModeAfterPageLoad) {
+					lazySizesConfig.loadMode = 3;
+				}
 				throttledCheckElements();
 			});
 
 			isCompleted = true;
 
-			lazySizesConfig.loadMode = 3;
+			if (lazySizesConfig.changeLoadModeAfterPageLoad) {
+				lazySizesConfig.loadMode = 3;
+			}
 
 			throttledCheckElements();
 
