@@ -158,7 +158,9 @@
 		}
 
 		url = ((options.prefix || '') + url + (options.postfix || '')).replace(regPlaceholder, replaceFn);
-
+		
+		if (typeof options.widths === 'string') {options.widths = JSON.parse(options.widths);}
+		
 		options.widths.forEach(function(width){
 			var widthAlias = options.widthmap[width] || width;
 			var ratio = options.aspectratio || options.ratio;
