@@ -303,10 +303,6 @@
 
 		var resetPreloading = function(e){
 			isLoading--;
-			if(e && e.target){
-				addRemoveLoadEvents(e.target, resetPreloading);
-			}
-
 			if(!e || isLoading < 0 || !e.target){
 				isLoading = 0;
 			}
@@ -422,10 +418,18 @@
 		var throttledCheckElements = throttle(checkElements);
 
 		var switchLoadingClass = function(e){
-			addClass(e.target, lazySizesConfig.loadedClass);
-			removeClass(e.target, lazySizesConfig.loadingClass);
-			addRemoveLoadEvents(e.target, rafSwitchLoadingClass);
-			triggerEvent(e.target, 'lazyloaded');
+			var elem = e.target;
+
+			if (elem._lazyCache) {
+				delete elem._lazyCache;
+				return;
+			}
+
+			resetPreloading(e);
+			addClass(elem, lazySizesConfig.loadedClass);
+			removeClass(elem, lazySizesConfig.loadingClass);
+			addRemoveLoadEvents(elem, rafSwitchLoadingClass);
+			triggerEvent(elem, 'lazyloaded');
 		};
 		var rafedSwitchLoadingClass = rAFIt(switchLoadingClass);
 		var rafSwitchLoadingClass = function(e){
@@ -479,12 +483,11 @@
 
 				event = {target: elem};
 
+				addClass(elem, lazySizesConfig.loadingClass);
+
 				if(firesLoad){
-					addRemoveLoadEvents(elem, resetPreloading, true);
 					clearTimeout(resetPreloadingTimer);
 					resetPreloadingTimer = setTimeout(resetPreloading, 2500);
-
-					addClass(elem, lazySizesConfig.loadingClass);
 					addRemoveLoadEvents(elem, rafSwitchLoadingClass, true);
 				}
 
@@ -514,12 +517,13 @@
 
 			rAF(function(){
 				if( !firesLoad || (elem.complete && elem.naturalWidth > 1)){
-					if(firesLoad){
-						resetPreloading(event);
-					} else {
-						isLoading--;
-					}
 					switchLoadingClass(event);
+					elem._lazyCache = true;
+					setTimeout(function(){
+						if ('_lazyCache' in elem) {
+							delete elem._lazyCache;
+						}
+					}, 0);
 				}
 			}, true);
 		});
