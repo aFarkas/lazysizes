@@ -526,7 +526,7 @@
 						if ('_lazyCache' in elem) {
 							delete elem._lazyCache;
 						}
-					}, 0);
+					}, 9);
 				}
 			}, true);
 		});
