@@ -361,6 +361,8 @@
 					docElem.clientHeight > 500 && docElem.clientWidth > 500 ? 500 : 370 :
 					lazySizesConfig.expand;
 
+				lazysizes._defEx = defaultExpand;
+
 				preloadExpand = defaultExpand * lazySizesConfig.expFactor;
 				hFac = lazySizesConfig.hFac;
 				isBodyHidden = null;

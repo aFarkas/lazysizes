@@ -16,7 +16,7 @@
 }(window, function(window, document, lazySizes) {
 	'use strict';
 	if(!document.addEventListener){return;}
-	var config, checkElements, expand;
+	var config, checkElements;
 
 	var unloadElements = [];
 	var requestAnimationFrame = window.requestAnimationFrame || setTimeout;
@@ -24,6 +24,7 @@
 		checkElements: function(){
 			var i, len, box;
 
+			var expand = (lazySizes._defEx + 99) * 1.1;
 			var vTop = expand * -1;
 			var vLeft = vTop;
 			var vBottom = innerHeight + expand;
@@ -143,7 +144,6 @@
 
 		lazySizes.unloader = unloader;
 
-		expand = ((config.expand * config.expFactor) + 99) * 1.1;
 		checkElements = document.getElementsByClassName([config.unloadClass, config.loadedClass].join(' '));
 
 		setInterval(throttleRun, 9999);
