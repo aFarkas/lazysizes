@@ -510,6 +510,7 @@ function l(window, document) {
 			removeClass(elem, lazySizesConfig.lazyClass);
 
 			rAF(function(){
+				// Part of this can be removed as soon as this fix is older: https://bugs.chromium.org/p/chromium/issues/detail?id=7731 (2015)
 				if( !firesLoad || (elem.complete && elem.naturalWidth > 1)){
 					switchLoadingClass(event);
 					elem._lazyCache = true;
