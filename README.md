@@ -12,6 +12,12 @@ It may become also your number one tool to integrate responsive images. It can a
     <script src="lazysizes.min.js" async=""></script>
     ```
     Note: For more information see [here](#include-early).
+    Or:
+	```js
+	import 'lazysizes';
+	// import a plugin Note: the *.min.js files are not included in the npm package.
+	import 'lazysizes/parent-fit/ls.parent-fit';
+	```
 
 2. lazysizes does not need any JS configuration: Add the ``class`` ``"lazyload"`` to your images/iframes in conjunction with a ``data-src`` and/or ``data-srcset`` attribute. Optionally you can also add a ``src`` attribute with a low quality image:
 
