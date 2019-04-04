@@ -61,18 +61,28 @@ function l(window, document) {
 		});
 	};
 
-	var triggerEvent = function(elem, name, detail, noBubbles, noCancelable){
-		var event = document.createEvent('Event');
+	var triggerEvent = function(elem, name, detail, noBubbles, noCancelable) {
+		if (typeof window.CustomEvent !== 'function') {
+			function CustomEvent(event, params) {
+				params = params || { bubbles: false, cancelable: false, detail: null };
+				var evt = document.createEvent('CustomEvent');
+				evt.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
+				return evt;
+			}
+			CustomEvent.prototype = window.Event.prototype;
+		}
 
-		if(!detail){
+		if (!detail) {
 			detail = {};
 		}
 
 		detail.instance = lazysizes;
 
-		event.initEvent(name, !noBubbles, !noCancelable);
-
-		event.detail = detail;
+		var event = new CustomEvent(name, {
+			bubbles: !noBubbles,
+			cancelable: !noCancelable,
+			detail: detail,
+		});
 
 		elem.dispatchEvent(event);
 		return event;
