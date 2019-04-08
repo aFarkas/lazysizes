@@ -31,9 +31,11 @@
 	var cfg = lazySizes.cfg;
 
 	function disableEvents() {
-		var throttledCheckElements = lazySizes.loader.checkElems;
+		var loader = lazySizes.loader;
+		var throttledCheckElements = loader.checkElems;
 
 		window.removeEventListener('scroll', throttledCheckElements, true);
+		window.removeEventListener('scroll', loader._aLSL, true);
 		window.removeEventListener('resize', throttledCheckElements, true);
 
 		['focus', 'mouseover', 'click', 'load', 'transitionend', 'animationend', 'webkitAnimationEnd'].forEach(function(name){
