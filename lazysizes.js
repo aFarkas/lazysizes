@@ -67,19 +67,24 @@
 		});
 	};
 
-	var buildEvent = function(name, detail, noBubbles, noCancelable) {
-		// https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/CustomEvent#Polyfill
-		var CustomEvent = window.CustomEvent;
-		if (typeof CustomEvent !== 'function') {
-			CustomEvent = function(event, params) {
+	var CustomEvent = (function() {
+		try {
+			(function() { new CustomEvent('e'); })();
+			return window.CustomEvent;
+		} catch (err) {
+			// https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/CustomEvent#Polyfill
+			var CustomEvent = function(event, params) {
 				params = params || { bubbles: false, cancelable: false, detail: null };
 				var evt = document.createEvent('CustomEvent');
 				evt.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
 				return evt;
 			};
 			CustomEvent.prototype = window.Event.prototype;
+			return CustomEvent;
 		}
+	})();
 
+	var triggerEvent = function(elem, name, detail, noBubbles, noCancelable) {
 		if (!detail) {
 			detail = {};
 		}
@@ -92,11 +97,6 @@
 			detail: detail,
 		});
 
-		return event;
-	};
-
-	var triggerEvent = function(elem, name, detail, noBubbles, noCancelable) {
-		var event = buildEvent(name, detail, noBubbles, noCancelable);
 		elem.dispatchEvent(event);
 		return event;
 	};
