@@ -67,19 +67,36 @@
 		});
 	};
 
-	var triggerEvent = function(elem, name, detail, noBubbles, noCancelable){
-		var event = document.createEvent('Event');
+	var buildEvent = function(name, detail, noBubbles, noCancelable) {
+		// https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/CustomEvent#Polyfill
+		var CustomEvent = window.CustomEvent;
+		if (typeof CustomEvent !== 'function') {
+			CustomEvent = function(event, params) {
+				params = params || { bubbles: false, cancelable: false, detail: null };
+				var evt = document.createEvent('CustomEvent');
+				evt.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
+				return evt;
+			};
+			CustomEvent.prototype = window.Event.prototype;
+		}
 
-		if(!detail){
+		if (!detail) {
 			detail = {};
 		}
 
 		detail.instance = lazysizes;
 
-		event.initEvent(name, !noBubbles, !noCancelable);
+		var event = new CustomEvent(name, {
+			bubbles: !noBubbles,
+			cancelable: !noCancelable,
+			detail: detail,
+		});
 
-		event.detail = detail;
+		return event;
+	};
 
+	var triggerEvent = function(elem, name, detail, noBubbles, noCancelable) {
+		var event = buildEvent(name, detail, noBubbles, noCancelable);
 		elem.dispatchEvent(event);
 		return event;
 	};
