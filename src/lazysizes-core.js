@@ -61,14 +61,16 @@ function l(window, document) {
 		});
 	};
 
-	var triggerEvent = function(elem, name, detail, noBubbles, noCancelable) {
-		if (typeof window.CustomEvent !== 'function') {
-			function CustomEvent(event, params) {
-				params = params || { bubbles: false, cancelable: false, detail: null };
+	var buildEvent = function(name, detail, noBubbles, noCancelable) {
+		// https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/CustomEvent#Polyfill
+		var CustomEvent = window.CustomEvent;
+		if (typeof CustomEvent !== 'function') {
+			CustomEvent = function(event, params) {
+				params = params;
 				var evt = document.createEvent('CustomEvent');
 				evt.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
 				return evt;
-			}
+			};
 			CustomEvent.prototype = window.Event.prototype;
 		}
 
@@ -84,6 +86,11 @@ function l(window, document) {
 			detail: detail,
 		});
 
+		return event;
+	};
+
+	var triggerEvent = function(elem, name, detail, noBubbles, noCancelable) {
+		var event = buildEvent(name, detail, noBubbles, noCancelable);
 		elem.dispatchEvent(event);
 		return event;
 	};
