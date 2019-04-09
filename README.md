@@ -76,7 +76,7 @@ Add the ``class`` ``lazyload`` to all ``img`` and ``iframe`` elements, which sho
 <!-- retina optimized image: -->
 <img data-srcset="responsive-image1.jpg 1x, responsive-image2.jpg 2x" class="lazyload" />
 ```
-#### <a name="data-sizes-auto"></a>Automatically setting the `sizes`  
+#### <a name="data-sizes-auto"></a>Automatically setting the `sizes` attribute
 **lazysizes** supports setting the ``sizes`` attribute automatically, corresponding to the current size of your image - just set the value of ``data-sizes`` to  ``auto``.
 
 ```html
