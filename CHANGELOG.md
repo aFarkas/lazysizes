@@ -1,5 +1,10 @@
 # Changelog
 
+## next
+
+* Effects-Plugin/Blur Up plugin: Remove [].find because IE..., fixes [#631](https://github.com/aFarkas/lazysizes/issues/631)
+* Documentation stuff
+
 ## 4.1.7
 
 * Blur Up plugin: make blur up mode configurable by script
