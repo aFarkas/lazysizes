@@ -76,7 +76,7 @@ Add the ``class`` ``lazyload`` to all ``img`` and ``iframe`` elements, which sho
 <!-- retina optimized image: -->
 <img data-srcset="responsive-image1.jpg 1x, responsive-image2.jpg 2x" class="lazyload" />
 ```
-
+#### <a name="data-sizes-auto"></a>Automatically setting the `sizes` attribute
 **lazysizes** supports setting the ``sizes`` attribute automatically, corresponding to the current size of your image - just set the value of ``data-sizes`` to  ``auto``.
 
 ```html
@@ -88,7 +88,7 @@ Add the ``class`` ``lazyload`` to all ``img`` and ``iframe`` elements, which sho
     class="lazyload" />
 ```
 
-**<a name="sizes-calculation"></a>Important: How ``sizes`` is calculated**: The automatic sizes calculation uses the display width of the image. This means that the width of the image has to be calculable at least approximately before the image itself is loaded. Often the following general CSS rule might help: ``img[data-sizes="auto"] { display: block; width: 100%; }`` (see also [specifying image/iframe dimensions with the recommended aspect ratio definition](#specify-dimensions)). If it is below ``40`` (can be configured through the ``minSize`` option), lazysizes traverses up the DOM tree until it finds a parent which is over ``40`` and uses this number.
+**<a name="sizes-calculation"></a>Important: How ``sizes`` is calculated**: The automatic sizes calculation uses the display width of the image. This means that the width of the image has to be calculable at least approximately before the image itself is loaded (This means you can not use `width: auto`). Often the following general CSS rule might help: ``img[data-sizes="auto"] { display: block; width: 100%; }`` (see also [specifying image/iframe dimensions with the recommended aspect ratio definition](#specify-dimensions)). If it is below ``40`` (can be configured through the ``minSize`` option), lazysizes traverses up the DOM tree until it finds a parent which is over ``40`` and uses this number.
 
 The width auto-calculated by lazysizes can be modified using the ``lazybeforesizes`` event ([lazybeforesizes documentation](#lazybeforesizes-documentation)). Alternatively, the [parent fit plugin](plugins/parent-fit) can be used for sizing images to fit a parent / container, and is the only solution when an image's height needs to be taken into account when fitting it to its container (This also includes the use of `object-fit`).
 

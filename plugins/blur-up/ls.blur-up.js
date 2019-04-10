@@ -29,12 +29,19 @@
 	};
 
 	var getLowSrc = function (picture, img) {
+		var matchingLowSrc;
 		var sources = picture ? slice.call(picture.querySelectorAll('source, img')) : [img];
-		var element = sources.find(function (src) {
-			return src.getAttribute('data-lowsrc') && matchesMedia(src);
+
+		sources.forEach(function (src) {
+			if (matchingLowSrc) {return;}
+			var lowSrc = src.getAttribute('data-lowsrc');
+
+			if (lowSrc && matchesMedia(src)) {
+				matchingLowSrc = lowSrc;
+			}
 		});
 
-		return element && element.getAttribute('data-lowsrc');
+		return matchingLowSrc;
 	};
 
 	var createBlurup = function(picture, img, src, blurUp){
