@@ -19,7 +19,7 @@
 	var imgSupport = 'loading' in HTMLImageElement.prototype;
 	var iframeSupport = 'loading' in HTMLIFrameElement.prototype;
 
-	console.warn('Not tested don\'t use in production');
+	console.warn('Not tested don\'t use in production', 'supports image[loading]: '+ imgSupport);
 
 	if (!window.addEventListener || !window.MutationObserver || (!imgSupport && !iframeSupport)) {
 		return;
@@ -33,9 +33,17 @@
 	function disableEvents() {
 		var loader = lazySizes.loader;
 		var throttledCheckElements = loader.checkElems;
+		var removeALSL = function(){
+			setTimeout(function(){
+				window.removeEventListener('scroll', loader._aLSL, true);
+			}, 1000);
+		};
+
+		window.addEventListener('load', removeALSL);
+		removeALSL();
 
 		window.removeEventListener('scroll', throttledCheckElements, true);
-		window.removeEventListener('scroll', loader._aLSL, true);
+
 		window.removeEventListener('resize', throttledCheckElements, true);
 
 		['focus', 'mouseover', 'click', 'load', 'transitionend', 'animationend', 'webkitAnimationEnd'].forEach(function(name){
