@@ -40,12 +40,13 @@
 
 						if(ratio){
 							source.setAttribute('data-aspectratio', ratio);
+							source.setAttribute(lazySizesConfig.srcsetAttr, srcset.replace(regHDesc, ''));
 						}
 					}
-					source.setAttribute(lazySizesConfig.srcsetAttr, srcset.replace(regHDesc, ''));
 				}
 			};
 			var handler = function(e){
+				if(e.detail.instance != lazySizes){return;}
 				var picture = e.target.parentNode;
 
 				if(picture && picture.nodeName == 'PICTURE'){
@@ -79,11 +80,12 @@
 		};
 	}
 
-	if(window.HTMLPictureElement && supportSrcset){
-		if(document.msElementsFromPoint){
-			fixEdgeHDescriptor(navigator.userAgent.match(/Edge\/(\d+)/));
+	if (window.HTMLPictureElement && supportSrcset) {
+		if(!lazySizes.hasHDescriptorFix && document.msElementsFromPoint){
+			lazySizes.hasHDescriptorFix = true;
+			fixEdgeHDescriptor();
+			return;
 		}
-		return;
 	}
 
 	if(window.picturefill || config.pf){return;}
