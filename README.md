@@ -15,8 +15,10 @@ It may become also your number one tool to integrate responsive images. It can a
     Or:
 	```js
 	import 'lazysizes';
-	// import a plugin Note: the *.min.js files are not included in the npm package.
+	// import a plugin
 	import 'lazysizes/parent-fit/ls.parent-fit';
+
+	// Note: Never import/require the *.min.js files from the npm package.
 	```
 
 2. lazysizes does not need any JS configuration: Add the ``class`` ``"lazyload"`` to your images/iframes in conjunction with a ``data-src`` and/or ``data-srcset`` attribute. Optionally you can also add a ``src`` attribute with a low quality image:
@@ -508,6 +510,10 @@ The [blur up / effect plugin](plugins/blur-up) allows you to create [great over 
 In case you are changing the ``data-src``/``data-srcset`` attributes of already transformed lazyload elements, you must normally also re-add the ``lazyload`` class to the element.
 
 This [attrchange / re-initialization extension](plugins/attrchange) automatically detects changes to your ``data-*`` attributes and adds the class for you.
+
+### [artdirect plugin](plugins/artdirect)
+The [artdirect plugin](plugins/artdirect) allows you to fully control art direction via CSS.
+
 
 ### Other [plugins/extensions](plugins)
 

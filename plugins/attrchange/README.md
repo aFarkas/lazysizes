@@ -6,4 +6,8 @@ This extension automatically detects changes to your ``data-*`` attributes and a
 
 In case you are using React you can also try the following [react-lazysizes](https://www.npmjs.com/package/react-lazysizes) module as another possible alternative.
 
-
+```js
+// never try to import *.min.js files 
+import lazySizes from 'lazysizes';
+import 'lazysizes/plugins/attrchange/ls.attrchange';
+```

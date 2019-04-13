@@ -1,6 +1,6 @@
 # lazysizes artdirect extension
 
-The artdirect extension allows you to fully control art direction through your CSS. This is accomplished by two techniques which you can use separately or combined. The extension hooks into the `data-sizes="auto"` feature.
+The artdirect extension allows you to fully control art direction through your CSS. This is accomplished by two techniques which you can be used separately or combined. The extension hooks into the `data-sizes="auto"` feature.
 
 The first feature is by tagging and the second feature uses the information of the displayed aspect ratio of the `img` elements and the physical aspect ratio of your images.
 
@@ -9,8 +9,9 @@ The first feature is by tagging and the second feature uses the information of t
 You can either enable the artdirect extension for all images using JavaScript:
 
 ```js
+// never try to import *.min.js files 
 import lazySizes from 'lazysizes';
-import 'lazysizes/plugins/ls.artdirect';
+import 'lazysizes/plugins/artdiect/ls.artdirect';
 
 lazySizes.cfg.autoArtDirect = true;
 ```
@@ -35,7 +36,7 @@ You can use a whitespace separated list of tags on the `source` elements `data-t
     
     @media (max-width: 960px) {
     	picture > img.is-autoartdirect {
-        	font-family: "artdirect: tag-small";
+        	font-family: "artdirect: tag-cropped";
         }
     }
 </style>
@@ -45,8 +46,8 @@ You can use a whitespace separated list of tags on the `source` elements `data-t
 		data-srcset="http://placehold.it/500x600/11e87f/fff"
 		data-tag="tag-default" />
 	<source
-		data-srcset="http://placehold.it/700x300"
-		data-tag="tag-small" />
+		data-srcset="http://placehold.it/300x300"
+		data-tag="tag-cropped" />
     <img
 
         data-src="http://placehold.it/500x600/11e87f/fff"
@@ -58,7 +59,7 @@ You can use a whitespace separated list of tags on the `source` elements `data-t
 
 ## Providing aspect ratio information of physical images
 
-By providing a specific height and width (no `auto` values) through CSS and providing the physical aspect ratio of the images through either a `data-aspectratio` attribute or through `w` and `h` descriptors the plugin can choose the best image source.
+By providing the specific layout height and width (no `auto` values) through CSS and providing the physical aspect ratio of the images through either a `data-aspectratio` attribute or through `w` **and**`h` descriptors the plugin can choose the best image source.
 
 ```html
 <style>

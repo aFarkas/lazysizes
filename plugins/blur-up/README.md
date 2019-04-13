@@ -4,6 +4,12 @@ The lazysizes Blur Up plugin ([demo](https://jsfiddle.net/trixta/v0oq0412/embedd
 
 This way the low quality image placeholder technique is more appealing to the user.
 
+```js
+// never try to import *.min.js files 
+import lazySizes from 'lazysizes';
+import 'lazysizes/plugins/blur-up/ls.attrchange';
+```
+
 ## How to
 
 Simply add a `data-lowsrc` attribute with the loq quality image placeholder image to your `img` and in case of `picture` to your `source` elements.

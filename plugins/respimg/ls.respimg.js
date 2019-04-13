@@ -7,7 +7,7 @@
 	factory = factory.bind(null, window, window.document);
 
 	if(typeof module == 'object' && module.exports){
-		factory(require('lazysizes'), require('../fix-ios-sizes/fix-ios-sizes'));
+		factory(require('lazysizes'));
 	} else if(window.lazySizes) {
 		globalInstall();
 	} else {
@@ -17,7 +17,7 @@
 	/*jshint eqnull:true */
 	'use strict';
 	var polyfill;
-	var config = (lazySizes && lazySizes.cfg) || window.lazySizesConfig;
+	var config = lazySizes && lazySizes.cfg;
 	var img = document.createElement('img');
 	var supportSrcset = ('sizes' in img) && ('srcset' in img);
 	var regHDesc = /\s+\d+h/g;
@@ -73,29 +73,20 @@
 		};
 	})();
 
-
-	if(!config){
-		config = {};
-		window.lazySizesConfig = config;
-	}
-
 	if(!config.supportsType){
 		config.supportsType = function(type/*, elem*/){
 			return !type;
 		};
 	}
 
-	if(window.picturefill || config.pf){return;}
-
 	if(window.HTMLPictureElement && supportSrcset){
-
 		if(document.msElementsFromPoint){
 			fixEdgeHDescriptor(navigator.userAgent.match(/Edge\/(\d+)/));
 		}
-
-		config.pf = function(){};
 		return;
 	}
+
+	if(window.picturefill || config.pf){return;}
 
 	config.pf = function(options){
 		var i, len;
