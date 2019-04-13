@@ -4,6 +4,7 @@
 
 * Effects-Plugin/Blur Up plugin: Remove [].find because IE..., fixes [#631](https://github.com/aFarkas/lazysizes/issues/631)
 * Documentation stuff
+* Bring back *.min.js files to npm package, but don't use them in your `import`/`require`. These are mostly for CDNs. Not for Common JS bundlers. 
 
 ## 4.1.7
 
