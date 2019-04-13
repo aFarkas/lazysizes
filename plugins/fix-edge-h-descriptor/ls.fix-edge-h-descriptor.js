@@ -38,8 +38,8 @@
 
 						if(ratio){
 							source.setAttribute('data-aspectratio', ratio);
-							source.setAttribute(lazySizesConfig.srcsetAttr, srcset.replace(regHDesc, ''));
 						}
+						source.setAttribute(lazySizesConfig.srcsetAttr, srcset.replace(regHDesc, ''));
 					}
 				}
 			};
