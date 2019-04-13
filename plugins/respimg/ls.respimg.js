@@ -84,8 +84,8 @@
 		if(!lazySizes.hasHDescriptorFix && document.msElementsFromPoint){
 			lazySizes.hasHDescriptorFix = true;
 			fixEdgeHDescriptor();
-			return;
 		}
+		return;
 	}
 
 	if(window.picturefill || config.pf){return;}
