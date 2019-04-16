@@ -52,14 +52,16 @@ Example values for an image with a width of 400 and a height of 200 (all mean th
 In case new elements are added to the DOM the global ``imageRatio.processImages`` method can be used. The method takes either an element representing the container/wrapper of the new elements or a list of image elements:
 
 ```js
-imageRatio.processImages(document.querySelector('#dynaimc-wrapper');
-imageRatio.processImages(document.querySelectorAll('#dynaimc-wrapper img[data-aspectratio]');
+imageRatio.processImages(document.querySelector('#dynamic-wrapper');
+imageRatio.processImages(document.querySelectorAll('#dynamic-wrapper img[data-aspectratio]');
 ```
 
 In case jQuery, ZEPTO, shoestring or another jQuery-like library is used the ``imageRatio`` plugin is added also:
 
 ```js
-$('.dynamic-wrapper').imageRatio();
+$('.
+
+').imageRatio();
 $('.dynamic-wrapper img[data-aspectratio]').imageRatio();
 ```
 
