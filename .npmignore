@@ -21,4 +21,3 @@ Gruntfile.js
 component.json
 bower.json
 Authors.txt
-*.min.js

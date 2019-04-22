@@ -40,6 +40,14 @@ A **simple [demo can be seen here](http://afarkas.github.io/lazysizes/optimumx/)
      src="http://placehold.it/300x150"
      alt="flexible image" />
 ```
+ 
+ Or include via import:
+
+```js
+// never try to import *.min.js files 
+import lazySizes from 'lazysizes';
+import 'lazysizes/plugins/optimumx/ls.optimumx';
+```
 
 In case you want to use a CDN you can use the combohandler service provided by jsDelivr:
 

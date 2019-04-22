@@ -4,6 +4,13 @@ While [picturefill](https://github.com/scottjehl/picturefill) are full functiona
 
 As a result it is an extreme fast and lightweight plugin.
 
+
+```js
+// never try to import *.min.js files 
+import lazySizes from 'lazysizes';
+import 'lazysizes/plugins/respimg/ls.respimg';
+```
+
 ## constrained Markup support
 
 This plugin supports both art directed responsive images using the ``picture`` element as also resolution switching based on ``data-srcset`` using the width descriptor (and of course the combination of both).

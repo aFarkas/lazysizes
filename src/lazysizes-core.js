@@ -513,7 +513,12 @@ function l(window, document) {
 
 			rAF(function(){
 				// Part of this can be removed as soon as this fix is older: https://bugs.chromium.org/p/chromium/issues/detail?id=7731 (2015)
-				if( !firesLoad || (elem.complete && elem.naturalWidth > 1)){
+				var isLoaded = elem.complete && elem.naturalWidth > 1;
+
+				if( !firesLoad || isLoaded){
+					if (isLoaded) {
+						addClass(elem, 'ls-is-cached');
+					}
 					switchLoadingClass(event);
 					elem._lazyCache = true;
 					setTimeout(function(){

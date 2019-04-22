@@ -15,8 +15,10 @@ It may become also your number one tool to integrate responsive images. It can a
     Or:
 	```js
 	import 'lazysizes';
-	// import a plugin Note: the *.min.js files are not included in the npm package.
+	// import a plugin
 	import 'lazysizes/parent-fit/ls.parent-fit';
+
+	// Note: Never import/require the *.min.js files from the npm package.
 	```
 
 2. lazysizes does not need any JS configuration: Add the ``class`` ``"lazyload"`` to your images/iframes in conjunction with a ``data-src`` and/or ``data-srcset`` attribute. Optionally you can also add a ``src`` attribute with a low quality image:
@@ -509,18 +511,21 @@ In case you are changing the ``data-src``/``data-srcset`` attributes of already 
 
 This [attrchange / re-initialization extension](plugins/attrchange) automatically detects changes to your ``data-*`` attributes and adds the class for you.
 
+### [artdirect plugin](plugins/artdirect)
+The [artdirect plugin](plugins/artdirect) allows you to fully control art direction via CSS.
+
+
 ### Other [plugins/extensions](plugins)
 
 There are also other plugins/extension in the [plugins folder](plugins). As always you are open to create new ones for your project.
 
 ## <a name="specify-dimensions"></a>Tip: Specifying image dimensions (minimizing reflows and avoiding page jumps)
-To minimize reflows, content jumping or unpredictable behavior with some other JS widgets (isotope, masonry, some sliders/carousels...) the width **and** the height of an image should be calculable by the browser before the image source itself is loaded. For "static" images this can be done using either CSS or using the content attributes:
+To minimize reflows, content jumping or unpredictable behavior with some other JS widgets (isotope, masonry, some sliders/carousels...) the width **and** the height of an image should be calculable by the browser before the image source itself is loaded:
 
 ```html
 <img
 
-    width="350"
-    height="150"
+    style="width: 350px; height: 150px;"
 	data-srcset="http://placehold.it/350x150 1x,
     http://placehold.it/700x300 2x"
     data-src="http://placehold.it/350x150"

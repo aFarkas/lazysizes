@@ -4,6 +4,12 @@ The parent fit plugin extends the ``data-sizes="auto"`` feature to also calculat
 
 ## Usage
 
+```js
+// never try to import *.min.js files 
+import lazySizes from 'lazysizes';
+import 'lazysizes/plugins/parent-fit/ls.parent-fit';
+```
+
 For this to work properly the physical aspect-ratio of the image candidates need to be calculable. To do so either a `data-aspectratio` attribute has to be provided on the `source`/`img` element(s) or at least one of the image candidates inside the ``srcset`` attribute also need to include a **h** (height) descriptor. (MS Edge has problems to read image candidates using the h descriptor, which is fixed by the [respimg polyfill](../respimg))
 
 ### object-fit: contain|cover usage
