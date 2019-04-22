@@ -19,8 +19,6 @@
 	var imgSupport = 'loading' in HTMLImageElement.prototype;
 	var iframeSupport = 'loading' in HTMLIFrameElement.prototype;
 
-	console.warn('Not tested don\'t use in production', 'supports image[loading]: '+ imgSupport);
-
 	if (!window.addEventListener || !window.MutationObserver || (!imgSupport && !iframeSupport)) {
 		return;
 	}
@@ -30,7 +28,7 @@
 	var oldPrematureUnveil = lazySizes.prematureUnveil;
 	var cfg = lazySizes.cfg;
 
-	function disableEvents() {
+	function disableEvents(nativeLoadingCfg) {
 		var loader = lazySizes.loader;
 		var throttledCheckElements = loader.checkElems;
 		var removeALSL = function(){
@@ -39,14 +37,18 @@
 			}, 1000);
 		};
 
-		window.addEventListener('load', removeALSL);
-		removeALSL();
+		if (nativeLoadingCfg.windowEvents.indexOf('resize') != -1) {
+			window.addEventListener('load', removeALSL);
+			removeALSL();
 
-		window.removeEventListener('scroll', throttledCheckElements, true);
+			window.removeEventListener('scroll', throttledCheckElements, true);
+		}
 
-		window.removeEventListener('resize', throttledCheckElements, true);
+		if (nativeLoadingCfg.windowEvents.indexOf('resize') != -1) {
+			window.removeEventListener('resize', throttledCheckElements, true);
+		}
 
-		['focus', 'mouseover', 'click', 'load', 'transitionend', 'animationend', 'webkitAnimationEnd'].forEach(function(name){
+		nativeLoadingCfg.documentEvents.forEach(function(name){
 			document.removeEventListener(name, throttledCheckElements, true);
 		});
 	}
@@ -56,8 +58,17 @@
 
 		nativeLoadingCfg = cfg.nativeLoading || {};
 
+		if (!nativeLoadingCfg.documentEvents) {
+			nativeLoadingCfg.documentEvents = ['focus', 'mouseover', 'click', 'load', 'transitionend', 'animationend', 'webkitAnimationEnd'];
+		}
+
+
+		if (!nativeLoadingCfg.windowEvents) {
+			nativeLoadingCfg.windowEvents = ['scroll', 'resize'];
+		}
+
 		if (imgSupport && iframeSupport && nativeLoadingCfg.disableListeners) {
-			disableEvents();
+			disableEvents(nativeLoadingCfg);
 			nativeLoadingCfg.setLoadingAttribute = true;
 		}
 
