@@ -28,16 +28,28 @@
 	var slice = [].slice;
 
 	function getCandidatesAspectRatio(element){
-		var match;
+		var match, width, height;
 		var ratio = parseFloat(element.getAttribute('data-aspectratio'));
 		var srcset = element.getAttribute(lazySizesConfig.srcsetAttr) || element.getAttribute('srcset');
 
-		if(!ratio && (match = srcset.match(regDescriptors))){
-			if(match[2] == 'w'){
-				ratio = match[1] / match[3];
+
+		if(!ratio){
+			match = srcset.match(regDescriptors);
+
+			if (match) {
+				if(match[2] == 'w'){
+					width = match[1];
+					height = match[3];
+				} else {
+					width = match[3];
+					height = match[1];
+				}
 			} else {
-				ratio = match[3] / match[1];
+				width = element.getAttribute('width');
+				height = element.getAttribute('height');
 			}
+
+			ratio = width / height;
 		}
 
 		return ratio;

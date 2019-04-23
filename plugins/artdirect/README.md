@@ -59,7 +59,7 @@ You can use a whitespace separated list of tags on the `source` elements `data-t
 
 ## Providing aspect ratio information of physical images
 
-By providing the specific layout height and width (no `auto` values) through CSS and providing the physical aspect ratio of the images through either a `data-aspectratio` attribute or through `w` **and**`h` descriptors the plugin can choose the best image source.
+By providing the specific layout height and width (no `auto` values) through CSS and providing the physical aspect ratio of the images through either a `data-aspectratio` attribute or through `w` **and**`h` descriptors or through `width` and `height` content attributes the plugin can choose the best image source.
 
 ```html
 <style>
