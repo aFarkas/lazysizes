@@ -353,33 +353,35 @@
 
 				lowRuns++;
 
-				defaultExpand = (!lazySizesConfig.expand || lazySizesConfig.expand < 1) ?
-					docElem.clientHeight > 500 && docElem.clientWidth > 500 ? 500 : 370 :
-					lazySizesConfig.expand;
-
-				lazysizes._defEx = defaultExpand;
-
-				preloadExpand = defaultExpand * lazySizesConfig.expFactor;
-				hFac = lazySizesConfig.hFac;
-				isBodyHidden = null;
-
-				if(currentExpand < preloadExpand && isLoading < 1 && lowRuns > 2 && loadMode > 2 && !document.hidden){
-					currentExpand = preloadExpand;
-					lowRuns = 0;
-				} else if(loadMode > 1 && lowRuns > 1 && isLoading < 6){
-					currentExpand = defaultExpand;
-				} else {
-					currentExpand = shrinkExpand;
-				}
-
 				for(; i < eLlen; i++){
 
 					if(!lazyloadElems[i] || lazyloadElems[i]._lazyRace){continue;}
 
-					if(!supportScroll){unveilElement(lazyloadElems[i]);continue;}
+					if(!supportScroll || (lazysizes.prematureUnveil && lazysizes.prematureUnveil(lazyloadElems[i]))){unveilElement(lazyloadElems[i]);continue;}
 
 					if(!(elemExpandVal = lazyloadElems[i][_getAttribute]('data-expand')) || !(elemExpand = elemExpandVal * 1)){
 						elemExpand = currentExpand;
+					}
+
+					if (!defaultExpand) {
+						defaultExpand = (!lazySizesConfig.expand || lazySizesConfig.expand < 1) ?
+							docElem.clientHeight > 500 && docElem.clientWidth > 500 ? 500 : 370 :
+							lazySizesConfig.expand;
+
+						lazysizes._defEx = defaultExpand;
+
+						preloadExpand = defaultExpand * lazySizesConfig.expFactor;
+						hFac = lazySizesConfig.hFac;
+						isBodyHidden = null;
+
+						if(currentExpand < preloadExpand && isLoading < 1 && lowRuns > 2 && loadMode > 2 && !document.hidden){
+							currentExpand = preloadExpand;
+							lowRuns = 0;
+						} else if(loadMode > 1 && lowRuns > 1 && isLoading < 6){
+							currentExpand = defaultExpand;
+						} else {
+							currentExpand = shrinkExpand;
+						}
 					}
 
 					if(beforeExpandVal !== elemExpand){
@@ -531,10 +533,14 @@
 						}
 					}, 9);
 				}
+				if (elem.loading == 'lazy') {
+					isLoading--;
+				}
 			}, true);
 		});
 
 		var unveilElement = function (elem){
+			if (elem._lazyRace) {return;}
 			var detail;
 
 			var isImg = regImg.test(elem.nodeName);
@@ -557,16 +563,25 @@
 			lazyUnveil(elem, detail, isAuto, sizes, isImg);
 		};
 
+		var afterScroll = debounce(function(){
+			lazySizesConfig.loadMode = 3;
+			throttledCheckElements();
+		});
+
+		var altLoadmodeScrollListner = function(){
+			if(lazySizesConfig.loadMode == 3){
+				lazySizesConfig.loadMode = 2;
+			}
+			afterScroll();
+		};
+
 		var onload = function(){
 			if(isCompleted){return;}
 			if(Date.now() - started < 999){
 				setTimeout(onload, 999);
 				return;
 			}
-			var afterScroll = debounce(function(){
-				lazySizesConfig.loadMode = 3;
-				throttledCheckElements();
-			});
+
 
 			isCompleted = true;
 
@@ -574,12 +589,7 @@
 
 			throttledCheckElements();
 
-			addEventListener('scroll', function(){
-				if(lazySizesConfig.loadMode == 3){
-					lazySizesConfig.loadMode = 2;
-				}
-				afterScroll();
-			}, true);
+			addEventListener('scroll', altLoadmodeScrollListner, true);
 		};
 
 		return {
@@ -624,7 +634,8 @@
 				}
 			},
 			checkElems: throttledCheckElements,
-			unveil: unveilElement
+			unveil: unveilElement,
+			_aLSL: altLoadmodeScrollListner,
 		};
 	})();
 

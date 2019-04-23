@@ -1,6 +1,6 @@
 # Changelog
 
-## next
+## 4.1.8
 
 * Added the class `ls-is-cached` to already cached images.
 * Added h descriptor parsing fix plugin for MS edge (was already included in respimg polyfill.)
