@@ -1,5 +1,10 @@
 # Changelog
 
+## next 
+
+* Use `width`/`height` content attributes to detect physical aspect ratio of image candidates, if `data-aspectratio` and `h`/`w` descriptors are missing. [#642](https://github.com/aFarkas/lazysizes/issues/642)
+* Add support fot native `loading="lazy"` feature as a plugin.
+
 ## 4.1.8
 
 * Added the class `ls-is-cached` to already cached images.
