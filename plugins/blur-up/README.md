@@ -35,7 +35,7 @@ The new image (`ls-blur-up-img`) will get the following state classes to enable 
 		padding-bottom: 66.6667%;
 	}
 	
-	.lazyload:not([src]) {
+	img.lazyload:not([src]) {
 		visibility: hidden;
 	}
 

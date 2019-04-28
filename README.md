@@ -313,6 +313,7 @@ img.lazyload:not([src]) {
 **lazysizes** automatically detects new elements with the class ``lazyload`` so you won't need to call or configure anything in most situations.
 
 #### JS API - options
+
 Options can be set by declaring a global configuration option object named ``lazySizesConfig``. This object must be defined before the lazysizes script. A basic example:
 
 ```js
@@ -326,6 +327,15 @@ lazySizesConfig.srcAttr = 'data-original';
 
 //page is optimized for fast onload event
 lazySizesConfig.loadMode = 1;
+```
+
+In case you are using a module bundler it is recommended to change the options directly after importing the `lazysizes` module:
+
+```js
+import lazySizes from 'lazysizes';
+// other imports ...
+
+lazySizes.cfg.lazyClass = 'lazy';
 ```
 
 Here the list of options:
