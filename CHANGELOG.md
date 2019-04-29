@@ -1,7 +1,8 @@
 # Changelog
 
-## next 
+## next (4.2.0)
 
+* Do not leak global `lazySizesConfig` anymore fixes [#647](https://github.com/aFarkas/lazysizes/issues/647)
 * Use `width`/`height` content attributes to detect physical aspect ratio of image candidates, if `data-aspectratio` and `h`/`w` descriptors are missing. [#642](https://github.com/aFarkas/lazysizes/issues/642)
 * Add support fot native `loading="lazy"` feature as a plugin.
 
