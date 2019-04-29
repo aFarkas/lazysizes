@@ -270,8 +270,6 @@ function l(window, document) {
 			}
 		}
 
-		window.lazySizesConfig = lazySizesConfig;
-
 		setTimeout(function(){
 			if(lazySizesConfig.init){
 				init();

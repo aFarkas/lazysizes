@@ -126,12 +126,7 @@
 		};
 	})();
 
-	config = (lazySizes && lazySizes.cfg) || window.lazySizesConfig;
-
-	if(!config){
-		config = {};
-		window.lazySizesConfig = config;
-	}
+	config = lazySizes && lazySizes.cfg;
 
 	if(!config.include){
 		config.include = {};

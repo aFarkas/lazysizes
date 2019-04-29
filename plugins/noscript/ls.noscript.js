@@ -19,7 +19,7 @@
 
 	var dummyParent = {nodeName: ''};
 	var supportPicture = !!window.HTMLPictureElement && ('sizes' in document.createElement('img'));
-	var config = (window.lazySizes && lazySizes.cfg) || window.lazySizesConfig;
+	var config = window.lazySizes && lazySizes.cfg;
 
 	var handleLoadingElements = function(e){
 		var i, isResponsive, hasTriggered, onload, loading;
@@ -63,11 +63,6 @@
 			}
 		}
 	};
-
-	if(!config){
-		config = {};
-		window.lazySizesConfig = config;
-	}
 
 	config.getNoscriptContent =  function(noScript){
 		return noScript.textContent || noScript.innerText;

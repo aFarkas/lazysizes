@@ -217,12 +217,7 @@
 	docElem.addEventListener('lazybeforeunveil', extentLazySizes);
 	setTimeout(extentLazySizes);
 
-	config = (lazySizes && lazySizes.cfg) || window.lazySizesConfig;
-
-	if(!config){
-		config = {};
-		window.lazySizesConfig = config;
-	}
+	config = lazySizes && lazySizes.cfg;
 
 	if(typeof config.getOptimumX != 'function'){
 		config.getOptimumX = function(/*element*/){

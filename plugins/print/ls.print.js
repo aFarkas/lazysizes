@@ -23,7 +23,7 @@ In case the user starts to print lazysizes will load all images.
 	var config, elements, onprint, printMedia;
 	// see also: http://tjvantoll.com/2012/06/15/detecting-print-requests-with-javascript/
 	if(window.addEventListener){
-		config = (lazySizes && lazySizes.cfg) || window.lazySizesConfig || {};
+		config = lazySizes && lazySizes.cfg;
 		elements = config.lazyClass || 'lazyload';
 		onprint = function(){
 			var i, len;
