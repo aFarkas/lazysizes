@@ -16,7 +16,7 @@ Simply add a `data-lowsrc` attribute with the low quality image placeholder imag
 
 Lazysizes will then create a new image right after your original image with the following class `ls-blur-up-img`.
 
-The new image (`ls-blur-up-img`) will get the following state classes to enable you to write a custom CSS animation/transition as soon as the image is in view and loaded: `ls-inview`/`ls-original-loaded`.
+The new image (`.ls-blur-up-img`) will get the following state classes to enable you to write a custom CSS animation/transition as soon as the image is in view and loaded: `ls-inview`/`ls-original-loaded`, while your original `img` gets the class `.ls-blur-up-is-loading` until the `.ls-blur-up-img` is loaded. 
 
 
 ```html
@@ -35,7 +35,8 @@ The new image (`ls-blur-up-img`) will get the following state classes to enable 
 		padding-bottom: 66.6667%;
 	}
 	
-	img.lazyload:not([src]) {
+	.mediabox-img.ls-blur-up-is-loading,
+	.mediabox-img.lazyload:not([src]) {
 		visibility: hidden;
 	}
 
