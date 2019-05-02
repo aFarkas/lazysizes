@@ -176,7 +176,10 @@
 
 			if(obj.fit && (!fitSupport || (obj.position != 'center'))){
 				initFix(element, obj);
+				return true;
 			}
+
+			return false;
 		};
 
 		window.addEventListener('lazybeforesizes', function(e) {
@@ -184,7 +187,11 @@
 			var element = e.target;
 
 			if (element.getAttribute('data-object-fit-polyfilled') != null && !element._objectFitPolyfilledDisplay) {
-				onRead(e);
+				if(!onRead(e)){
+					lazySizes.rAF(function () {
+						element.removeAttribute('data-object-fit-polyfilled');
+					});
+				}
 			}
 		});
 		window.addEventListener('lazyunveilread', onRead, true);

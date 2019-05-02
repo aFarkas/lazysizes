@@ -1,10 +1,12 @@
 # Changelog
 
-## next (4.2.0)
+## 5.0.0-beta1
 
-* Do not leak global `lazySizesConfig` anymore fixes [#647](https://github.com/aFarkas/lazysizes/issues/647)
+* Add support fot native `loading="lazy"` feature as a [native loading plugin](https://github.com/aFarkas/lazysizes/tree/gh-pages/plugins/native-loading).
 * Use `width`/`height` content attributes to detect physical aspect ratio of image candidates, if `data-aspectratio` and `h`/`w` descriptors are missing. [#642](https://github.com/aFarkas/lazysizes/issues/642)
-* Add support fot native `loading="lazy"` feature as a plugin.
+* Do not leak global `lazySizesConfig` anymore fixes [#647](https://github.com/aFarkas/lazysizes/issues/647)
+* Improve handling of cloned object-fit images fixes [#648](https://github.com/aFarkas/lazysizes/issues/648)
+* Improve blur-up/effect plugin.
 
 ## 4.1.8
 
