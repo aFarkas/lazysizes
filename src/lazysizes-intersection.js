@@ -10,7 +10,7 @@
 	/*jshint eqnull:true */
 	if(!window.IntersectionObserver || !document.getElementsByClassName || !window.MutationObserver){return;}
 
-	var lazysizes, lazySizesConfig;
+	var lazysizes, lazySizesCfg;
 
 	var docElem = document.documentElement;
 
@@ -75,7 +75,7 @@
 
 	var updatePolyfill = function (el, full){
 		var polyfill;
-		if( !supportPicture && ( polyfill = (window.picturefill || lazySizesConfig.pf) ) ){
+		if( !supportPicture && ( polyfill = (window.picturefill || lazySizesCfg.pf) ) ){
 			polyfill({reevaluate: true, elements: [el]});
 		} else if(full && full.src){
 			el.src = full.src;
@@ -85,7 +85,7 @@
 	var getWidth = function(elem, parent, width){
 		width = width || elem.offsetWidth;
 
-		while(width < lazySizesConfig.minSize && parent && !elem._lazysizesWidth){
+		while(width < lazySizesCfg.minSize && parent && !elem._lazysizesWidth){
 			width =  parent.offsetWidth;
 			parent = parent.parentNode;
 		}
@@ -204,8 +204,8 @@
 		};
 
 		var switchLoadingClass = function(e){
-			addClass(e.target, lazySizesConfig.loadedClass);
-			removeClass(e.target, lazySizesConfig.loadingClass);
+			addClass(e.target, lazySizesCfg.loadedClass);
+			removeClass(e.target, lazySizesCfg.loadingClass);
 			addRemoveLoadEvents(e.target, rafSwitchLoadingClass);
 		};
 		var rafedSwitchLoadingClass = rAFIt(switchLoadingClass);
@@ -224,9 +224,9 @@
 		var handleSources = function(source){
 			var customMedia;
 
-			var sourceSrcset = source[_getAttribute](lazySizesConfig.srcsetAttr);
+			var sourceSrcset = source[_getAttribute](lazySizesCfg.srcsetAttr);
 
-			if( (customMedia = lazySizesConfig.customMedia[source[_getAttribute]('data-media') || source[_getAttribute]('media')]) ){
+			if( (customMedia = lazySizesCfg.customMedia[source[_getAttribute]('data-media') || source[_getAttribute]('media')]) ){
 				source.setAttribute('media', customMedia);
 			}
 
@@ -242,14 +242,14 @@
 
 				if(sizes){
 					if(isAuto){
-						addClass(elem, lazySizesConfig.autosizesClass);
+						addClass(elem, lazySizesCfg.autosizesClass);
 					} else {
 						elem.setAttribute('sizes', sizes);
 					}
 				}
 
-				srcset = elem[_getAttribute](lazySizesConfig.srcsetAttr);
-				src = elem[_getAttribute](lazySizesConfig.srcAttr);
+				srcset = elem[_getAttribute](lazySizesCfg.srcsetAttr);
+				src = elem[_getAttribute](lazySizesCfg.srcAttr);
 
 				if(isImg) {
 					parent = elem.parentNode;
@@ -265,7 +265,7 @@
 					clearTimeout(resetPreloadingTimer);
 					resetPreloadingTimer = setTimeout(resetPreloading, 2500);
 
-					addClass(elem, lazySizesConfig.loadingClass);
+					addClass(elem, lazySizesCfg.loadingClass);
 					addRemoveLoadEvents(elem, rafSwitchLoadingClass, true);
 				}
 
@@ -292,7 +292,7 @@
 				if(elem._lazyRace){
 					delete elem._lazyRace;
 				}
-				removeClass(elem, lazySizesConfig.lazyWaitClass);
+				removeClass(elem, lazySizesCfg.lazyWaitClass);
 
 				if( !firesLoad || elem.complete ){
 					if(firesLoad){
@@ -310,10 +310,10 @@
 			var isImg = regImg.test(elem.nodeName);
 
 			//allow using sizes="auto", but don't use. it's invalid. Use data-sizes="auto" or a valid value for sizes instead (i.e.: sizes="80vw")
-			var sizes = isImg && (elem[_getAttribute](lazySizesConfig.sizesAttr) || elem[_getAttribute]('sizes'));
+			var sizes = isImg && (elem[_getAttribute](lazySizesCfg.sizesAttr) || elem[_getAttribute]('sizes'));
 			var isAuto = sizes == 'auto';
 
-			if( (isAuto || !isCompleted) && isImg && (elem.src || elem.srcset) && !elem.complete && !hasClass(elem, lazySizesConfig.errorClass)){return;}
+			if( (isAuto || !isCompleted) && isImg && (elem.src || elem.srcset) && !elem.complete && !hasClass(elem, lazySizesCfg.errorClass)){return;}
 
 			detail = triggerEvent(elem, 'lazyunveilread').detail;
 
@@ -367,8 +367,8 @@
 
 			while(removeLazyClassElements.length){
 				element = removeLazyClassElements.shift();
-				addClass(element, lazySizesConfig.lazyWaitClass);
-				removeClass(element, lazySizesConfig.lazyClass);
+				addClass(element, lazySizesCfg.lazyWaitClass);
+				removeClass(element, lazySizesCfg.lazyClass);
 
 				if(element._lazyAdd){
 					delete element._lazyAdd;
@@ -403,11 +403,11 @@
 			_: function(){
 				started = Date.now();
 
-				lazyloadElems = document.getElementsByClassName(lazySizesConfig.lazyClass);
+				lazyloadElems = document.getElementsByClassName(lazySizesCfg.lazyClass);
 
 				inviewObserver = new IntersectionObserver(unveilElements);
 				preloadObserver = new IntersectionObserver(lazyUnveilElement, {
-					rootMargin: lazySizesConfig.expand + 'px ' + (lazySizesConfig.expand * lazySizesConfig.hFac) + 'px',
+					rootMargin: lazySizesCfg.expand + 'px ' + (lazySizesCfg.expand * lazySizesCfg.hFac) + 'px',
 				});
 
 				new MutationObserver( addElements ).observe( docElem, {childList: true, subtree: true, attributes: true} );
@@ -474,7 +474,7 @@
 
 		return {
 			_: function(){
-				autosizesElems = document.getElementsByClassName(lazySizesConfig.autosizesClass);
+				autosizesElems = document.getElementsByClassName(lazySizesCfg.autosizesClass);
 				addEventListener('resize', debouncedUpdateElementsSizes);
 			},
 			checkElems: debouncedUpdateElementsSizes,
@@ -513,25 +513,23 @@
 			expand: 400,
 		};
 
-		lazySizesConfig = window.lazySizesConfig || window.lazysizesConfig || {};
+		lazySizesCfg = window.lazySizesConfig || window.lazysizesConfig || {};
 
 		for(prop in lazySizesDefaults){
-			if(!(prop in lazySizesConfig)){
-				lazySizesConfig[prop] = lazySizesDefaults[prop];
+			if(!(prop in lazySizesCfg)){
+				lazySizesCfg[prop] = lazySizesDefaults[prop];
 			}
 		}
 
-		window.lazySizesConfig = lazySizesConfig;
-
 		setTimeout(function(){
-			if(lazySizesConfig.init){
+			if(lazySizesCfg.init){
 				init();
 			}
 		});
 	})();
 
 	lazysizes = {
-		cfg: lazySizesConfig,
+		cfg: lazySizesCfg,
 		autoSizer: autoSizer,
 		loader: loader,
 		init: init,

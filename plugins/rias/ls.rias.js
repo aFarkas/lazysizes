@@ -18,6 +18,7 @@
 	'use strict';
 
 	var config, riasCfg;
+	var lazySizesCfg = lazySizes.cfg;
 	var replaceTypes = {string: 1, number: 1};
 	var regNumber = /^\-*\+*\d+\.*\d*$/;
 	var regPicture = /^picture$/i;
@@ -360,7 +361,7 @@
 			var candidate;
 			var elem = e.target;
 
-			if(!buggySizes && (window.respimage || window.picturefill || lazySizesConfig.pf)){
+			if(!buggySizes && (window.respimage || window.picturefill || lazySizesCfg.pf)){
 				document.removeEventListener('lazybeforesizes', polyfill);
 				return;
 			}

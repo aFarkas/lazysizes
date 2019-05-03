@@ -17,6 +17,7 @@
 	/*jshint eqnull:true */
 	'use strict';
 	var polyfill;
+	var lazySizesCfg = lazySizes.cfg;
 	var config = lazySizes && lazySizes.cfg;
 	var img = document.createElement('img');
 	var supportSrcset = ('sizes' in img) && ('srcset' in img);
@@ -29,7 +30,7 @@
 			var img = document.createElement('img');
 			var removeHDescriptors = function(source){
 				var ratio, match;
-				var srcset = source.getAttribute(lazySizesConfig.srcsetAttr);
+				var srcset = source.getAttribute(lazySizesCfg.srcsetAttr);
 				if(srcset){
 					if((match = srcset.match(regDescriptors))){
 						if(match[2] == 'w'){
@@ -41,7 +42,7 @@
 						if(ratio){
 							source.setAttribute('data-aspectratio', ratio);
 						}
-						source.setAttribute(lazySizesConfig.srcsetAttr, srcset.replace(regHDesc, ''));
+						source.setAttribute(lazySizesCfg.srcsetAttr, srcset.replace(regHDesc, ''));
 					}
 				}
 			};

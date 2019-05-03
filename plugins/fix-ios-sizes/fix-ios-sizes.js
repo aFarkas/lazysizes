@@ -32,6 +32,7 @@
 }(window, function(window, document, lazySizes) {
 	'use strict';
 	var regPicture;
+	var lazySizesCfg = lazySizes.cfg;
 	var img = document.createElement('img');
 
 	if(('srcset' in img) && !('sizes' in img) && !window.HTMLPictureElement){
@@ -42,13 +43,13 @@
 			var elem, parent, srcset, sizes, isPicture;
 			var picture, source;
 			if(e.defaultPrevented ||
-				lazySizesConfig.noIOSFix ||
+				lazySizesCfg.noIOSFix ||
 				!(elem = e.target) ||
-				!(srcset = elem.getAttribute(lazySizesConfig.srcsetAttr)) ||
+				!(srcset = elem.getAttribute(lazySizesCfg.srcsetAttr)) ||
 				!(parent = elem.parentNode) ||
 				(
 					!(isPicture = regPicture.test(parent.nodeName || '')) &&
-					!(sizes = elem.getAttribute('sizes') || elem.getAttribute(lazySizesConfig.sizesAttr))
+					!(sizes = elem.getAttribute('sizes') || elem.getAttribute(lazySizesCfg.sizesAttr))
 				)
 			){return;}
 
@@ -66,9 +67,9 @@
 				source.setAttribute('sizes', sizes);
 			}
 
-			source.setAttribute(lazySizesConfig.srcsetAttr, srcset);
+			source.setAttribute(lazySizesCfg.srcsetAttr, srcset);
 			elem.setAttribute('data-pfsrcset', srcset);
-			elem.removeAttribute(lazySizesConfig.srcsetAttr);
+			elem.removeAttribute(lazySizesCfg.srcsetAttr);
 
 			if(!isPicture){
 				parent.insertBefore(picture, elem);

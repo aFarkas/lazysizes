@@ -17,6 +17,7 @@
 	'use strict';
 	if(!window.addEventListener){return;}
 
+	var lazySizesCfg = lazySizes.cfg;
 	var regWhite = /\s+/g;
 	var regSplitSet = /\s*\|\s+|\s+\|\s*/g;
 	var regSource = /^(.+?)(?:\s+\[\s*(.+?)\s*\])(?:\s+\[\s*(.+?)\s*\])?$/;
@@ -48,13 +49,13 @@
 			if(typeMatch && typeMatch[1]){
 				source.setAttribute('type', typeMatch[1]);
 			} else {
-				source.setAttribute('media', lazySizesConfig.customMedia[match] || match);
+				source.setAttribute('media', lazySizesCfg.customMedia[match] || match);
 			}
 		}
 	};
 	var createPicture = function(sets, elem, img){
 		var picture = document.createElement('picture');
-		var sizes = elem.getAttribute(lazySizesConfig.sizesAttr);
+		var sizes = elem.getAttribute(lazySizesCfg.sizesAttr);
 		var ratio = elem.getAttribute('data-ratio');
 		var optimumx = elem.getAttribute('data-optimumx');
 
@@ -74,7 +75,7 @@
 		sets = sets.replace(regWhite, ' ').split(regSplitSet);
 
 		picture.style.display = 'none';
-		img.className = lazySizesConfig.lazyClass;
+		img.className = lazySizesCfg.lazyClass;
 
 		if(sets.length == 1 && !sizes){
 			sizes = 'auto';
@@ -89,20 +90,20 @@
 			}
 
 			if((match = set.match(regSource))){
-				source.setAttribute(lazySizesConfig.srcsetAttr, match[1]);
+				source.setAttribute(lazySizesCfg.srcsetAttr, match[1]);
 
 				setTypeOrMedia(source, match[2]);
 				setTypeOrMedia(source, match[3]);
 			} else {
-				source.setAttribute(lazySizesConfig.srcsetAttr, set);
+				source.setAttribute(lazySizesCfg.srcsetAttr, set);
 			}
 
 			picture.appendChild(source);
 		});
 
 		if(sizes){
-			img.setAttribute(lazySizesConfig.sizesAttr, sizes);
-			elem.removeAttribute(lazySizesConfig.sizesAttr);
+			img.setAttribute(lazySizesCfg.sizesAttr, sizes);
+			elem.removeAttribute(lazySizesCfg.sizesAttr);
 			elem.removeAttribute('sizes');
 		}
 		if(optimumx){

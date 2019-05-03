@@ -126,16 +126,11 @@
 			lazySizes.rC(styleElement, lazysizesCfg.autosizesClass);
 			lazySizes.aC(styleElement, lazysizesCfg.loadingClass);
 			lazySizes.aC(styleElement, cloneElementClass);
-			styleElement.removeAttribute('data-parent-fit');
-			styleElement.removeAttribute('data-parent-container');
 
-			if(styleElement.getAttribute(lazysizesCfg.srcsetAttr)){
-				styleElement.setAttribute(lazysizesCfg.srcsetAttr, '');
-			}
-
-			if(styleElement.getAttribute(lazysizesCfg.srcAttr)){
-				styleElement.setAttribute(lazysizesCfg.srcAttr, '');
-			}
+			['data-parent-fit', 'data-parent-container', 'data-object-fit-polyfilled',
+				lazysizesCfg.srcsetAttr, lazysizesCfg.srcAttr].forEach(function(attr) {
+				styleElement.removeAttribute(attr);
+			});
 
 			styleElement.src = blankSrc;
 			styleElement.srcset = '';

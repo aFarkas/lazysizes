@@ -3,7 +3,7 @@ function l(window, document) {
 	/*jshint eqnull:true */
 	if(!document.getElementsByClassName){return;}
 
-	var lazysizes, lazySizesConfig;
+	var lazysizes, lazySizesCfg;
 
 	var docElem = document.documentElement;
 
@@ -80,7 +80,7 @@ function l(window, document) {
 
 	var updatePolyfill = function (el, full){
 		var polyfill;
-		if( !supportPicture && ( polyfill = (window.picturefill || lazySizesConfig.pf) ) ){
+		if( !supportPicture && ( polyfill = (window.picturefill || lazySizesCfg.pf) ) ){
 			if(full && full.src && !el[_getAttribute]('srcset')){
 				el.setAttribute('srcset', full.src);
 			}
@@ -97,7 +97,7 @@ function l(window, document) {
 	var getWidth = function(elem, parent, width){
 		width = width || elem.offsetWidth;
 
-		while(width < lazySizesConfig.minSize && parent && !elem._lazysizesWidth){
+		while(width < lazySizesCfg.minSize && parent && !elem._lazysizesWidth){
 			width =  parent.offsetWidth;
 			parent = parent.parentNode;
 		}
@@ -162,8 +162,8 @@ function l(window, document) {
 	var throttle = function(fn){
 		var running;
 		var lastTime = 0;
-		var gDelay = lazySizesConfig.throttleDelay;
-		var rICTimeout = lazySizesConfig.ricTimeout;
+		var gDelay = lazySizesCfg.throttleDelay;
+		var rICTimeout = lazySizesCfg.ricTimeout;
 		var run = function(){
 			running = false;
 			lastTime = Date.now();
@@ -173,8 +173,8 @@ function l(window, document) {
 			function(){
 				requestIdleCallback(run, {timeout: rICTimeout});
 
-				if(rICTimeout !== lazySizesConfig.ricTimeout){
-					rICTimeout = lazySizesConfig.ricTimeout;
+				if(rICTimeout !== lazySizesCfg.ricTimeout){
+					rICTimeout = lazySizesCfg.ricTimeout;
 				}
 			} :
 			rAFIt(function(){
@@ -262,16 +262,16 @@ function l(window, document) {
 			throttleDelay: 125,
 		};
 
-		lazySizesConfig = window.lazySizesConfig || window.lazysizesConfig || {};
+		lazySizesCfg = window.lazySizesConfig || window.lazysizesConfig || {};
 
 		for(prop in lazySizesDefaults){
-			if(!(prop in lazySizesConfig)){
-				lazySizesConfig[prop] = lazySizesDefaults[prop];
+			if(!(prop in lazySizesCfg)){
+				lazySizesCfg[prop] = lazySizesDefaults[prop];
 			}
 		}
 
 		setTimeout(function(){
-			if(lazySizesConfig.init){
+			if(lazySizesCfg.init){
 				init();
 			}
 		});
@@ -339,7 +339,7 @@ function l(window, document) {
 				beforeExpandVal, defaultExpand, preloadExpand, hFac;
 			var lazyloadElems = lazysizes.elements;
 
-			if((loadMode = lazySizesConfig.loadMode) && isLoading < 8 && (eLlen = lazyloadElems.length)){
+			if((loadMode = lazySizesCfg.loadMode) && isLoading < 8 && (eLlen = lazyloadElems.length)){
 
 				i = 0;
 
@@ -356,14 +356,14 @@ function l(window, document) {
 					}
 
 					if (!defaultExpand) {
-						defaultExpand = (!lazySizesConfig.expand || lazySizesConfig.expand < 1) ?
+						defaultExpand = (!lazySizesCfg.expand || lazySizesCfg.expand < 1) ?
 							docElem.clientHeight > 500 && docElem.clientWidth > 500 ? 500 : 370 :
-							lazySizesConfig.expand;
+							lazySizesCfg.expand;
 
 						lazysizes._defEx = defaultExpand;
 
-						preloadExpand = defaultExpand * lazySizesConfig.expFactor;
-						hFac = lazySizesConfig.hFac;
+						preloadExpand = defaultExpand * lazySizesCfg.expFactor;
+						hFac = lazySizesCfg.hFac;
 						isBodyHidden = null;
 
 						if(currentExpand < preloadExpand && isLoading < 1 && lowRuns > 2 && loadMode > 2 && !document.hidden){
@@ -390,15 +390,15 @@ function l(window, document) {
 						(eLright = rect.right) >= elemNegativeExpand * hFac &&
 						(eLleft = rect.left) <= eLvW &&
 						(eLbottom || eLright || eLleft || eLtop) &&
-						(lazySizesConfig.loadHidden || isVisible(lazyloadElems[i])) &&
+						(lazySizesCfg.loadHidden || isVisible(lazyloadElems[i])) &&
 						((isCompleted && isLoading < 3 && !elemExpandVal && (loadMode < 3 || lowRuns < 4)) || isNestedVisible(lazyloadElems[i], elemExpand))){
 						unveilElement(lazyloadElems[i]);
 						loadedSomething = true;
 						if(isLoading > 9){break;}
 					} else if(!loadedSomething && isCompleted && !autoLoadElem &&
 						isLoading < 4 && lowRuns < 4 && loadMode > 2 &&
-						(preloadElems[0] || lazySizesConfig.preloadAfterLoad) &&
-						(preloadElems[0] || (!elemExpandVal && ((eLbottom || eLright || eLleft || eLtop) || lazyloadElems[i][_getAttribute](lazySizesConfig.sizesAttr) != 'auto')))){
+						(preloadElems[0] || lazySizesCfg.preloadAfterLoad) &&
+						(preloadElems[0] || (!elemExpandVal && ((eLbottom || eLright || eLleft || eLtop) || lazyloadElems[i][_getAttribute](lazySizesCfg.sizesAttr) != 'auto')))){
 						autoLoadElem = preloadElems[0] || lazyloadElems[i];
 					}
 				}
@@ -420,8 +420,8 @@ function l(window, document) {
 			}
 
 			resetPreloading(e);
-			addClass(elem, lazySizesConfig.loadedClass);
-			removeClass(elem, lazySizesConfig.loadingClass);
+			addClass(elem, lazySizesCfg.loadedClass);
+			removeClass(elem, lazySizesCfg.loadingClass);
 			addRemoveLoadEvents(elem, rafSwitchLoadingClass);
 			triggerEvent(elem, 'lazyloaded');
 		};
@@ -441,9 +441,9 @@ function l(window, document) {
 		var handleSources = function(source){
 			var customMedia;
 
-			var sourceSrcset = source[_getAttribute](lazySizesConfig.srcsetAttr);
+			var sourceSrcset = source[_getAttribute](lazySizesCfg.srcsetAttr);
 
-			if( (customMedia = lazySizesConfig.customMedia[source[_getAttribute]('data-media') || source[_getAttribute]('media')]) ){
+			if( (customMedia = lazySizesCfg.customMedia[source[_getAttribute]('data-media') || source[_getAttribute]('media')]) ){
 				source.setAttribute('media', customMedia);
 			}
 
@@ -459,14 +459,14 @@ function l(window, document) {
 
 				if(sizes){
 					if(isAuto){
-						addClass(elem, lazySizesConfig.autosizesClass);
+						addClass(elem, lazySizesCfg.autosizesClass);
 					} else {
 						elem.setAttribute('sizes', sizes);
 					}
 				}
 
-				srcset = elem[_getAttribute](lazySizesConfig.srcsetAttr);
-				src = elem[_getAttribute](lazySizesConfig.srcAttr);
+				srcset = elem[_getAttribute](lazySizesCfg.srcsetAttr);
+				src = elem[_getAttribute](lazySizesCfg.srcAttr);
 
 				if(isImg) {
 					parent = elem.parentNode;
@@ -477,7 +477,7 @@ function l(window, document) {
 
 				event = {target: elem};
 
-				addClass(elem, lazySizesConfig.loadingClass);
+				addClass(elem, lazySizesCfg.loadingClass);
 
 				if(firesLoad){
 					clearTimeout(resetPreloadingTimer);
@@ -507,7 +507,7 @@ function l(window, document) {
 			if(elem._lazyRace){
 				delete elem._lazyRace;
 			}
-			removeClass(elem, lazySizesConfig.lazyClass);
+			removeClass(elem, lazySizesCfg.lazyClass);
 
 			rAF(function(){
 				// Part of this can be removed as soon as this fix is older: https://bugs.chromium.org/p/chromium/issues/detail?id=7731 (2015)
@@ -538,10 +538,10 @@ function l(window, document) {
 			var isImg = regImg.test(elem.nodeName);
 
 			//allow using sizes="auto", but don't use. it's invalid. Use data-sizes="auto" or a valid value for sizes instead (i.e.: sizes="80vw")
-			var sizes = isImg && (elem[_getAttribute](lazySizesConfig.sizesAttr) || elem[_getAttribute]('sizes'));
+			var sizes = isImg && (elem[_getAttribute](lazySizesCfg.sizesAttr) || elem[_getAttribute]('sizes'));
 			var isAuto = sizes == 'auto';
 
-			if( (isAuto || !isCompleted) && isImg && (elem[_getAttribute]('src') || elem.srcset) && !elem.complete && !hasClass(elem, lazySizesConfig.errorClass) && hasClass(elem, lazySizesConfig.lazyClass)){return;}
+			if( (isAuto || !isCompleted) && isImg && (elem[_getAttribute]('src') || elem.srcset) && !elem.complete && !hasClass(elem, lazySizesCfg.errorClass) && hasClass(elem, lazySizesCfg.lazyClass)){return;}
 
 			detail = triggerEvent(elem, 'lazyunveilread').detail;
 
@@ -556,13 +556,13 @@ function l(window, document) {
 		};
 
 		var afterScroll = debounce(function(){
-			lazySizesConfig.loadMode = 3;
+			lazySizesCfg.loadMode = 3;
 			throttledCheckElements();
 		});
 
 		var altLoadmodeScrollListner = function(){
-			if(lazySizesConfig.loadMode == 3){
-				lazySizesConfig.loadMode = 2;
+			if(lazySizesCfg.loadMode == 3){
+				lazySizesCfg.loadMode = 2;
 			}
 			afterScroll();
 		};
@@ -577,7 +577,7 @@ function l(window, document) {
 
 			isCompleted = true;
 
-			lazySizesConfig.loadMode = 3;
+			lazySizesCfg.loadMode = 3;
 
 			throttledCheckElements();
 
@@ -588,8 +588,8 @@ function l(window, document) {
 			_: function(){
 				started = Date.now();
 
-				lazysizes.elements = document.getElementsByClassName(lazySizesConfig.lazyClass);
-				preloadElems = document.getElementsByClassName(lazySizesConfig.lazyClass + ' ' + lazySizesConfig.preloadClass);
+				lazysizes.elements = document.getElementsByClassName(lazySizesCfg.lazyClass);
+				preloadElems = document.getElementsByClassName(lazySizesCfg.lazyClass + ' ' + lazySizesCfg.preloadClass);
 
 				addEventListener('scroll', throttledCheckElements, true);
 
@@ -687,7 +687,7 @@ function l(window, document) {
 
 		return {
 			_: function(){
-				autosizesElems = document.getElementsByClassName(lazySizesConfig.autosizesClass);
+				autosizesElems = document.getElementsByClassName(lazySizesCfg.autosizesClass);
 				addEventListener('resize', debouncedUpdateElementsSizes);
 			},
 			checkElems: debouncedUpdateElementsSizes,
@@ -704,7 +704,7 @@ function l(window, document) {
 	};
 
 	lazysizes = {
-		cfg: lazySizesConfig,
+		cfg: lazySizesCfg,
 		autoSizer: autoSizer,
 		loader: loader,
 		init: init,

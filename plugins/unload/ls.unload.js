@@ -18,6 +18,7 @@
 	if(!document.addEventListener){return;}
 	var config, checkElements;
 
+	var lazySizesCfg = lazySizes.cfg;
 	var unloadElements = [];
 	var requestAnimationFrame = window.requestAnimationFrame || setTimeout;
 	var unloader = {
@@ -135,9 +136,9 @@
 		if(config.autoUnload){
 			docElem.addEventListener('load',  function(e){
 				if(e.target.naturalWidth * e.target.naturalHeight > config.unloadPixelThreshold && e.target.className &&
-					e.target.className.indexOf && e.target.className.indexOf(lazySizesConfig.loadingClass) != -1 &&
-					e.target.className.indexOf(lazySizesConfig.preloadClass) == -1){
-					lazySizes.aC(e.target, lazySizesConfig.unloadClass);
+					e.target.className.indexOf && e.target.className.indexOf(lazySizesCfg.loadingClass) != -1 &&
+					e.target.className.indexOf(lazySizesCfg.preloadClass) == -1){
+					lazySizes.aC(e.target, lazySizesCfg.unloadClass);
 				}
 			}, true);
 		}
