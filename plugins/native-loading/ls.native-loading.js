@@ -18,17 +18,25 @@
 
 	var imgSupport = 'loading' in HTMLImageElement.prototype;
 	var iframeSupport = 'loading' in HTMLIFrameElement.prototype;
+	var isConfigSet = false;
+	var oldPrematureUnveil = lazySizes.prematureUnveil;
+	var cfg = lazySizes.cfg;
+	var listenerMap = {
+		focus: 1,
+		mouseover: 1,
+		click: 1,
+		load: 1,
+		transitionend: 1,
+		animationend: 1,
+		scroll: 1,
+		resize: 1,
+	};
 
 	if (!window.addEventListener || !window.MutationObserver || (!imgSupport && !iframeSupport)) {
 		return;
 	}
 
-	var nativeLoadingCfg;
-	var isConfigSet = false;
-	var oldPrematureUnveil = lazySizes.prematureUnveil;
-	var cfg = lazySizes.cfg;
-
-	function disableEvents(nativeLoadingCfg) {
+	function disableEvents() {
 		var loader = lazySizes.loader;
 		var throttledCheckElements = loader.checkElems;
 		var removeALSL = function(){
@@ -36,43 +44,41 @@
 				window.removeEventListener('scroll', loader._aLSL, true);
 			}, 1000);
 		};
+		var currentListenerMap = typeof cfg.nativeLoading.disableListeners == 'object' ?
+			cfg.nativeLoading.disableListeners :
+			listenerMap;
 
-		if (nativeLoadingCfg.windowEvents.indexOf('resize') != -1) {
+		if (currentListenerMap.scroll) {
 			window.addEventListener('load', removeALSL);
 			removeALSL();
 
 			window.removeEventListener('scroll', throttledCheckElements, true);
 		}
 
-		if (nativeLoadingCfg.windowEvents.indexOf('resize') != -1) {
+		if (currentListenerMap.resize) {
 			window.removeEventListener('resize', throttledCheckElements, true);
 		}
 
-		nativeLoadingCfg.documentEvents.forEach(function(name){
-			document.removeEventListener(name, throttledCheckElements, true);
+		Object.keys(currentListenerMap).forEach(function(name) {
+			if (currentListenerMap[name]) {
+				document.removeEventListener(name, throttledCheckElements, true);
+			}
 		});
 	}
 
 	function runConfig() {
+		if (isConfigSet) {return;}
 		isConfigSet = true;
 
-		nativeLoadingCfg = cfg.nativeLoading || {};
+		if (imgSupport && iframeSupport && cfg.nativeLoading.disableListeners) {
+			if (cfg.nativeLoading.disableListeners === true) {
+				cfg.nativeLoading.setLoadingAttribute = true;
+			}
 
-		if (!nativeLoadingCfg.documentEvents) {
-			nativeLoadingCfg.documentEvents = ['focus', 'mouseover', 'click', 'load', 'transitionend', 'animationend', 'webkitAnimationEnd'];
+			disableEvents();
 		}
 
-
-		if (!nativeLoadingCfg.windowEvents) {
-			nativeLoadingCfg.windowEvents = ['scroll', 'resize'];
-		}
-
-		if (imgSupport && iframeSupport && nativeLoadingCfg.disableListeners) {
-			disableEvents(nativeLoadingCfg);
-			nativeLoadingCfg.setLoadingAttribute = true;
-		}
-
-		if (nativeLoadingCfg.setLoadingAttribute) {
+		if (cfg.nativeLoading.setLoadingAttribute) {
 			window.addEventListener('lazybeforeunveil', function(e){
 				var element = e.target;
 
@@ -90,9 +96,8 @@
 		}
 
 		if ('loading' in element &&
-			(nativeLoadingCfg.setLoadingAttribute || element.getAttribute('loading')) &&
+			(cfg.nativeLoading.setLoadingAttribute || element.getAttribute('loading')) &&
 			(element.getAttribute('data-sizes') != 'auto' || element.offsetWidth)) {
-			lazySizes.loader.unveil(element);
 			return true;
 		}
 
