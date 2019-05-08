@@ -32,6 +32,10 @@
 		resize: 1,
 	};
 
+	if (!cfg.nativeLoading) {
+		cfg.nativeLoading = {};
+	}
+
 	if (!window.addEventListener || !window.MutationObserver || (!imgSupport && !iframeSupport)) {
 		return;
 	}
