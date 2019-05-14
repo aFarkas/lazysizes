@@ -15,7 +15,7 @@ function l(window, document) {
 
 	var _getAttribute = 'getAttribute';
 
-	var addEventListener = window[_addEventListener];
+	var addEventListener = window[_addEventListener].bind(window);
 
 	var setTimeout = window.setTimeout;
 
