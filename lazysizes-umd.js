@@ -1,3 +1,7 @@
+var globalObject = (typeof window !== 'undefined') ? window : {
+	document: { }
+};
+
 (function(window, factory) {
 	var lazySizes = factory(window, window.document);
 	if(typeof module == 'object' && module.exports){
@@ -7,7 +11,7 @@
 	} else {
 		window.lazySizes = lazySizes;
 	}
-}(window, function l(window, document) {
+}(globalObject, function l(window, document) {
 	'use strict';
 	/*jshint eqnull:true */
 	if(!document.getElementsByClassName){return;}
