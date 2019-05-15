@@ -4,4 +4,5 @@
 	if(typeof module == 'object' && module.exports){
 		module.exports = lazySizes;
 	}
-}(window, {{ls}}));
+}(typeof window != 'undefined' ?
+      window : {}, {{ls}}));
