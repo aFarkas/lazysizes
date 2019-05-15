@@ -39,7 +39,7 @@ function l(window, document) {
 		}
 	})();
 
-	if (!document || document.getElementsByClassName) {
+	if (!document || !document.getElementsByClassName) {
 		return {
 			init: function () {},
 			cfg: lazySizesCfg,
