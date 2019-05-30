@@ -1,5 +1,10 @@
 # Changelog
 
+## next
+
+* Allow import/execution in node environment
+* Use "hqdefault" for youtube poster image in video-embed plugin fixes [#666](https://github.com/aFarkas/lazysizes/issues/666)
+
 ## 5.0.0
 
 * Use `width`/`height` content attributes to detect physical aspect ratio of image candidates, if `data-aspectratio` and `h`/`w` descriptors are missing. [#642](https://github.com/aFarkas/lazysizes/issues/642)
