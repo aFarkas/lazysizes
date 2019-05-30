@@ -24,7 +24,7 @@
 	var idIndex = Date.now();
 	var regId = /\{\{id}}/;
 	var regAmp = /^&/;
-	var youtubeImg = protocol + '//img.youtube.com/vi/{{id}}/sddefault.jpg';
+	var youtubeImg = protocol + '//img.youtube.com/vi/{{id}}/hqdefault.jpg';
 	var youtubeIframe = protocol + '//www.youtube.com/embed/{{id}}?autoplay=1';
 	var vimeoApi = protocol + '//vimeo.com/api/oembed.json?url=https%3A//vimeo.com/{{id}}';
 	var vimeoIframe = protocol + '//player.vimeo.com/video/{{id}}?autoplay=1';
