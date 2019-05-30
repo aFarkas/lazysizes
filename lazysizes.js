@@ -4,12 +4,55 @@
 	if(typeof module == 'object' && module.exports){
 		module.exports = lazySizes;
 	}
-}(window, function l(window, document) {
+}(typeof window != 'undefined' ?
+      window : {}, function l(window, document) {
 	'use strict';
 	/*jshint eqnull:true */
-	if(!document.getElementsByClassName){return;}
 
 	var lazysizes, lazySizesCfg;
+
+	(function(){
+		var prop;
+
+		var lazySizesDefaults = {
+			lazyClass: 'lazyload',
+			loadedClass: 'lazyloaded',
+			loadingClass: 'lazyloading',
+			preloadClass: 'lazypreload',
+			errorClass: 'lazyerror',
+			//strictClass: 'lazystrict',
+			autosizesClass: 'lazyautosizes',
+			srcAttr: 'data-src',
+			srcsetAttr: 'data-srcset',
+			sizesAttr: 'data-sizes',
+			//preloadAfterLoad: false,
+			minSize: 40,
+			customMedia: {},
+			init: true,
+			expFactor: 1.5,
+			hFac: 0.8,
+			loadMode: 2,
+			loadHidden: true,
+			ricTimeout: 0,
+			throttleDelay: 125,
+		};
+
+		lazySizesCfg = window.lazySizesConfig || window.lazysizesConfig || {};
+
+		for(prop in lazySizesDefaults){
+			if(!(prop in lazySizesCfg)){
+				lazySizesCfg[prop] = lazySizesDefaults[prop];
+			}
+		}
+	})();
+
+	if (!document || !document.getElementsByClassName) {
+		return {
+			init: function () {},
+			cfg: lazySizesCfg,
+			noSupport: true,
+		};
+	}
 
 	var docElem = document.documentElement;
 
@@ -241,47 +284,6 @@
 			}
 		};
 	};
-
-	(function(){
-		var prop;
-
-		var lazySizesDefaults = {
-			lazyClass: 'lazyload',
-			loadedClass: 'lazyloaded',
-			loadingClass: 'lazyloading',
-			preloadClass: 'lazypreload',
-			errorClass: 'lazyerror',
-			//strictClass: 'lazystrict',
-			autosizesClass: 'lazyautosizes',
-			srcAttr: 'data-src',
-			srcsetAttr: 'data-srcset',
-			sizesAttr: 'data-sizes',
-			//preloadAfterLoad: false,
-			minSize: 40,
-			customMedia: {},
-			init: true,
-			expFactor: 1.5,
-			hFac: 0.8,
-			loadMode: 2,
-			loadHidden: true,
-			ricTimeout: 0,
-			throttleDelay: 125,
-		};
-
-		lazySizesCfg = window.lazySizesConfig || window.lazysizesConfig || {};
-
-		for(prop in lazySizesDefaults){
-			if(!(prop in lazySizesCfg)){
-				lazySizesCfg[prop] = lazySizesDefaults[prop];
-			}
-		}
-
-		setTimeout(function(){
-			if(lazySizesCfg.init){
-				init();
-			}
-		});
-	})();
 
 	var loader = (function(){
 		var preloadElems, isCompleted, resetPreloadingTimer, loadMode, started;
@@ -702,12 +704,18 @@
 	})();
 
 	var init = function(){
-		if(!init.i){
+		if(!init.i && document.getElementsByClassName){
 			init.i = true;
 			autoSizer._();
 			loader._();
 		}
 	};
+
+	setTimeout(function(){
+		if(lazySizesCfg.init){
+			init();
+		}
+	});
 
 	lazysizes = {
 		cfg: lazySizesCfg,

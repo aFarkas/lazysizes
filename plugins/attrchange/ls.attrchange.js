@@ -1,4 +1,5 @@
 (function(window, factory) {
+	if(!window) {return;}
 	var globalInstall = function(){
 		factory(window.lazySizes);
 		window.removeEventListener('lazyunveilread', globalInstall, true);
@@ -13,11 +14,9 @@
 	} else {
 		window.addEventListener('lazyunveilread', globalInstall, true);
 	}
-}(window, function(window, document, lazySizes) {
+}(typeof window != 'undefined' ?
+	window : 0, function(window, document, lazySizes) {
 	'use strict';
-	if(!window.addEventListener){return;}
-
-	var rAF = window.requestAnimationFrame || setTimeout;
 
 	var addObserver = function(){
 		var connect, disconnect, observer, connected;
@@ -27,7 +26,7 @@
 		var docElem = document.documentElement;
 
 		var setClass = function(target){
-			rAF(function(){
+			lazySizes.rAF(function(){
 				lazySizes.rC(target, lsCfg.loadedClass);
 				if(lsCfg.unloadedClass){
 					lazySizes.rC(target, lsCfg.unloadedClass);

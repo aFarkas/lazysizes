@@ -1,4 +1,5 @@
 (function(window, factory) {
+	if(!window) {return;}
 	var globalInstall = function(){
 		factory(window.lazySizes);
 		window.removeEventListener('lazyunveilread', globalInstall, true);
@@ -13,7 +14,8 @@
 	} else {
 		window.addEventListener('lazyunveilread', globalInstall, true);
 	}
-}(window, function(window, document, lazySizes) {
+}(typeof window != 'undefined' ?
+	window : 0, function(window, document, lazySizes) {
 	/*
 	 @example
 	 <blockquote class="lazyload" data-twitter="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">Nothing Twitter is doing is working <a href="https://t.co/s0FppnacwK">https://t.co/s0FppnacwK</a> <a href="https://t.co/GK9MRfQkYO">pic.twitter.com/GK9MRfQkYO</a></p>&mdash; The Verge (@verge) <a href="https://twitter.com/verge/status/725096763972001794">April 26, 2016</a></blockquote>
