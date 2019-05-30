@@ -1,4 +1,5 @@
 (function(window, factory) {
+	if(!window) {return;}
 	var globalInstall = function(initialEvent){
 		factory(window.lazySizes, initialEvent);
 		window.removeEventListener('lazyunveilread', globalInstall, true);
@@ -13,7 +14,8 @@
 	} else {
 		window.addEventListener('lazyunveilread', globalInstall, true);
 	}
-}(window, function(window, document, lazySizes, initialEvent) {
+}(typeof window != 'undefined' ?
+	window : 0, function(window, document, lazySizes, initialEvent) {
 	'use strict';
 	var cloneElementClass;
 	var style = document.createElement('a').style;
