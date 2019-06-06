@@ -152,7 +152,7 @@
 			} else {
 				height = fitElem.clientHeight;
 
-				if(height > 40 && (displayRatio =  width / height) && ((fit == 'cover' && displayRatio < imageRatio) || (fit == 'contain' && displayRatio > imageRatio))){
+				if((displayRatio =  width / height) && ((fit == 'cover' && displayRatio < imageRatio) || (fit == 'contain' && displayRatio > imageRatio))){
 					retWidth = width * (imageRatio / displayRatio);
 				}
 			}
