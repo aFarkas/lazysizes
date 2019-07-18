@@ -193,7 +193,7 @@
 				elemH = sizeElement.scrollHeight;
 			}
 			if (elemW && elemH) {
-				opts.ratio = elemH / elemW;
+				opts.ratio = opts.traditionalRatio ? elemH / elemW : elemW / elemH;
 			}
 		}
 
