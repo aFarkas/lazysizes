@@ -16,7 +16,7 @@ It may become also your number one tool to integrate responsive images. It can a
 	```js
 	import 'lazysizes';
 	// import a plugin
-	import 'lazysizes/parent-fit/ls.parent-fit';
+	import 'lazysizes/plugins/parent-fit/ls.parent-fit';
 
 	// Note: Never import/require the *.min.js files from the npm package.
 	```
