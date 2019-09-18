@@ -75,6 +75,7 @@
 	var requestIdleCallback = window.requestIdleCallback;
 
 	var regPicture = /^picture$/i;
+	var regLoadElements = /^img|iframe$/i;
 
 	var loadEvents = ['load', 'error', 'lazyincluded', '_lazyloaded'];
 
@@ -483,7 +484,7 @@
 					isPicture = parent && regPicture.test(parent.nodeName || '');
 				}
 
-				firesLoad = detail.firesLoad || (('src' in elem) && (srcset || src || isPicture));
+				firesLoad = detail.firesLoad || !!(('src' in elem && regLoadElements.test(elem.nodeName)) && (srcset || src || isPicture));
 
 				event = {target: elem};
 

@@ -93,13 +93,19 @@
 			if(blurUp != 'always'){
 				blurImg.style.visibility = 'hidden';
 
-				setTimeout(function(){
-					lazySizes.rAF(function () {
-						if(!isForced){
-							blurImg.style.visibility = '';
-						}
-					});
-				}, 20);
+				lazySizes.rAF(function () {
+					if (blurImg) {
+						setTimeout(function(){
+							if (blurImg) {
+								lazySizes.rAF(function () {
+									if(!isForced && blurImg){
+										blurImg.style.visibility = '';
+									}
+								});
+							}
+						}, lazySizes.cfg.blurupCacheDelay || 33);
+					}
+				});
 			}
 		};
 
