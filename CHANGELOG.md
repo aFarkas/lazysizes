@@ -1,5 +1,10 @@
 # Changelog
 
+## 5.1.1
+
+* Fix ratio calculation in rias plugin (fixed in [#685](https://github.com/aFarkas/lazysizes/pull/685) by [tikotzky](https://github.com/tikotzky))
+* Make  thumb size for youtube poster image in video-embed plugin configurable (see [#681](https://github.com/aFarkas/lazysizes/pull/681) thx to [@nikitasol](https://github.com/nikitasol))
+
 ## next
 
 * Allow import/execution in node environment
