@@ -46,13 +46,32 @@ For background images, use data-bg attribute:
 	if(document.addEventListener){
 		regBgUrlEscape = /\(|\)|\s|'/;
 
-		bgLoad = function (url, cb){
+		// create an empty canvas element
+		var canvas = document.createElement('canvas'),
+			canvasContext = canvas.getContext('2d'),
+			isiOS = /iPhone/i.test(navigator.userAgent);
+		bgLoad = function(url, cb) {
 			var img = document.createElement('img');
-			img.onload = function(){
+			img.onload = function() {
+				var URL;
+				if (isiOS) {
+					// avoid flicker when background-image change
+					//Set canvas size is same as the picture
+					canvas.width = img.width;
+					canvas.height = img.height;
+					// draw image into canvas element
+					canvasContext.drawImage(img, 0, 0, img.width, img.height);
+					// get canvas contents as a data URL (returns png format by default)
+					URL = canvas.toDataURL();
+				} else {
+					// The other platform, plain url is okay
+					URL = regBgUrlEscape.test(url) ? JSON.stringify(url) : url;
+				}
+
 				img.onload = null;
 				img.onerror = null;
 				img = null;
-				cb();
+				cb(URL);
 			};
 			img.onerror = img.onload;
 
@@ -98,8 +117,8 @@ For background images, use data-bg attribute:
 				bg = e.target.getAttribute('data-bg');
 				if (bg) {
 					e.detail.firesLoad = true;
-					load = function(){
-						e.target.style.backgroundImage = 'url(' + (regBgUrlEscape.test(bg) ? JSON.stringify(bg) : bg ) + ')';
+					load = function(URL){
+						e.target.style.backgroundImage = 'url(' + URL + ')';
 						e.detail.firesLoad = false;
 						lazySizes.fire(e.target, '_lazyloaded', {}, true, true);
 					};
