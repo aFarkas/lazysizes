@@ -53,7 +53,6 @@ For background images, use data-bg attribute:
 		bgLoad = function(url, cb) {
 			var img = document.createElement('img');
 			img.onload = function() {
-				var URL;
 				if (isiOS) {
 					// avoid flicker when background-image change
 					//Set canvas size is same as the picture
@@ -61,17 +60,25 @@ For background images, use data-bg attribute:
 					canvas.height = img.height;
 					// draw image into canvas element
 					canvasContext.drawImage(img, 0, 0, img.width, img.height);
+					/**
+					 * I tried tree schemes http:,blob:,data: to set image url, data: is most smoothly rendered.
+					 * If put them in order on a smooth scale, they looks like data > blob > http
+					 */
 					// get canvas contents as a data URL (returns png format by default)
-					URL = canvas.toDataURL();
+					cb(canvas.toDataURL());
+					// get canvas contents as a blob URL (returns png format by default)
+					// https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toBlob
+					// canvas.toBlob(function(blob) {
+					//   cb(window.URL.createObjectURL(blob));
+					// });
 				} else {
 					// The other platform, plain url is okay
-					URL = regBgUrlEscape.test(url) ? JSON.stringify(url) : url;
+					cb(regBgUrlEscape.test(url) ? JSON.stringify(url) : url);
 				}
 
 				img.onload = null;
 				img.onerror = null;
 				img = null;
-				cb(URL);
 			};
 			img.onerror = img.onload;
 
@@ -117,8 +124,8 @@ For background images, use data-bg attribute:
 				bg = e.target.getAttribute('data-bg');
 				if (bg) {
 					e.detail.firesLoad = true;
-					load = function(URL){
-						e.target.style.backgroundImage = 'url(' + URL + ')';
+					load = function(bgURL){
+						e.target.style.backgroundImage = 'url(' + bgURL + ')';
 						e.detail.firesLoad = false;
 						lazySizes.fire(e.target, '_lazyloaded', {}, true, true);
 					};
@@ -130,8 +137,8 @@ For background images, use data-bg attribute:
 				poster = e.target.getAttribute('data-poster');
 				if(poster){
 					e.detail.firesLoad = true;
-					load = function(){
-						e.target.poster = poster;
+					load = function(bgURL){
+						e.target.poster = bgURL;
 						e.detail.firesLoad = false;
 						lazySizes.fire(e.target, '_lazyloaded', {}, true, true);
 					};
