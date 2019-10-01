@@ -55,7 +55,7 @@ For background images, use data-bg attribute:
 			// fix toDataURL SecurityError: The operation is insecure
 			img.crossOrigin = 'anonymous';
 			img.onload = function() {
-				if (isiOS) {
+				if (isiOS && lazySizes.cfg.useDataURL) {
 					// avoid flicker when background-image change
 					//Set canvas size is same as the picture
 					canvas.width = img.width;
