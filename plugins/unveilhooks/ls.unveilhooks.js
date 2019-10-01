@@ -52,6 +52,8 @@ For background images, use data-bg attribute:
 			isiOS = /iPhone/i.test(navigator.userAgent);
 		bgLoad = function(url, cb) {
 			var img = document.createElement('img');
+			// fix toDataURL SecurityError: The operation is insecure
+			img.crossOrigin = 'anonymous';
 			img.onload = function() {
 				if (isiOS) {
 					// avoid flicker when background-image change
