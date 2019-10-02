@@ -48,8 +48,7 @@ For background images, use data-bg attribute:
 
 		// create an empty canvas element
 		var canvas = document.createElement('canvas'),
-			canvasContext = canvas.getContext('2d'),
-			isiOS = /iPhone/i.test(navigator.userAgent);
+			canvasContext = canvas.getContext('2d');
 		bgLoad = function(url, cb) {
 			var img = document.createElement('img');
 			// fix toDataURL SecurityError: The operation is insecure
