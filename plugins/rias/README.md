@@ -155,6 +155,28 @@ All RiAS options can also be used as a {placeholder} inside the url.
 
 With lazySizes + RIaS extension you have a script to rule them all. You won't need to include a script provided by a third party image on demand service.
 
+### Dynamically calculating the height of image elements
+
+You can provide a `apsectratio`  option which then will be used to dynamically replace `{height}` placeholders. 
+
+```html
+<img
+    data-src="{width}x{height}}"
+    data-aspectratio="2"
+    data-sizes="auto"
+    class="lazyload"
+    alt="" />
+```
+
+In case your image has CSS defined width and height dimensions you can provide this dynamically:
+
+```js
+document.addEventListener('lazyriasmodifyoptions', function(e) {
+    e.detail.aspectratio = e.target.offsetWidth / e.target.offsetHeight;
+});
+```
+ 
+
 ## Advanced Examples
 
 ### Embedding via CDN and combohandler

@@ -75,7 +75,6 @@
 	var requestIdleCallback = window.requestIdleCallback;
 
 	var regPicture = /^picture$/i;
-	var regLoadElements = /^img|iframe$/i;
 
 	var loadEvents = ['load', 'error', 'lazyincluded', '_lazyloaded'];
 
@@ -316,7 +315,7 @@
 				isBodyHidden = getCSS(document.body, 'visibility') == 'hidden';
 			}
 
-			return isBodyHidden || (getCSS(elem.parentNode, 'visibility') != 'hidden' && getCSS(elem, 'visibility') != 'hidden');
+			return isBodyHidden || !(getCSS(elem.parentNode, 'visibility') == 'hidden' && getCSS(elem, 'visibility') == 'hidden');
 		};
 
 		var isNestedVisible = function(elem, elemExpand){
@@ -484,7 +483,7 @@
 					isPicture = parent && regPicture.test(parent.nodeName || '');
 				}
 
-				firesLoad = detail.firesLoad || !!(('src' in elem && regLoadElements.test(elem.nodeName)) && (srcset || src || isPicture));
+				firesLoad = detail.firesLoad || (('src' in elem) && (srcset || src || isPicture));
 
 				event = {target: elem};
 
