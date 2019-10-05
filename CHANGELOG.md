@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.1.2
+
+Fix visibility check (fixes [#709](https://github.com/aFarkas/lazysizes/issues/709))
+
 ## 5.1.1
 
 * Fix ratio calculation in rias plugin (fixed in [#685](https://github.com/aFarkas/lazysizes/pull/685) by [tikotzky](https://github.com/tikotzky))
