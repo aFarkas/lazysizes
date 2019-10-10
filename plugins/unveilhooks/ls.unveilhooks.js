@@ -8,9 +8,19 @@ For background images, use data-bg attribute:
 
  Video:
  For video/audio use data-poster and preload="none":
- <video class="lazyload" data-poster="poster.jpg" preload="none">
+ <video class="lazyload" preload="none" data-poster="poster.jpg" src="src.mp4">
  <!-- sources -->
  </video>
+
+ For video that plays automatically if in view:
+ <video
+		class="lazyload"
+		preload="none"
+		muted=""
+		data-autoplay=""
+		data-poster="poster.jpg"
+		src="src.mp4">
+	</video>
 
  Scripts:
  For scripts use data-script:
@@ -69,23 +79,38 @@ For background images, use data-bg attribute:
 			var tmp, load, bg, poster;
 			if(!e.defaultPrevented) {
 
-				if(e.target.preload == 'none'){
-					e.target.preload = 'auto';
+				var target = e.target;
+
+				if(target.preload == 'none'){
+					target.preload = 'auto';
 				}
 
-				tmp = e.target.getAttribute('data-link');
+				if (target.getAttribute('data-autoplay') != null) {
+					if (target.getAttribute('data-expand') && !target.autoplay) {
+						try {
+							target.play();
+						} catch (er) {}
+					} else {
+						requestAnimationFrame(function () {
+							target.setAttribute('data-expand', '-10');
+							lazySizes.aC(target, lazySizes.cfg.lazyClass);
+						});
+					}
+				}
+
+				tmp = target.getAttribute('data-link');
 				if(tmp){
 					addStyleScript(tmp, true);
 				}
 
 				// handle data-script
-				tmp = e.target.getAttribute('data-script');
+				tmp = target.getAttribute('data-script');
 				if(tmp){
 					addStyleScript(tmp);
 				}
 
 				// handle data-require
-				tmp = e.target.getAttribute('data-require');
+				tmp = target.getAttribute('data-require');
 				if(tmp){
 					if(lazySizes.cfg.requireJs){
 						lazySizes.cfg.requireJs([tmp]);
@@ -95,26 +120,26 @@ For background images, use data-bg attribute:
 				}
 
 				// handle data-bg
-				bg = e.target.getAttribute('data-bg');
+				bg = target.getAttribute('data-bg');
 				if (bg) {
 					e.detail.firesLoad = true;
 					load = function(){
-						e.target.style.backgroundImage = 'url(' + (regBgUrlEscape.test(bg) ? JSON.stringify(bg) : bg ) + ')';
+						target.style.backgroundImage = 'url(' + (regBgUrlEscape.test(bg) ? JSON.stringify(bg) : bg ) + ')';
 						e.detail.firesLoad = false;
-						lazySizes.fire(e.target, '_lazyloaded', {}, true, true);
+						lazySizes.fire(target, '_lazyloaded', {}, true, true);
 					};
 
 					bgLoad(bg, load);
 				}
 
 				// handle data-poster
-				poster = e.target.getAttribute('data-poster');
+				poster = target.getAttribute('data-poster');
 				if(poster){
 					e.detail.firesLoad = true;
 					load = function(){
-						e.target.poster = poster;
+						target.poster = poster;
 						e.detail.firesLoad = false;
-						lazySizes.fire(e.target, '_lazyloaded', {}, true, true);
+						lazySizes.fire(target, '_lazyloaded', {}, true, true);
 					};
 
 					bgLoad(poster, load);
