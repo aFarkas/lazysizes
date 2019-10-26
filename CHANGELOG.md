@@ -1,8 +1,13 @@
 # Changelog
 
+## x
+
+* Fix Safari Back-Forward Cache issue with lazyloading image elements (fixes [#711](https://github.com/aFarkas/lazysizes/issues/711))
+* Add lazyload of autoplay videos to unveilhooks  (fixes [#697](https://github.com/aFarkas/lazysizes/issues/697))
+
 ## 5.1.2
 
-Fix visibility check (fixes [#709](https://github.com/aFarkas/lazysizes/issues/709))
+* Fix visibility check (fixes [#709](https://github.com/aFarkas/lazysizes/issues/709))
 
 ## 5.1.1
 
