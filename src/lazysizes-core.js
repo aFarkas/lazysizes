@@ -1,4 +1,4 @@
-function l(window, document) {
+function l(window, document, Date) { // Pass in the windoe Date function also for SSR because the Date class can be lost
 	'use strict';
 	/*jshint eqnull:true */
 
@@ -49,15 +49,17 @@ function l(window, document) {
 
 	var docElem = document.documentElement;
 
-	var Date = window.Date;
-
 	var supportPicture = window.HTMLPictureElement;
 
 	var _addEventListener = 'addEventListener';
 
 	var _getAttribute = 'getAttribute';
 
-	var addEventListener = window[_addEventListener];
+	/**
+	 * Update to bind to window because 'this' becomes null during SSR
+	 * builds.
+	 */
+	var addEventListener = window[_addEventListener].bind(window);
 
 	var setTimeout = window.setTimeout;
 

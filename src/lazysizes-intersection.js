@@ -2,9 +2,9 @@
 	if(typeof module == 'object' && module.exports){
 		module.exports = lazySizes;
 	} else {
-		window.lazySizes = factory(window, window.document);
+		window.lazySizes = factory(window, window.document, Date);
 	}
-}(window, function l(window, document) {
+}(window, function l(window, document, Date) {
 	'use strict';
 
 	/*jshint eqnull:true */
@@ -14,15 +14,13 @@
 
 	var docElem = document.documentElement;
 
-	var Date = window.Date;
-
 	var supportPicture = window.HTMLPictureElement;
 
 	var _addEventListener = 'addEventListener';
 
 	var _getAttribute = 'getAttribute';
 
-	var addEventListener = window[_addEventListener];
+	var addEventListener = window[_addEventListener].bind(window);
 
 	var setTimeout = window.setTimeout;
 
