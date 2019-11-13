@@ -14,13 +14,13 @@ For background images, use data-bg attribute:
 
  For video that plays automatically if in view:
  <video
-		class="lazyload"
-		preload="none"
-		muted=""
-		data-autoplay=""
-		data-poster="poster.jpg"
-		src="src.mp4">
-	</video>
+	class="lazyload"
+	preload="none"
+	muted=""
+	data-autoplay=""
+	data-poster="poster.jpg"
+	src="src.mp4">
+</video>
 
  Scripts:
  For scripts use data-script:
