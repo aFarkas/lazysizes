@@ -5,7 +5,7 @@
 		module.exports = lazySizes;
 	}
 }(typeof window != 'undefined' ?
-      window : {}, function l(window, document, Date) {
+      window : {}, function l(window, document, Date) { // Pass in the windoe Date function also for SSR because the Date class can be lost
 	'use strict';
 	/*jshint eqnull:true */
 
@@ -62,6 +62,10 @@
 
 	var _getAttribute = 'getAttribute';
 
+	/**
+	 * Update to bind to window because 'this' becomes null during SSR
+	 * builds.
+	 */
 	var addEventListener = window[_addEventListener].bind(window);
 
 	var setTimeout = window.setTimeout;

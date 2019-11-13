@@ -1,5 +1,5 @@
 (function(window, factory) {
-	var lazySizes = factory(window, window.document, Date);
+	var lazySizes = factory(window, window.document);
 	if(typeof module == 'object' && module.exports){
 		module.exports = lazySizes;
 	} else if (typeof define == 'function' && define.amd) {
@@ -7,7 +7,7 @@
 	} else {
 		window.lazySizes = lazySizes;
 	}
-}(window, function l(window, document, Date) {
+}(window, function l(window, document, Date) { // Pass in the windoe Date function also for SSR because the Date class can be lost
 	'use strict';
 	/*jshint eqnull:true */
 
@@ -64,6 +64,10 @@
 
 	var _getAttribute = 'getAttribute';
 
+	/**
+	 * Update to bind to window because 'this' becomes null during SSR
+	 * builds.
+	 */
 	var addEventListener = window[_addEventListener].bind(window);
 
 	var setTimeout = window.setTimeout;

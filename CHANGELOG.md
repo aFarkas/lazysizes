@@ -2,7 +2,7 @@
 
 ## 5.2.0-beta
 
-* Fix Safari Back-Forward Cache issue with lazyloading image elements (fixes [#711](https://github.com/aFarkas/lazysizes/issues/711))
+* Fix wrong window context under very rare SSR  (fixes [#717](https://github.com/aFarkas/lazysizes/pull/717))
 * Fix Safari Back-Forward Cache issue with lazyloading image elements (fixes [#711](https://github.com/aFarkas/lazysizes/issues/711))
 * Add lazyload of autoplay videos to unveilhooks  (fixes [#697](https://github.com/aFarkas/lazysizes/issues/697))
 
