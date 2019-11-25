@@ -20,7 +20,7 @@
 
 	var slice = [].slice;
 	var regBlurUp = /blur-up["']*\s*:\s*["']*(always|auto)/;
-	var regType = /image\/(jpeg|png|gif|svg\+xml)/;
+	var regType = /image\/(jpeg|png|gif|svg\+xml|webp)/;
 	var transSrc = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
 
 	var matchesMedia = function (source) {
