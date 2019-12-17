@@ -82,7 +82,7 @@ For background images, use data-bg attribute:
 				var target = e.target;
 
 				if(target.preload == 'none'){
-					target.preload = 'auto';
+					target.preload = target.getAttribute('data-preload') || 'auto';
 				}
 
 				if (target.getAttribute('data-autoplay') != null) {
