@@ -441,11 +441,7 @@
 		};
 
 		var changeIframeSrc = function(elem, src){
-			try {
-				elem.contentWindow.location.replace(src);
-			} catch(e){
-				elem.src = src;
-			}
+			elem.src = src;
 		};
 
 		var handleSources = function(source){

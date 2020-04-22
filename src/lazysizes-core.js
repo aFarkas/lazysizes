@@ -434,11 +434,7 @@ function l(window, document, Date) { // Pass in the windoe Date function also fo
 		};
 
 		var changeIframeSrc = function(elem, src){
-			try {
-				elem.contentWindow.location.replace(src);
-			} catch(e){
-				elem.src = src;
-			}
+			elem.src = src;
 		};
 
 		var handleSources = function(source){
