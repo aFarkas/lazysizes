@@ -22,7 +22,7 @@
     "grunt-max-filesize": "^0.1.0",
     "grunt-plato": "^1.2.1",
     "grunt-uncss": "~0.3.7",
-    "jquery": "^2.1.4",
+    "jquery": "^3.5.0",
     "jquery-deparam": "^0.1.0",
     "picturefill": "^2.2.0",
     "qunitjs": "^1.17.0",
