@@ -1,5 +1,5 @@
 (function(window, factory) {
-	var lazySizes = factory(window, window.document);
+	var lazySizes = factory(window, window.document, Date);
 	if(typeof module == 'object' && module.exports){
 		module.exports = lazySizes;
 	} else if (typeof define == 'function' && define.amd) {
