@@ -66,9 +66,9 @@
 				}
 
 				lazySizes.rAF(function () {
-					lazySizes.rC(img, 'ls-blur-up-is-loading');
+					lazySizes.rC(img, lazySizes.cfg.blurUpLoadingClass);
 					if(blurImg) {
-						lazySizes.aC(blurImg, 'ls-blur-up-loaded');
+						lazySizes.aC(blurImg, lazySizes.cfg.blurUpLoadedClass);
 					}
 				});
 
@@ -83,7 +83,7 @@
 			blurImg.addEventListener('load', onloadBlurUp);
 			blurImg.addEventListener('error', onloadBlurUp);
 
-			blurImg.className = 'ls-blur-up-img';
+			blurImg.className = lazySizes.cfg.blurUpClass;
 			blurImg.src = src;
 			blurImg.alt = '';
 			blurImg.setAttribute('aria-hidden', 'true');
@@ -112,7 +112,7 @@
 		var remove = function () {
 			if(blurImg){
 				lazySizes.rAF(function() {
-					lazySizes.rC(img, 'ls-blur-up-is-loading');
+					lazySizes.rC(img, lazySizes.cfg.blurUpLoadingClass);
 					try {
 						blurImg.parentNode.removeChild(blurImg);
 					} catch(er){}
@@ -140,7 +140,7 @@
 			if(blurImg){
 				lazySizes.rAF(function(){
 					if(blurImg) {
-						lazySizes.aC(blurImg, 'ls-original-loaded');
+						lazySizes.aC(blurImg, lazySizes.cfg.blurUpLoadedOriginalClass);
 					}
 				});
 			}
@@ -157,14 +157,14 @@
 		img.addEventListener('load', onload);
 		img.addEventListener('error', onload);
 
-		lazySizes.aC(img, 'ls-blur-up-is-loading');
+		lazySizes.aC(img, lazySizes.cfg.blurUpLoadingClass);
 
 		var parentUnveil = function (e) {
 			if(parent != e.target){
 				return;
 			}
 
-			lazySizes.aC(blurImg || img, 'ls-inview');
+			lazySizes.aC(blurImg || img, lazySizes.cfg.blurUpInviewClass);
 
 			setStateUp();
 

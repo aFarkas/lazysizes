@@ -24,6 +24,12 @@
 			errorClass: 'lazyerror',
 			//strictClass: 'lazystrict',
 			autosizesClass: 'lazyautosizes',
+			//blur-up classes
+			blurUpClass: 'ls-blur-up-img',
+			blurUpLoadingClass: 'ls-blur-up-is-loading',
+			blurUpInviewClass: 'ls-inview',
+			blurUpLoadedClass: 'ls-blur-up-loaded',
+			blurUpLoadedOriginalClass: 'ls-original-loaded',
 			srcAttr: 'data-src',
 			srcsetAttr: 'data-srcset',
 			sizesAttr: 'data-sizes',
