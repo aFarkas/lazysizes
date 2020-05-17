@@ -84,6 +84,7 @@
 			blurImg.addEventListener('error', onloadBlurUp);
 
 			blurImg.className = 'ls-blur-up-img';
+			blurImg.style = img.style;
 			blurImg.src = src;
 			blurImg.alt = '';
 			blurImg.setAttribute('aria-hidden', 'true');
