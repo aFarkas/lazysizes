@@ -61,5 +61,6 @@
     "imager.js",
     "picturefill",
     "component"
-  ]
+  ],
+  "dependencies": {}
 }

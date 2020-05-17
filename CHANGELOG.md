@@ -1,5 +1,12 @@
 # Changelog
 
+## 5.2.1-rc1
+
+- BlurUp-Plugin: Copy style attribute ([#764](https://github.com/aFarkas/lazysizes/pull/764))
+- Fixes minor security issue with video-embed plugin ([#764](https://github.com/aFarkas/lazysizes/pull/764))
+- Built: Update dependencies ([#774](https://github.com/aFarkas/lazysizes/pull/774), [#756](https://github.com/aFarkas/lazysizes/pull/756))
+- Fixes diverse issues with old AMD module pattern ([#780](https://github.com/aFarkas/lazysizes/pull/780), [#779](https://github.com/aFarkas/lazysizes/pull/779))
+
 ## 5.2.0
 
 * Fix wrong window context under very rare SSR  (fixes [#717](https://github.com/aFarkas/lazysizes/pull/717))
