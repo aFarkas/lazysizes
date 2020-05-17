@@ -1,6 +1,6 @@
 # Changelog
 
-## 5.2.0-beta
+## 5.2.0
 
 * Fix wrong window context under very rare SSR  (fixes [#717](https://github.com/aFarkas/lazysizes/pull/717))
 * Fix Safari Back-Forward Cache issue with lazyloading image elements (fixes [#711](https://github.com/aFarkas/lazysizes/issues/711))
@@ -34,7 +34,7 @@
 * Added h descriptor parsing fix plugin for MS edge (was already included in respimg polyfill.)
 * Effects-Plugin/Blur Up plugin: Remove [].find because IE..., fixes [#631](https://github.com/aFarkas/lazysizes/issues/631)
 * Documentation stuff
-* Bring back *.min.js files to npm package, but don't use them in your `import`/`require`. These are mostly for CDNs. Not for Common JS bundlers. 
+* Bring back *.min.js files to npm package, but don't use them in your `import`/`require`. These are mostly for CDNs. Not for Common JS bundlers.
 
 ## 4.1.7
 
