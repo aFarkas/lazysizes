@@ -699,7 +699,7 @@ While lazy loading is a great feature, it is important for users that crucial in
 
 In case you normally combine all your scripts into one large script and add this to the bottom of your page, it can be better for perceived performance to generate two or sometimes more script packages: One small package, which includes all scripts which have heavy influence on the content or the UI and another larger one which includes the normal behavior of the page.
 
-This smaller script, which should include lazySizes (and all its plugins), should than be placed **before** any other blocking elements (i.e.: script(s)) at the end of the body or after any blocking elements (i.e.: scripts, stylesheets) in the head to load the crucial content as fast possible. (Note: It might make also sense to call `lazySizes.init();` explicitly right after lazySizes and all its plugins are added.)
+This smaller script, which should include lazySizes (and all its plugins), should then be placed **before** any other blocking elements (i.e.: script(s)) at the end of the body or after any blocking elements (i.e.: scripts, stylesheets) in the head to load the crucial content as fast possible. (Note: It might make also sense to call `lazySizes.init();` explicitly right after lazySizes and all its plugins are added.)
 
 ## Why lazysizes
 In the past, I often struggled using lazy image loaders, because the "main check function" is called repeatedly and with a high frequency. Which makes it hard to fulfill two purposes runtime and memory efficiency. And looking into the source code of most so called lazy loaders often also unveils lazy developers...
