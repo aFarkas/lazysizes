@@ -15,6 +15,13 @@ function l(window, document, Date) { // Pass in the windoe Date function also fo
 			errorClass: 'lazyerror',
 			//strictClass: 'lazystrict',
 			autosizesClass: 'lazyautosizes',
+			//blur-up classesBlurUpClass
+			blurUpClass: 'ls-blur-up-img',
+			blurUpLoadingClass: 'ls-blur-up-is-loading',
+			blurUpInviewClass: 'ls-inview',
+			blurUpLoadedClass: 'ls-blur-up-loaded',
+			blurUpLoadedOriginalClass: 'ls-original-loaded',
+			blurUpIsCached: 'ls-is-cached',
 			srcAttr: 'data-src',
 			srcsetAttr: 'data-srcset',
 			sizesAttr: 'data-sizes',
@@ -518,7 +525,7 @@ function l(window, document, Date) { // Pass in the windoe Date function also fo
 
 				if( !firesLoad || isLoaded){
 					if (isLoaded) {
-						addClass(elem, 'ls-is-cached');
+						addClass(elem, lazySizesCfg.blurUpIsCached);
 					}
 					switchLoadingClass(event);
 					elem._lazyCache = true;

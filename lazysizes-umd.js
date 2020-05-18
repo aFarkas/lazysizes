@@ -30,6 +30,7 @@
 			blurUpInviewClass: 'ls-inview',
 			blurUpLoadedClass: 'ls-blur-up-loaded',
 			blurUpLoadedOriginalClass: 'ls-original-loaded',
+			blurUpIsCached: 'ls-is-cached',
 			srcAttr: 'data-src',
 			srcsetAttr: 'data-srcset',
 			sizesAttr: 'data-sizes',
@@ -533,7 +534,7 @@
 
 				if( !firesLoad || isLoaded){
 					if (isLoaded) {
-						addClass(elem, 'ls-is-cached');
+						addClass(elem, lazySizesCfg.blurUpIsCached);
 					}
 					switchLoadingClass(event);
 					elem._lazyCache = true;
