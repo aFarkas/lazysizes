@@ -49,13 +49,6 @@
 					src: [ "lazysizes.js", "plugins/**/*.js", "!*.min.js", "!plugins/**/*.min.js" ] //, "Gruntfile.js", "tests/*.js"
 				}
 			},
-			plato: {
-				all: {
-					files: {
-						"plato-report/": ["lazysizes.js", "plugins/**/*.js", "!*.min.js", "!plugins/**/*.min.js"]
-					}
-				}
-			},
 			qunit: {
 				all: ['tests/*.html']
 			},
@@ -83,7 +76,7 @@
 				},
 				minified: {
 					options: {
-						maxBytes: (1024 * 7.5)
+						maxBytes: (1024 * 7.8)
 					},
 					src: ["lazysizes.min.js"]
 				}
@@ -97,7 +90,6 @@
 		grunt.loadNpmTasks('grunt-uncss');
 		grunt.loadNpmTasks('grunt-bytesize');
 		grunt.loadNpmTasks('grunt-max-filesize');
-		grunt.loadNpmTasks('grunt-plato');
 		grunt.loadNpmTasks('grunt-contrib-qunit');
 
 		grunt.registerTask('wrapcore', 'wraps lazysizes into umd and common wrapper.', function() {

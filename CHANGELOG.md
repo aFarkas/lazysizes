@@ -1,6 +1,13 @@
 # Changelog
 
-## 5.2.0-beta
+## 5.2.1-rc1
+
+- BlurUp-Plugin: Copy style attribute ([#764](https://github.com/aFarkas/lazysizes/pull/764))
+- Fixes minor security issue with video-embed plugin ([#764](https://github.com/aFarkas/lazysizes/pull/764))
+- Built: Update dependencies ([#774](https://github.com/aFarkas/lazysizes/pull/774), [#756](https://github.com/aFarkas/lazysizes/pull/756))
+- Fixes diverse issues with old AMD module pattern ([#780](https://github.com/aFarkas/lazysizes/pull/780), [#779](https://github.com/aFarkas/lazysizes/pull/779))
+
+## 5.2.0
 
 * Fix wrong window context under very rare SSR  (fixes [#717](https://github.com/aFarkas/lazysizes/pull/717))
 * Fix Safari Back-Forward Cache issue with lazyloading image elements (fixes [#711](https://github.com/aFarkas/lazysizes/issues/711))
@@ -34,7 +41,7 @@
 * Added h descriptor parsing fix plugin for MS edge (was already included in respimg polyfill.)
 * Effects-Plugin/Blur Up plugin: Remove [].find because IE..., fixes [#631](https://github.com/aFarkas/lazysizes/issues/631)
 * Documentation stuff
-* Bring back *.min.js files to npm package, but don't use them in your `import`/`require`. These are mostly for CDNs. Not for Common JS bundlers. 
+* Bring back *.min.js files to npm package, but don't use them in your `import`/`require`. These are mostly for CDNs. Not for Common JS bundlers.
 
 ## 4.1.7
 
