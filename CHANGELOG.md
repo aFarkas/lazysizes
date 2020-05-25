@@ -1,6 +1,6 @@
 # Changelog
 
-## 5.2.1-rc1
+## 5.2.1
 
 - BlurUp-Plugin: Copy style attribute ([#764](https://github.com/aFarkas/lazysizes/pull/764))
 - Fixes minor security issue with video-embed plugin ([#764](https://github.com/aFarkas/lazysizes/pull/764))
