@@ -498,6 +498,10 @@ lazySizes.init();
 
 ## Contributing
 Fixes, PRs and issues are always welcome, make sure to create a new branch from the **master** (not the gh-pages branch), validate against JSHint and test in all browsers. In case of an API/documentation change make sure to also document it here in the readme.md.
+### Build
+Run `npx grunt` to validate JSHint and uglify/minify all files.
+### Tests
+Run `npx serverino -p 3333` and navigate to [http://localhost:3333/tests/](http://localhost:3333/tests/)
 
 ## <a name="plugins"></a>Available plugins in this repo
 It is recommended to concat all plugins together with lazySizes. In case you don't concat it is recommended to include the plugin scripts *before* the lazySizes main script.

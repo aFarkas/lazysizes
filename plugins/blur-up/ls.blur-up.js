@@ -10,7 +10,7 @@
 	if(typeof module == 'object' && module.exports){
 		factory(require('lazysizes'));
 	} else if (typeof define == 'function' && define.amd) {
-		require(['lazysizes'], factory);
+		define(['lazysizes'], factory);
 	} else if(window.lazySizes) {
 		globalInstall();
 	} else {

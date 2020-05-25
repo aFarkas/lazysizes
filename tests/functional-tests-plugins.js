@@ -75,7 +75,7 @@ function _optimumxReinit(addClass){
 					}
 				} else {
 					setTimeout(function(){
-						ok(unveiled == 2);
+						assert.ok(unveiled == 2);
 						done();
 					}, 130);
 				}
