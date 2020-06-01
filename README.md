@@ -449,7 +449,7 @@ document.addEventListener('lazybeforeunveil', function(e){
 ```js
 $(document).on('lazybeforesizes', function(e){
     //use width of parent node instead of the image width itself
-    e.detail.width = $(e.target).closest(':not(picture)').innerWidth() || e.detail.width;
+    e.detail.width = $(e.target).parents(':not(picture)').innerWidth() || e.detail.width;
 });
 ```
 
