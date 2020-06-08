@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.2.2
+- Add correct AMD module pattern for plugins.
+
 ## 5.2.1
 
 - BlurUp-Plugin: Copy style attribute ([#764](https://github.com/aFarkas/lazysizes/pull/764))
