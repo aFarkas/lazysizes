@@ -11,7 +11,7 @@ It may become also your number one tool to integrate responsive images. It can a
     ```html
     <script src="lazysizes.min.js" async=""></script>
     ```
-    
+
     Or:
 	```js
 	import 'lazysizes';
@@ -20,7 +20,7 @@ It may become also your number one tool to integrate responsive images. It can a
 
 	// Note: Never import/require the *.min.js files from the npm package.
 	```
-	
+
 	Note: For more information see [here](#include-early).
 
 2. lazysizes does not need any JS configuration: Add the ``class`` ``"lazyload"`` to your images/iframes in conjunction with a ``data-src`` and/or ``data-srcset`` attribute. Optionally you can also add a ``src`` attribute with a low quality image:
@@ -676,7 +676,6 @@ or at least add a ``min-height`` (and ``min-width``) to minimize content jumps:
 **Note**:
 
 * If you use the "unknown intrinsic ratio pattern" and the width of the loaded image will not (approximately) match the width of its container, the ``data-sizes="auto"`` feature will not be effective when used on its own. In this situation, the most appropriate size for the image to fit in the available space can be calculated automatically using the [parent fit plugin](plugins/parent-fit).
-* see also the [aspectratio extension](plugins/aspectratio) for an alternative way to add aspectratio.
 
 ### Updating layout of JS widgets
 In case you can't specify the image dimensions using CSS or one of the above suggested methods and your JS widgets have problems to calculate the right dimensions. You can use the following pattern to update your JS widgets (sliders/masonry):
