@@ -22,7 +22,7 @@
 			errorClass: 'lazyerror',
 			//strictClass: 'lazystrict',
 			autosizesClass: 'lazyautosizes',
-			blurUpIsCached: 'ls-is-cached',
+			fastLoadedClass: 'ls-is-cached',
 			srcAttr: 'data-src',
 			srcsetAttr: 'data-srcset',
 			sizesAttr: 'data-sizes',
