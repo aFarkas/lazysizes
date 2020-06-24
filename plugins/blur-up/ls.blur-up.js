@@ -20,6 +20,28 @@
 	window : 0, function(window, document, lazySizes) {
 	'use strict';
 
+	var lazySizesCfg;
+
+	(function(){
+		var prop;
+
+		var blurUpDefaults = {
+			blurUpClass: 'ls-blur-up-img',
+			blurUpLoadingClass: 'ls-blur-up-is-loading',
+			blurUpInviewClass: 'ls-inview',
+			blurUpLoadedClass: 'ls-blur-up-loaded',
+			blurUpLoadedOriginalClass: 'ls-original-loaded'
+		};
+
+		lazySizesCfg = window.lazySizesConfig || window.lazysizesConfig || {};
+
+		for(prop in blurUpDefaults){
+			if(!(prop in lazySizesCfg)){
+				lazySizesCfg[prop] = blurUpDefaults[prop];
+			}
+		}
+	})();
+
 	var slice = [].slice;
 	var regBlurUp = /blur-up["']*\s*:\s*["']*(always|auto)/;
 	var regType = /image\/(jpeg|png|gif|svg\+xml)/;
@@ -147,6 +169,8 @@
 					}
 				});
 			}
+
+			lazySizes.fire(img, 'blurUpLoaded');
 
 			if(blurUp != 'always' && (!isBlurUpLoaded || Date.now() - start < 66)){
 				setStateUp(true);
