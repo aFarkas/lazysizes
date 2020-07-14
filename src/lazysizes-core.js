@@ -15,6 +15,7 @@ function l(window, document, Date) { // Pass in the windoe Date function also fo
 			errorClass: 'lazyerror',
 			//strictClass: 'lazystrict',
 			autosizesClass: 'lazyautosizes',
+			fastLoadedClass: 'ls-is-cached',
 			srcAttr: 'data-src',
 			srcsetAttr: 'data-srcset',
 			sizesAttr: 'data-sizes',
@@ -518,7 +519,7 @@ function l(window, document, Date) { // Pass in the windoe Date function also fo
 
 				if( !firesLoad || isLoaded){
 					if (isLoaded) {
-						addClass(elem, 'ls-is-cached');
+						addClass(elem, lazySizesCfg.fastLoadedClass);
 					}
 					switchLoadingClass(event);
 					elem._lazyCache = true;
