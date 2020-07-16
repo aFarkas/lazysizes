@@ -11,7 +11,7 @@ It may become also your number one tool to integrate responsive images. It can a
     ```html
     <script src="lazysizes.min.js" async=""></script>
     ```
-    
+
     Or:
 	```js
 	import 'lazysizes';
@@ -20,7 +20,7 @@ It may become also your number one tool to integrate responsive images. It can a
 
 	// Note: Never import/require the *.min.js files from the npm package.
 	```
-	
+
 	Note: For more information see [here](#include-early).
 
 2. lazysizes does not need any JS configuration: Add the ``class`` ``"lazyload"`` to your images/iframes in conjunction with a ``data-src`` and/or ``data-srcset`` attribute. Optionally you can also add a ``src`` attribute with a low quality image:
@@ -449,7 +449,7 @@ document.addEventListener('lazybeforeunveil', function(e){
 ```js
 $(document).on('lazybeforesizes', function(e){
     //use width of parent node instead of the image width itself
-    e.detail.width = $(e.target).closest(':not(picture)').innerWidth() || e.detail.width;
+    e.detail.width = $(e.target).parents(':not(picture)').innerWidth() || e.detail.width;
 });
 ```
 
@@ -498,6 +498,10 @@ lazySizes.init();
 
 ## Contributing
 Fixes, PRs and issues are always welcome, make sure to create a new branch from the **master** (not the gh-pages branch), validate against JSHint and test in all browsers. In case of an API/documentation change make sure to also document it here in the readme.md.
+### Build
+Run `npx grunt` to validate JSHint and uglify/minify all files.
+### Tests
+Run `npx serverino -p 3333` and navigate to [http://localhost:3333/tests/](http://localhost:3333/tests/)
 
 ## <a name="plugins"></a>Available plugins in this repo
 It is recommended to concat all plugins together with lazySizes. In case you don't concat it is recommended to include the plugin scripts *before* the lazySizes main script.
@@ -672,7 +676,6 @@ or at least add a ``min-height`` (and ``min-width``) to minimize content jumps:
 **Note**:
 
 * If you use the "unknown intrinsic ratio pattern" and the width of the loaded image will not (approximately) match the width of its container, the ``data-sizes="auto"`` feature will not be effective when used on its own. In this situation, the most appropriate size for the image to fit in the available space can be calculated automatically using the [parent fit plugin](plugins/parent-fit).
-* see also the [aspectratio extension](plugins/aspectratio) for an alternative way to add aspectratio.
 
 ### Updating layout of JS widgets
 In case you can't specify the image dimensions using CSS or one of the above suggested methods and your JS widgets have problems to calculate the right dimensions. You can use the following pattern to update your JS widgets (sliders/masonry):
@@ -699,7 +702,7 @@ While lazy loading is a great feature, it is important for users that crucial in
 
 In case you normally combine all your scripts into one large script and add this to the bottom of your page, it can be better for perceived performance to generate two or sometimes more script packages: One small package, which includes all scripts which have heavy influence on the content or the UI and another larger one which includes the normal behavior of the page.
 
-This smaller script, which should include lazySizes (and all its plugins), should than be placed **before** any other blocking elements (i.e.: script(s)) at the end of the body or after any blocking elements (i.e.: scripts, stylesheets) in the head to load the crucial content as fast possible. (Note: It might make also sense to call `lazySizes.init();` explicitly right after lazySizes and all its plugins are added.)
+This smaller script, which should include lazySizes (and all its plugins), should then be placed **before** any other blocking elements (i.e.: script(s)) at the end of the body or after any blocking elements (i.e.: scripts, stylesheets) in the head to load the crucial content as fast possible. (Note: It might make also sense to call `lazySizes.init();` explicitly right after lazySizes and all its plugins are added.)
 
 ## Why lazysizes
 In the past, I often struggled using lazy image loaders, because the "main check function" is called repeatedly and with a high frequency. Which makes it hard to fulfill two purposes runtime and memory efficiency. And looking into the source code of most so called lazy loaders often also unveils lazy developers...

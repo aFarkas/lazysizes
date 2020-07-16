@@ -11,6 +11,8 @@ This lazysizes plugin optimizes perceived performance by adding better support f
 
 	if(typeof module == 'object' && module.exports){
 		factory(require('lazysizes'));
+	} else if (typeof define == 'function' && define.amd) {
+		define(['lazysizes'], factory);
 	} else if(window.lazySizes) {
 		globalInstall();
 	} else {

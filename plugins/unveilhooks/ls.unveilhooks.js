@@ -42,6 +42,8 @@ For background images, use data-bg attribute:
 
 	if(typeof module == 'object' && module.exports){
 		factory(require('lazysizes'));
+	} else if (typeof define == 'function' && define.amd) {
+		define(['lazysizes'], factory);
 	} else if(window.lazySizes) {
 		globalInstall();
 	} else {
@@ -106,7 +108,12 @@ For background images, use data-bg attribute:
 				// handle data-script
 				tmp = target.getAttribute('data-script');
 				if(tmp){
-					addStyleScript(tmp);
+					e.detail.firesLoad = true;
+					load = function(){
+						e.detail.firesLoad = false;
+						lazySizes.fire(target, '_lazyloaded', {}, true, true);
+					};
+					addStyleScript(tmp, null, load);
 				}
 
 				// handle data-require
@@ -150,7 +157,7 @@ For background images, use data-bg attribute:
 
 	}
 
-	function addStyleScript(src, style){
+	function addStyleScript(src, style, cb){
 		if(uniqueUrls[src]){
 			return;
 		}
@@ -161,6 +168,13 @@ For background images, use data-bg attribute:
 			elem.rel = 'stylesheet';
 			elem.href = src;
 		} else {
+			elem.onload = function(){
+				elem.onerror = null;
+				elem.onload = null;
+				cb();
+			};
+			elem.onerror = elem.onload;
+
 			elem.src = src;
 		}
 		uniqueUrls[src] = true;
