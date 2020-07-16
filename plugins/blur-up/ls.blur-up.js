@@ -33,7 +33,7 @@
 			blurUpLoadedOriginalClass: 'ls-original-loaded'
 		};
 
-		lazySizesCfg = window.lazySizesConfig || window.lazysizesConfig || {};
+		lazySizesCfg = lazySizes.cfg || {};
 
 		for(prop in blurUpDefaults){
 			if(!(prop in lazySizesCfg)){
