@@ -24,6 +24,7 @@
 			errorClass: 'lazyerror',
 			//strictClass: 'lazystrict',
 			autosizesClass: 'lazyautosizes',
+			fastLoadedClass: 'ls-is-cached',
 			srcAttr: 'data-src',
 			srcsetAttr: 'data-srcset',
 			sizesAttr: 'data-sizes',
@@ -527,7 +528,7 @@
 
 				if( !firesLoad || isLoaded){
 					if (isLoaded) {
-						addClass(elem, 'ls-is-cached');
+						addClass(elem, lazySizesCfg.fastLoadedClass);
 					}
 					switchLoadingClass(event);
 					elem._lazyCache = true;

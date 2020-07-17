@@ -5,7 +5,7 @@ The lazysizes Blur Up plugin ([demo](https://jsfiddle.net/trixta/v0oq0412/embedd
 This way the low quality image placeholder technique is more appealing to the user.
 
 ```js
-// never try to import *.min.js files 
+// never try to import *.min.js files
 import lazySizes from 'lazysizes';
 import 'lazysizes/plugins/blur-up/ls.blur-up';
 ```
@@ -16,7 +16,7 @@ Simply add a `data-lowsrc` attribute with the low quality image placeholder imag
 
 Lazysizes will then create a new image right after your original image with the following class `ls-blur-up-img`.
 
-The new image (`.ls-blur-up-img`) will get the following state classes to enable you to write a custom CSS animation/transition as soon as the image is in view and loaded: `ls-inview`/`ls-original-loaded`, while your original `img` gets the class `.ls-blur-up-is-loading` until the `.ls-blur-up-img` is loaded. 
+The new image (`.ls-blur-up-img`) will get the following state classes to enable you to write a custom CSS animation/transition as soon as the image is in view and loaded: `ls-inview`/`ls-original-loaded`, while your original `img` gets the class `.ls-blur-up-is-loading` until the `.ls-blur-up-img` is loaded.
 
 
 ```html
@@ -34,7 +34,7 @@ The new image (`.ls-blur-up-img`) will get the following state classes to enable
 		width: 100%;
 		padding-bottom: 66.6667%;
 	}
-	
+
 	.mediabox-img.ls-blur-up-is-loading,
 	.mediabox-img.lazyload:not([src]) {
 		visibility: hidden;
@@ -98,10 +98,26 @@ import lazysizes from 'lazysizes';
 import 'lazysizes/plugins/blur-up/ls.blur-up';
 
 lazysizes.cfg.blurupMode = 'auto';
-``` 
+```
 
 ```css
 .mediabox-img {
 	font-family: "blur-up: auto", "object-fit: cover";
 }
 ```
+
+#### You can override blur-up classes
+
+```js
+import lazysizes from 'lazysizes';
+import 'lazysizes/plugins/blur-up/ls.blur-up';
+
+
+lazySizes.cfg.blurUpClass = 'blurred-image'
+```
+Here the list of override classes:
+
+* ``lazySizes.cfg.blurUpLoadingClass`` ls-blur-up-is-loading
+* ``lazySizes.cfg.blurUpInviewClass`` ls-inview
+* ``lazySizes.cfg.blurUpLoadedClass`` ls-blur-up-loaded
+* ``lazySizes.cfg.blurUpLoadedOriginalClass`` ls-original-loaded
