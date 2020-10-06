@@ -16,6 +16,7 @@ function l(window, document, Date) { // Pass in the windoe Date function also fo
 			//strictClass: 'lazystrict',
 			autosizesClass: 'lazyautosizes',
 			fastLoadedClass: 'ls-is-cached',
+			iframeLoadMode: 0,
 			srcAttr: 'data-src',
 			srcsetAttr: 'data-srcset',
 			sizesAttr: 'data-sizes',
@@ -435,9 +436,12 @@ function l(window, document, Date) { // Pass in the windoe Date function also fo
 		};
 
 		var changeIframeSrc = function(elem, src){
-			try {
+			var loadMode = elem.getAttribute('data-load-mode') || lazySizesCfg.iframeLoadMode;
+
+			// loadMode can be also a string!
+			if (loadMode == 0) {
 				elem.contentWindow.location.replace(src);
-			} catch(e){
+			} else if (loadMode == 1) {
 				elem.src = src;
 			}
 		};
