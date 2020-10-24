@@ -1,5 +1,11 @@
 # Changelog
 
+### upcoming 5.3 beta
+
+- RiaS plugin: Use `source` based config in case of `picture` element usage ([#764](https://github.com/aFarkas/lazysizes/issues/831))
+- BlurUp plugin: Added possibility to change classNames ([#814](https://github.com/aFarkas/lazysizes/pull/814))
+- Core: Added `iframeLoadMode` option (see [#810](https://github.com/aFarkas/lazysizes/pull/810))
+
 ## 5.2.2
 - Add correct AMD module pattern for plugins.
 

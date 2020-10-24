@@ -85,15 +85,25 @@
 		}
 	})();
 
-	function getElementOptions(elem, src){
-		var attr, parent, setOption, options;
+	function getElementOptions(elem, src, options){
+		var attr, parent, setOption, prop, opts;
 		var elemStyles = window.getComputedStyle(elem);
 
+		if (!options) {
+			parent = elem.parentNode;
 
-		parent = elem.parentNode;
-		options = {
-			isPicture: !!(parent && regPicture.test(parent.nodeName || ''))
-		};
+			options = {
+				isPicture: !!(parent && regPicture.test(parent.nodeName || ''))
+			};
+		} else {
+			opts = {};
+
+			for (prop in options) {
+				opts[prop] = options[prop];
+			}
+
+			options = opts;
+		}
 
 		setOption = function(attr, run){
 			var attrVal = elem.getAttribute('data-'+ attr);
@@ -124,7 +134,7 @@
 					} catch(e){}
 				}
 				options[attr] = attrVal;
-			} else if((attr in riasCfg) && typeof riasCfg[attr] != 'function'){
+			} else if((attr in riasCfg) && typeof riasCfg[attr] != 'function' && !options[attr]){
 				options[attr] = riasCfg[attr];
 			} else if(run && typeof riasCfg[attr] == 'function'){
 				options[attr] = riasCfg[attr](elem, attrVal);
@@ -231,7 +241,7 @@
 	addEventListener('lazybeforesizes', function(e){
 		if(e.detail.instance != lazySizes){return;}
 
-		var elem, src, elemOpts, parent, sources, i, len, sourceSrc, sizes, detail, hasPlaceholder, modified, emptyList;
+		var elem, src, elemOpts, sourceOpts, parent, sources, i, len, sourceSrc, sizes, detail, hasPlaceholder, modified, emptyList;
 		elem = e.target;
 
 		if(!e.detail.dataAttr || e.defaultPrevented || riasCfg.disabled || !((sizes = elem.getAttribute(config.sizesAttr) || elem.getAttribute('sizes')) && regAllowedSizes.test(sizes))){return;}
@@ -246,7 +256,8 @@
 			sources = parent.getElementsByTagName('source');
 			for(i = 0, len = sources.length; i < len; i++){
 				if ( hasPlaceholder || regWidth.test(sourceSrc = getSrc(sources[i])) ){
-					setSrc(sourceSrc, elemOpts, sources[i]);
+					sourceOpts = getElementOptions(sources[i], sourceSrc, elemOpts);
+					setSrc(sourceSrc, sourceOpts, sources[i]);
 					modified = true;
 				}
 			}
