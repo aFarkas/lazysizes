@@ -135,7 +135,10 @@
 			});
 
 			if(!event.defaultPrevented){
-				elem.style.backgroundImage = 'url(' + event.detail.useSrc + ')';
+				var gradients = elem.style.backgroundImage.matchAll(/\w+-gradient\s*\((?:\([^()]*\)|[^()]*)*\)/g);
+				var backgroundImage = Array.from(gradients);
+				backgroundImage.push('url(' + event.detail.useSrc + ')');
+				elem.style.backgroundImage = backgroundImage.join(', ');
 			}
 		}
 
