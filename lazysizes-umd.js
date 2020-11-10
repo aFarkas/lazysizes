@@ -598,7 +598,7 @@
 
 			throttledCheckElements();
 
-			addEventListener('scroll', altLoadmodeScrollListner, true);
+			addEventListener('scroll', altLoadmodeScrollListner, {capture: true, passive: true});
 		};
 
 		return {
@@ -608,7 +608,7 @@
 				lazysizes.elements = document.getElementsByClassName(lazySizesCfg.lazyClass);
 				preloadElems = document.getElementsByClassName(lazySizesCfg.lazyClass + ' ' + lazySizesCfg.preloadClass);
 
-				addEventListener('scroll', throttledCheckElements, true);
+				addEventListener('scroll', throttledCheckElements, {capture: true, passive: true});
 
 				addEventListener('resize', throttledCheckElements, true);
 
