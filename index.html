@@ -167,9 +167,9 @@
 				<div class="thumbnail">
 					<div class="intrinsic">
 						<img
-							alt=""
-							src="https://farm9.staticflickr.com/8200/8248153196_7a7664e147_m.jpg"
-							data-src="https://farm9.staticflickr.com/8200/8248153196_7a7664e147_b.jpg"
+							alt="bird"
+							src="https://images.unsplash.com/photo-1470116073782-48ae2ccd8ffd?ixlib=rb-1.2.1&auto=format&fit=crop&w=100"
+							data-src="https://images.unsplash.com/photo-1470116073782-48ae2ccd8ffd?ixlib=rb-1.2.1&auto=format&fit=crop&w=2200&q=80"
 							class="lazyload" />
 					</div>
 
@@ -177,7 +177,7 @@
 						<h3>Image with LQIP technique</h3>
 						<p>The low quality image placeholder pattern uses a low quality image for the first impression.</p>
 <pre>&lt;img
-	alt="100%x200"
+	alt="bird"
 	src="low-quality.jpg"
 	data-src="normal-quality.jpg"
 	class="lazyload" /&gt;
@@ -190,13 +190,13 @@
 			<div class="col-sm-12">
 				<div class="thumbnail">
 					<div class="intrinsic">
-						<img alt="Desert Road" data-src="https://i.picsum.photos/id/1071/1920/1440.jpg" class="lazyload no-src" />
+						<img alt="Mountain" data-src="https://images.unsplash.com/photo-1544198365-f5d60b6d8190?ixlib=rb-1.2.1&auto=format&fit=crop&w=1130&q=80" class="lazyload no-src" />
 					</div>
 
 					<div class="caption">
 						<h3>Normal lazy image</h3>
 						<p>Of course the low quality image can be simply omitted to save more image data.</p>
-<pre>&lt;img class="lazyload" data-src="image.jpg" alt="Desert Road" /&gt;
+<pre>&lt;img class="lazyload" data-src="image.jpg" alt="Mountain" /&gt;
 </pre>
 					</div>
 				</div>
@@ -208,14 +208,15 @@
 				<div class="thumbnail">
 					<div class="intrinsic">
 						<img
+							  alt="Jellyfish"
 							  sizes="(min-width: 1000px) 930px, 90vw"
 							  data-sizes="auto"
-							  data-src="https://farm5.staticflickr.com/4078/5441060528_31db7838ba_z.jpg"
-							  data-srcset="https://farm5.staticflickr.com/4078/5441060528_31db7838ba_m.jpg 240w,
-	https://farm5.staticflickr.com/4078/5441060528_31db7838ba_n.jpg 320w,
-	https://farm5.staticflickr.com/4078/5441060528_31db7838ba.jpg 500w,
-	https://farm5.staticflickr.com/4078/5441060528_31db7838ba_z.jpg 640w,
-	https://farm5.staticflickr.com/4078/5441060528_31db7838ba_b.jpg 1024w"
+							  data-src="https://images.unsplash.com/photo-1523264629844-40dd6bf17c2b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1024&q=60"
+							  data-srcset="https://images.unsplash.com/photo-1523264629844-40dd6bf17c2b?ixlib=rb-1.2.1&auto=format&fit=crop&w=240&q=60 240w,
+	https://images.unsplash.com/photo-1523264629844-40dd6bf17c2b?ixlib=rb-1.2.1&auto=format&fit=crop&w=320&q=60 320w,
+	https://images.unsplash.com/photo-1523264629844-40dd6bf17c2b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60 500w,
+	https://images.unsplash.com/photo-1523264629844-40dd6bf17c2b?ixlib=rb-1.2.1&auto=format&fit=crop&w=640&q=60 640w,
+	https://images.unsplash.com/photo-1523264629844-40dd6bf17c2b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1024&q=60 1024w"
 							  class="lazyload no-src" />
 					</div>
 
@@ -223,7 +224,7 @@
 						<h3>responsive image with srcset and sizes attribute</h3>
 						<p>Simply use <code>data-srcset</code> and you can support responsive images.</p>
 <pre>&lt;img
-	alt=""
+	alt="Jellyfish"
 	sizes="(min-width: 1000px) 930px, 90vw"
 	data-srcset="small.jpg 500w,
 		medium.jpg 640w,
@@ -242,18 +243,25 @@
 						<picture>
 							<!--[if IE 9]><audio><![endif]-->
 							<source
-									data-srcset="https://i.picsum.photos/id/1048/1200/900.jpg"
-									media="(max-width: 990px)" />
+									data-src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&crop=focalpoint&w=550&q=80&ar=1.5:1&fp-x=0.55&fp-y=0.35&fp-z=2"
+									data-srcset="https://images.unsplash.com/photo-1501785888041-af3ef285b470?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&crop=focalpoint&w=240&q=80&ar=1.5:1&fp-x=0.55&fp-y=0.35&fp-z=2 240w,
+									https://images.unsplash.com/photo-1501785888041-af3ef285b470?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&crop=focalpoint&w=320&q=80&ar=1.5:1&fp-x=0.55&fp-y=0.35&fp-z=2 320w,
+									https://images.unsplash.com/photo-1501785888041-af3ef285b470?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&crop=focalpoint&w=500&q=80&ar=1.5:1&fp-x=0.55&fp-y=0.35&fp-z=2 500w"
+									media="(max-width: 550px)" />
 							<source
-									data-srcset="https://i.picsum.photos/id/1055/1440/1080.jpg"
+									data-src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1024&q=80&ar=1.5:1"
+									data-srcset="https://images.unsplash.com/photo-1501785888041-af3ef285b470?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&crop=focalpoint&w=640&q=80&ar=1.5:1&fp-x=0.35&fp-y=0.56&fp-z=2 640w,
+									https://images.unsplash.com/photo-1501785888041-af3ef285b470?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&crop=focalpoint&w=990&q=80&ar=1.5:1&fp-x=0.35&fp-y=0.56&fp-z=2 990w,
+									https://images.unsplash.com/photo-1501785888041-af3ef285b470?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&crop=focalpoint&w=1024&q=80&ar=1.5:1&fp-x=0.35&fp-y=0.56&fp-z=2 1024w"
 									media="(max-width: 1024px)" />
-
 							<source
-									data-srcset="https://i.picsum.photos/id/103/1440/1080.jpg" />
+									data-src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1200&q=80&ar=1.5:1"
+									data-srcset="https://images.unsplash.com/photo-1501785888041-af3ef285b470?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1200&q=80&ar=1.5:1 1200w" />
 							<!--[if IE 9]></audio><![endif]-->
 							<img
 									class="lazyload"
-									data-src="https://i.picsum.photos/id/1055/1440/1080.jpg"
+									data-src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1130&q=80&ar=1.5:1 1130w"
+									src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
 									alt="image with artdirection" />
 						</picture>
 					</div>
@@ -264,13 +272,17 @@
 <pre>&lt;picture&gt;
 	&lt;!--[if IE 9]&gt;&lt;video style="display: none"&gt;&lt;![endif]--&gt;
 	&lt;source
-		data-srcset="500.jpg"
-		media="(max-width: 500px)" /&gt;
+		data-srcset="240.jpg 240w,
+			320.jpg 320w,
+			500.jpg 500w"
+		media="(max-width: 550px)" /&gt;
 	&lt;source
-			data-srcset="1024.jpg"
+			data-srcset="640.jpg 640w,
+				990.jpg 990w,
+				1024.jpg 1024w"
 			media="(max-width: 1024px)" /&gt;
 	&lt;source
-			data-srcset="1200.jpg" /&gt;
+			data-srcset="1200.jpg 1200w" /&gt;
 &lt;!--[if IE 9]>&lt;/video&gt;&lt;![endif]--&gt;
 &lt;img
 		src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
@@ -295,15 +307,15 @@
 				<div class="thumbnail">
 					<div class="intrinsic">
 						<img
-								alt=""
+								alt="house by the lake"
 								data-sizes="auto"
-								src="https://farm9.staticflickr.com/8200/8248153196_7a7664e147_m.jpg"
-								data-src="https://farm9.staticflickr.com/8200/8248153196_7a7664e147.jpg"
-								data-srcset="https://farm9.staticflickr.com/8200/8248153196_7a7664e147_m.jpg 240w,
-https://farm9.staticflickr.com/8200/8248153196_7a7664e147_n.jpg 320w,
-https://farm9.staticflickr.com/8200/8248153196_7a7664e147.jpg 500w,
-https://farm9.staticflickr.com/8200/8248153196_7a7664e147_c.jpg 800w,
-https://farm9.staticflickr.com/8200/8248153196_7a7664e147_b.jpg 1024w"
+								src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&ar=1:1&w=1024"
+								data-src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&ar=1:1&w=100"
+								data-srcset="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&ar=1:1&w=240 240w,
+https://images.unsplash.com/photo-1470770841072-f978cf4d019e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&ar=1.5:1&w=320 320w,
+https://images.unsplash.com/photo-1470770841072-f978cf4d019e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&ar=1.5:1&w=500 500w,
+https://images.unsplash.com/photo-1470770841072-f978cf4d019e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&ar=1.5:1&w=800 800w,
+https://images.unsplash.com/photo-1470770841072-f978cf4d019e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&ar=1.5:1&w=1024 1024w"
 								class="lazyload" />
 					</div>
 
@@ -312,7 +324,7 @@ https://farm9.staticflickr.com/8200/8248153196_7a7664e147_b.jpg 1024w"
 						<p>The <strong>autosizes feature</strong> makes using responsive images with the right <code>sizes</code> value easy as hell.</p>
 
 <pre>&lt;img
-	alt=""
+	alt="house by the lake"
 	data-sizes="auto"
 	data-srcset="small.jpg 500w,
 		medium.jpg 640w,
@@ -476,14 +488,14 @@ https://farm4.staticflickr.com/3059/2835191823_e3636abb34_b.jpg 1024w"
 									data-sizes="auto"
 									class="lazyload no-src"
 									src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
-									data-src="https://farm6.staticflickr.com/5531/9638435181_7e3e44c2b8_n.jpg"
-									data-srcset="https://farm6.staticflickr.com/5531/9638435181_7e3e44c2b8_m.jpg 240w,
-						https://farm6.staticflickr.com/5531/9638435181_7e3e44c2b8_n.jpg 320w,
-						https://farm6.staticflickr.com/5531/9638435181_7e3e44c2b8.jpg 500w,
-						https://farm6.staticflickr.com/5531/9638435181_7e3e44c2b8_z.jpg 640w,
-						https://farm6.staticflickr.com/5531/9638435181_7e3e44c2b8_c.jpg 800w,
-						https://farm6.staticflickr.com/5531/9638435181_7e3e44c2b8_b.jpg 1024w"
-									alt="Desert Road" />
+									data-src="https://images.unsplash.com/photo-1470116073782-48ae2ccd8ffd?ixlib=rb-1.2.1&auto=format&fit=crop&w=1024"
+									data-srcset="https://images.unsplash.com/photo-1470116073782-48ae2ccd8ffd?ixlib=rb-1.2.1&auto=format&fit=crop&w=240 240w,
+https://images.unsplash.com/photo-1470116073782-48ae2ccd8ffd?ixlib=rb-1.2.1&auto=format&fit=crop&w=320 320w,
+https://images.unsplash.com/photo-1470116073782-48ae2ccd8ffd?ixlib=rb-1.2.1&auto=format&fit=crop&w=500 500w,
+https://images.unsplash.com/photo-1470116073782-48ae2ccd8ffd?ixlib=rb-1.2.1&auto=format&fit=crop&w=640 640w,
+https://images.unsplash.com/photo-1470116073782-48ae2ccd8ffd?ixlib=rb-1.2.1&auto=format&fit=crop&w=800 800w,
+https://images.unsplash.com/photo-1470116073782-48ae2ccd8ffd?ixlib=rb-1.2.1&auto=format&fit=crop&w=1024 1024w"
+									alt="Bird" />
 						</div>
 					</div>
 					<div class="scroll-item">
@@ -492,12 +504,12 @@ https://farm4.staticflickr.com/3059/2835191823_e3636abb34_b.jpg 1024w"
 									data-sizes="auto"
 									class="lazyload no-src"
 									src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
-									data-src="https://farm5.staticflickr.com/4078/5441060528_31db7838ba_n.jpg"
-									data-srcset="https://farm5.staticflickr.com/4078/5441060528_31db7838ba_m.jpg 240w,
-https://farm5.staticflickr.com/4078/5441060528_31db7838ba_n.jpg 320w,
-https://farm5.staticflickr.com/4078/5441060528_31db7838ba.jpg 500w,
-https://farm5.staticflickr.com/4078/5441060528_31db7838ba_z.jpg 640w"
-									alt="" />
+									data-src="https://images.unsplash.com/photo-1544198365-f5d60b6d8190?ixlib=rb-1.2.1&auto=format&fit=crop&w=640&q=80"
+									data-srcset="https://images.unsplash.com/photo-1544198365-f5d60b6d8190?ixlib=rb-1.2.1&auto=format&fit=crop&w=240&q=80 240w,
+https://images.unsplash.com/photo-1544198365-f5d60b6d8190?ixlib=rb-1.2.1&auto=format&fit=crop&w=320&q=80 320w,
+https://images.unsplash.com/photo-1544198365-f5d60b6d8190?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80 500w,
+https://images.unsplash.com/photo-1544198365-f5d60b6d8190?ixlib=rb-1.2.1&auto=format&fit=crop&w=640&q=80 640w"
+									alt="Mountains" />
 						</div>
 					</div>
 					<div class="scroll-item">
@@ -506,11 +518,11 @@ https://farm5.staticflickr.com/4078/5441060528_31db7838ba_z.jpg 640w"
 									data-sizes="auto"
 									class="lazyload no-src"
 									src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
-									data-src="https://farm9.staticflickr.com/8200/8248153196_7a7664e147_n.jpg"
-									data-srcset="https://farm9.staticflickr.com/8200/8248153196_7a7664e147_m.jpg 240w,
-https://farm9.staticflickr.com/8200/8248153196_7a7664e147_n.jpg 320w,
-https://farm9.staticflickr.com/8200/8248153196_7a7664e147.jpg 500w"
-									alt="@ The Desert Tortoise Natural Area" />
+									data-src="https://images.unsplash.com/photo-1523264629844-40dd6bf17c2b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+									data-srcset="https://images.unsplash.com/photo-1523264629844-40dd6bf17c2b?ixlib=rb-1.2.1&auto=format&fit=crop&w=240&q=60 240w,
+https://images.unsplash.com/photo-1523264629844-40dd6bf17c2b?ixlib=rb-1.2.1&auto=format&fit=crop&w=320&q=60 320w,
+https://images.unsplash.com/photo-1523264629844-40dd6bf17c2b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60 500w"
+									alt="Jellyfish" />
 						</div>
 					</div>
 					<div class="scroll-item">
@@ -519,10 +531,10 @@ https://farm9.staticflickr.com/8200/8248153196_7a7664e147.jpg 500w"
 									data-sizes="auto"
 									class="lazyload no-src"
 									src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
-									data-src="https://farm1.staticflickr.com/113/284651694_69e63b374d_m.jpg"
-									data-srcset="https://farm1.staticflickr.com/113/284651694_69e63b374d_m.jpg 240w,
-https://farm1.staticflickr.com/113/284651694_69e63b374d.jpg 500w"
-									alt="Woman in water" />
+									data-src="https://images.unsplash.com/photo-1606041008023-472dfb5e530f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80&ar=1.5:1"
+									data-srcset="https://images.unsplash.com/photo-1606041008023-472dfb5e530f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=240&q=80&ar=1.5:1 240w,
+https://images.unsplash.com/photo-1606041008023-472dfb5e530f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80&ar=1.5:1 500w"
+									alt="Flower" />
 						</div>
 					</div>
 					<div class="scroll-item">
