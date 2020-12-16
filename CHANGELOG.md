@@ -1,7 +1,8 @@
 # Changelog
 
-### upcoming 5.3 beta
+### 5.3
 
+- BGSet: Support adding multiple images/backgrounds through `event.detail.fullSrc` ([#827](https://github.com/aFarkas/lazysizes/issues/827))
 - RiaS plugin: Use `source` based config in case of `picture` element usage ([#764](https://github.com/aFarkas/lazysizes/issues/831))
 - BlurUp plugin: Added possibility to change classNames ([#814](https://github.com/aFarkas/lazysizes/pull/814))
 - Core: Added `iframeLoadMode` option (see [#810](https://github.com/aFarkas/lazysizes/pull/810))
