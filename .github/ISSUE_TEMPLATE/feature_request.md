@@ -19,4 +19,4 @@ A clear and concise description of any alternative solutions or features you've 
 **Additional context**
 Add any other context or screenshots about the feature request here.
 
-⚠️ If you have a question about how to use lazysizes open a [discussion](/lazysizes/discussions) instead.
+⚠️ Consider that most features can be solved by the simple plugin architecture and that most features doesn't need to be added to the core.

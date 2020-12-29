@@ -2,7 +2,7 @@
 name: Bug report
 about: Create a report to help us improve
 title: ''
-labels: ''
+labels: bug
 assignees: ''
 
 ---
@@ -26,5 +26,5 @@ Provide all necessary steps to reproduce the bug.
 
 **Keywords help others to find this issue:**
 
-⚠️ If you have a question about how to use lazysizes open a [discussion](/lazysizes/discussions) instead.
+⚠️ Search for existing open/closed issues/discussions before you report the issue.
 ⚠️ If you do not provide enough information to reproduce your bug. We won't be able to work on the issue. In most cases just providing a fraction of your code is not enough!
