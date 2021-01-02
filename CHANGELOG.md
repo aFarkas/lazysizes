@@ -1,6 +1,6 @@
 # Changelog
 
-### 5.3
+### 5.3.0
 
 - BGSet: Support adding multiple images/backgrounds through `event.detail.fullSrc` ([#827](https://github.com/aFarkas/lazysizes/issues/827))
 - RiaS plugin: Use `source` based config in case of `picture` element usage ([#764](https://github.com/aFarkas/lazysizes/issues/831))
