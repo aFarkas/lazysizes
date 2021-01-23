@@ -7,4 +7,4 @@ assignees: ''
 
 ---
 
-⚠️ If you have a question about how to use lazysizes open a [discussion](/lazysizes/discussions) instead.
+⚠️ Search for existing open/closed issues/discussions before you open your issue.
