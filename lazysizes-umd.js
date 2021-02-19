@@ -7,11 +7,20 @@
 	} else {
 		window.lazySizes = lazySizes;
 	}
-}(window, function l(window, document, Date) { // Pass in the windoe Date function also for SSR because the Date class can be lost
+}(window, 
+/**
+ * import("./types/global")
+ * @typedef { import("./types/lazysizes-config").LazySizesConfigPartial } LazySizesConfigPartial
+ */
+function l(window, document, Date) { // Pass in the window Date function also for SSR because the Date class can be lost
 	'use strict';
 	/*jshint eqnull:true */
 
-	var lazysizes, lazySizesCfg;
+	var lazysizes,
+		/**
+		 * @type { LazySizesConfigPartial }
+		 */
+		lazySizesCfg;
 
 	(function(){
 		var prop;
@@ -53,7 +62,13 @@
 	if (!document || !document.getElementsByClassName) {
 		return {
 			init: function () {},
+			/**
+			 * @type { LazySizesConfigPartial }
+			 */
 			cfg: lazySizesCfg,
+			/**
+			 * @type { true }
+			 */
 			noSupport: true,
 		};
 	}
@@ -86,6 +101,10 @@
 
 	var forEach = Array.prototype.forEach;
 
+	/**
+	 * @param ele {Element}
+	 * @param cls {string}
+	 */
 	var hasClass = function(ele, cls) {
 		if(!regClassCache[cls]){
 			regClassCache[cls] = new RegExp('(\\s|^)'+cls+'(\\s|$)');
@@ -93,12 +112,20 @@
 		return regClassCache[cls].test(ele[_getAttribute]('class') || '') && regClassCache[cls];
 	};
 
+	/**
+	 * @param ele {Element}
+	 * @param cls {string}
+	 */
 	var addClass = function(ele, cls) {
 		if (!hasClass(ele, cls)){
 			ele.setAttribute('class', (ele[_getAttribute]('class') || '').trim() + ' ' + cls);
 		}
 	};
 
+	/**
+	 * @param ele {Element}
+	 * @param cls {string}
+	 */
 	var removeClass = function(ele, cls) {
 		var reg;
 		if ((reg = hasClass(ele,cls))) {
@@ -116,6 +143,14 @@
 		});
 	};
 
+	/**
+	 * @param elem { Element }
+	 * @param name { string }
+	 * @param detail { any }
+	 * @param noBubbles { boolean }
+	 * @param noCancelable { boolean }
+	 * @returns { CustomEvent }
+	 */
 	var triggerEvent = function(elem, name, detail, noBubbles, noCancelable){
 		var event = document.createEvent('Event');
 
@@ -149,6 +184,13 @@
 		return (getComputedStyle(elem, null) || {})[style];
 	};
 
+	/**
+	 *
+	 * @param elem { Element }
+	 * @param parent { Element }
+	 * @param [width] {number}
+	 * @returns {number}
+	 */
 	var getWidth = function(elem, parent, width){
 		width = width || elem.offsetWidth;
 
@@ -548,6 +590,10 @@
 			}, true);
 		});
 
+		/**
+		 *
+		 * @param elem { Element }
+		 */
 		var unveilElement = function (elem){
 			if (elem._lazyRace) {return;}
 			var detail;
@@ -686,6 +732,12 @@
 				updatePolyfill(elem, event.detail);
 			}
 		});
+		/**
+		 *
+		 * @param elem {Element}
+		 * @param dataAttr
+		 * @param [width] { number }
+		 */
 		var getSizeElement = function (elem, dataAttr, width){
 			var event;
 			var parent = elem.parentNode;
@@ -743,6 +795,9 @@
 	});
 
 	lazysizes = {
+		/**
+		 * @type { LazySizesConfigPartial }
+		 */
 		cfg: lazySizesCfg,
 		autoSizer: autoSizer,
 		loader: loader,
