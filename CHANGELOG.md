@@ -1,5 +1,8 @@
 # Changelog
 
+### 5.3.1
+- Added basic Typescript support
+
 ### 5.3.0
 
 - BGSet: Support adding multiple images/backgrounds through `event.detail.fullSrc` ([#827](https://github.com/aFarkas/lazysizes/issues/827))
