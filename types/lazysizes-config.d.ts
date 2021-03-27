@@ -24,6 +24,7 @@ export interface LazySizesConfig {
 	loadHidden: boolean;
 	ricTimeout: number;
 	throttleDelay: number;
+	[key: string]: any;
 }
 
 export type LazySizesConfigPartial = Partial<LazySizesConfig>;
