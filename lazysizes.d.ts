@@ -57,6 +57,7 @@ declare namespace lazySizes {
  * import("./types/global")
  */
 type LazySizesConfigPartial = {
+    [x: string]: any;
     lazyClass?: string;
     loadedClass?: string;
     loadingClass?: string;

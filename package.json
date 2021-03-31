@@ -1,9 +1,12 @@
 {
   "name": "lazysizes",
-  "version": "5.3.1",
+  "version": "5.3.2",
   "filename": "lazysizes.min.js",
   "license": "MIT",
   "author": "Alexander Farkas <alex@boffinhouse.com>",
+	"scripts": {
+		"prepublishOnly": "grunt && tsc"
+	},
   "repository": {
     "type": "git",
     "url": "git://github.com/aFarkas/lazysizes.git"
