@@ -27,7 +27,8 @@
     "jquery-deparam": "^0.5.3",
     "picturefill": "^3.0.3",
     "qunitjs": "^2.4.1",
-    "respimage": "^1.4.2"
+    "respimage": "^1.4.2",
+		"typescript": "^4.1.5"
   },
   "npmName": "lazysizes",
   "npmFileMap": [
@@ -62,8 +63,5 @@
     "imager.js",
     "picturefill",
     "component"
-  ],
-  "dependencies": {
-    "typescript": "^4.1.5"
-  }
+  ]
 }
