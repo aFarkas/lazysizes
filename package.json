@@ -4,9 +4,9 @@
   "filename": "lazysizes.min.js",
   "license": "MIT",
   "author": "Alexander Farkas <alex@boffinhouse.com>",
-	"scripts": {
-		"prepublishOnly": "grunt && tsc"
-	},
+  "scripts": {
+    "prepublishOnly": "grunt && tsc"
+  },
   "repository": {
     "type": "git",
     "url": "git://github.com/aFarkas/lazysizes.git"
@@ -14,8 +14,8 @@
   "namespace": "lazySizes",
   "main": "lazysizes.js",
   "browser": "lazysizes.js",
-	"types": "lazysizes.d.ts",
-	"devDependencies": {
+  "types": "lazysizes.d.ts",
+  "devDependencies": {
     "grunt": "~1.1.0",
     "grunt-bytesize": "~0.2.0",
     "grunt-cli": "~1.3",
@@ -24,14 +24,13 @@
     "grunt-contrib-uglify": "^4.0.1",
     "grunt-contrib-watch": "~1.1.0",
     "grunt-max-filesize": "^0.1.1",
-    "grunt-plato": "^1.4.0",
     "grunt-uncss": "~0.9.1",
     "jquery": "^3.5.1",
     "jquery-deparam": "^0.5.3",
     "picturefill": "^3.0.3",
     "qunitjs": "^2.4.1",
     "respimage": "^1.4.2",
-		"typescript": "^4.1.5"
+    "typescript": "^4.1.5"
   },
   "npmName": "lazysizes",
   "npmFileMap": [
