@@ -5,7 +5,8 @@
   "license": "MIT",
   "author": "Alexander Farkas <alex@boffinhouse.com>",
   "scripts": {
-    "prepublishOnly": "grunt && tsc"
+		"build": "grunt && tsc && grunt importTs",
+    "prepublishOnly": "npm run build"
   },
   "repository": {
     "type": "git",

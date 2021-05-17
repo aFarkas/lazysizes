@@ -101,6 +101,14 @@
 			grunt.file.write('lazysizes-umd.js', umd.replace('{{ls}}', ls));
 		});
 
+		grunt.registerTask('importTs', 'import global typescript.', function() {
+			const fileName = './lazysizes.d.ts';
+			const importStr =  `import './types/global';\n\n`;
+			const tsContent = grunt.file.read(fileName);
+
+			grunt.file.write(fileName, importStr + tsContent);
+		});
+
 
 		// Default task.
 		grunt.registerTask("default", [ "wrapcore", "test", "uglify", "bytesize", "maxFilesize" ]);

@@ -1,5 +1,6 @@
-// import type * as lazySizes from '../lazysizes';
-import { LazySizesConfigPartial } from './lazysizes-config';
+import { LazySizesConfigPartial, LazySizesConfig } from './lazysizes-config';
+
+export { LazySizesConfigPartial, LazySizesConfig };
 
 export interface LazyUnveilReadEvent extends CustomEvent {
 	target: Element;

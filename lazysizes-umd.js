@@ -9,8 +9,7 @@
 	}
 }(window, 
 /**
- * import("./types/global")
- * @typedef { import("./types/lazysizes-config").LazySizesConfigPartial } LazySizesConfigPartial
+ * @typedef { import("./types/global").LazySizesConfigPartial } LazySizesConfigPartial
  */
 function l(window, document, Date) { // Pass in the window Date function also for SSR because the Date class can be lost
 	'use strict';

@@ -1,3 +1,5 @@
+import './types/global';
+
 export = lazySizes;
 declare var lazySizes: {
     init: () => void;
@@ -53,9 +55,6 @@ declare var lazySizes: {
 declare namespace lazySizes {
     export { LazySizesConfigPartial };
 }
-/**
- * import("./types/global")
- */
 type LazySizesConfigPartial = {
     [x: string]: any;
     lazyClass?: string;
