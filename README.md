@@ -189,11 +189,11 @@ Please also have a look at our [lazysizes Blur Up plugin](https://jsfiddle.net/t
 	.fade-box .lazyload,
 	 .fade-box .lazyloading {
 		opacity: 0;
-		transition: opacity 400ms;
 	}
 
 	.fade-box img.lazyloaded {
 		opacity: 1;
+		transition: opacity 400ms;
 	}
 </style>
 
