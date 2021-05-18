@@ -709,6 +709,8 @@ In the past, I often struggled using lazy image loaders, because the "main check
 
 But in a world of responsive retina optimized images on the one hand and JS widgets like carousels or tabs (a lot of initially hidden images) on the other hand lazy loading images becomes more and more important, so I created this project.
 
+On Google's web.dev portal lazysizes [is recomended](https://web.dev/fast/use-lazysizes-to-lazyload-images) as an optimization for fast load times.
+
 **lazysizes** is different:
 
 Due to the fact, that it is designed to be invoked with a high frequency and therefore works highly efficient, it was possible to hook into all kinds of events as a mutationobserver meaning this lazyloader works as a simple drop in solution - you simply write/render your markup and no matter whether the ``.lazyload`` element was added by AJAX or revealed by a JS or CSS animation it will be picked up by **lazysizes**.
