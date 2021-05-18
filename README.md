@@ -300,16 +300,22 @@ lazysizes adds the class ``lazyloading`` while the images are loading and the cl
 
 In case you are using an `alt` attribute but do not declare a `src`/`srcset` attribute you will end up with a broken image symbol.
 
-There are two easy ways to deal with it.
+There are easy ways to deal with it.
 
 Either define a `src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="` or add the following CSS.
 
 ```css
-img.lazyload:not([src]) {
+img.lazyloaded:not([src]) {
 	visibility: hidden;
 }
 ```
-
+```css
+img.lazyloaded:not([src]) {
+  background-size: cover;
+  background-image: url("default.png");
+  background-color: lightskyblue;
+}
+```
 
 ### JS API
 **lazysizes** automatically detects new elements with the class ``lazyload`` so you won't need to call or configure anything in most situations.
