@@ -274,14 +274,14 @@ lazysizes adds the class ``lazyloading`` while the images are loading and the cl
 /* fade image in after load */
 .lazyload,
 .lazyloading {
-  opacity: 0;
+	opacity: 0;
 }
 .lazyloaded {
-  animation: lazyFadeIn linear 0.1s;
+	animation: lazyFadeIn linear .3s;
 }
 @keyframes lazyFadeIn {
-  0% {opacity:0;}
-  100% {opacity:1;}
+	0% {opacity:0;}
+	100% {opacity:1;}
 }
 ```
 
@@ -292,14 +292,15 @@ lazysizes adds the class ``lazyloading`` while the images are loading and the cl
 	opacity: 0;
 }
 .lazyloading {
-  background: #f7f7f7 url(loader.gif) no-repeat center;
+	opacity: 1;
+	background: #f7f7f7 url(loader.gif) no-repeat center;
 }
 .lazyloaded {
-  animation: lazyFadeIn linear 0.1s;
+	animation: lazyFadeIn linear .3s;
 }
 @keyframes lazyFadeIn {
-  0% {opacity:0;}
-  100% {opacity:1;}
+	0% {opacity:0;}
+	100% {opacity:1;}
 }
 ```
 
