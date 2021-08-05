@@ -288,19 +288,19 @@ lazysizes adds the class ``lazyloading`` while the images are loading and the cl
 ```css
 /* fade image in while loading and show a spinner as background image (good for progressive images) */
 
-.lazyload {
-	opacity: 0;
+[data-src] {
+	filter: opacity(0);
 }
 .lazyloading {
-	opacity: 1;
+	filter: opacity(1);
 	background: #f7f7f7 url(loader.gif) no-repeat center;
 }
 .lazyloaded {
 	animation: lazyFadeIn linear .3s;
 }
 @keyframes lazyFadeIn {
-	0% {opacity:0;}
-	100% {opacity:1;}
+	0% {filter: opacity(0);}
+	100% {filter: opacity(1);}
 }
 ```
 
