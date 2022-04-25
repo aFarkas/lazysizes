@@ -80,7 +80,7 @@
 		e.preventDefault();
 
 		elem.innerHTML = '<iframe src="' + (vimeoIframe.replace(regId, id)) + vimeoParams +'" ' +
-			'frameborder="0" allowfullscreen="" width="640" height="390"></iframe>'
+			'frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" width="100%" height="100%"></iframe>'
 		;
 
 	}
@@ -110,7 +110,7 @@
 		e.preventDefault();
 
 		elem.innerHTML = '<iframe src="' + (youtubeIframe.replace(regId, id)) + youtubeParams +'" ' +
-			'frameborder="0" allowfullscreen="" width="640" height="390"></iframe>'
+			'frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" width="100%" height="100%"></iframe>'
 		;
 	}
 
