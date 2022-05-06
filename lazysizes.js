@@ -178,6 +178,7 @@ function l(window, document, Date) { // Pass in the window Date function also fo
 	};
 
 	var getCSS = function (elem, style){
+		if (elem.nodeType === 9) return ''; // skip #document
 		return (getComputedStyle(elem, null) || {})[style];
 	};
 
