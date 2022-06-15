@@ -1,5 +1,8 @@
 # Changelog
 
+### 5.3.2
+- Fix: only use `window.MutationObserver` since that is what we ensure in the guard statements.
+
 ### 5.3.1
 - Added basic Typescript support
 

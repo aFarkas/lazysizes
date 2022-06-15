@@ -408,7 +408,7 @@
 					rootMargin: lazySizesCfg.expand + 'px ' + (lazySizesCfg.expand * lazySizesCfg.hFac) + 'px',
 				});
 
-				new MutationObserver( addElements ).observe( docElem, {childList: true, subtree: true, attributes: true} );
+				new window.MutationObserver( addElements ).observe( docElem, {childList: true, subtree: true, attributes: true} );
 
 				addElements();
 			},

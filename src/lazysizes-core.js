@@ -665,7 +665,7 @@ function l(window, document, Date) { // Pass in the window Date function also fo
 				});
 
 				if(window.MutationObserver){
-					new MutationObserver( throttledCheckElements ).observe( docElem, {childList: true, subtree: true, attributes: true} );
+					new window.MutationObserver( throttledCheckElements ).observe( docElem, {childList: true, subtree: true, attributes: true} );
 				} else {
 					docElem[_addEventListener]('DOMNodeInserted', throttledCheckElements, true);
 					docElem[_addEventListener]('DOMAttrModified', throttledCheckElements, true);
