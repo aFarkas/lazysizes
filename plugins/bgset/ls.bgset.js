@@ -59,6 +59,7 @@
 		var picture = document.createElement('picture');
 		var sizes = elem.getAttribute(lazySizesCfg.sizesAttr);
 		var ratio = elem.getAttribute('data-ratio');
+		var alt = elem.getAttribute('data-alt');
 		var optimumx = elem.getAttribute('data-optimumx');
 
 		if(elem._lazybgset && elem._lazybgset.parentNode == elem){
@@ -113,6 +114,9 @@
 		}
 		if(ratio) {
 			img.setAttribute('data-ratio', ratio);
+		}
+		if(alt) {
+			img.alt = alt;
 		}
 
 		picture.appendChild(img);
