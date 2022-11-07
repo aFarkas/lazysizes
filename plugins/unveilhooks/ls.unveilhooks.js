@@ -159,6 +159,9 @@ For background images, use data-bg attribute:
 
 	function addStyleScript(src, style, cb){
 		if(uniqueUrls[src]){
+			if (typeof cb === 'function') {
+				cb();
+			}
 			return;
 		}
 		var elem = document.createElement(style ? 'link' : 'script');
