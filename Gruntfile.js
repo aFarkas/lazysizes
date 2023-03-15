@@ -44,7 +44,8 @@
 			jshint: {
 				all: {
 					options: {
-						jshintrc: true
+						jshintrc: true,
+						esversion: 6
 					},
 					src: [ "lazysizes.js", "plugins/**/*.js", "!*.min.js", "!plugins/**/*.min.js" ] //, "Gruntfile.js", "tests/*.js"
 				}

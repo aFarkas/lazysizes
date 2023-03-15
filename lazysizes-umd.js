@@ -47,6 +47,8 @@ function l(window, document, Date) { // Pass in the window Date function also fo
 			loadHidden: true,
 			ricTimeout: 0,
 			throttleDelay: 125,
+			scroll: 'default', // 'mantle'
+			useIntersectionObserver: false,
 		};
 
 		lazySizesCfg = window.lazySizesConfig || window.lazysizesConfig || {};
@@ -55,6 +57,13 @@ function l(window, document, Date) { // Pass in the window Date function also fo
 			if(!(prop in lazySizesCfg)){
 				lazySizesCfg[prop] = lazySizesDefaults[prop];
 			}
+		}
+		const lazySizesParam = new URLSearchParams(window.location.search).get('lazysizes');
+		if (lazySizesParam === 'intersection') {
+			lazySizesCfg.useIntersectionObserver = true;
+		}
+		if (lazySizesParam === 'mantle-scroll') {
+			lazySizesCfg.scroll = 'mantle';
 		}
 	})();
 
@@ -389,10 +398,39 @@ function l(window, document, Date) { // Pass in the window Date function also fo
 			return visible;
 		};
 
+		var observerCallback = (entries, observer) => {
+			entries.forEach((entry) => {
+				console.log(`intersecting:${entry.isIntersecting}, ratio:${entry.intersectionRatio}`);
+				console.log(entry.target);
+				if (entry.isIntersecting) {
+					unveilElement(entry.target);
+					lazysizes.observer.unobserve(entry.target);
+				}
+			});
+
+		};
+
+		var createObservers = function(elements) {
+			let len = elements.length;
+
+			while(len > 0){
+				const i = len - 1;
+				if (hasClass(elements[i], 'hasObserver')) continue;
+				addClass(elements[i], 'hasObserver');
+				lazysizes.observer.observe(elements[i]);
+				removeClass(elements[i], lazySizesCfg.lazyClass);
+				len = elements.length;
+			}
+		}
+
 		var checkElements = function() {
 			var eLlen, i, rect, autoLoadElem, loadedSomething, elemExpand, elemNegativeExpand, elemExpandVal,
 				beforeExpandVal, defaultExpand, preloadExpand, hFac;
 			var lazyloadElems = lazysizes.elements;
+
+			if (lazySizesCfg.useIntersectionObserver) {
+				createObservers(lazyloadElems);
+			}
 
 			if((loadMode = lazySizesCfg.loadMode) && isLoading < 8 && (eLlen = lazyloadElems.length)){
 
@@ -643,17 +681,42 @@ function l(window, document, Date) { // Pass in the window Date function also fo
 
 			throttledCheckElements();
 
-			addEventListener('scroll', altLoadmodeScrollListner, true);
+			if (lazySizesCfg.scroll === 'mantle' && !lazySizesCfg.useIntersectionObserver) {
+				window.addEventListener('mntl.scroll', altLoadmodeScrollListner, true);
+			}
+			if (lazySizesCfg.scroll === 'default' && !lazySizesCfg.useIntersectionObserver) {
+				addEventListener('scroll', altLoadmodeScrollListner, true);
+			}
 		};
+
+		var setupObserver = function(expand) {
+			let options = {
+				root: document.body,
+				rootMargin: `${expand}px`,
+				threshold: 0.1
+			}
+			let observer = new IntersectionObserver(observerCallback, options);
+			lazysizes.observer = observer;
+		}
 
 		return {
 			_: function(){
 				started = Date.now();
 
+				if (lazySizesCfg.useIntersectionObserver) {
+					document.head.insertAdjacentHTML("beforeend", `<style>body {position:relative;}</style>`)
+					setupObserver(300);
+				}
+
 				lazysizes.elements = document.getElementsByClassName(lazySizesCfg.lazyClass);
 				preloadElems = document.getElementsByClassName(lazySizesCfg.lazyClass + ' ' + lazySizesCfg.preloadClass);
 
-				addEventListener('scroll', throttledCheckElements, true);
+				if (lazySizesCfg.scroll === 'mantle' && !lazySizesCfg.useIntersectionObserver) {
+					window.addEventListener('mntl.scroll', throttledCheckElements, true);
+				}
+				if (lazySizesCfg.scroll === 'default' && !lazySizesCfg.useIntersectionObserver) {
+					addEventListener('scroll', throttledCheckElements, true);
+				}
 
 				addEventListener('resize', throttledCheckElements, true);
 
