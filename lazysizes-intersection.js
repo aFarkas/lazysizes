@@ -1,13 +1,11 @@
 (function(window, factory) {
 	var lazySizes = factory(window, window.document, Date);
+	window.lazySizes = lazySizes;
 	if(typeof module == 'object' && module.exports){
 		module.exports = lazySizes;
-	} else if (typeof define == 'function' && define.amd) {
-		define(lazySizes);
-	} else {
-		window.lazySizes = lazySizes;
 	}
-}(window, 
+}(typeof window != 'undefined' ?
+      window : {}, 
 /**
  * @typedef { import("./types/global").LazySizesConfigPartial } LazySizesConfigPartial
  */

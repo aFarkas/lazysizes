@@ -5,7 +5,7 @@
   "license": "MIT",
   "author": "Alexander Farkas <alex@boffinhouse.com>",
   "scripts": {
-		"build": "grunt && tsc && grunt importTs",
+    "build": "grunt && tsc && grunt importTs",
     "prepublishOnly": "npm run build"
   },
   "repository": {
@@ -26,12 +26,12 @@
     "grunt-contrib-watch": "~1.1.0",
     "grunt-max-filesize": "^0.1.1",
     "grunt-uncss": "~0.9.1",
-    "jquery": "^3.5.1",
+    "jquery": "^3.6.4",
     "jquery-deparam": "^0.5.3",
     "picturefill": "^3.0.3",
     "qunitjs": "^2.4.1",
     "respimage": "^1.4.2",
-    "typescript": "^4.1.5"
+    "typescript": "^4.9.5"
   },
   "npmName": "lazysizes",
   "npmFileMap": [

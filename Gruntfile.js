@@ -46,7 +46,7 @@
 					options: {
 						jshintrc: true
 					},
-					src: [ "lazysizes.js", "plugins/**/*.js", "!*.min.js", "!plugins/**/*.min.js" ] //, "Gruntfile.js", "tests/*.js"
+					src: [ "lazysizes.js", "lazysizes-intersection.js", "plugins/**/*.js", "!*.min.js", "!plugins/**/*.min.js" ] //, "Gruntfile.js", "tests/*.js"
 				}
 			},
 			qunit: {
@@ -54,13 +54,13 @@
 			},
 			watch: {
 				gruntfile: {
-					files: [ "Gruntfile.js", "lazysizes.js" ],
+					files: [ "Gruntfile.js", "lazysizes.js", "lazysizes-intersection.js" ],
 					tasks: [ "default" ]
 				}
 			},
 			bytesize: {
 				all: {
-					src: [ "lazysizes.min.js" ]
+					src: [ "lazysizes.min.js", "lazysizes-intersection.min.js" ]
 				}
 			},
 			uncss: {
@@ -78,7 +78,7 @@
 					options: {
 						maxBytes: (1024 * 7.8)
 					},
-					src: ["lazysizes.min.js"]
+					src: ["lazysizes.min.js", "lazysizes-intersection.min.js"]
 				}
 			}
 		});
@@ -101,6 +101,15 @@
 			grunt.file.write('lazysizes-umd.js', umd.replace('{{ls}}', ls));
 		});
 
+		grunt.registerTask('wrapintersection', 'wraps lazysizes into umd and common wrapper.', function() {
+			var ls = grunt.file.read('src/lazysizes-intersection.js');
+			var common = grunt.file.read('src/common.wrapper');
+			var umd = grunt.file.read('src/umd.wrapper');
+
+			grunt.file.write('lazysizes-intersection.js', common.replace('{{ls}}', ls));
+			grunt.file.write('lazysizes-umd.js', umd.replace('{{ls}}', ls));
+		});
+
 		grunt.registerTask('importTs', 'import global typescript.', function() {
 			const fileName = './lazysizes.d.ts';
 			const importStr =  `import './types/global';\n\n`;
@@ -111,7 +120,7 @@
 
 
 		// Default task.
-		grunt.registerTask("default", [ "wrapcore", "test", "uglify", "bytesize", "maxFilesize" ]);
+		grunt.registerTask("default", [ "wrapcore", "wrapintersection", "test", "uglify", "bytesize", "maxFilesize" ]);
 		grunt.registerTask("test", [ "jshint" ]);
 	};
 })();

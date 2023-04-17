@@ -55,27 +55,4 @@ declare var lazySizes: {
 declare namespace lazySizes {
     export { LazySizesConfigPartial };
 }
-type LazySizesConfigPartial = {
-    [x: string]: any;
-    lazyClass?: string;
-    loadedClass?: string;
-    loadingClass?: string;
-    preloadClass?: string;
-    errorClass?: string;
-    autosizesClass?: string;
-    fastLoadedClass?: string;
-    iframeLoadMode?: 0 | 1;
-    srcAttr?: string;
-    srcsetAttr?: string;
-    sizesAttr?: string;
-    preloadAfterLoad?: boolean;
-    minSize?: number;
-    customMedia?: Record<string, string>;
-    init?: boolean;
-    expFactor?: number;
-    hFac?: number;
-    loadMode?: 0 | 1 | 2 | 3;
-    loadHidden?: boolean;
-    ricTimeout?: number;
-    throttleDelay?: number;
-};
+type LazySizesConfigPartial = import("./types/global").LazySizesConfigPartial;
