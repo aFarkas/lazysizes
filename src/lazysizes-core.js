@@ -481,6 +481,7 @@ function l(window, document, Date) { // Pass in the window Date function also fo
 
 			// loadMode can be also a string!
 			if (loadMode == 0) {
+				elem.removeAttribute('loading'); // Avoid the browser lazy-loading `src` after the below navigation.
 				elem.contentWindow.location.replace(src);
 			} else if (loadMode == 1) {
 				elem.src = src;
